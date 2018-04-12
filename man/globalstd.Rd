@@ -8,7 +8,7 @@ globalstd(list, rtcutoff = 9, freqcutoff = 30, corcutoff = NULL,
   pmdcutoff = 100, rtcutoff2 = 3, freqcutoff2 = 10, pmdcutoff2 = 500)
 }
 \arguments{
-\item{list}{a peaks list with mass to charge}
+\item{list}{a peaks list with mass to charge, retention time and intensity data}
 
 \item{rtcutoff}{cutoff of the distances in cluster}
 

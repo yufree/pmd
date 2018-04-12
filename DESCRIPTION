@@ -15,11 +15,10 @@ Encoding: UTF-8
 LazyData: true
 Suggests: knitr,
     rmarkdown,
-    testthat
+    enviGCMS
 VignetteBuilder: knitr
 biocViews:
 Depends: R (>= 2.10)
-Imports: enviGCMS,
-        RColorBrewer,
+Imports:RColorBrewer,
         shiny
 RoxygenNote: 6.0.1

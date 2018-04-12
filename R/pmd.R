@@ -319,7 +319,7 @@ getsda <- function(list, rtcutoff = 3, freqcutoff = 10,
 }
 
 #' GlobalStd algorithm
-#' @param list a peaks list with mass to charge
+#' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster
 #' @param freqcutoff cutoff of the mass differences frequency
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
