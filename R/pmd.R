@@ -277,6 +277,7 @@ getstd <- function(list, corcutoff = NULL) {
 #' @param pmdcutoff cutoff of the largest paired mass differences, default 500
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}
+#' @export
 getsda <- function(list, rtcutoff = 3, freqcutoff = 10,
     pmdcutoff = 500) {
     if (is.null(list$stdmass) & is.null(list$paired)) {
