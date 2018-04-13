@@ -272,37 +272,46 @@ getstd <- function(list, corcutoff = NULL) {
 
 #' Perform structure directed analysis for peaks list.
 #' @param list a list with mzrt profile
-#' @param rtcutoff cutoff of the retention time in secounds, default 3
+#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 9
 #' @param freqcutoff cutoff of the paired mass difference frequency, default 10
 #' @param pmdcutoff cutoff of the largest paired mass differences, default 500
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}
 #' @export
-getsda <- function(list, rtcutoff = 3, freqcutoff = 10,
+getsda <- function(list, rtcutoff = 9, freqcutoff = 10,
     pmdcutoff = 500) {
     if (is.null(list$stdmass) & is.null(list$paired)) {
         mz <- list$mz
         rt <- list$rt
         data <- list$data
+        dis <- stats::dist(rt, method = "manhattan")
+        fit <- stats::hclust(dis)
+        rtg <- stats::cutree(fit, h = rtcutoff)
     } else if (is.null(list$stdmass)) {
         mz <- list$mz[list$pairedindex]
         rt <- list$rt[list$pairedindex]
         data <- list$data[list$pairedindex, ]
+        rtg <- list$rtcluster[list$stdmassindex]
     } else {
         mz <- list$mz[list$stdmassindex]
         rt <- list$rt[list$stdmassindex]
         data <- list$data[list$stdmassindex, ]
+        rtg <- list$rtcluster[list$stdmassindex]
     }
     # PMD analysis
     dis <- stats::dist(mz, method = "manhattan")
     disrt <- stats::dist(rt, method = "manhattan")
+    disrt <- stats::dist(rtg, method = "manhattan")
     df <- data.frame(ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
         1]], ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
         2]], diff = as.numeric(dis), rt1 = rt[which(lower.tri(disrt),
         arr.ind = T)[, 1]], rt2 = rt[which(lower.tri(disrt),
-        arr.ind = T)[, 2]], diffrt = as.numeric(disrt))
+        arr.ind = T)[, 2]], diffrt = as.numeric(disrt),
+        rtg1 = rtg[which(lower.tri(disrtg),
+                         arr.ind = T)[, 1]],rtg2 = rtg[which(lower.tri(disrtg),
+                                                             arr.ind = T)[, 2]],rtgdiff = as.numeric(disrtg))
     df$diff2 <- round(df$diff, 2)
-    df <- df[df$diffrt > rtcutoff & df$diff2 < pmdcutoff,
+    df <- df[df$rtgdiff > 0 & df$diff2 < pmdcutoff,
         ]
     freq <- table(df$diff2)[order(table(df$diff2), decreasing = T)]
     list$sda <- df[(df$diff2 %in% as.numeric(names(freq[freq >=
@@ -324,24 +333,23 @@ getsda <- function(list, rtcutoff = 3, freqcutoff = 10,
 #' @param freqcutoff cutoff of the mass differences frequency
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param pmdcutoff cutoff of the largest mass differences, default 100
-#' @param rtcutoff2 cutoff of the retention time in secounds, default 3
 #' @param freqcutoff2 cutoff of the paired mass difference frequency, default 10
 #' @param pmdcutoff2 cutoff of the largest paired mass differences, default 500
 #' @return list with GlobalStd algorithm processed data.
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
 #' @export
 globalstd <- function(list, rtcutoff = 9, freqcutoff = 30,
-    corcutoff = NULL, pmdcutoff = 100, rtcutoff2 = 3, freqcutoff2 = 10,
+    corcutoff = NULL, pmdcutoff = 100, freqcutoff2 = 10,
     pmdcutoff2 = 500) {
     list <- getpaired(list, rtcutoff = rtcutoff, freqcutoff = freqcutoff,
         pmdcutoff = pmdcutoff)
     if(sum(list$pairedindex)>0){
             list2 <- getstd(list, corcutoff = corcutoff)
-            list3 <- getsda(list2, rtcutoff = rtcutoff2, freqcutoff = freqcutoff2,
+            list3 <- getsda(list2, rtcutoff = rtcutoff, freqcutoff = freqcutoff2,
                             pmdcutoff = pmdcutoff2)
     }else{
             message('no paired relationship, directly go to structure directed analysis.')
-            list3 <- getsda(list, rtcutoff = rtcutoff2, freqcutoff = freqcutoff2,
+            list3 <- getsda(list, rtcutoff = rtcutoff, freqcutoff = freqcutoff2,
                             pmdcutoff = pmdcutoff2)
     }
 

@@ -4,12 +4,12 @@
 \alias{getsda}
 \title{Perform structure directed analysis for peaks list.}
 \usage{
-getsda(list, rtcutoff = 3, freqcutoff = 10, pmdcutoff = 500)
+getsda(list, rtcutoff = 9, freqcutoff = 10, pmdcutoff = 500)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
 
-\item{rtcutoff}{cutoff of the retention time in secounds, default 3}
+\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 9}
 
 \item{freqcutoff}{cutoff of the paired mass difference frequency, default 10}
 

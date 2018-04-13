@@ -5,7 +5,7 @@
 \title{GlobalStd algorithm}
 \usage{
 globalstd(list, rtcutoff = 9, freqcutoff = 30, corcutoff = NULL,
-  pmdcutoff = 100, rtcutoff2 = 3, freqcutoff2 = 10, pmdcutoff2 = 500)
+  pmdcutoff = 100, freqcutoff2 = 10, pmdcutoff2 = 500)
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
@@ -17,8 +17,6 @@ globalstd(list, rtcutoff = 9, freqcutoff = 30, corcutoff = NULL,
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
 \item{pmdcutoff}{cutoff of the largest mass differences, default 100}
-
-\item{rtcutoff2}{cutoff of the retention time in secounds, default 3}
 
 \item{freqcutoff2}{cutoff of the paired mass difference frequency, default 10}
 
