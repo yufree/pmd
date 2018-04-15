@@ -1,3 +1,15 @@
+#' A dataset containing common Paired mass differeces of substructure, ions replacements, and reaction
+#' @docType data
+#' @usage data(sda)
+#' @format A data frame with 94 rows and 4 variables:
+#' \describe{
+#'   \item{PMD}{Paired mass differeces}
+#'   \item{origin}{potentical sources}
+#'   \item{Ref.}{references}
+#'   \item{mode}{positive, negative or both mode to find corresponding PMDs}
+#'   }
+"sda"
+
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 9
@@ -301,7 +313,7 @@ getsda <- function(list, rtcutoff = 9, freqcutoff = 10,
     # PMD analysis
     dis <- stats::dist(mz, method = "manhattan")
     disrt <- stats::dist(rt, method = "manhattan")
-    disrt <- stats::dist(rtg, method = "manhattan")
+    disrtg <- stats::dist(rtg, method = "manhattan")
     df <- data.frame(ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
         1]], ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
         2]], diff = as.numeric(dis), rt1 = rt[which(lower.tri(disrt),
