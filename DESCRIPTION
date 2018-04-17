@@ -8,7 +8,7 @@ Authors@R: person(given = "Miao", family = "YU",
         email = "yufreecas@gmail.com",
         comment = c(ORCID = "0000-0002-2804-6014"))
 Maintainer: Miao YU <yufreecas@gmail.com>
-Description: Pired Mass Differences(PMD) analysis including GlobalStd algorithm and Structure directed analysis. GlobalStd algorithm could found independant peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass differences within retention time groups. Structure directed analysis could be used to find potential relationship among those independant peaks in different retention time groups based on freqency of paired mass differences. A GUI for PMD analysis is also included as a shiny application.
+Description: Pired Mass Differences(PMD) analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independant peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass differences within retention time groups. Structure directed analysis could be used to find potential relationship among those independant peaks in different retention time groups based on freqency of paired mass differences. A GUI for PMD analysis is also included as a shiny application.
 URL: https://github.com/yufree/pmd
 License: GPL-2
 Encoding: UTF-8
