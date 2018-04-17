@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmd.R
 \name{getsda}
 \alias{getsda}
-\title{Perform structure directed analysis for peaks list.}
+\title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
 getsda(list, rtcutoff = 9, freqcutoff = 10, pmdcutoff = 500)
 }
@@ -19,7 +19,7 @@ getsda(list, rtcutoff = 9, freqcutoff = 10, pmdcutoff = 500)
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 }
 \description{
-Perform structure directed analysis for peaks list.
+Perform structure/reaction directed analysis for peaks list.
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}

@@ -2,17 +2,17 @@
 % Please edit documentation in R/pmd.R
 \name{globalstd}
 \alias{globalstd}
-\title{GlobalStd algorithm}
+\title{GlobalStd algorithm with structure/reaction directed analysis}
 \usage{
-globalstd(list, rtcutoff = 9, freqcutoff = 30, corcutoff = NULL,
+globalstd(list, rtcutoff = 10, freqcutoff = 30, corcutoff = NULL,
   pmdcutoff = 100, freqcutoff2 = 10, pmdcutoff2 = 500)
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
 
-\item{rtcutoff}{cutoff of the distances in cluster}
+\item{rtcutoff}{cutoff of the distances in cluster, default 10}
 
-\item{freqcutoff}{cutoff of the mass differences frequency}
+\item{freqcutoff}{cutoff of the mass differences frequency, default 30}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
@@ -26,7 +26,7 @@ globalstd(list, rtcutoff = 9, freqcutoff = 30, corcutoff = NULL,
 list with GlobalStd algorithm processed data.
 }
 \description{
-GlobalStd algorithm
+GlobalStd algorithm with structure/reaction directed analysis
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}

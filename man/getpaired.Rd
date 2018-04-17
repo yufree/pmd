@@ -4,19 +4,19 @@
 \alias{getpaired}
 \title{Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.}
 \usage{
-getpaired(list, rtcutoff = 9, freqcutoff = 30, pmdcutoff = 100)
+getpaired(list, rtcutoff = 10, freqcutoff = 30, pmdcutoff = 100)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
 
-\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 9}
+\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
 \item{freqcutoff}{cutoff of the paired mass difference frequency, default 30}
 
 \item{pmdcutoff}{cutoff of the largest paired mass differences, default 100}
 }
 \value{
-list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 }
 \description{
 Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.

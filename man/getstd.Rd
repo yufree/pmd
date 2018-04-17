@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmd.R
 \name{getstd}
 \alias{getstd}
-\title{Find the standard mass for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.}
+\title{Find the independant ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.}
 \usage{
 getstd(list, corcutoff = NULL)
 }
@@ -15,7 +15,7 @@ getstd(list, corcutoff = NULL)
 list with std mass index
 }
 \description{
-Find the standard mass for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
+Find the independant ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getsda}},\code{\link{plotstd}}

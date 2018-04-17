@@ -12,18 +12,18 @@
 
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
-#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 9
+#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param freqcutoff cutoff of the paired mass difference frequency, default 30
 #' @param pmdcutoff cutoff of the largest paired mass differences, default 100
-#' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+#' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @seealso \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
 #' @export
-getpaired <- function(list, rtcutoff = 9, freqcutoff = 30,
+getpaired <- function(list, rtcutoff = 10, freqcutoff = 30,
     pmdcutoff = 100) {
     # paired mass diff analysis
     groups <- cbind.data.frame(mz = list$mz, rt = list$rt,
         list$data)
-    resultstd <- resultdiffstd <- resultsolo <- resultiso <- result <- NULL
+    resultstd <- resultdiffstd <- resultsolo <- resultiso <- resultmulti <- result <- NULL
 
     dis <- stats::dist(list$rt, method = "manhattan")
     fit <- stats::hclust(dis)
@@ -48,13 +48,18 @@ getpaired <- function(list, rtcutoff = 9, freqcutoff = 30,
                 arr.ind = T)[, 2]], diff = as.numeric(dis),
                 rt = medianrtxi, rtg = i, cor = cor[lower.tri(cor)])
 
-            isoindex <- (df$diff < 1.01 & df$diff > 0.99) |
-                (df$diff < 2.01 & df$diff > 1.99)
+            isoindex <- df$diff %% 1 < 0.01 & (round(df$diff,2)!=0) & df$diff<3
             dfiso <- df[isoindex, ]
             if (nrow(dfiso) > 0) {
                 resultiso <- rbind(resultiso, dfiso)
             }
-            dfdiff <- df[!isoindex, ]
+
+            multiindex <- (round(df$diff %% 1,1) == 0.5)
+            dfmulti <- df[multiindex, ]
+            if (nrow(dfmulti) > 0) {
+                    resultmulti <- rbind(resultmulti, dfmulti)
+            }
+            dfdiff <- df[!(isoindex|multiindex), ]
 
             result <- rbind(result, dfdiff)
         } else {
@@ -63,10 +68,6 @@ getpaired <- function(list, rtcutoff = 9, freqcutoff = 30,
         }
     }
 
-    # # mass defect filter mdst <- round(14.01565)/14.01565
-    # msdefect <- round(result$diff*mdst) -
-    # result$diff*mdst index <- abs(msdefect)<0.05 result
-    # <- result[index,] get the high freq ions pairs
     result$diff2 <- round(result$diff, 2)
     if (nrow(result) > 0) {
         freq <- table(result$diff2)[order(table(result$diff2),
@@ -92,6 +93,13 @@ getpaired <- function(list, rtcutoff = 9, freqcutoff = 30,
                 4)), c(resultiso$rtg, resultiso$rtg))
         list$iso <- resultiso
     }
+    # get the data index by rt groups with multi charger ions
+    if (!is.null(resultmulti)) {
+            list$multiindex <- paste(round(list$mz, 4), list$rtcluster) %in%
+                    paste(c(round(resultmulti$ms1, 4), round(resultmulti$ms2,
+                                                           4)), c(resultmulti$rtg, resultmulti$rtg))
+            list$multi <- resultmulti
+    }
     # get the data index by rt groups with high freqences
     # PMD
     list$diffindex <- paste(round(list$mz, 4), list$rtcluster) %in%
@@ -105,12 +113,15 @@ getpaired <- function(list, rtcutoff = 9, freqcutoff = 30,
     list$paired <- resultdiff
 
     # show message about std mass
-    n <- sum(list$pairedindex)
-    message(paste(n, "paired mass found."))
+    message(paste(nrow(list$diff), "paired mass difference(s) computed."))
+    message(paste(sum(list$pairedindex), "paired masses found and ",length(unique(list$paired$diff2)), "unique PMD(s) used for further investigation."))
+    message(paste(sum(list$isoindex), "isotopologue(s) found."))
+    message(paste(sum(list$multiindex), "multi-charger(s) related paired mass found."))
+
     # return results
     return(list)
 }
-#' Find the standard mass for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
+#' Find the independant ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
 #' @param list a list from getpaired function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with std mass index
@@ -282,7 +293,7 @@ getstd <- function(list, corcutoff = NULL) {
     return(list)
 }
 
-#' Perform structure directed analysis for peaks list.
+#' Perform structure/reaction directed analysis for peaks list.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 9
 #' @param freqcutoff cutoff of the paired mass difference frequency, default 10
@@ -339,10 +350,10 @@ getsda <- function(list, rtcutoff = 9, freqcutoff = 10,
     return(list)
 }
 
-#' GlobalStd algorithm
+#' GlobalStd algorithm with structure/reaction directed analysis
 #' @param list a peaks list with mass to charge, retention time and intensity data
-#' @param rtcutoff cutoff of the distances in cluster
-#' @param freqcutoff cutoff of the mass differences frequency
+#' @param rtcutoff cutoff of the distances in cluster, default 10
+#' @param freqcutoff cutoff of the mass differences frequency, default 30
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param pmdcutoff cutoff of the largest mass differences, default 100
 #' @param freqcutoff2 cutoff of the paired mass difference frequency, default 10
@@ -350,7 +361,7 @@ getsda <- function(list, rtcutoff = 9, freqcutoff = 10,
 #' @return list with GlobalStd algorithm processed data.
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
 #' @export
-globalstd <- function(list, rtcutoff = 9, freqcutoff = 30,
+globalstd <- function(list, rtcutoff = 10, freqcutoff = 30,
     corcutoff = NULL, pmdcutoff = 100, freqcutoff2 = 10,
     pmdcutoff2 = 500) {
     list <- getpaired(list, rtcutoff = rtcutoff, freqcutoff = freqcutoff,
