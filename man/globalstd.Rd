@@ -4,23 +4,19 @@
 \alias{globalstd}
 \title{GlobalStd algorithm with structure/reaction directed analysis}
 \usage{
-globalstd(list, rtcutoff = 10, freqcutoff = 30, corcutoff = NULL,
-  pmdcutoff = 100, freqcutoff2 = 10, pmdcutoff2 = 500)
+globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
+  freqcutoff = 10)
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
 
 \item{rtcutoff}{cutoff of the distances in cluster, default 10}
 
-\item{freqcutoff}{cutoff of the mass differences frequency, default 30}
+\item{ng}{cutoff of the PMD's retention time group}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
-\item{pmdcutoff}{cutoff of the largest mass differences, default 100}
-
-\item{freqcutoff2}{cutoff of the paired mass difference frequency, default 10}
-
-\item{pmdcutoff2}{cutoff of the largest paired mass differences, default 500}
+\item{freqcutoff}{cutoff of the paired mass difference frequency, default 10}
 }
 \value{
 list with GlobalStd algorithm processed data.

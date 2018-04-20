@@ -4,16 +4,14 @@
 \alias{getsda}
 \title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
-getsda(list, rtcutoff = 9, freqcutoff = 10, pmdcutoff = 500)
+getsda(list, rtcutoff = 10, freqcutoff = 10)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
 
-\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 9}
+\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
 \item{freqcutoff}{cutoff of the paired mass difference frequency, default 10}
-
-\item{pmdcutoff}{cutoff of the largest paired mass differences, default 500}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
