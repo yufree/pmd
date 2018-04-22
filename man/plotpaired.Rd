@@ -16,6 +16,13 @@ plotpaired(list, index = NULL, ...)
 \description{
 Plot the mass pairs and high frequency mass differences
 }
+\examples{
+\dontrun{
+data(spmeinvivo)
+pmd <- getpaired(spmeinvivo)
+plotpaired(pmd)
+}
+}
 \seealso{
 \code{\link{getpaired}}, \code{\link{globalstd}}
 }

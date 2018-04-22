@@ -11,13 +11,19 @@ getsda(list, rtcutoff = 10, freqcutoff = 10)
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
-\item{freqcutoff}{cutoff of the paired mass difference frequency, default 10}
+\item{freqcutoff}{cutoff of freqency of PMDs between RT cluster for peaks, default 10}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 }
 \description{
 Perform structure/reaction directed analysis for peaks list.
+}
+\examples{
+data(spmeinvivo)
+pmd <- getpaired(spmeinvivo)
+std <- getstd(pmd)
+sda <- getsda(std)
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}

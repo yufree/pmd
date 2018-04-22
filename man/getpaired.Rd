@@ -11,13 +11,17 @@ getpaired(list, rtcutoff = 10, ng = 10)
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
-\item{ng}{cutoff of the PMD's retention time group}
+\item{ng}{cutoff of global PMD's retention time group numbers}
 }
 \value{
 list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 }
 \description{
 Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
+}
+\examples{
+data(spmeinvivo)
+pmd <- getpaired(spmeinvivo)
 }
 \seealso{
 \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}

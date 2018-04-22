@@ -1,78 +1,124 @@
-#' A dataset containing common Paired mass differeces of substructure, ions replacements, and reaction
-#' @docType data
-#' @usage data(sda)
-#' @format A data frame with 94 rows and 4 variables:
-#' \describe{
-#'   \item{PMD}{Paired mass differeces}
-#'   \item{origin}{potentical sources}
-#'   \item{Ref.}{references}
-#'   \item{mode}{positive, negative or both mode to find corresponding PMDs}
-#'   }
-"sda"
-
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param ng cutoff of the PMD's retention time group
+#' @param ng cutoff of global PMD's retention time group numbers
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
+#' @examples
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
 #' @seealso \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
 #' @export
 getpaired <- function(list, rtcutoff = 10, ng = 10) {
     # paired mass diff analysis
-    groups <- cbind.data.frame(mz = list$mz, rt = list$rt,
-        list$data)
-    resultstd <- resultdiffstd <- resultsolo <- resultiso <- resultmulti <- result <- NULL
+    if(!is.null(list$data)){
+            groups <- cbind.data.frame(mz = list$mz, rt = list$rt,
+                                       list$data)
+            resultstd <- resultdiffstd <- resultsolo <- resultiso <- resultmulti <- result <- NULL
 
-    dis <- stats::dist(list$rt, method = "manhattan")
-    fit <- stats::hclust(dis)
-    rtcluster <- stats::cutree(fit, h = rtcutoff)
-    n <- length(unique(rtcluster))
-    message(paste(n, "retention time cluster found."))
-    # search:
-    for (i in 1:length(unique(rtcluster))) {
-        # find the mass within RT
-        rtxi <- list$rt[rtcluster == i]
-        bin = groups[groups$rt %in% rtxi, ]
-        medianrtxi <- stats::median(rtxi)
+            dis <- stats::dist(list$rt, method = "manhattan")
+            fit <- stats::hclust(dis)
+            rtcluster <- stats::cutree(fit, h = rtcutoff)
+            n <- length(unique(rtcluster))
+            message(paste(n, "retention time cluster found."))
+            # search:
+            for (i in 1:length(unique(rtcluster))) {
+                    # find the mass within RT
+                    rtxi <- list$rt[rtcluster == i]
+                    bin = groups[groups$rt %in% rtxi, ]
+                    medianrtxi <- stats::median(rtxi)
 
-        if (nrow(bin) > 1) {
-            # get mz diff
-            dis <- stats::dist(bin$mz, method = "manhattan")
-            # get intensity cor
-            cor <- stats::cor(t(bin[, -c(1, 2)]))
+                    if (nrow(bin) > 1) {
+                            # get mz diff
+                            dis <- stats::dist(bin$mz, method = "manhattan")
+                            # get intensity cor
+                            cor <- stats::cor(t(bin[, -c(1, 2)]))
 
-            df <- data.frame(ms1 = bin$mz[which(lower.tri(dis),
-                arr.ind = T)[, 1]], ms2 = bin$mz[which(lower.tri(dis),
-                arr.ind = T)[, 2]], diff = as.numeric(dis),
-                rt = medianrtxi, rtg = i, cor = cor[lower.tri(cor)])
+                            df <- data.frame(ms1 = bin$mz[which(lower.tri(dis),
+                                                                arr.ind = T)[, 1]], ms2 = bin$mz[which(lower.tri(dis),
+                                                                                                       arr.ind = T)[, 2]], diff = as.numeric(dis),
+                                             rt = medianrtxi, rtg = i, cor = cor[lower.tri(cor)])
 
-            # remove multi chargers
-            multiindex <- (round(df$diff %% 1,1) == 0.5)
-            mass <- unique(df[multiindex,1],df[multiindex,2])
-            multimass <- mass[round(mass %% 1,1) == 0.5]
-            dfmulti <- df[multiindex, ]
-            if (nrow(dfmulti) > 0) {
-                    resultmulti <- rbind(resultmulti, dfmulti)
-                    df <- df[!(df[,1] %in% multimass) & !(df[,2] %in% multimass),]
+                            # remove multi chargers
+                            multiindex <- (round(df$diff %% 1,1) == 0.5)
+                            mass <- unique(df[multiindex,1],df[multiindex,2])
+                            multimass <- mass[round(mass %% 1,1) == 0.5]
+                            dfmulti <- df[multiindex, ]
+                            if (nrow(dfmulti) > 0) {
+                                    resultmulti <- rbind(resultmulti, dfmulti)
+                                    df <- df[!(df[,1] %in% multimass) & !(df[,2] %in% multimass),]
+                            }
+                            # remove isotope
+                            isoindex <- (round(df$diff,2)!=0)& ((df$diff %% 1 < 0.01 & df$diff >=1 & df$diff<2) | (df$diff %% 2 < 0.01 & df$diff >=2 & df$diff<3))
+
+                            massstd <- apply(df[isoindex,], 1, function(x) min(x[1], x[2]))
+                            massstdmax <- apply(df[isoindex,], 1, function(x) max(x[1], x[2]))
+                            isomass <- unique(c(massstd[(massstd %in% massstdmax)],massstdmax))
+                            dfiso <- df[isoindex, ]
+                            if (nrow(dfiso) > 0) {
+                                    resultiso <- rbind(resultiso, dfiso)
+                                    df <- df[!(df[,1] %in% isomass) & !(df[,2] %in% isomass), ]
+                            }
+                            dfdiff <- df
+                            result <- rbind(result, dfdiff)
+                    } else {
+                            solo <- cbind(bin, rtg = i, cor = 1)
+                            resultsolo <- rbind(solo, resultsolo)
+                    }
             }
-            # remove isotope
-            isoindex <- (round(df$diff,2)!=0)& ((df$diff %% 1 < 0.01 & df$diff >=1 & df$diff<2) | (df$diff %% 2 < 0.01 & df$diff >=2 & df$diff<3))
+    }else{
+            message('No intensity data!')
+            groups <- cbind.data.frame(mz = list$mz, rt = list$rt)
+            resultstd <- resultdiffstd <- resultsolo <- resultiso <- resultmulti <- result <- NULL
 
-            massstd <- apply(df[isoindex,], 1, function(x) min(x[1], x[2]))
-            massstdmax <- apply(df[isoindex,], 1, function(x) max(x[1], x[2]))
-            isomass <- unique(c(massstd[(massstd %in% massstdmax)],massstdmax))
-            dfiso <- df[isoindex, ]
-            if (nrow(dfiso) > 0) {
-                resultiso <- rbind(resultiso, dfiso)
-                df <- df[!(df[,1] %in% isomass) & !(df[,2] %in% isomass), ]
-        }
-            dfdiff <- df
-            result <- rbind(result, dfdiff)
-        } else {
-            solo <- cbind(bin, rtg = i, cor = 1)
-            resultsolo <- rbind(solo, resultsolo)
-        }
+            dis <- stats::dist(list$rt, method = "manhattan")
+            fit <- stats::hclust(dis)
+            rtcluster <- stats::cutree(fit, h = rtcutoff)
+            n <- length(unique(rtcluster))
+            message(paste(n, "retention time cluster found."))
+            # search:
+            for (i in 1:length(unique(rtcluster))) {
+                    # find the mass within RT
+                    rtxi <- list$rt[rtcluster == i]
+                    bin = groups[groups$rt %in% rtxi, ]
+                    medianrtxi <- stats::median(rtxi)
+
+                    if (nrow(bin) > 1) {
+                            # get mz diff
+                            dis <- stats::dist(bin$mz, method = "manhattan")
+                            df <- data.frame(ms1 = bin$mz[which(lower.tri(dis),
+                                                                arr.ind = T)[, 1]], ms2 = bin$mz[which(lower.tri(dis),
+                                                                                                       arr.ind = T)[, 2]], diff = as.numeric(dis),
+                                             rt = medianrtxi, rtg = i)
+
+                            # remove multi chargers
+                            multiindex <- (round(df$diff %% 1,1) == 0.5)
+                            mass <- unique(df[multiindex,1],df[multiindex,2])
+                            multimass <- mass[round(mass %% 1,1) == 0.5]
+                            dfmulti <- df[multiindex, ]
+                            if (nrow(dfmulti) > 0) {
+                                    resultmulti <- rbind(resultmulti, dfmulti)
+                                    df <- df[!(df[,1] %in% multimass) & !(df[,2] %in% multimass),]
+                            }
+                            # remove isotope
+                            isoindex <- (round(df$diff,2)!=0)& ((df$diff %% 1 < 0.01 & df$diff >=1 & df$diff<2) | (df$diff %% 2 < 0.01 & df$diff >=2 & df$diff<3))
+
+                            massstd <- apply(df[isoindex,], 1, function(x) min(x[1], x[2]))
+                            massstdmax <- apply(df[isoindex,], 1, function(x) max(x[1], x[2]))
+                            isomass <- unique(c(massstd[(massstd %in% massstdmax)],massstdmax))
+                            dfiso <- df[isoindex, ]
+                            if (nrow(dfiso) > 0) {
+                                    resultiso <- rbind(resultiso, dfiso)
+                                    df <- df[!(df[,1] %in% isomass) & !(df[,2] %in% isomass), ]
+                            }
+                            dfdiff <- df
+                            result <- rbind(result, dfdiff)
+                    } else {
+                            solo <- cbind(bin, rtg = i)
+                            resultsolo <- rbind(solo, resultsolo)
+                    }
+            }
     }
+
 
     # filter based on global pairs
     result$diff2 <- round(result$diff, 2)
@@ -134,6 +180,10 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
 #' @param list a list from getpaired function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with std mass index
+#' @examples
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' std <- getstd(pmd)
 #' @seealso \code{\link{getpaired}},\code{\link{getsda}},\code{\link{plotstd}}
 #' @export
 getstd <- function(list, corcutoff = NULL) {
@@ -310,8 +360,13 @@ getstd <- function(list, corcutoff = NULL) {
 #' Perform structure/reaction directed analysis for peaks list.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param freqcutoff cutoff of the paired mass difference frequency, default 10
+#' @param freqcutoff cutoff of freqency of PMDs between RT cluster for peaks, default 10
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+#' @examples
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' std <- getstd(pmd)
+#' sda <- getsda(std)
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}
 #' @export
 getsda <- function(list, rtcutoff = 10, freqcutoff = 10) {
@@ -376,10 +431,13 @@ getsda <- function(list, rtcutoff = 10, freqcutoff = 10) {
 #' GlobalStd algorithm with structure/reaction directed analysis
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster, default 10
-#' @param ng cutoff of the PMD's retention time group
+#' @param ng cutoff of global PMD's retention time group numbers
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
-#' @param freqcutoff cutoff of the paired mass difference frequency, default 10
+#' @param freqcutoff cutoff of freqency of PMDs between RT cluster for independent peaks, default 10
 #' @return list with GlobalStd algorithm processed data.
+#' @examples
+#' data(spmeinvivo)
+#' re <- globalstd(spmeinvivo)
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
 #' @export
 globalstd <- function(list, rtcutoff = 10, ng = 10,
@@ -400,6 +458,12 @@ globalstd <- function(list, rtcutoff = 10, ng = 10,
 #' @param ... other parameters for plot function
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
+#' @examples
+#' \dontrun{
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' plotrtg(pmd)
+#' }
 #' @export
 plotrtg <- function(list,...){
         std <- list$data
@@ -414,6 +478,12 @@ plotrtg <- function(list,...){
 #' @param ... other parameters for plot function
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
+#' @examples
+#' \dontrun{
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' plotpaired(pmd)
+#' }
 #' @export
 plotpaired <- function(list, index = NULL, ...) {
     paired <- list$paired
@@ -451,6 +521,13 @@ plotpaired <- function(list, index = NULL, ...) {
 #' @param list a list from getstd function
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}}
+#' @examples
+#' \dontrun{
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' std <- getstd(pmd)
+#' plotstd(std)
+#' }
 #' @export
 plotstd <- function(list) {
     std <- list$stdmass
@@ -469,6 +546,13 @@ plotstd <- function(list) {
 #' @param ... other parameters for plot function
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdsda}}
+#' @examples
+#' \dontrun{
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' std <- getstd(pmd)
+#' plotstdrt(std,rtcluster = 6)
+#' }
 #' @export
 #'
 plotstdrt <- function(list, rtcluster, ...) {
@@ -495,6 +579,12 @@ plotstdrt <- function(list, rtcluster, ...) {
 #' @param ... other parameters for plot function
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
+#' @examples
+#' \dontrun{
+#' data(spmeinvivo)
+#' re <- globalstd(spmeinvivo)
+#' plotstdsda(re)
+#' }
 #' @export
 plotstdsda <- function(list, index = NULL, ...) {
     sda <- list$sda
