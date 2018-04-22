@@ -1,7 +1,7 @@
 ---
 title: "Paired Mass Differences(PMD) analysis"
 author: "Miao Yu"
-date: '2018-03-23'
+date: "`r Sys.Date()`"
 output: html_document
 runtime: shiny
 ---
@@ -10,35 +10,26 @@ runtime: shiny
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Inputs and Outputs
+## Inputs
 
 ```{r globalstd, echo=FALSE}
 library(pmd)
 inputPanel(
-  h4('Uploading File'),
-  br(),
-  fileInput('file',label = 'csv file with m/z, retention time, peaklist and group info',accept = c('.csv')),
-  br(),
-  
-  sliderInput("rtcutoff", label = "Cutoff for retention time cluster:",
+  fileInput('file',label = 'Upload csv file with m/z, retention time, peaklist and group info',accept = c('.csv')),
+  sliderInput("rtcutoff", label = "Cutoff for retention time cluster analysis:",
               min = 1, max = 20, value = 9, step = 1),
-  br(),
-  sliderInput("freqcutoff", label = "Cutoff for freqency of paired mass differences within RT cluster:",
-              min = 5, max = 50, value = 30, step = 1),
-  br(),
-  sliderInput("pmdcutoff", label = "Cutoff for the largest paired mass differences within RT cluster:",
-              min = 50, max = 1000, value = 100, step = 10),
-  br(),
-  sliderInput("rtcutoff2", label = "Cutoff for the largest retention time differences for std peaks:",
-              min = 0, max = 20, value = 3, step = 0.5),
-  br(),
-  sliderInput("freqcutoff2", label = "freqency of paired mass differences between RT cluster for std peaks:",
-              min = 0, max = 100, value = 10, step = 5),
-  br(),
-  sliderInput("pmdcutoff2", label = "Cutoff for the paired mass differences within RT cluster:",
-              min = 50, max = 1000, value = 500, step = 10)
-  
+  sliderInput("ng", label = "cutoff of PMD(within RT cluster)'s  retention time group numbers:",
+              min = 5, max = 200, value = 10, step = 1),
+  sliderInput("freqcutoff", label = "cutoff of freqency of PMDs between RT cluster for independent peaks:",
+              min = 0, max = 100, value = 10, step = 5)
 )
+```
+
+## Outputs
+
+### Download the results
+
+```{r output,echo=FALSE}
 datainput <- reactive({
                 if (!is.null(input$file)){
                         dataraw <- read.csv(input$file$datapath,skip = 1)
@@ -57,7 +48,7 @@ datainput <- reactive({
 datastd <- reactive({
         list <- datainput()
         if(!is.null(list)){
-                list <- globalstd(list,input$rtcutoff,input$freqcutoff,pmdcutoff = input$pmdcutoff,rtcutoff2 = input$rtcutoff2,freqcutoff2 = input$freqcutoff2,pmdcutoff2 = input$pmdcutoff2)
+                list <- globalstd(list,input$rtcutoff,input$ng,freqcutoff = input$freqcutoff)
         }
         return(list)
 })
@@ -72,6 +63,11 @@ downloadHandler('globalstd.csv', content = function(file) {
                 data <- stdcsv()
                 write.csv(data, file)
         })
+```
+
+### Show the retention time groups
+
+```{r plotrtg, echo=FALSE}
 renderPlot({
         list <- datastd()
         if(!is.null(list)){
@@ -86,6 +82,11 @@ renderPlot({
                 
         }
 })
+```
+
+### Show the Global in-group PMDs distribution
+
+```{r plotpaired,echo=FALSE}
 renderPlot({
         list <- datastd()
         if(!is.null(list)){
@@ -101,21 +102,11 @@ renderPlot({
                 
         }
 })
-renderPlot({
-        list <- datastd()
-        if(!is.null(list)){
-                if(sum(list$pairedindex)>0){
-                plotstd(list)
-                }else{
-                plot(1,1,type = 'n')
-                
-        }
-                
-        }else{
-                plot(1,1,type = 'n')
-                
-        }
-})
+```
+
+### Show the Global cross-group PMDs distribution
+
+```{r plotstdsda,echo=F}
 renderPlot({
         list <- datastd()
         if(!is.null(list)){
@@ -131,6 +122,24 @@ renderPlot({
                 
         }
 })
+```
 
+### Show the globalstd peaks and all peaks
 
+```{r plotstd,echo=FALSE}
+renderPlot({
+        list <- datastd()
+        if(!is.null(list)){
+                if(sum(list$pairedindex)>0){
+                plotstd(list)
+                }else{
+                plot(1,1,type = 'n')
+                
+        }
+                
+        }else{
+                plot(1,1,type = 'n')
+                
+        }
+})
 ```
