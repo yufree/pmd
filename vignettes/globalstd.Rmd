@@ -1,5 +1,5 @@
 ---
-title: "Paired Mass Differences(PMD) analysis for GC/LC-MS based non-targeted analysis"
+title: "Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis"
 author: "Miao Yu"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Introduction of Paired Mass Difference analysis
+## Introduction of Paired Mass Distance analysis
 
-`pmd` package use Paired Mass Difference (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the differences between two masses. In mass spectrometry, PMD would keep the same between two masses or two mass to charge ratios(m/z). There are twe kinds of PMD involved in this package: PMD within same retention time group and PMD from different retention time groups.
+`pmd` package use Paired Mass Distance (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the distance between two masses or mass to charge ratios. In mass spectrometry, PMD would keep the same between two masses or two mass to charge ratios(m/z). There are twe kinds of PMD involved in this package: PMD within same retention time group and PMD from different retention time groups.
 
 ### PMD within same retention time group
 

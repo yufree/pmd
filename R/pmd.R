@@ -1,4 +1,4 @@
-#' Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
+#' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param ng cutoff of global PMD's retention time group numbers
@@ -719,7 +719,7 @@ plotrtg <- function(list, ...) {
                 cex.names = 0.5
         )
 }
-#' Plot the mass pairs and high frequency mass differences
+#' Plot the mass pairs and high frequency mass distances
 #' @param list a list from getpaired function
 #' @param index index for PMD value
 #' @param ... other parameters for plot function
@@ -766,7 +766,7 @@ plotpaired <- function(list, index = NULL, ...) {
                         col = col,
                         ylab = "Frequency",
                         las = 2,
-                        xlab = "Paired mass difference",
+                        xlab = "Paired mass distance",
                         cex.names = 0.618
                 )
         } else {
@@ -944,7 +944,7 @@ plotstdsda <- function(list, index = NULL, ...) {
                         col = col,
                         ylab = "Frequency",
                         las = 2,
-                        xlab = "Paired mass differences",
+                        xlab = "Paired mass distances",
                         cex.names = 0.618
                 )
 

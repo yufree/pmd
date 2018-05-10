@@ -68,7 +68,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/globalstd.html">Paired Mass Differences(PMD) analysis for GC/LC-MS based non-targeted analysis</a>
+      <a href="../articles/globalstd.html">Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</a>
     </li>
   </ul>
 </li>
@@ -99,7 +99,7 @@
     <p>Perform structure/reaction directed analysis for peaks list.</p>
     
 
-    <pre class="usage"><span class='fu'>getsda</span>(<span class='no'>list</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>freqcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>getsda</span>(<span class='no'>list</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>freqcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -115,6 +115,10 @@
     <tr>
       <th>freqcutoff</th>
       <td><p>cutoff of freqency of PMDs between RT cluster for peaks, default 10</p></td>
+    </tr>
+    <tr>
+      <th>corcutoff</th>
+      <td><p>cutoff of the correlation coefficient, default NULL</p></td>
     </tr>
     </table>
     

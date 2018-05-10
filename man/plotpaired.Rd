@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmd.R
 \name{plotpaired}
 \alias{plotpaired}
-\title{Plot the mass pairs and high frequency mass differences}
+\title{Plot the mass pairs and high frequency mass distances}
 \usage{
 plotpaired(list, index = NULL, ...)
 }
@@ -14,7 +14,7 @@ plotpaired(list, index = NULL, ...)
 \item{...}{other parameters for plot function}
 }
 \description{
-Plot the mass pairs and high frequency mass differences
+Plot the mass pairs and high frequency mass distances
 }
 \examples{
 \dontrun{

@@ -1,9 +1,9 @@
-#' A dataset containing common Paired mass differeces of substructure, ions replacements, and reaction
+#' A dataset containing common Paired mass distances of substructure, ions replacements, and reaction
 #' @docType data
 #' @usage data(sda)
 #' @format A data frame with 94 rows and 4 variables:
 #' \describe{
-#'   \item{PMD}{Paired mass differeces}
+#'   \item{PMD}{Paired mass distances}
 #'   \item{origin}{potentical sources}
 #'   \item{Ref.}{references}
 #'   \item{mode}{positive, negative or both mode to find corresponding PMDs}

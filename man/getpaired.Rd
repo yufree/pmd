@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmd.R
 \name{getpaired}
 \alias{getpaired}
-\title{Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.}
+\title{Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.}
 \usage{
 getpaired(list, rtcutoff = 10, ng = 10)
 }
@@ -17,7 +17,7 @@ getpaired(list, rtcutoff = 10, ng = 10)
 list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 }
 \description{
-Filter ions/peaks based on retention time hierarchical clustering, paired mass differences(PMD) and PMD frequency analysis.
+Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 }
 \examples{
 data(spmeinvivo)

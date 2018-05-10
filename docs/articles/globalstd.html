@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paired Mass Differences(PMD) analysis for GC/LC-MS based non-targeted analysis • pmd</title>
+<title>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis • pmd</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -45,7 +45,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/globalstd.html">Paired Mass Differences(PMD) analysis for GC/LC-MS based non-targeted analysis</a>
+      <a href="../articles/globalstd.html">Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</a>
     </li>
   </ul>
 </li>
@@ -69,19 +69,19 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Paired Mass Differences(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
+      <h1>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2018-04-22</h4>
+            <h4 class="date">2018-05-10</h4>
           </div>
 
     
     
 <div class="contents">
-<div id="introduction-of-paired-mass-difference-analysis" class="section level2">
+<div id="introduction-of-paired-mass-distance-analysis" class="section level2">
 <h2 class="hasAnchor">
-<a href="#introduction-of-paired-mass-difference-analysis" class="anchor"></a>Introduction of Paired Mass Difference analysis</h2>
-<p><code>pmd</code> package use Paired Mass Difference (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the differences between two masses. In mass spectrometry, PMD would keep the same between two masses or two mass to charge ratios(m/z). There are twe kinds of PMD involved in this package: PMD within same retention time group and PMD from different retention time groups.</p>
+<a href="#introduction-of-paired-mass-distance-analysis" class="anchor"></a>Introduction of Paired Mass Distance analysis</h2>
+<p><code>pmd</code> package use Paired Mass Distance (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the distance between two masses or mass to charge ratios. In mass spectrometry, PMD would keep the same between two masses or two mass to charge ratios(m/z). There are twe kinds of PMD involved in this package: PMD within same retention time group and PMD from different retention time groups.</p>
 <div id="pmd-within-same-retention-time-group" class="section level3">
 <h3 class="hasAnchor">
 <a href="#pmd-within-same-retention-time-group" class="anchor"></a>PMD within same retention time group</h3>
@@ -288,7 +288,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction-of-paired-mass-difference-analysis">Introduction of Paired Mass Difference analysis</a></li>
+<li><a href="#introduction-of-paired-mass-distance-analysis">Introduction of Paired Mass Distance analysis</a></li>
       <li><a href="#data-format">Data format</a></li>
       <li><a href="#globalstd-algorithm">GlobalStd algorithm</a></li>
       <li><a href="#structurereaction-directed-analysis">Structure/reaction directed analysis</a></li>
