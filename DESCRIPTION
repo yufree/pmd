@@ -1,6 +1,6 @@
 Package: pmd
 Type: Package
-Title: Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis
+Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis
 Version: 0.1.1
 Date: 2018-05-11
 Authors@R: person(given = "Miao", family = "YU",
