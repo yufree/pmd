@@ -16,7 +16,7 @@ globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
-\item{freqcutoff}{cutoff of freqency of PMDs between RT cluster for independent peaks, default 10}
+\item{freqcutoff}{cutoff of frequency of PMDs between RT cluster for independent peaks, default 10}
 }
 \value{
 list with GlobalStd algorithm processed data.

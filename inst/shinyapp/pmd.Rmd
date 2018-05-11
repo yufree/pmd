@@ -20,7 +20,7 @@ inputPanel(
               min = 1, max = 20, value = 9, step = 1),
   sliderInput("ng", label = "cutoff of PMD(within RT cluster)'s  retention time group numbers:",
               min = 5, max = 200, value = 10, step = 1),
-  sliderInput("freqcutoff", label = "cutoff of freqency of PMDs between RT cluster for independent peaks:",
+  sliderInput("freqcutoff", label = "cutoff of frequency of PMDs between RT cluster for independent peaks:",
               min = 0, max = 100, value = 10, step = 5)
 )
 ```

@@ -11,7 +11,7 @@ getsda(list, rtcutoff = 10, freqcutoff = 10, corcutoff = NULL)
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
-\item{freqcutoff}{cutoff of freqency of PMDs between RT cluster for peaks, default 10}
+\item{freqcutoff}{cutoff of frequency of PMDs between RT cluster for peaks, default 10}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 }

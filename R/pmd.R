@@ -228,7 +228,7 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
                         c(resultmulti$rtg, resultmulti$rtg))
                 list$multi <- resultmulti
         }
-        # get the data index by rt groups with high freqences
+        # get the data index by rt groups with high frequences
         # PMD
         list$diffindex <- paste(round(list$mz, 4), list$rtcluster) %in%
                 paste(c(round(result$ms1, 4), round(result$ms2,
@@ -259,7 +259,7 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
         # return results
         return(list)
 }
-#' Find the independant ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
+#' Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
 #' @param list a list from getpaired function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with std mass index
@@ -507,7 +507,7 @@ getstd <- function(list, corcutoff = NULL) {
 #' Perform structure/reaction directed analysis for peaks list.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param freqcutoff cutoff of freqency of PMDs between RT cluster for peaks, default 10
+#' @param freqcutoff cutoff of frequency of PMDs between RT cluster for peaks, default 10
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
@@ -647,7 +647,7 @@ getsda <-
 #' @param rtcutoff cutoff of the distances in cluster, default 10
 #' @param ng cutoff of global PMD's retention time group numbers
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
-#' @param freqcutoff cutoff of freqency of PMDs between RT cluster for independent peaks, default 10
+#' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
 #' data(spmeinvivo)
