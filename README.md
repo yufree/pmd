@@ -1,4 +1,4 @@
-pmd: Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis
+pmd: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis
 ================
 
 [![CRAN status](http://www.r-pkg.org/badges/version/pmd)](https://cran.r-project.org/package=pmd) [![Download counter](http://cranlogs.r-pkg.org/badges/pmd)](https://cran.r-project.org/package=pmd) [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![Build status](https://api.travis-ci.org/yufree/pmd.svg?branch=master)](https://travis-ci.org/yufree/pmd)
