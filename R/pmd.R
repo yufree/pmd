@@ -688,11 +688,9 @@ globalstd <- function(list,
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
 #' @examples
-#' \dontrun{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' plotrtg(pmd)
-#' }
 #' @export
 plotrtg <- function(list, ...) {
         std <- list$data
@@ -726,11 +724,9 @@ plotrtg <- function(list, ...) {
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
 #' @examples
-#' \dontrun{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' plotpaired(pmd)
-#' }
 #' @export
 plotpaired <- function(list, index = NULL, ...) {
         paired <- list$paired
@@ -811,12 +807,10 @@ plotpaired <- function(list, index = NULL, ...) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}}
 #' @examples
-#' \dontrun{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' plotstd(std)
-#' }
 #' @export
 plotstd <- function(list) {
         std <- list$stdmass
@@ -850,12 +844,10 @@ plotstd <- function(list) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdsda}}
 #' @examples
-#' \dontrun{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' plotstdrt(std,rtcluster = 6)
-#' }
 #' @export
 #'
 plotstdrt <- function(list, rtcluster, ...) {
@@ -893,11 +885,9 @@ plotstdrt <- function(list, rtcluster, ...) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
 #' @examples
-#' \dontrun{
 #' data(spmeinvivo)
 #' re <- globalstd(spmeinvivo)
 #' plotstdsda(re)
-#' }
 #' @export
 plotstdsda <- function(list, index = NULL, ...) {
         sda <- list$sda

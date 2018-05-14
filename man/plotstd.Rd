@@ -13,12 +13,10 @@ plotstd(list)
 Plot the std mass from GlobalStd algorithm
 }
 \examples{
-\dontrun{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 std <- getstd(pmd)
 plotstd(std)
-}
 }
 \seealso{
 \code{\link{getstd}}, \code{\link{globalstd}}

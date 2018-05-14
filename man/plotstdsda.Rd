@@ -17,11 +17,9 @@ plotstdsda(list, index = NULL, ...)
 Plot the std mass from GlobalStd algorithm in structure directed analysis(SDA) groups
 }
 \examples{
-\dontrun{
 data(spmeinvivo)
 re <- globalstd(spmeinvivo)
 plotstdsda(re)
-}
 }
 \seealso{
 \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
