@@ -4,8 +4,10 @@
 #' @param ng cutoff of global PMD's retention time group numbers
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
+#' }
 #' @seealso \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
 #' @export
 getpaired <- function(list, rtcutoff = 10, ng = 10) {
@@ -264,9 +266,11 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with std mass index
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
+#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getsda}},\code{\link{plotstd}}
 #' @export
 getstd <- function(list, corcutoff = NULL) {
@@ -511,10 +515,12 @@ getstd <- function(list, corcutoff = NULL) {
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' sda <- getsda(std)
+#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}
 #' @export
 getsda <-
@@ -650,8 +656,10 @@ getsda <-
 #' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' re <- globalstd(spmeinvivo)
+#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
 #' @export
 globalstd <- function(list,
@@ -688,9 +696,11 @@ globalstd <- function(list,
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' plotrtg(pmd)
+#' }
 #' @export
 plotrtg <- function(list, ...) {
         std <- list$data
@@ -724,9 +734,11 @@ plotrtg <- function(list, ...) {
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' plotpaired(pmd)
+#' }
 #' @export
 plotpaired <- function(list, index = NULL, ...) {
         paired <- list$paired
@@ -807,10 +819,12 @@ plotpaired <- function(list, index = NULL, ...) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}}
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' plotstd(std)
+#' }
 #' @export
 plotstd <- function(list) {
         std <- list$stdmass
@@ -844,10 +858,12 @@ plotstd <- function(list) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdsda}}
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' plotstdrt(std,rtcluster = 6)
+#' }
 #' @export
 #'
 plotstdrt <- function(list, rtcluster, ...) {
@@ -885,9 +901,11 @@ plotstdrt <- function(list, rtcluster, ...) {
 #' @return NULL
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
 #' @examples
+#' \donttest{
 #' data(spmeinvivo)
 #' re <- globalstd(spmeinvivo)
 #' plotstdsda(re)
+#' }
 #' @export
 plotstdsda <- function(list, index = NULL, ...) {
         sda <- list$sda

@@ -1,14 +1,14 @@
 Package: pmd
 Type: Package
 Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis
-Version: 0.1.1
-Date: 2018-05-13
+Version: 0.1.2
+Date: 2018-10-29
 Authors@R: person(given = "Miao", family = "YU",
         role = c("aut", "cre"), 
         email = "yufreecas@gmail.com",
         comment = c(ORCID = "0000-0002-2804-6014"))
 Maintainer: Miao YU <yufreecas@gmail.com>
-Description: This package is designed for paired mass distance (PMD) analysis for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. A GUI for PMD analysis is also included as a 'shiny' application.
+Description: This package is designed for paired mass distance (PMD) analysis propsed in Yu, Olkowicz and Pawliszyn (2018) <doi:10.1016/j.aca.2018.10.062> for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. A GUI for PMD analysis is also included as a 'shiny' application.
 URL: https://yufree.github.io/pmd
 BugReports: https://github.com/yufree/pmd/issues
 License: GPL-2
@@ -22,4 +22,4 @@ Depends: R (>= 2.10)
 Imports: RColorBrewer,
         shiny,
         rmarkdown
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
