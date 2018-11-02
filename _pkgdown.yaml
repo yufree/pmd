@@ -1,0 +1,4 @@
+template:
+  params:
+    bootswatch: Journal
+    ganalytics: UA-74383918-1
