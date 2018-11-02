@@ -1,4 +1,4 @@
 template:
   params:
-    bootswatch: Journal
+    bootswatch: journal
     ganalytics: UA-74383918-1
