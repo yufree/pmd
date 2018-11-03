@@ -22,12 +22,10 @@ list with tentative isotope, adducts, and neutral loss peaks' index, retention t
 Perform structure/reaction directed analysis for peaks list.
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 std <- getstd(pmd)
 sda <- getsda(std)
-}
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}

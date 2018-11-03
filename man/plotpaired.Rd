@@ -17,11 +17,9 @@ plotpaired(list, index = NULL, ...)
 Plot the mass pairs and high frequency mass distances
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 plotpaired(pmd)
-}
 }
 \seealso{
 \code{\link{getpaired}}, \code{\link{globalstd}}

@@ -20,10 +20,8 @@ list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' in
 Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
-}
 }
 \seealso{
 \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}

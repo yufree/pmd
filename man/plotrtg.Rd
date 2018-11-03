@@ -15,11 +15,9 @@ plotrtg(list, ...)
 Plot the retention time group
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 plotrtg(pmd)
-}
 }
 \seealso{
 \code{\link{getpaired}}, \code{\link{globalstd}}

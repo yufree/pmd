@@ -25,10 +25,8 @@ list with GlobalStd algorithm processed data.
 GlobalStd algorithm with structure/reaction directed analysis
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 re <- globalstd(spmeinvivo)
-}
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
