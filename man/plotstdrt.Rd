@@ -17,10 +17,12 @@ plotstdrt(list, rtcluster, ...)
 Plot the std mass from GlobalStd algorithm in certain retention time groups
 }
 \examples{
+\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 std <- getstd(pmd)
 plotstdrt(std,rtcluster = 6)
+}
 }
 \seealso{
 \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdsda}}
