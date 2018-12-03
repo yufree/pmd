@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • pmd</title>
+<title>Get Pseudo-Spectrum as peaks cluster based on pmd analysis. — getcluster • pmd</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,10 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Get Pseudo-Spectrum as peaks cluster based on pmd analysis. — getcluster" />
+
+<meta property="og:description" content="Get Pseudo-Spectrum as peaks cluster based on pmd analysis." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -57,7 +60,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,51 +119,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      
+    <h1>Get Pseudo-Spectrum as peaks cluster based on pmd analysis.</h1>
+    
+    <div class="hidden name"><code>getcluster.Rd</code></div>
     </div>
 
-    <div id="pmd-0-1-2" class="section level1">
-<h1 class="page-header">
-<a href="#pmd-0-1-2" class="anchor"></a>pmd 0.1.2<small> Unreleased </small>
-</h1>
-<ul>
-<li>remove multi chargers with a strict rule #4</li>
-<li>add parameter selection part in vignette #3</li>
-<li>add support for peaks cluster output #2</li>
-<li>add support for formula generation in enviGCMS package #1</li>
-</ul>
-</div>
-    <div id="pmd-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#pmd-0-1-1" class="anchor"></a>pmd 0.1.1<small> 2018-12-02 </small>
-</h1>
-<ul>
-<li>CRAN with ACA <a href="https://doi.org/10.1016/j.aca.2018.10.062">publication</a>
-</li>
-</ul>
-</div>
-    <div id="pmd-0-1-0" class="section level1">
-<h1 class="page-header">
-<a href="#pmd-0-1-0" class="anchor"></a>pmd 0.1.0<small> Unreleased </small>
-</h1>
-<ul>
-<li>new package for paired mass distance analysis</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    
+    <p>Get Pseudo-Spectrum as peaks cluster based on pmd analysis.</p>
+    
+    </div>
 
+    <pre class="usage"><span class='fu'>getcluster</span>(<span class='no'>list</span>, <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>list</th>
+      <td><p>a list from getstd function</p></td>
+    </tr>
+    <tr>
+      <th>corcutoff</th>
+      <td><p>cutoff of the correlation coefficient, default NULL</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>list with Pseudo-Spectrum index</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='getpaired.html'>getpaired</a></code>,<code><a href='getstd.html'>getstd</a></code>,<code><a href='plotstd.html'>plotstd</a></code></p></div>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>spmeinvivo</span>)
+<span class='no'>re</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getstd.html'>getstd</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>0 group(s) with multiple peaks while no isotope/paired relationship</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='warning'>Warning: no non-missing arguments to max; returning -Inf</span></div><div class='output co'>#&gt; <span class='message'>0 group(s) with multiple peaks with isotope without paired relationship</span></div><div class='output co'>#&gt; <span class='error'>Error in if (nrow(dfiso) &gt; 0) {    massstd &lt;- apply(dfiso, 1, function(x) min(x[1], x[2]))    massstdmax &lt;- apply(dfiso, 1, function(x) max(x[1], x[2]))    mass &lt;- unique(massstd[!(massstd %in% massstdmax)])    suppressWarnings(resultstdtemp &lt;- cbind(mz = ifelse(is.na(mass),         NULL, c(mass)), rt = dfiso$rt, rtg = dfiso$rtg))    resultstd2B1 &lt;- rbind(resultstd2B1, resultstdtemp)} else {    resultstd2B1 &lt;- NULL}: argument is of length zero</span></div><div class='input'><span class='no'>cluster</span> <span class='kw'>&lt;-</span> <span class='fu'>getcluster</span>(<span class='no'>re</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getcluster(re): object 're' not found</span></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#pmd-0-1-2">0.1.2</a></li>
-        <li><a href="#pmd-0-1-1">0.1.1</a></li>
-        <li><a href="#pmd-0-1-0">0.1.0</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
 
+      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
 </div>
 
       <footer>
