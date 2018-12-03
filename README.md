@@ -14,6 +14,12 @@ You can install package from this GitHub repository:
 devtools::install_github("yufree/pmd")
 ```
 
+Or find a stable version from CRAN:
+
+``` {r}
+install.packages('pmd')
+```
+
 Usage
 -----
 
