@@ -1,8 +1,8 @@
 Package: pmd
 Type: Package
 Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis
-Version: 0.1.1
-Date: 2018-10-29
+Version: 0.1.2
+Date: 2018-12-03
 Authors@R: person(given = "Miao", family = "YU",
         role = c("aut", "cre"), 
         email = "yufreecas@gmail.com",
@@ -22,4 +22,4 @@ Depends: R (>= 2.10)
 Imports: RColorBrewer,
         shiny,
         rmarkdown
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

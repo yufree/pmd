@@ -54,10 +54,12 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
                                 # remove multi chargers
                                 multiindex <-
                                         (round(df$diff %% 1, 1) == 0.5)
+                                multiindex2 <- (round(df$diff, 1) == 0.5)
                                 mass <-
                                         unique(df[multiindex, 1], df[multiindex, 2])
+                                mass2 <- unique(df[multiindex2, 1], df[multiindex2, 2])
                                 multimass <-
-                                        mass[round(mass %% 1, 1) == 0.5]
+                                        mass[round(mass %% 1, 1) == 0.5|round(mass,4) %in% round(mass2,4)]
                                 dfmulti <- df[multiindex,]
                                 if (nrow(dfmulti) > 0) {
                                         resultmulti <- rbind(resultmulti,
@@ -137,10 +139,12 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
                                 # remove multi chargers
                                 multiindex <-
                                         (round(df$diff %% 1, 1) == 0.5)
+                                multiindex2 <- (round(df$diff, 1) == 0.5)
                                 mass <-
                                         unique(df[multiindex, 1], df[multiindex, 2])
+                                mass2 <- unique(df[multiindex2, 1], df[multiindex2, 2])
                                 multimass <-
-                                        mass[round(mass %% 1, 1) == 0.5]
+                                        mass[round(mass %% 1, 1) == 0.5|round(mass,4) %in% round(mass2,4)]
                                 dfmulti <- df[multiindex,]
                                 if (nrow(dfmulti) > 0) {
                                         resultmulti <- rbind(resultmulti,
@@ -690,6 +694,87 @@ globalstd <- function(list,
 
         return(list3)
 }
+
+#' Get Pseudo-Spectrum as peaks cluster based on pmd analysis.
+#' @param list a list from getstd function
+#' @param corcutoff cutoff of the correlation coefficient, default NULL
+#' @return list with Pseudo-Spectrum index
+#' @examples
+#' \donttest{
+#' data(spmeinvivo)
+#' re <- getstd(spmeinvivo)
+#' cluster <- getcluster(re)
+#' }
+#' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}
+#' @export
+getcluster <- function(list, corcutoff = NULL){
+        mz <- list$mz[list$stdmassindex]
+        rt <- list$rt[list$stdmassindex]
+        rtg <- list$rtcluster[list$stdmassindex]
+        if(is.null(list$data)){
+                message('You need intensity data to use corcutoff and export pseudospectra')
+                msdata <- NULL
+        }else{
+                data <- list$data
+                if (length(data) > ncol(list$data)) {
+                        msdata <- apply(data, 1, mean)
+                } else {
+                        msdata <- mean(data)
+                }
+        }
+
+        stdg <- rep('stdgroup',length(list$rtcluster))
+        # filter high freq ions and find std mass
+        resultdiff <- list$paired
+        resultiso <- list$iso
+        resultmulti <- list$multi
+
+        if (!is.null(corcutoff)) {
+                resultdiff <- resultdiff[resultdiff$cor > corcutoff,]
+                resultiso <- resultiso[resultiso$cor > corcutoff,]
+                resultmulti <- resultmulti[resultmulti$cor > corcutoff, ]
+        }
+
+        # multi-charger
+        index1 <- paste0(round(resultmulti$ms1,4),'@',resultmulti$rtg)
+        index2 <- paste0(round(resultmulti$ms2,4),'@',resultmulti$rtg)
+        # isotope
+        index3 <- paste0(round(resultiso$ms1,4),'@',resultiso$rtg)
+        index4 <- paste0(round(resultiso$ms2,4),'@',resultiso$rtg)
+        # diff
+        index5 <- paste0(round(resultdiff$ms1,4),'@',resultdiff$rtg)
+        index6 <- paste0(round(resultdiff$ms2,4),'@',resultdiff$rtg)
+
+        index00 <- paste0(round(list$mz,4),'@',list$rtcluster)
+
+
+        cluster <- NULL
+        for (i in 1:sum(list$stdmassindex)){
+                mzt <- mz[i]
+                rtgt <- rtg[i]
+                indexstd <- paste0(round(mzt,4),'@',rtgt)
+
+                multiover <- unique(c(resultmulti$ms2[index1 %in% indexstd],resultmulti$ms1[index2 %in% indexstd]))
+                isoover <- unique(c(resultiso$ms2[index3 %in% indexstd],resultiso$ms1[index4 %in% indexstd]))
+                diffover <- unique(c(resultdiff$ms2[index5 %in% indexstd],resultdiff$ms1[index6 %in% indexstd]))
+                stdmassg <- c(mzt,multiover,isoover,diffover)
+                stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt] <- paste0(stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt],'@',i)
+
+                if(!is.null(msdata)){
+                        index <- paste0(round(stdmassg,4),'@',rtgt)
+                        ins <- msdata[index00%in%index]
+                        tdf <- cbind.data.frame(stdmassg,i,rtgt,ins)
+                }else{
+                        tdf <- cbind.data.frame(stdmassg,i,rtgt)
+                }
+
+                cluster <- rbind.data.frame(cluster,tdf)
+        }
+        list$stdg <- stdg
+        list$cluster <- cluster
+        return(list)
+}
+
 #' Plot the retention time group
 #' @param list a list from getpaired function
 #' @param ... other parameters for plot function

@@ -118,6 +118,17 @@ plotpca(std$data,lv = as.numeric(std$group$class),main = substitute(paste(italic
 plotpca(std$data[std$stdmassindex,],lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
 ```
 
+### Comparision with other packages
+
+GlobalStd algorithm in `pmd` package could be treated as a way to extract pseudospectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks.
+
+```{r comp}
+stdcluster <- getcluster(std)
+# extract pseudospectra for std peak 1
+plot(stdcluster$cluster$stdmassg[stdcluster$cluster$i==42],stdcluster$cluster$ins[stdcluster$cluster$i==42],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 42')
+```
+
+
 ## Structure/reaction directed analysis
 
 `getsda` function could be used to perform Structure/reaction directed analysis. `freqcutoff` could be used to filter the PMD with high frequncy.
@@ -156,6 +167,16 @@ plotstdsda(sdaall,sdaall$sda$diff2 == 14.02)
 plotstdsda(sdaall,sdaall$sda$diff2 == 28.03)
 plotstdsda(sdaall,sdaall$sda$diff2 == 58.04)
 ```
+
+## Parameters selection
+
+Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.
+
+Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the empirical global PMD's retention time group numbers.
+
+As for the cutoff of the frequency of PMDs, you could change the frequency until you find certain PMD which you're sure that it should appear in your dataset. For example, 16 should be considered as a good start. Any pmd with the frequency larger than PMD 16 could be further discussed.
+
+Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.
 
 ## Wrap function
 

@@ -24,3 +24,6 @@ re <- getstd(spmeinvivo)
 cluster <- getcluster(re)
 }
 }
+\seealso{
+\code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}
+}
