@@ -21,5 +21,8 @@ biocViews:
 Depends: R (>= 2.10)
 Imports: RColorBrewer,
         shiny,
-        rmarkdown
+        rmarkdown,
+        rcdk,
+        stats,
+        utils
 RoxygenNote: 6.1.1

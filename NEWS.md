@@ -1,5 +1,6 @@
 # pmd 0.1.2
 
+- add support to generate sda analysis for mass list only #5
 - remove multi chargers with a strict rule #4
 - add parameter selection part in vignette #3
 - add support for peaks cluster output #2
