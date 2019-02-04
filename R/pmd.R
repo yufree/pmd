@@ -495,16 +495,43 @@ getstd <- function(list, corcutoff = NULL) {
                            resultstd2B2,
                            resultstd2B1)
         resultstd <- unique(resultstd)
+
         colnames(resultstd) <- c("mz", "rt", "rtg")
         resultstd <- as.data.frame(resultstd)
-        # show message about std mass
-        n <- nrow(resultstd)
-        message(paste(n, "std mass found."))
+
         # return the data
         list$stdmassindex <-
                 paste(round(list$mz, 4), list$rtcluster) %in%
                 paste(round(resultstd$mz, 4), resultstd$rtg)
         list$stdmass <- resultstd
+        # use correlation to refine peaks within the same retention groups
+        if (!is.null(corcutoff)) {
+                mzo <- NULL
+                for(i in 1:length(unique(list$rtcluster))){
+                        resulttemp <- list$data[list$rtcluster == i&list$stdmassindex,]
+                        mz <- list$mz[list$rtcluster == i&list$stdmassindex]
+                        cor2 <- stats::cor(t(resulttemp))
+                        df <- data.frame(
+                                ms1 = mz[which(lower.tri(cor2),
+                                               arr.ind = T)[, 1]],
+                                ms2 = mz[which(lower.tri(cor2),
+                                               arr.ind = T)[, 2]],
+                                cor = cor2[lower.tri(cor2)]
+                        )
+                        df2 <- apply(df,1,function(x) ifelse(x[3]>corcutoff,x[1],NA))
+                        df2 <- unique(stats::na.omit(df2))
+                        mz2 <- mz[(round(mz,4) %in% round(df2,4))]
+                        mzo <- c(mzo,mz2)
+                }
+                list$stdmassindex <- list$stdmassindex & (!(round(list$mz,4) %in% round(mzo,4)))
+                # show message about std mass
+                n <- sum(list$stdmassindex)
+                message(paste(n, "std mass found."))
+        }else{
+                # show message about std mass
+                n <- nrow(resultstd)
+                message(paste(n, "std mass found."))
+        }
         message(paste(
                 sum(list$soloindex),
                 "retention group(s) have single peaks."
@@ -702,7 +729,8 @@ globalstd <- function(list,
 #' @examples
 #' \donttest{
 #' data(spmeinvivo)
-#' re <- getstd(spmeinvivo)
+#' re <- getpaired(spmeinvivo)
+#' re <- getstd(re)
 #' cluster <- getcluster(re)
 #' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}
@@ -748,7 +776,7 @@ getcluster <- function(list, corcutoff = NULL){
         index00 <- paste0(round(list$mz,4),'@',list$rtcluster)
 
 
-        cluster <- NULL
+        cluster <- mzs <- NULL
         for (i in 1:sum(list$stdmassindex)){
                 mzt <- mz[i]
                 rtgt <- rtg[i]
@@ -759,11 +787,12 @@ getcluster <- function(list, corcutoff = NULL){
                 diffover <- unique(c(resultdiff$ms2[index5 %in% indexstd],resultdiff$ms1[index6 %in% indexstd]))
                 stdmassg <- c(mzt,multiover,isoover,diffover)
                 stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt] <- paste0(stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt],'@',i)
-
                 if(!is.null(msdata)){
                         index <- paste0(round(stdmassg,4),'@',rtgt)
                         ins <- msdata[index00%in%index]
                         tdf <- cbind.data.frame(stdmassg,i,rtgt,ins)
+                        mzst <- index[which.max(tdf$ins)]
+                        mzs <- c(mzs,mzst)
                 }else{
                         tdf <- cbind.data.frame(stdmassg,i,rtgt)
                 }
@@ -772,6 +801,9 @@ getcluster <- function(list, corcutoff = NULL){
         }
         list$stdg <- stdg
         list$cluster <- cluster
+        if(!is.null(mzs)){
+                list$stdmassindex2 <- paste0(round(list$mz,4),'@',list$rtcluster) %in% mzs
+        }
         return(list)
 }
 
@@ -797,6 +829,7 @@ getmass <- function(data) {
         }
         return(cus)
 }
+
 #' Perform structure/reaction directed analysis for mass only.
 #' @param mz numeric vector for independant mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automately
 #' @param freqcutoff pmd freqency cutoff for structures or reactions, default 10

@@ -1,5 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^.travis.yml
-_pkgdown.yaml
 ^docs$
+^.travis.yml
+mass.R
+_pkgdown.yaml
+RT_HLB.csv

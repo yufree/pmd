@@ -1,5 +1,7 @@
 # pmd 0.1.2
 
+- add support to export index for peaks with highest intensity in peaks cluster
+- add support to use intensity data to refine GlobalStd results
 - add support to generate sda analysis for mass list only #5
 - remove multi chargers with a strict rule #4
 - add parameter selection part in vignette #3
