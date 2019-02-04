@@ -807,29 +807,6 @@ getcluster <- function(list, corcutoff = NULL){
         return(list)
 }
 
-#' Get the exact mass of the isotopologues from a chemical formula or reaction's isotope patterns with the highest abundances
-#' @param data a chemical formula or reaction e.g. 'Cl-H', 'C2H4'
-#' @return numerical vector
-#' @examples
-#' getmass('CH2')
-#' @export
-getmass <- function(data) {
-        if (grepl('-', data)) {
-                name <- unlist(strsplit(data, '-'))
-                iso1 <-
-                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
-                iso2 <-
-                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
-                cus <-
-                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
-        } else{
-                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
-                cus <-
-                        as.numeric(iso[max(iso[, 2]), 1])
-        }
-        return(cus)
-}
-
 #' Perform structure/reaction directed analysis for mass only.
 #' @param mz numeric vector for independant mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automately
 #' @param freqcutoff pmd freqency cutoff for structures or reactions, default 10
@@ -845,6 +822,22 @@ getmass <- function(data) {
 #' @seealso \code{\link{getsda}}
 #' @export
 getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
+        getmass <- function(data) {
+                if (grepl('-', data)) {
+                        name <- unlist(strsplit(data, '-'))
+                        iso1 <-
+                                rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
+                        iso2 <-
+                                rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
+                        cus <-
+                                as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
+                } else{
+                        iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
+                        cus <-
+                                as.numeric(iso[max(iso[, 2]), 1])
+                }
+                return(cus)
+        }
         if(is.null(formula)){
                 dis <- stats::dist(mz, method = "manhattan")
         }else{
