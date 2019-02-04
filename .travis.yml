@@ -3,7 +3,10 @@ cran: https://cran.rstudio.com
 
 cache:
   packages: true
-apt_packages: libmagick++-dev
+apt_packages: 
+  - libnetcdf-dev
+  - netcdf-bin
+  - libmagick++-dev
 
 env:
   global:
