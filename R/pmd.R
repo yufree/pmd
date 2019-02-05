@@ -520,10 +520,10 @@ getstd <- function(list, corcutoff = NULL) {
                         )
                         df2 <- apply(df,1,function(x) ifelse(x[3]>corcutoff,x[1],NA))
                         df2 <- unique(stats::na.omit(df2))
-                        mz2 <- mz[(round(mz,4) %in% round(df2,4))]
+                        mz2 <- paste0(round(mz[(round(mz,4) %in% round(df2,4))],4),'@',i)
                         mzo <- c(mzo,mz2)
                 }
-                list$stdmassindex <- list$stdmassindex & (!(round(list$mz,4) %in% round(mzo,4)))
+                list$stdmassindex <- list$stdmassindex & (!(paste0(round(list$mz,4),'@',list$rtcluster) %in% mzo))
                 # show message about std mass
                 n <- sum(list$stdmassindex)
                 message(paste(n, "std mass found."))
@@ -722,6 +722,73 @@ globalstd <- function(list,
         return(list3)
 }
 
+#' Get Pseudo-Spectrum as peaks cluster based on correlation analysis.
+#' @param list a list with peaks intensity
+#' @param corcutoff cutoff of the correlation coefficient, default 0.9
+#' @param rtcutoff cutoff of the distances in cluster, default 10
+#' @return list with Pseudo-Spectrum index
+#' @examples
+#' \donttest{
+#' data(spmeinvivo)
+#' cluster <- getcluster(spmeinvivo)
+#' }
+#' @export
+getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
+        mz <- list$mz
+        rt <- list$rt
+
+        dis <- stats::dist(list$rt, method = "manhattan")
+        fit <- stats::hclust(dis)
+        rtcluster <- stats::cutree(fit, h = rtcutoff)
+        n <- length(unique(rtcluster))
+        message(paste(n, "retention time cluster found."))
+        cluster <- mzs <- mzo <- NULL
+        data <- list$data
+
+        for (i in 1:length(unique(rtcluster))) {
+                # find the mass within RT
+                rtxi <- rt[rtcluster == i]
+                bin <- data[rtcluster == i,]
+                if (is.matrix(bin)) {
+                        msdata <- apply(bin, 1, mean)
+                } else {
+                        msdata <- mean(bin)
+                }
+                mzt <- mz[rtcluster == i]
+                cor2 <- stats::cor(t(bin))
+                df <- data.frame(
+                        ms1 = mzt[which(lower.tri(cor2),
+                                       arr.ind = T)[, 1]],
+                        ms2 = mzt[which(lower.tri(cor2),
+                                       arr.ind = T)[, 2]],
+                        cor = cor2[lower.tri(cor2)]
+                )
+                df2 <- apply(df,1,function(x) ifelse(x[3]>corcutoff,x[1],NA))
+                df2 <- unique(stats::na.omit(df2))
+                mzi <- mzt[!(mzt %in% df2)]
+                clustert <- NULL
+                for (j in 1:length(mzi)){
+                        mzic <- df$ms1[round(df$ms2,4) == round(mzi[j],4)]
+                        mzic <- unique(c(mzic,mzi[j]))
+                        ins <- msdata[round(mzt,4) %in% round(mzic,4)]
+                        tdf <- cbind.data.frame(mzic,j,i,ins)
+                        clustert <- rbind(clustert,tdf)
+                }
+                cluster <- rbind(cluster,clustert)
+                mz1 <- stats::aggregate(clustert,by = list(clustert$j),max)
+                mz1 <- unique(mz1[,2])
+                mz2 <- paste0(round(mz[(round(mz,4) %in% round(df2,4))],4),'@',i)
+                mzo <- c(mzo,mz2)
+                mzs <- c(mzs,mz1)
+        }
+        list$stdmassindex <- !(paste0(round(list$mz,4),'@',rtcluster) %in% mzo)
+        if(!is.null(mzs)){
+                list$stdmassindex2 <- round(list$mz,4) %in% round(mzs,4)
+        }
+        list$rtcluster <- cluster
+        return(list)
+}
+
 #' Get Pseudo-Spectrum as peaks cluster based on pmd analysis.
 #' @param list a list from getstd function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
@@ -744,7 +811,7 @@ getcluster <- function(list, corcutoff = NULL){
                 msdata <- NULL
         }else{
                 data <- list$data
-                if (length(data) > ncol(list$data)) {
+                if (is.matrix(data)) {
                         msdata <- apply(data, 1, mean)
                 } else {
                         msdata <- mean(data)
