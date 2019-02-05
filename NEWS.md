@@ -1,5 +1,7 @@
 # pmd 0.1.2
 
+- update vignettes
+- add support to export std peaks based on correlation within retention time group
 - add support to export index for peaks with highest intensity in peaks cluster
 - add support to use intensity data to refine GlobalStd results
 - add support to generate sda analysis for mass list only #5
