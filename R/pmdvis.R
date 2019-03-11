@@ -299,3 +299,82 @@ plotstdsda <- function(list, index = NULL, ...) {
         }
 
 }
+
+#' Plot the specific structure directed analysis(SDA) groups
+#' @param list a list from getpmd function
+#' @param ... other parameters for plot function
+#' @return NULL
+#' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
+#' @examples
+#' \donttest{
+#' data(spmeinvivo)
+#' re <- getpmd(spmeinvivo,pmd=78.9)
+#' plotsda(re)
+#' }
+#' @export
+plotsda <- function(list, ...) {
+        pmd <- list$pmd
+        graphics::par(mfrow = c(1, 1),
+                      mar = c(4, 4, 2,
+                              1) + 0.1)
+        graphics::plot(
+                range(pmd$rt1, pmd$rt2),
+                range(pmd$ms1,
+                      pmd$ms2),
+                type = "n",
+                xlab = "retention time(s)",
+                ylab = "m/z",
+                ...
+        )
+        graphics::segments(pmd$rt1,
+                           pmd$ms1,
+                           pmd$rt2,
+                           pmd$ms2,
+                           lwd = 1.5)
+        graphics::points(
+                pmd$rt1,
+                pmd$ms1,
+                pch = 19,
+                cex = 1.5
+        )
+        graphics::points(
+                pmd$rt2,
+                pmd$ms2,
+                pch = 19,
+                cex = 1.5
+        )
+}
+
+#' Compare matrices using PCA similarity factor
+#'
+#' @param x Matrix with sample in column and features in row
+#' @param y Matrix is compared to x.
+#' @param dim number of retained dimensions in the comparison. Defaults to all.
+#' @return Ratio of projected variance to total variance
+#' @references Singhal, A. and Seborg, D. E. (2005), Clustering multivariate time-series data. J. Chemometrics, 19: 427-438. doi: 10.1002/cem.945
+#' @author Edgar Zanella Alvarenga
+#' @export
+#' @examples
+#' c1 <- matrix(rnorm(16),nrow=4)
+#' c2 <- matrix(rnorm(16),nrow=4)
+#' pcasf(c1, c2)
+#'
+pcasf <- function(x, y, dim = NULL) {
+        cov.x <- stats::cov(x)
+        cov.y <- stats::cov(y)
+
+        if (is.null(dim)){
+                dim = dim(cov.x)[1]
+        }
+
+        eg.x <- eigen(cov.x)
+        eg.y <- eigen(cov.y)
+        eg.x.values <- eg.x$values[1:dim]
+        eg.y.values <- eg.y$values[1:dim]
+        eg.x.vectors <- eg.x$vectors[,1:dim]
+        eg.y.vectors <- eg.y$vectors[,1:dim]
+
+        total_var <- eg.x.values %*% eg.y.values
+
+        return (c(pcasf = sum((eg.x.values %o% eg.y.values) * ((t(eg.x.vectors) %*% (eg.y.vectors))**2))/total_var))
+}

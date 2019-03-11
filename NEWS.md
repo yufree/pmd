@@ -1,6 +1,9 @@
 # pmd 0.1.2
 
 - update vignettes
+- add suport for GlobalStd based targeted analysis
+- add suport to extract specific pmd across different retention time groups
+- add PCA similarity factor function from EvolQG package
 - add support to export std peaks based on correlation within retention time group
 - add support to export index for peaks with highest intensity in peaks cluster
 - add support to use intensity data to refine GlobalStd results

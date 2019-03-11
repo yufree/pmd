@@ -107,6 +107,21 @@ plotstdrt(std,rtcluster = 49,main = 'Retention time group 49')
 plotstdrt(std,rtcluster = 6,main = 'Retention time group 6')
 ```
 
+### Use independent peaks for MS/MS validation
+
+Independent peaks are supporsing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions' fragmental ions in one injection with good sensitivity. You could use `gettarget` to generate the index for the injections and output the peaks for each run.
+
+```{r gettarget}
+# you need retention time for independent peaks
+index <- gettarget(std$rt[std$stdmassindex])
+# output the ions for each injection
+table(index)
+# show the ions for the first injection
+std$mz[index==1]
+std$rt[index==1]
+```
+
+
 ### Validation by principal components analysis(PCA)
 
 You need to check the GlobalStd algorithm's results by principal components analysis(PCA).

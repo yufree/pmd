@@ -22,6 +22,6 @@ Get Pseudo-Spectrum as peaks cluster based on correlation analysis.
 \examples{
 \donttest{
 data(spmeinvivo)
-cluster <- getcluster(spmeinvivo)
+cluster <- getcorcluster(spmeinvivo)
 }
 }

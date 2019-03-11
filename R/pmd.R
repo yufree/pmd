@@ -730,7 +730,7 @@ globalstd <- function(list,
 #' @examples
 #' \donttest{
 #' data(spmeinvivo)
-#' cluster <- getcluster(spmeinvivo)
+#' cluster <- getcorcluster(spmeinvivo)
 #' }
 #' @export
 getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
@@ -942,4 +942,96 @@ getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
         colnames(df) <- pmd
         rownames(df) <- mz
         return(df)
+}
+#' Get pmd for specific reactions
+#' @param list a list with mzrt profile
+#' @param pmd a specific paired mass distances
+#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
+#'
+#' #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+#' @examples
+#' \donttest{
+#' data(spmeinvivo)
+#' pmd <- getpmd(spmeinvivo,pmd=15.99)
+#' }
+#' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}}
+#' @export
+getpmd <- function(list,pmd,rtcutoff = 10){
+        mz <- list$mz
+        rt <- list$rt
+        data <- list$data
+        dis <- stats::dist(rt, method = "manhattan")
+        fit <- stats::hclust(dis)
+        rtg <- stats::cutree(fit, h = rtcutoff)
+        # PMD analysis
+        # remove isomers
+        dis <- stats::dist(mz, method = "manhattan")
+        disrt <- stats::dist(rt, method = "manhattan")
+        disrtg <- stats::dist(rtg, method = "manhattan")
+
+        df <- data.frame(
+                                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                                            1]],
+                                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                                            2]],
+                                diff = as.numeric(dis),
+                                rt1 = rt[which(lower.tri(disrt),
+                                               arr.ind = T)[, 1]],
+                                rt2 = rt[which(lower.tri(disrt),
+                                               arr.ind = T)[, 2]],
+                                diffrt = as.numeric(disrt),
+                                rtg1 = rtg[which(lower.tri(disrtg),
+                                                 arr.ind = T)[, 1]],
+                                rtg2 = rtg[which(lower.tri(disrtg),
+                                                 arr.ind = T)[, 2]],
+                                rtgdiff = as.numeric(disrtg))
+
+                df$diff2 <- round(df$diff, 2)
+
+                df <- df[df$rtgdiff > 0&df$diff2 == pmd,]
+        list$pmd <- df
+        index <- c(paste(round(df$ms1,4),round(df$rt1,4)),paste(round(df$ms2,4),round(df$rt2,4)))
+        index <- unique(index)
+
+        index0 <- paste(round(list$mz,4),round(list$rt,4))
+        list$pmdindex <- index0 %in% index
+
+        return(list)
+}
+
+#' Get multiple injections index for selected retention time
+#' @param rt retention time vector for peaks in seconds
+#' @param drt retention time drift for targeted analysis in seconds, default 10.
+#' @param n max ions numbers within retention time drift windows
+#' @return index for each injection
+#' @examples
+#' \donttest{
+#' data(spmeinvivo)
+#' pmd <- getpaired(spmeinvivo)
+#' std <- getstd(pmd)
+#' index <- gettarget(std$rt[std$stdmassindex])
+#' table(index)
+#' }
+#' @export
+gettarget <- function(rt,drt=10,n=6){
+        dis <- stats::dist(rt, method = "manhattan")
+        fit <- stats::hclust(dis)
+        inji <- rtcluster <- stats::cutree(fit, h = drt)
+        maxd <- max(table(rtcluster))
+        m <- length(unique(rtcluster))
+        inj <- ceiling(maxd/n)
+        message(paste('You need',inj,'injections!'))
+        for(i in c(1:m)) {
+                z = 1:inj
+                x <- rt[rtcluster==i]
+                while(length(x) > inj & length(x)>n){
+                        t <- sample(x,n)
+                        w <- sample(z,1)
+                        inji[rt %in% t] <- w
+                        z <- z[!(z%in%w)]
+                        x <- x[!(x %in% t)]
+                }
+                inji[rtcluster==i & rt %in% x] <- sample(z,sum(rtcluster==i & rt %in% x),replace = T)
+        }
+        return(inji)
 }
