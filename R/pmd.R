@@ -1,7 +1,7 @@
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param ng cutoff of global PMD's retention time group numbers
+#' @param ng cutoff of global PMD's retention time group numbers, default NULL
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
 #' \donttest{
@@ -10,7 +10,7 @@
 #' }
 #' @seealso \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
 #' @export
-getpaired <- function(list, rtcutoff = 10, ng = 10) {
+getpaired <- function(list, rtcutoff = 10, ng = NULL) {
         # paired mass diff analysis
         if (!is.null(list$data)) {
                 groups <- cbind.data.frame(mz = list$mz,
@@ -25,6 +25,8 @@ getpaired <- function(list, rtcutoff = 10, ng = 10) {
                 rtcluster <- stats::cutree(fit, h = rtcutoff)
                 n <- length(unique(rtcluster))
                 message(paste(n, "retention time cluster found."))
+                # automate ng selection when ng is NULL
+                ng <- ifelse(is.null(ng),round(n*0.2),ng)
                 # search:
                 for (i in 1:length(unique(rtcluster))) {
                         # find the mass within RT
@@ -543,6 +545,7 @@ getstd <- function(list, corcutoff = NULL) {
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param freqcutoff cutoff of frequency of PMDs between RT cluster for peaks, default 10
+#' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
@@ -558,6 +561,7 @@ getsda <-
         function(list,
                  rtcutoff = 10,
                  freqcutoff = 10,
+                 top = 50,
                  corcutoff = NULL) {
                 if (is.null(list$stdmass) & is.null(list$paired)) {
                         mz <- list$mz
@@ -613,6 +617,11 @@ getsda <-
                                 !duplicated(paste0(round(df$ms1, 4), round(df$ms2, 4)))
                         diff <- df$diff2[index]
                         freq <- table(diff)[order(table(diff), decreasing = T)]
+                        if(!is.null(top)){
+                                freq <- utils::head(freq,top)
+                                message(paste("Top", top, "high frequency PMD groups were remained.", "\n"))
+                        }
+
                         if (sum(df$diff2 == 0) > freqcutoff) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
@@ -655,6 +664,11 @@ getsda <-
                                 !duplicated(paste0(round(df$ms1, 4), round(df$ms2, 4)))
                         diff <- df$diff2[index]
                         freq <- table(diff)[order(table(diff), decreasing = T)]
+                        if(!is.null(top)){
+                                freq <- utils::head(freq,top)
+                                message(paste("Top", top, "high frequency PMD groups were remained.", "\n"))
+                                }
+
                         if (sum(df$diff2 == 0) > freqcutoff) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
@@ -683,6 +697,7 @@ getsda <-
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster, default 10
 #' @param ng cutoff of global PMD's retention time group numbers
+#' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
 #' @return list with GlobalStd algorithm processed data.
@@ -697,7 +712,7 @@ globalstd <- function(list,
                       rtcutoff = 10,
                       ng = 10,
                       corcutoff = NULL,
-                      freqcutoff = 10) {
+                      freqcutoff = 10, top = 50) {
         list <- getpaired(list, rtcutoff = rtcutoff, ng = ng)
         if (sum(list$pairedindex) > 0) {
                 list2 <- getstd(list, corcutoff = corcutoff)
@@ -715,7 +730,8 @@ globalstd <- function(list,
                                 list,
                                 rtcutoff = rtcutoff,
                                 freqcutoff = freqcutoff,
-                                corcutoff = corcutoff
+                                corcutoff = corcutoff,
+                                top = top
                         )
         }
 
