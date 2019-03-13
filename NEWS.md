@@ -1,6 +1,8 @@
 # pmd 0.1.2
 
 - update vignettes
+- change default ng value into auto-detection
+- add top option to limit sda output
 - add suport for GlobalStd based targeted analysis
 - add suport to extract specific pmd across different retention time groups
 - add PCA similarity factor function from EvolQG package
