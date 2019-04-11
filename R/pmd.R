@@ -872,7 +872,7 @@ getcluster <- function(list, corcutoff = NULL){
                 stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt] <- paste0(stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt],'@',i)
                 if(!is.null(msdata)){
                         index <- paste0(round(stdmassg,4),'@',rtgt)
-                        ins <- msdata[index00%in%index]
+                        ins <- msdata[unique(index00)%in%index]
                         tdf <- cbind.data.frame(stdmassg,i,rtgt,ins)
                         mzst <- index[which.max(tdf$ins)]
                         mzs <- c(mzs,mzst)
