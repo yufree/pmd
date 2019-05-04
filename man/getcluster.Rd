@@ -18,12 +18,10 @@ list with Pseudo-Spectrum index
 Get Pseudo-Spectrum as peaks cluster based on pmd analysis.
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 re <- getpaired(spmeinvivo)
 re <- getstd(re)
 cluster <- getcluster(re)
-}
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}

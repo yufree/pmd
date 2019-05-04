@@ -2,281 +2,289 @@
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param ng cutoff of global PMD's retention time group numbers, default NULL
+#' @param BPPARAM An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
-#' }
 #' @seealso \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
 #' @export
-getpaired <- function(list, rtcutoff = 10, ng = NULL) {
-        # paired mass diff analysis
-        if (!is.null(list$data)) {
-                groups <- cbind.data.frame(mz = list$mz,
-                                           rt = list$rt,
-                                           list$data)
-                resultstd <-
-                        resultdiffstd <-
-                        resultsolo <- resultiso <- resultmulti <- result <- NULL
-
+getpaired <-
+        function(list,
+                 rtcutoff = 10,
+                 ng = NULL,
+                 BPPARAM = BiocParallel::bpparam()) {
+                # paired mass diff analysis
                 dis <- stats::dist(list$rt, method = "manhattan")
                 fit <- stats::hclust(dis)
                 rtcluster <- stats::cutree(fit, h = rtcutoff)
                 n <- length(unique(rtcluster))
                 message(paste(n, "retention time cluster found."))
                 # automate ng selection when ng is NULL
-                ng <- ifelse(is.null(ng),round(n*0.2),ng)
-                # search:
-                for (i in 1:length(unique(rtcluster))) {
-                        # find the mass within RT
-                        rtxi <- list$rt[rtcluster == i]
-                        bin = groups[groups$rt %in% rtxi,]
-                        medianrtxi <- stats::median(rtxi)
+                ng <- ifelse(is.null(ng), round(n * 0.2), ng)
+                if (!is.null(list$data)) {
+                        groups <- cbind.data.frame(mz = list$mz,
+                                                   rt = list$rt,
+                                                   list$data)
+                } else {
+                        groups <- cbind.data.frame(mz = list$mz,
+                                                   rt = list$rt)
+                        message('No intensity data!')
+                }
 
-                        if (nrow(bin) > 1) {
-                                # get mz diff
-                                dis <-
-                                        stats::dist(bin$mz, method = "manhattan")
-                                # get intensity cor
-                                cor <- stats::cor(t(bin[,-c(1, 2)]))
+                split <- split.data.frame(groups, rtcluster)
 
-                                df <-
-                                        data.frame(
-                                                ms1 = bin$mz[which(lower.tri(dis),
-                                                                   arr.ind = T)[, 1]],
-                                                ms2 = bin$mz[which(lower.tri(dis),
-                                                                   arr.ind = T)[, 2]],
-                                                diff = as.numeric(dis),
-                                                rt = medianrtxi,
-                                                rtg = i,
-                                                cor = cor[lower.tri(cor)]
-                                        )
+                rtpmd <- function(bin, i) {
+                        medianrtxi <- stats::median(bin$rt)
+                        if (ncol(bin) > 2) {
+                                if (nrow(bin) > 1) {
+                                        # get mz diff
+                                        dis <-
+                                                stats::dist(bin$mz, method = "manhattan")
+                                        # get intensity cor
+                                        cor <- stats::cor(t(bin[, -c(1, 2)]))
 
-                                # remove multi chargers
-                                multiindex <-
-                                        (round(df$diff %% 1, 1) == 0.5)
-                                multiindex2 <- (round(df$diff, 1) == 0.5)
-                                mass <-
-                                        unique(df[multiindex, 1], df[multiindex, 2])
-                                mass2 <- unique(df[multiindex2, 1], df[multiindex2, 2])
-                                multimass <-
-                                        mass[round(mass %% 1, 1) == 0.5|round(mass,4) %in% round(mass2,4)]
-                                dfmulti <- df[multiindex,]
-                                if (nrow(dfmulti) > 0) {
-                                        resultmulti <- rbind(resultmulti,
-                                                             dfmulti)
                                         df <-
-                                                df[!(df[, 1] %in% multimass) & !(df[, 2] %in% multimass), ]
+                                                data.frame(
+                                                        ms1 = bin$mz[which(lower.tri(dis),
+                                                                           arr.ind = T)[, 1]],
+                                                        ms2 = bin$mz[which(lower.tri(dis),
+                                                                           arr.ind = T)[, 2]],
+                                                        diff = as.numeric(dis),
+                                                        rt = medianrtxi,
+                                                        rtg = i,
+                                                        cor = cor[lower.tri(cor)]
+                                                )
+                                        # remove multi chargers
+                                        multiindex <-
+                                                (round(df$diff %% 1, 1) == 0.5)
+                                        multiindex2 <- (round(df$diff, 1) == 0.5)
+                                        mass <-
+                                                unique(df[multiindex, 1], df[multiindex, 2])
+                                        mass2 <-
+                                                unique(df[multiindex2, 1], df[multiindex2, 2])
+                                        multimass <-
+                                                mass[round(mass %% 1, 1) == 0.5 |
+                                                             round(mass, 4) %in% round(mass2, 4)]
+                                        dfmulti <- df[multiindex, ]
+                                        if (nrow(dfmulti) > 0) {
+                                                df <-
+                                                        df[!(df[, 1] %in% multimass) &
+                                                                   !(df[, 2] %in% multimass),]
+                                        }
+                                        # remove isotope
+                                        isoindex <-
+                                                (round(df$diff, 2) != 0) &
+                                                ((df$diff %% 1 < 0.01 &
+                                                          df$diff >= 1 &
+                                                          df$diff < 2) | (df$diff %% 2 < 0.01 &
+                                                                                  df$diff >= 2 &
+                                                                                  df$diff < 3)
+                                                )
+                                        massstd <-
+                                                apply(df[isoindex,], 1, function(x)
+                                                        min(x[1], x[2]))
+                                        massstdmax <-
+                                                apply(df[isoindex,], 1, function(x)
+                                                        max(x[1], x[2]))
+                                        isomass <-
+                                                unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
+                                        dfiso <- df[isoindex, ]
+                                        if (nrow(dfiso) > 0) {
+                                                df <-
+                                                        df[!(df[, 1] %in% isomass) &
+                                                                   !(df[, 2] %in% isomass), ]
+                                        }
+                                        dfdiff <- df
+                                        return(list(
+                                                dfmulti = dfmulti,
+                                                dfiso = dfiso,
+                                                dfdiff = dfdiff,
+                                                solo = NULL
+                                        ))
+                                } else {
+                                        solo <- cbind(bin[, c(1:2)],
+                                                      rtg = i,
+                                                      cor = 1)
+                                        return(list(
+                                                dfmulti = NULL,
+                                                dfiso = NULL,
+                                                dfdiff = NULL,
+                                                solo = solo
+                                        ))
                                 }
-                                # remove isotope
-                                isoindex <-
-                                        (round(df$diff, 2) != 0) &
-                                        ((
-                                                df$diff %% 1 < 0.01 &
-                                                        df$diff >= 1 &
-                                                        df$diff < 2
-                                        ) | (
-                                                df$diff %% 2 < 0.01 & df$diff >= 2 & df$diff < 3
-                                        )
-                                        )
-
-                                massstd <-
-                                        apply(df[isoindex, ], 1, function(x)
-                                                min(x[1], x[2]))
-                                massstdmax <-
-                                        apply(df[isoindex, ], 1, function(x)
-                                                max(x[1], x[2]))
-                                isomass <-
-                                        unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
-                                dfiso <- df[isoindex,]
-                                if (nrow(dfiso) > 0) {
-                                        resultiso <- rbind(resultiso, dfiso)
+                        } else{
+                                if (nrow(bin) > 1) {
+                                        # get mz diff
+                                        dis <-
+                                                stats::dist(bin$mz, method = "manhattan")
                                         df <-
-                                                df[!(df[, 1] %in% isomass) & !(df[, 2] %in% isomass),]
+                                                data.frame(
+                                                        ms1 = bin$mz[which(lower.tri(dis),
+                                                                           arr.ind = T)[, 1]],
+                                                        ms2 = bin$mz[which(lower.tri(dis),
+                                                                           arr.ind = T)[, 2]],
+                                                        diff = as.numeric(dis),
+                                                        rt = medianrtxi,
+                                                        rtg = i
+                                                )
+                                        # remove multi chargers
+                                        multiindex <-
+                                                (round(df$diff %% 1, 1) == 0.5)
+                                        multiindex2 <- (round(df$diff, 1) == 0.5)
+                                        mass <-
+                                                unique(df[multiindex, 1], df[multiindex, 2])
+                                        mass2 <-
+                                                unique(df[multiindex2, 1], df[multiindex2, 2])
+                                        multimass <-
+                                                mass[round(mass %% 1, 1) == 0.5 |
+                                                             round(mass, 4) %in% round(mass2, 4)]
+                                        dfmulti <- df[multiindex, ]
+                                        if (nrow(dfmulti) > 0) {
+                                                resultmulti <- rbind(resultmulti,
+                                                                     dfmulti)
+                                                df <-
+                                                        df[!(df[, 1] %in% multimass) &
+                                                                   !(df[, 2] %in% multimass),]
+                                        }
+                                        # remove isotope
+                                        isoindex <-
+                                                (round(df$diff, 2) != 0) &
+                                                ((df$diff %% 1 < 0.01 &
+                                                          df$diff >= 1 &
+                                                          df$diff < 2) | (df$diff %% 2 < 0.01 &
+                                                                                  df$diff >= 2 &
+                                                                                  df$diff < 3)
+                                                )
+                                        massstd <-
+                                                apply(df[isoindex,], 1, function(x)
+                                                        min(x[1], x[2]))
+                                        massstdmax <-
+                                                apply(df[isoindex,], 1, function(x)
+                                                        max(x[1], x[2]))
+                                        isomass <-
+                                                unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
+                                        dfiso <- df[isoindex, ]
+                                        if (nrow(dfiso) > 0) {
+                                                resultiso <- rbind(resultiso, dfiso)
+                                                df <-
+                                                        df[!(df[, 1] %in% isomass) &
+                                                                   !(df[, 2] %in% isomass), ]
+                                        }
+                                        dfdiff <- df
+                                        return(list(
+                                                dfmulti = dfmulti,
+                                                dfiso = dfiso,
+                                                dfdiff = dfdiff,
+                                                solo = NULL
+                                        ))
+                                } else {
+                                        solo <- cbind(bin, rtg = i)
+                                        return(list(
+                                                dfmulti = NULL,
+                                                dfiso = NULL,
+                                                dfdiff = NULL,
+                                                solo = solo
+                                        ))
                                 }
-                                dfdiff <- df
-                                result <- rbind(result, dfdiff)
-                        } else {
-                                solo <- cbind(bin,
-                                              rtg = i,
-                                              cor = 1)
-                                resultsolo <- rbind(solo, resultsolo)
                         }
                 }
-        } else{
-                message('No intensity data!')
-                groups <- cbind.data.frame(mz = list$mz, rt = list$rt)
-                resultstd <-
-                        resultdiffstd <-
-                        resultsolo <- resultiso <- resultmulti <- result <- NULL
 
-                dis <- stats::dist(list$rt, method = "manhattan")
-                fit <- stats::hclust(dis)
-                rtcluster <- stats::cutree(fit, h = rtcutoff)
-                n <- length(unique(rtcluster))
-                message(paste(n, "retention time cluster found."))
-                # search:
-                for (i in 1:length(unique(rtcluster))) {
-                        # find the mass within RT
-                        rtxi <- list$rt[rtcluster == i]
-                        bin = groups[groups$rt %in% rtxi,]
-                        medianrtxi <- stats::median(rtxi)
+                rtpmdtemp <-
+                        BiocParallel::bpmapply(rtpmd,
+                                 split,
+                                 as.numeric(names(split)),
+                                 BPPARAM = BPPARAM,
+                                 SIMPLIFY = F)
+                result <- do.call(Map, c(rbind, rtpmdtemp))
 
-                        if (nrow(bin) > 1) {
-                                # get mz diff
-                                dis <-
-                                        stats::dist(bin$mz, method = "manhattan")
-                                df <-
-                                        data.frame(
-                                                ms1 = bin$mz[which(lower.tri(dis),
-                                                                   arr.ind = T)[, 1]],
-                                                ms2 = bin$mz[which(lower.tri(dis),
-                                                                   arr.ind = T)[, 2]],
-                                                diff = as.numeric(dis),
-                                                rt = medianrtxi,
-                                                rtg = i
-                                        )
-
-                                # remove multi chargers
-                                multiindex <-
-                                        (round(df$diff %% 1, 1) == 0.5)
-                                multiindex2 <- (round(df$diff, 1) == 0.5)
-                                mass <-
-                                        unique(df[multiindex, 1], df[multiindex, 2])
-                                mass2 <- unique(df[multiindex2, 1], df[multiindex2, 2])
-                                multimass <-
-                                        mass[round(mass %% 1, 1) == 0.5|round(mass,4) %in% round(mass2,4)]
-                                dfmulti <- df[multiindex,]
-                                if (nrow(dfmulti) > 0) {
-                                        resultmulti <- rbind(resultmulti,
-                                                             dfmulti)
-                                        df <-
-                                                df[!(df[, 1] %in% multimass) & !(df[, 2] %in% multimass), ]
-                                }
-                                # remove isotope
-                                isoindex <-
-                                        (round(df$diff, 2) != 0) &
-                                        ((
-                                                df$diff %% 1 < 0.01 &
-                                                        df$diff >= 1 &
-                                                        df$diff < 2
-                                        ) | (
-                                                df$diff %% 2 < 0.01 & df$diff >= 2 & df$diff < 3
-                                        )
-                                        )
-
-                                massstd <-
-                                        apply(df[isoindex, ], 1, function(x)
-                                                min(x[1], x[2]))
-                                massstdmax <-
-                                        apply(df[isoindex, ], 1, function(x)
-                                                max(x[1], x[2]))
-                                isomass <-
-                                        unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
-                                dfiso <- df[isoindex,]
-                                if (nrow(dfiso) > 0) {
-                                        resultiso <- rbind(resultiso, dfiso)
-                                        df <-
-                                                df[!(df[, 1] %in% isomass) & !(df[, 2] %in% isomass),]
-                                }
-                                dfdiff <- df
-                                result <- rbind(result, dfdiff)
-                        } else {
-                                solo <- cbind(bin, rtg = i)
-                                resultsolo <- rbind(solo, resultsolo)
-                        }
+                # filter the list get the rt cluster
+                list$rtcluster <- rtcluster
+                result$dfdiff$diff2 <- round(result$dfdiff$diff, 2)
+                # speed up
+                pmd <- as.numeric(names(table(result$dfdiff$diff2)[table(result$dfdiff$diff2) > ng]))
+                # pmd <- unique(result$dfdiff$diff2)
+                idx <- NULL
+                for (i in 1:length(pmd)) {
+                        l <- length(unique(
+                                result$dfdiff[result$dfdiff$diff2 == pmd[i], 'rtg']))
+                        idx <-
+                                c(idx, ifelse(l > ng, T, F))
                 }
+                pmd2 <- pmd[idx]
+                list$paired <- result$dfdiff[result$dfdiff$diff2 %in% pmd2, ]
+
+                if (nrow(result$dfdiff) > 0) {
+                        list$pairedindex <-
+                                paste(round(list$mz, 4), list$rtcluster) %in%
+                                paste(c(round(list$paired$ms1, 4), round(list$paired$ms2,
+                                                                         4)),
+                                      c(list$paired$rtg, list$paired$rtg))
+                }
+                # get the data index by rt groups with high frequences
+                # PMD
+                list$diffindex <- paste(round(list$mz, 4), list$rtcluster) %in%
+                        paste(c(round(result$dfdiff$ms1, 4), round(result$dfdiff$ms2,
+                                                                   4)),
+                              c(result$dfdiff$rtg, result$dfdiff$rtg))
+                list$diff <- result$dfdiff
+                # get the data index by rt groups with single ions
+                if (!is.null(result$solo)) {
+                        list$soloindex <- paste(round(list$mz, 4), list$rtcluster) %in%
+                                paste(round(result$solo$mz, 4), result$solo$rtg)
+                        list$solo <- result$solo
+                }
+                # get the data index by rt groups with isotope ions
+                if (!is.null(result$dfiso)) {
+                        list$isoindex <- paste(round(list$mz, 4), list$rtcluster) %in%
+                                paste(c(
+                                        round(result$dfiso$ms1, 4),
+                                        round(result$dfiso$ms2, 4)
+                                ),
+                                c(result$dfiso$rtg, result$dfiso$rtg))
+                        list$iso <- result$dfiso
+                }
+                # get the data index by rt groups with multi charger ions
+                if (!is.null(result$dfmulti)) {
+                        list$multiindex <- paste(round(list$mz, 4), list$rtcluster) %in%
+                                paste(c(
+                                        round(result$dfmulti$ms1, 4),
+                                        round(result$dfmulti$ms2,
+                                              4)
+                                ),
+                                c(result$dfmulti$rtg, result$dfmulti$rtg))
+                        list$multi <- result$dfmulti
+                }
+
+                # show message about std mass
+                message(paste(sum(list$pairedindex), "paired masses found "))
+                message(
+                        paste(
+                                length(unique(list$paired$diff2)),
+                                "unique within RT clusters high frequency PMD(s) used for further investigation."
+                        )
+                )
+                message(paste(
+                        sum(list$isoindex),
+                        "isotopologue(s) related paired mass found."
+                ))
+                message(paste(
+                        sum(list$multiindex),
+                        "multi-charger(s) related paired mass found."
+                ))
+
+                # return results
+                return(list)
         }
 
-
-        # filter based on global pairs
-        result$diff2 <- round(result$diff, 2)
-        pmd <- unique(result$diff2)
-        idx <- NULL
-        for (i in 1:length(pmd)) {
-                idx <-
-                        c(idx, ifelse(length(unique(
-                                result[result$diff2 == pmd[i], 'rtg']
-                        )) > ng, T, F))
-        }
-        pmd2 <- pmd[idx]
-
-        if (nrow(result) > 0) {
-                resultdiff <- result[result$diff2 %in% pmd2, ]
-        }
-
-        # filter the list get the rt cluster
-        list$rtcluster <- rtcluster
-        # get the data index by rt groups with single ions
-        if (!is.null(resultsolo)) {
-                list$soloindex <- paste(round(list$mz, 4), list$rtcluster) %in%
-                        paste(round(resultsolo$mz, 4), resultsolo$rtg)
-                list$solo <- resultsolo
-        }
-        # get the data index by rt groups with isotope ions
-        if (!is.null(resultiso)) {
-                list$isoindex <- paste(round(list$mz, 4), list$rtcluster) %in%
-                        paste(c(
-                                round(resultiso$ms1, 4),
-                                round(resultiso$ms2,
-                                      4)
-                        ),
-                        c(resultiso$rtg, resultiso$rtg))
-                list$iso <- resultiso
-        }
-        # get the data index by rt groups with multi charger ions
-        if (!is.null(resultmulti)) {
-                list$multiindex <- paste(round(list$mz, 4), list$rtcluster) %in%
-                        paste(c(
-                                round(resultmulti$ms1, 4),
-                                round(resultmulti$ms2,
-                                      4)
-                        ),
-                        c(resultmulti$rtg, resultmulti$rtg))
-                list$multi <- resultmulti
-        }
-        # get the data index by rt groups with high frequences
-        # PMD
-        list$diffindex <- paste(round(list$mz, 4), list$rtcluster) %in%
-                paste(c(round(result$ms1, 4), round(result$ms2,
-                                                    4)), c(result$rtg, result$rtg))
-        list$diff <- result
-
-        list$pairedindex <-
-                paste(round(list$mz, 4), list$rtcluster) %in%
-                paste(c(round(resultdiff$ms1, 4), round(resultdiff$ms2,
-                                                        4)), c(resultdiff$rtg, resultdiff$rtg))
-        list$paired <- resultdiff
-
-        # show message about std mass
-        message(paste(sum(list$pairedindex), "paired masses found "))
-        message(paste(
-                length(unique(list$paired$diff2)),
-                "unique PMD(s) used for further investigation."
-        ))
-        message(paste(
-                sum(list$isoindex),
-                "isotopologue(s) related paired mass found."
-        ))
-        message(paste(
-                sum(list$multiindex),
-                "multi-charger(s) related paired mass found."
-        ))
-
-        # return results
-        return(list)
-}
 #' Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
 #' @param list a list from getpaired function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with std mass index
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
-#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getsda}},\code{\link{plotstd}}
 #' @export
 getstd <- function(list, corcutoff = NULL) {
@@ -549,12 +557,10 @@ getstd <- function(list, corcutoff = NULL) {
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' sda <- getsda(std)
-#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotpaired}}
 #' @export
 getsda <-
@@ -700,20 +706,19 @@ getsda <-
 #' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
+#' @param BPPARAM An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' re <- globalstd(spmeinvivo)
-#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}
 #' @export
 globalstd <- function(list,
                       rtcutoff = 10,
                       ng = 10,
                       corcutoff = NULL,
-                      freqcutoff = 10, top = 50) {
-        list <- getpaired(list, rtcutoff = rtcutoff, ng = ng)
+                      freqcutoff = 10, top = 50, BPPARAM = BiocParallel::bpparam()) {
+        list <- getpaired(list, rtcutoff = rtcutoff, ng = ng, BPPARAM = BPPARAM)
         if (sum(list$pairedindex) > 0) {
                 list2 <- getstd(list, corcutoff = corcutoff)
                 list3 <-
@@ -744,10 +749,8 @@ globalstd <- function(list,
 #' @param rtcutoff cutoff of the distances in cluster, default 10
 #' @return list with Pseudo-Spectrum index
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' cluster <- getcorcluster(spmeinvivo)
-#' }
 #' @export
 getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
         mz <- list$mz
@@ -810,12 +813,10 @@ getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return list with Pseudo-Spectrum index
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' re <- getpaired(spmeinvivo)
 #' re <- getstd(re)
 #' cluster <- getcluster(re)
-#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}
 #' @export
 getcluster <- function(list, corcutoff = NULL){
@@ -966,10 +967,8 @@ getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
 #'
 #' #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpmd(spmeinvivo,pmd=15.99)
-#' }
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}}
 #' @export
 getpmd <- function(list,pmd,rtcutoff = 10){
@@ -1008,10 +1007,15 @@ getpmd <- function(list,pmd,rtcutoff = 10){
         list$pmd <- df
         index <- c(paste(round(df$ms1,4),round(df$rt1,4)),paste(round(df$ms2,4),round(df$rt2,4)))
         index <- unique(index)
+        indexh <- paste(round(df$ms1,4),round(df$rt1,4))
+        indexh <- unique(indexh)
+        indexl <- paste(round(df$ms2,4),round(df$rt2,4))
+        indexl <- unique(indexl)
 
         index0 <- paste(round(list$mz,4),round(list$rt,4))
         list$pmdindex <- index0 %in% index
-
+        list$pmdindexh <- index0 %in% indexh
+        list$pmdindexl <- index0 %in% indexl
         return(list)
 }
 
@@ -1021,13 +1025,11 @@ getpmd <- function(list,pmd,rtcutoff = 10){
 #' @param n max ions numbers within retention time drift windows
 #' @return index for each injection
 #' @examples
-#' \donttest{
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' index <- gettarget(std$rt[std$stdmassindex])
 #' table(index)
-#' }
 #' @export
 gettarget <- function(rt,drt=10,n=6){
         dis <- stats::dist(rt, method = "manhattan")

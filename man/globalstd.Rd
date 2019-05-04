@@ -5,7 +5,7 @@
 \title{GlobalStd algorithm with structure/reaction directed analysis}
 \usage{
 globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
-  freqcutoff = 10, top = 50)
+  freqcutoff = 10, top = 50, BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
@@ -19,6 +19,8 @@ globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
 \item{freqcutoff}{cutoff of frequency of PMDs between RT cluster for independent peaks, default 10}
 
 \item{top}{top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50}
+
+\item{BPPARAM}{An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation.}
 }
 \value{
 list with GlobalStd algorithm processed data.
@@ -27,10 +29,8 @@ list with GlobalStd algorithm processed data.
 GlobalStd algorithm with structure/reaction directed analysis
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 re <- globalstd(spmeinvivo)
-}
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{plotstd}},\code{\link{plotstdsda}},\code{\link{plotstdrt}}

@@ -15,11 +15,9 @@ plotsda(list, ...)
 Plot the specific structure directed analysis(SDA) groups
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 re <- getpmd(spmeinvivo,pmd=78.9)
 plotsda(re)
-}
 }
 \seealso{
 \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}

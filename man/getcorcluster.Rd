@@ -20,8 +20,6 @@ list with Pseudo-Spectrum index
 Get Pseudo-Spectrum as peaks cluster based on correlation analysis.
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 cluster <- getcorcluster(spmeinvivo)
-}
 }

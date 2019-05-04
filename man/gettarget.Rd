@@ -20,11 +20,9 @@ index for each injection
 Get multiple injections index for selected retention time
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
 std <- getstd(pmd)
 index <- gettarget(std$rt[std$stdmassindex])
 table(index)
-}
 }

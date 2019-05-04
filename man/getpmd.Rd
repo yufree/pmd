@@ -19,10 +19,8 @@ getpmd(list, pmd, rtcutoff = 10)
 Get pmd for specific reactions
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpmd(spmeinvivo,pmd=15.99)
-}
 }
 \seealso{
 \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}}

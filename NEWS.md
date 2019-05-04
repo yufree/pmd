@@ -1,3 +1,7 @@
+# pmd 0.1.3
+
+- speed up GlobalStd by BiocParallel package
+
 # pmd 0.1.2
 
 - update vignettes

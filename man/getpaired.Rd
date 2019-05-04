@@ -4,7 +4,8 @@
 \alias{getpaired}
 \title{Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.}
 \usage{
-getpaired(list, rtcutoff = 10, ng = NULL)
+getpaired(list, rtcutoff = 10, ng = NULL,
+  BPPARAM = BiocParallel::bpparam())
 }
 \arguments{
 \item{list}{a list with mzrt profile}
@@ -12,6 +13,8 @@ getpaired(list, rtcutoff = 10, ng = NULL)
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
 \item{ng}{cutoff of global PMD's retention time group numbers, default NULL}
+
+\item{BPPARAM}{An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation}
 }
 \value{
 list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
@@ -20,10 +23,8 @@ list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' in
 Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 }
 \examples{
-\donttest{
 data(spmeinvivo)
 pmd <- getpaired(spmeinvivo)
-}
 }
 \seealso{
 \code{\link{getstd}},\code{\link{getsda}},\code{\link{plotpaired}}
