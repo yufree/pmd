@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       <h1>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2019-03-12</h4>
+            <h4 class="date">2019-05-04</h4>
       
       
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -118,18 +118,18 @@
 </ul>
 <p>However, I suggested to add intensity and group information to the list for validation of PMD analysis.</p>
 <p>In this package, a dataset from <em>in vivo</em> solid phase micro-extraction(SPME) was attached. This dataset contain 9 samples from 3 fish with triplicates samples for each fish. Here is the data strcture:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(pmd)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"spmeinvivo"</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(spmeinvivo)
-<span class="co">#&gt; List of 4</span>
-<span class="co">#&gt;  $ data : num [1:1459, 1:9] 1095 10439 10154 2797 90211 ...</span>
-<span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
-<span class="co">#&gt;   .. ..$ : chr [1:1459] "100.1/170" "100.5/86" "101/85" "103.1/348" ...</span>
-<span class="co">#&gt;   .. ..$ : chr [1:9] "1405_Fish1_F1" "1405_Fish1_F2" "1405_Fish1_F3" "1405_Fish2_F1" ...</span>
-<span class="co">#&gt;  $ group:'data.frame':   9 obs. of  1 variable:</span>
-<span class="co">#&gt;   ..$ class: Factor w/ 3 levels "fish1","fish2",..: 1 1 1 2 2 2 3 3 3</span>
-<span class="co">#&gt;  $ mz   : num [1:1459] 100 101 101 103 104 ...</span>
-<span class="co">#&gt;  $ rt   : num [1:1459] 170.2 86.3 84.9 348.1 48.8 ...</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(pmd)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(<span class="st">"spmeinvivo"</span>)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(spmeinvivo)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; List of 4</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt;  $ data : num [1:1459, 1:9] 1095 10439 10154 2797 90211 ...</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;   .. ..$ : chr [1:1459] "100.1/170" "100.5/86" "101/85" "103.1/348" ...</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;   .. ..$ : chr [1:9] "1405_Fish1_F1" "1405_Fish1_F2" "1405_Fish1_F3" "1405_Fish2_F1" ...</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  $ group:'data.frame':   9 obs. of  1 variable:</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   ..$ class: Factor w/ 3 levels "fish1","fish2",..: 1 1 1 2 2 2 3 3 3</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  $ mz   : num [1:1459] 100 101 101 103 104 ...</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  $ rt   : num [1:1459] 170.2 86.3 84.9 348.1 48.8 ...</span></a></code></pre></div>
 <p>You could build this <code>list</code> object from the <code>xcms</code> objects via <code>enviGCMS</code> package. When you have a <code>xcmsSet</code> object or <code>XCMSnExp</code> object named <code>xset</code>, you could use <code><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/getmzrt">enviGCMS::getmzrt(xset)</a></code> or <code><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/getmzrt2">enviGCMS::getmzrt2(xset)</a></code> to get such list. Of course you could build such list by yourself.</p>
 </div>
 <div id="globalstd-algorithm" class="section level2">
@@ -139,13 +139,13 @@
 <div id="retention-time-hierarchical-clustering" class="section level3">
 <h3 class="hasAnchor">
 <a href="#retention-time-hierarchical-clustering" class="anchor"></a>Retention time hierarchical clustering</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pmd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getpaired.html">getpaired</a></span>(spmeinvivo, <span class="dt">rtcutoff =</span> <span class="dv">10</span>, <span class="dt">ng =</span> <span class="dv">10</span>)
-<span class="co">#&gt; 75 retention time cluster found.</span>
-<span class="co">#&gt; 435 paired masses found</span>
-<span class="co">#&gt; 10 unique PMD(s) used for further investigation.</span>
-<span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span>
-<span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span>
-<span class="kw"><a href="../reference/plotrtg.html">plotrtg</a></span>(pmd)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pmd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getpaired.html">getpaired</a></span>(spmeinvivo, <span class="dt">rtcutoff =</span> <span class="dv">10</span>, <span class="dt">ng =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; 75 retention time cluster found.</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 435 paired masses found</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 10 unique PMD(s) used for further investigation.</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw"><a href="../reference/plotrtg.html">plotrtg</a></span>(pmd)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/rtg-1.png" width="700"></p>
 <p>This plot would show the distribution of RT groups. The <code>rtcutoff</code> in function <code>getpaired</code> could be used to set the cutoff of the distances in retention time hierarchical clustering analysis.</p>
 </div>
@@ -153,153 +153,159 @@
 <h3 class="hasAnchor">
 <a href="#relationship-among-adducts-neutral-loss-isotopologues-and-commen-fragments-ions" class="anchor"></a>Relationship among adducts, neutral loss, isotopologues and commen fragments ions</h3>
 <p>The <code>ng</code> in function <code>getpaired</code> could be used to set cutoff of global PMD’s retention time group numbers. If <code>ng</code> is 10, at least 10 of the retention time groups should contain the shown PMD relationship. You could use <code>plotpaired</code> to show the distribution.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plotpaired.html">plotpaired</a></span>(pmd)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/plotpaired.html">plotpaired</a></span>(pmd)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/pmd-1.png" width="700"></p>
 <p>You could also show the distribution of PMD relationship by index:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># show the unique PMD found by getpaired function</span>
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(pmd<span class="op">$</span>paired<span class="op">$</span>diff2))){
-        diff &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(pmd<span class="op">$</span>paired<span class="op">$</span>diff2)[i]
-        index &lt;-<span class="st"> </span>pmd<span class="op">$</span>paired<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span>diff
-        <span class="kw"><a href="../reference/plotpaired.html">plotpaired</a></span>(pmd,index)
-}</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># show the unique PMD found by getpaired function</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(pmd<span class="op">$</span>paired<span class="op">$</span>diff2))){</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">        diff &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(pmd<span class="op">$</span>paired<span class="op">$</span>diff2)[i]</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">        index &lt;-<span class="st"> </span>pmd<span class="op">$</span>paired<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span>diff</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="kw"><a href="../reference/plotpaired.html">plotpaired</a></span>(pmd,index)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">}</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/pmdindex-1.png" width="700"><img src="globalstd_files/figure-html/pmdindex-2.png" width="700"><img src="globalstd_files/figure-html/pmdindex-3.png" width="700"><img src="globalstd_files/figure-html/pmdindex-4.png" width="700"><img src="globalstd_files/figure-html/pmdindex-5.png" width="700"><img src="globalstd_files/figure-html/pmdindex-6.png" width="700"><img src="globalstd_files/figure-html/pmdindex-7.png" width="700"><img src="globalstd_files/figure-html/pmdindex-8.png" width="700"><img src="globalstd_files/figure-html/pmdindex-9.png" width="700"><img src="globalstd_files/figure-html/pmdindex-10.png" width="700"></p>
 </div>
 <div id="screen-the-independent-peaks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#screen-the-independent-peaks" class="anchor"></a>Screen the independent peaks</h3>
 <p>You could use <code>getstd</code> function to get the independent peaks.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd)
-<span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span>
-<span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span>
-<span class="co">#&gt; 4 group(s) with paired relationship without isotope</span>
-<span class="co">#&gt; 44 group(s) with paired relationship and isotope</span>
-<span class="co">#&gt; 257 std mass found.</span>
-<span class="co">#&gt; 8 retention group(s) have single peaks.</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">std &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; 4 group(s) with paired relationship without isotope</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 44 group(s) with paired relationship and isotope</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 257 std mass found.</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a></code></pre></div>
 <p>Here you could plot the peaks by <code>plotstd</code> function to show the distribution of independent peaks:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plotstd.html">plotstd</a></span>(std)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plotstd.html">plotstd</a></span>(std)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdplot-1.png" width="700"></p>
 <p>You could also plot the peaks distribution by assign a retention time group via <code>plotstdrt</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>))
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">23</span>,<span class="dt">main =</span> <span class="st">'Retention time group 23'</span>)
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">9</span>,<span class="dt">main =</span> <span class="st">'Retention time group 9'</span>)
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">18</span>,<span class="dt">main =</span> <span class="st">'Retention time group 18'</span>)
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">67</span>,<span class="dt">main =</span> <span class="st">'Retention time group 67'</span>)
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">49</span>,<span class="dt">main =</span> <span class="st">'Retention time group 49'</span>)
-<span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">6</span>,<span class="dt">main =</span> <span class="st">'Retention time group 6'</span>)</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>))</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">23</span>,<span class="dt">main =</span> <span class="st">'Retention time group 23'</span>)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">9</span>,<span class="dt">main =</span> <span class="st">'Retention time group 9'</span>)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">18</span>,<span class="dt">main =</span> <span class="st">'Retention time group 18'</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">67</span>,<span class="dt">main =</span> <span class="st">'Retention time group 67'</span>)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">49</span>,<span class="dt">main =</span> <span class="st">'Retention time group 49'</span>)</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw"><a href="../reference/plotstdrt.html">plotstdrt</a></span>(std,<span class="dt">rtcluster =</span> <span class="dv">6</span>,<span class="dt">main =</span> <span class="st">'Retention time group 6'</span>)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdrtplot-1.png" width="700"></p>
 </div>
 <div id="use-independent-peaks-for-msms-validation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#use-independent-peaks-for-msms-validation" class="anchor"></a>Use independent peaks for MS/MS validation</h3>
 <p>Independent peaks are supporsing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions’ fragmental ions in one injection with good sensitivity. You could use <code>gettarget</code> to generate the index for the injections and output the peaks for each run.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># you need retention time for independent peaks</span>
-index &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gettarget.html">gettarget</a></span>(std<span class="op">$</span>rt[std<span class="op">$</span>stdmassindex])
-<span class="co">#&gt; You need 6 injections!</span>
-<span class="co"># output the ions for each injection</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(index)
-<span class="co">#&gt; index</span>
-<span class="co">#&gt;  1  2  3  4  5  6 </span>
-<span class="co">#&gt; 32 30 42 60 39 54</span>
-<span class="co"># show the ions for the first injection</span>
-std<span class="op">$</span>mz[index<span class="op">==</span><span class="dv">1</span>]
-<span class="co">#&gt;   [1] 110.0092 139.0591 139.9877 149.0236 153.1277 155.1294 156.1777</span>
-<span class="co">#&gt;   [8] 158.1546 161.0600 162.1128 163.0758 170.0330 173.1335 174.1363</span>
-<span class="co">#&gt;  [15] 174.9383 181.1597 181.9871 186.1854 188.6484 190.9130 195.1027</span>
-<span class="co">#&gt;  [22] 209.1552 211.1698 220.1184 229.2008 235.1692 236.1730 237.6615</span>
-<span class="co">#&gt;  [29] 240.2335 242.2863 242.2863 242.2863 251.0476 265.2539 265.4216</span>
-<span class="co">#&gt;  [36] 269.9189 270.3185 270.3185 270.3185 271.3217 271.3217 272.3234</span>
-<span class="co">#&gt;  [43] 272.9318 279.1604 282.2811 282.9806 283.2249 286.3101 286.3101</span>
-<span class="co">#&gt;  [50] 291.0712 293.2853 294.2875 300.2046 308.2954 309.9372 313.3297</span>
-<span class="co">#&gt;  [57] 324.3266 328.0132 329.0052 329.8840 332.5619 335.3135 336.1296</span>
-<span class="co">#&gt;  [64] 336.3257 341.0180 358.3084 359.0292 365.1059 365.3196 367.3375</span>
-<span class="co">#&gt;  [71] 369.3534 371.3345 374.3041 377.3522 377.8991 384.3350 387.2851</span>
-<span class="co">#&gt;  [78] 387.7863 390.2490 398.2762 399.1231 400.9174 401.3421 403.2332</span>
-<span class="co">#&gt;  [85] 407.3384 417.3364 420.3568 429.0892 433.2781 439.2698 442.3376</span>
-<span class="co">#&gt;  [92] 444.3844 445.3874 447.1173 447.2935 448.1186 463.3975 498.9017</span>
-<span class="co">#&gt;  [99] 499.9050 505.1055 507.3303 512.4158 518.3245 520.3415 524.1178</span>
-<span class="co">#&gt; [106] 528.4109 528.4989 538.3150 541.1208 541.3942 542.3266 555.2922</span>
-<span class="co">#&gt; [113] 556.4416 559.4247 560.2193 560.3877 565.3827 578.1272 581.1925</span>
-<span class="co">#&gt; [120] 590.3223 604.4152 608.8745 613.1827 614.5358 619.6137 621.4412</span>
-<span class="co">#&gt; [127] 622.4229 626.3960 640.1961 670.4222 673.8481 679.5118 681.4675</span>
-<span class="co">#&gt; [134] 685.2035 691.4631 694.6505 697.8511 702.8662 703.1383 708.6701</span>
-<span class="co">#&gt; [141] 711.3532 712.8208 714.4484 731.8438 732.5472 737.5030 738.5066</span>
-<span class="co">#&gt; [148] 739.5078 753.5196 772.3250 773.5940 784.2366 794.8123 801.4967</span>
-<span class="co">#&gt; [155] 803.5434 805.3464 810.5068 813.8323 814.4154 819.3943 837.5278</span>
-<span class="co">#&gt; [162] 870.7857 871.3033 875.8088 879.3785 883.7184 888.6729 889.8086</span>
-<span class="co">#&gt; [169] 900.3092 907.1589 907.3250 921.4730 929.4891 930.1575 934.3019</span>
-<span class="co">#&gt; [176] 947.7443 948.8063 956.7945 964.7811 968.7950 979.7901</span>
-std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]
-<span class="co">#&gt;   [1] 1079.6500  511.2940   84.8490  583.7690  524.9460  804.4690  405.3890</span>
-<span class="co">#&gt;   [8]  470.3640  620.6270  256.1585  576.9100  215.0585  611.4120  611.4135</span>
-<span class="co">#&gt;  [15]  216.1500  615.0530  147.8970  501.3300  639.2075  218.0975  538.0810</span>
-<span class="co">#&gt;  [22]  611.4120  452.9630  170.8240  614.6260  576.9100  576.9100  639.6355</span>
-<span class="co">#&gt;  [29]  639.1010  538.2950  896.1220  711.5320  605.8400  618.2700  145.8285</span>
-<span class="co">#&gt;  [36]  144.6810  501.6500  604.7690  670.2425  880.8005  699.9580  742.6450</span>
-<span class="co">#&gt;  [43]  145.7540  664.9220  639.1000  146.0980  552.2670  732.0395  895.6960</span>
-<span class="co">#&gt;  [50]  161.3960  618.2710  618.5915  172.2230  569.4105  145.4960  636.9560</span>
-<span class="co">#&gt;  [57]  628.9860  509.1510  509.3650  144.3380  141.6810  608.1990  617.6270</span>
-<span class="co">#&gt;  [64]  557.6255  717.1835  650.2440  717.0520  143.9315  656.2235  644.2420</span>
-<span class="co">#&gt;  [71]  688.3880  551.7325  582.4840  650.0300  145.1090  656.0105  492.8650</span>
-<span class="co">#&gt;  [78]  492.4380  534.0100  492.2220  527.9020  145.1090  632.8410  601.3400</span>
-<span class="co">#&gt;  [85]  556.9840  603.4845  655.9035  717.1020  382.6760  639.3130  656.2430</span>
-<span class="co">#&gt;  [92]  582.4815  582.4825  716.8890  404.5340  717.1020  582.3755  213.7270</span>
-<span class="co">#&gt;  [99]  213.9270  762.4675  554.8390  550.3385  495.3295  515.3650  690.5290</span>
-<span class="co">#&gt; [106]  422.7495  643.4925  520.8340  762.5770  628.3425  492.4360  512.7070</span>
-<span class="co">#&gt; [113]  546.9100  439.4630  340.9965  533.3660  439.2500  819.4060  762.4690</span>
-<span class="co">#&gt; [120]  510.4370  529.9730  213.9410  819.1920  639.0990  618.4840  531.0090</span>
-<span class="co">#&gt; [127]  455.1500  530.5830  818.9790  527.7930  214.3560  172.8655  468.5430</span>
-<span class="co">#&gt; [134]  883.1575  525.0090  639.1000  214.3710  213.7270  639.0990  594.2710</span>
-<span class="co">#&gt; [141]  215.2290  214.7985  525.0080  214.1480  481.0785  481.0790  481.2930</span>
-<span class="co">#&gt; [148]  480.6530  522.2240  370.0360  624.2695  700.3870  215.7855  520.0790</span>
-<span class="co">#&gt; [155]  665.0290  213.5480  682.6000  214.5090  490.2940  467.2110  698.2460</span>
-<span class="co">#&gt; [162]  216.5120  639.2070  214.3710  381.6350  632.1990  632.3055  215.2605</span>
-<span class="co">#&gt; [169]  213.5480  213.3590  213.5480  497.7940  213.3110  213.5310  213.6405</span>
-<span class="co">#&gt; [176]  800.0770  214.2010  215.0405  215.6320  213.9410  213.9410</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># you need retention time for independent peaks</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">index &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gettarget.html">gettarget</a></span>(std<span class="op">$</span>rt[std<span class="op">$</span>stdmassindex])</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; You need 6 injections!</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># output the ions for each injection</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(index)</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; index</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  1  2  3  4  5  6 </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 35 37 51 41 50 43</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># show the ions for the first injection</span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">std<span class="op">$</span>mz[index<span class="op">==</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 104.0090 110.0092 110.0717 111.0203 113.9638 125.9874 136.0401</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 139.0591 149.0236 154.0586 157.0842 160.1338 162.0558 170.0932</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 172.1705 174.9383 177.0914 177.1640 186.1854 188.0705 190.0124</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 192.1380 193.1415 196.4492 204.1239 217.1483 226.9523 227.1847</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 232.9354 235.2061 236.9406 242.2863 242.2863 244.0288 244.1920</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 250.1781 251.0476 251.1815 252.0510 252.1237 258.9254 261.2591</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 265.2539 269.9189 270.3172 270.3185 271.3216 272.0665 280.1630</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 281.0519 283.2249 285.3002 285.3002 291.0712 293.1755 294.2054</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 295.9069 297.2408 303.2325 306.2514 312.0163 319.9302 320.3322</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 327.0777 328.0824 329.0928 336.2980 337.3298 338.3415 338.6338</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 340.3481 341.0180 341.2662 341.3512 342.0183 352.3214 354.3365</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 358.3084 365.1059 365.8035 370.3567 373.2203 377.2696 385.2926</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 386.2783 390.2490 394.3014 394.4045 400.9174 401.3420 402.3458</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 404.2360 405.2616 410.2585 415.0377 426.2189 431.0687 431.3847</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 437.3747 440.8696 442.3373 447.3469 449.1148 449.2989 453.3436</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 462.3940 463.3975 467.1031 468.3078 469.1857 488.3591 494.8112</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 498.9017 505.1055 507.3409 520.1386 523.1141 527.1586 538.5405</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [120] 539.5420 542.3266 546.8234 547.5201 559.4247 559.5175 560.2188</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [127] 561.4023 563.3761 567.1783 570.3465 585.4215 598.8366 600.4401</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [134] 607.4262 610.1834 613.2451 623.4241 629.8618 631.8679 635.8787</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [141] 639.2005 640.1961 642.1942 643.4632 644.8326 658.4832 665.4444</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [148] 670.4222 679.5118 682.5378 692.4941 696.8477 702.1381 709.3670</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [155] 710.2184 714.4484 723.8579 727.4611 737.5030 737.8603 738.5072</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [162] 744.8477 750.6089 758.4735 765.8380 779.3404 790.5377 791.5414</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [169] 798.3265 801.8376 804.5530 815.4180 825.3507 825.8384 830.6313</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; [176] 836.3301 837.5278 838.8393 839.3409 840.3407 856.8132 863.3158</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; [183] 870.7857 875.8088 879.3804 889.4890 897.2942 904.8150 923.8020</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [190] 925.4477 934.3019 942.3193 942.7638 956.7945 962.3132 968.2956</span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; [197] 973.4945 975.3138 983.7978 997.4754</span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt;   [1]   48.8480 1079.6500  228.0840   86.1350 1079.4300 1079.6500  552.8035</span></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt;   [8]  511.2940  583.7690  212.6560  169.3150  328.4180  430.6780  235.9920</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt;  [15]  478.9360  216.1500  574.3390  639.3140  501.3300  461.0695  218.5220</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt;  [22]  462.2210  462.1140  145.1850  370.8900  638.8870 1029.1800  416.3200</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;  [29]  144.3605  608.1970  147.8960  667.7130  611.4110  212.6665  415.6790</span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;  [36]  612.8060  605.8400  452.9630  606.2680  591.4830  144.6690  639.1010</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt;  [43]  618.2700  144.6810    4.0610  802.2200  895.8020  141.0400  583.7700</span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt;  [50]  762.5750  552.2670  670.6010  564.8035  161.3960  553.5540  452.0005</span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  [57]  145.0030  568.7670  586.1240  599.6270  212.8675  145.2280  639.0990</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;  [64]  559.9820  560.1960  212.3870  582.2700  595.1260  614.9465  639.1000</span></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;  [71]  638.8870  717.1835  564.2670  639.3140  717.1025  582.4820  594.4820</span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;  [78]  650.2440  143.9315  639.2065  688.3880  424.8935  557.8390  561.2700</span></a>
+<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;  [85]  493.3975  534.0100  659.6710  682.3135  145.1090  672.1020  633.0545</span></a>
+<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;  [92]  601.4480  547.3380  633.9130  762.5750  601.1275  762.3630  612.4840</span></a>
+<a class="sourceLine" id="cb8-55" data-line-number="55"><span class="co">#&gt;  [99]  483.1250  214.8080  404.5340  711.4240  717.1020  403.8915  170.5045</span></a>
+<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co">#&gt; [106]  582.3755  582.3755  717.1030  491.1510  600.2700  540.8660  727.4325</span></a>
+<a class="sourceLine" id="cb8-57" data-line-number="57"><span class="co">#&gt; [113]  213.7270  762.4675  422.9630  762.5750  688.6000  142.3240  705.5310</span></a>
+<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="co">#&gt; [120]  705.4235  492.4360  218.1225  627.8060  439.4630  705.7430  170.0260</span></a>
+<a class="sourceLine" id="cb8-59" data-line-number="59"><span class="co">#&gt; [127]  546.8030  439.4630  762.3630  510.2220  434.7490  216.9670  455.1500</span></a>
+<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="co">#&gt; [134]  613.5560  818.9790  349.6330  455.1505  214.6170  213.3340  213.7720</span></a>
+<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#&gt; [141]  819.2990  818.9790  818.7645  449.3200  215.1920  468.4850  449.3220</span></a>
+<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co">#&gt; [148]  527.7930  172.8655  551.5165  528.2230  213.7270  639.1005  481.2940</span></a>
+<a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#&gt; [155]  883.9070  525.0080  213.5020  538.8305  481.0790  213.6305  752.9310</span></a>
+<a class="sourceLine" id="cb8-64" data-line-number="64"><span class="co">#&gt; [162]  214.3560  624.2710  522.4370  214.2850  214.9615  780.5760  780.1460</span></a>
+<a class="sourceLine" id="cb8-65" data-line-number="65"><span class="co">#&gt; [169]  213.7260  213.5020  631.5555  490.4010  367.0375  213.4215  628.4490</span></a>
+<a class="sourceLine" id="cb8-66" data-line-number="66"><span class="co">#&gt; [176]  213.3740  698.2460  213.7270  213.6370  213.3340  215.0685  639.1010</span></a>
+<a class="sourceLine" id="cb8-67" data-line-number="67"><span class="co">#&gt; [183]  216.5120  214.3710  373.7835  213.6405  215.8710  213.3595  215.4170</span></a>
+<a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; [190]  476.5790  213.6405  214.2010  636.9060  215.0405  213.6560  213.5120</span></a>
+<a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; [197]  500.9015  213.5480  214.6300  213.4215</span></a></code></pre></div>
 </div>
 <div id="validation-by-principal-components-analysispca" class="section level3">
 <h3 class="hasAnchor">
 <a href="#validation-by-principal-components-analysispca" class="anchor"></a>Validation by principal components analysis(PCA)</h3>
 <p>You need to check the GlobalStd algorithm’s results by principal components analysis(PCA).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(enviGCMS)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(enviGCMS)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">2</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/pca-1.png" width="700"></p>
 </div>
 <div id="comparision-with-other-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#comparision-with-other-packages" class="anchor"></a>Comparision with other packages</h3>
 <p>GlobalStd algorithm in <code>pmd</code> package could be treated as a way to extract pseudospectra. You could use <code>getcluster</code> to get peaks groups information for all GlobalStd peaks. Then you could choose export peaks with the highest intensities in each GlobalStd peaks groups.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">stdcluster &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getcluster.html">getcluster</a></span>(std)
-<span class="co"># extract pseudospectra for std peak 1</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(stdcluster<span class="op">$</span>cluster<span class="op">$</span>stdmassg[stdcluster<span class="op">$</span>cluster<span class="op">$</span>i<span class="op">==</span><span class="dv">42</span>],stdcluster<span class="op">$</span>cluster<span class="op">$</span>ins[stdcluster<span class="op">$</span>cluster<span class="op">$</span>i<span class="op">==</span><span class="dv">42</span>],<span class="dt">type =</span> <span class="st">'h'</span>,<span class="dt">xlab =</span> <span class="st">'m/z'</span>,<span class="dt">ylab =</span> <span class="st">'intensity'</span>,<span class="dt">main =</span> <span class="st">'pseudospectra for GlobalStd peak 42'</span>)</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">stdcluster &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getcluster.html">getcluster</a></span>(std)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># extract pseudospectra for std peak 1</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(stdcluster<span class="op">$</span>cluster<span class="op">$</span>stdmassg[stdcluster<span class="op">$</span>cluster<span class="op">$</span>i<span class="op">==</span><span class="dv">42</span>],stdcluster<span class="op">$</span>cluster<span class="op">$</span>ins[stdcluster<span class="op">$</span>cluster<span class="op">$</span>i<span class="op">==</span><span class="dv">42</span>],<span class="dt">type =</span> <span class="st">'h'</span>,<span class="dt">xlab =</span> <span class="st">'m/z'</span>,<span class="dt">ylab =</span> <span class="st">'intensity'</span>,<span class="dt">main =</span> <span class="st">'pseudospectra for GlobalStd peak 42'</span>)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/comp-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># export peaks with the highest intensities in each GlobalStd peaks groups.</span>
-data &lt;-<span class="st"> </span>stdcluster<span class="op">$</span>data[stdcluster<span class="op">$</span>stdmassindex2,]</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># export peaks with the highest intensities in each GlobalStd peaks groups.</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">data &lt;-<span class="st"> </span>stdcluster<span class="op">$</span>data[stdcluster<span class="op">$</span>stdmassindex2,]</a></code></pre></div>
 <p>You could also use <code>getcorcluster</code> to find peaks groups by correlation analysis only.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">corcluster &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getcorcluster.html">getcorcluster</a></span>(spmeinvivo)
-<span class="co">#&gt; 75 retention time cluster found.</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[corcluster<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks by correlationship)"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">corcluster &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getcorcluster.html">getcorcluster</a></span>(spmeinvivo)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; 75 retention time cluster found.</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))</a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[corcluster<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks by correlationship)"</span>)))</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/corcomp-1.png" width="700"></p>
 </div>
 <div id="globalstd-algorithm-with-intensity-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#globalstd-algorithm-with-intensity-data" class="anchor"></a>GlobalStd algorithm with intensity data</h3>
 <p>GlobalStd algorithm is designed to analysis data without intensity data. However, if you have intensity data, the independant peaks could be selected with more confindence. You could set up cutoff of Pearson Correlation Coefficient between peaks to refine the peaks selected by GlobalStd within same retention time groups.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">std2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd,<span class="dt">corcutoff =</span> <span class="fl">0.9</span>)
-<span class="co">#&gt; 24 group(s) with multiple peaks while no isotope/paired relationship</span>
-<span class="co">#&gt; 12 group(s) with multiple peaks with isotope without paired relationship</span>
-<span class="co">#&gt; 3 group(s) with paired relationship without isotope</span>
-<span class="co">#&gt; 28 group(s) with paired relationship and isotope</span>
-<span class="co">#&gt; 116 std mass found.</span>
-<span class="co">#&gt; 8 retention group(s) have single peaks.</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std2<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std2<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))
-<span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std2<span class="op">$</span>data[std2<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std2<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">std2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd,<span class="dt">corcutoff =</span> <span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; 24 group(s) with multiple peaks while no isotope/paired relationship</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; 12 group(s) with multiple peaks with isotope without paired relationship</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 3 group(s) with paired relationship without isotope</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 28 group(s) with paired relationship and isotope</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 116 std mass found.</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std2<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std2<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))</a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std2<span class="op">$</span>data[std2<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(std2<span class="op">$</span>group<span class="op">$</span>class),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/globalcor-1.png" width="700"></p>
 </div>
 </div>
@@ -307,53 +313,53 @@ data &lt;-<span class="st"> </span>stdcluster<span class="op">$</span>data[stdcl
 <h2 class="hasAnchor">
 <a href="#structurereaction-directed-analysis" class="anchor"></a>Structure/reaction directed analysis</h2>
 <p><code>getsda</code> function could be used to perform Structure/reaction directed analysis. <code>freqcutoff</code> could be used to filter the PMD with high frequncy.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(std, <span class="dt">freqcutoff =</span> <span class="dv">10</span>)
-<span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span>
-<span class="co">#&gt; 18 groups were found as high frequency PMD group.</span>
-<span class="co">#&gt; 0 were found as high frequency PMD. </span>
-<span class="co">#&gt; 1.98 were found as high frequency PMD. </span>
-<span class="co">#&gt; 2.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 13.98 were found as high frequency PMD. </span>
-<span class="co">#&gt; 14.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 14.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 15.99 were found as high frequency PMD. </span>
-<span class="co">#&gt; 16.03 were found as high frequency PMD. </span>
-<span class="co">#&gt; 28.03 were found as high frequency PMD. </span>
-<span class="co">#&gt; 30.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 42.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 49.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 58.04 were found as high frequency PMD. </span>
-<span class="co">#&gt; 66.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 68.06 were found as high frequency PMD. </span>
-<span class="co">#&gt; 82.08 were found as high frequency PMD. </span>
-<span class="co">#&gt; 116.08 were found as high frequency PMD. </span>
-<span class="co">#&gt; 126.14 were found as high frequency PMD.</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(std, <span class="dt">freqcutoff =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; 18 groups were found as high frequency PMD group.</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; 0 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1.98 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="co">#&gt; 13.98 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; 14.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt; 14.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; 15.99 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co">#&gt; 16.03 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="co">#&gt; 28.03 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; 30.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; 42.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15"><span class="co">#&gt; 49.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt; 58.04 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt; 66.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt; 68.06 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
 <p>You could use <code>plotstdsda</code> to show the distribution of the selected paired peaks.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda)</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdsda-1.png" width="700"></p>
 <p>You could also use index to show the distribution of certain PMDs.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">13.98</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">15.99</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">14.02</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">28.03</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">58.04</span>)</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">13.98</span>)</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">15.99</span>)</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">14.02</span>)</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">28.03</span>)</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda,sda<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">58.04</span>)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdsdaidx-1.png" width="700"></p>
 <p>Structure/reaction directed analysis could be directily performed on all the peaks, which is slow to process:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sdaall &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(spmeinvivo)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">13.98</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">15.99</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">14.02</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">28.03</span>)
-<span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">58.04</span>)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">sdaall &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(spmeinvivo)</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">2</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">13.98</span>)</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">15.99</span>)</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">14.02</span>)</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">28.03</span>)</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sdaall,sdaall<span class="op">$</span>sda<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span><span class="fl">58.04</span>)</a></code></pre></div>
 <div id="structurereaction-directed-analysis-for-peakscompounds-only" class="section level3">
 <h3 class="hasAnchor">
 <a href="#structurereaction-directed-analysis-for-peakscompounds-only" class="anchor"></a>Structure/reaction directed analysis for peaks/compounds only</h3>
 <p>When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by <code>getrda</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getrda.html">getrda</a></span>(spmeinvivo<span class="op">$</span>mz[std<span class="op">$</span>stdmassindex])</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getrda.html">getrda</a></span>(spmeinvivo<span class="op">$</span>mz[std<span class="op">$</span>stdmassindex])</a></code></pre></div>
 </div>
 </div>
 <div id="parameters-selection" class="section level2">
@@ -368,38 +374,38 @@ data &lt;-<span class="st"> </span>stdcluster<span class="op">$</span>data[stdcl
 <h2 class="hasAnchor">
 <a href="#wrap-function" class="anchor"></a>Wrap function</h2>
 <p><code>globalstd</code> function is a wrap funtion to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the <code>list</code> objects from <code>globalstd</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/globalstd.html">globalstd</a></span>(spmeinvivo)
-<span class="co">#&gt; 75 retention time cluster found.</span>
-<span class="co">#&gt; 435 paired masses found</span>
-<span class="co">#&gt; 10 unique PMD(s) used for further investigation.</span>
-<span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span>
-<span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span>
-<span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span>
-<span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span>
-<span class="co">#&gt; 4 group(s) with paired relationship without isotope</span>
-<span class="co">#&gt; 44 group(s) with paired relationship and isotope</span>
-<span class="co">#&gt; 257 std mass found.</span>
-<span class="co">#&gt; 8 retention group(s) have single peaks.</span>
-<span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span>
-<span class="co">#&gt; 18 groups were found as high frequency PMD group.</span>
-<span class="co">#&gt; 0 were found as high frequency PMD. </span>
-<span class="co">#&gt; 1.98 were found as high frequency PMD. </span>
-<span class="co">#&gt; 2.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 13.98 were found as high frequency PMD. </span>
-<span class="co">#&gt; 14.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 14.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 15.99 were found as high frequency PMD. </span>
-<span class="co">#&gt; 16.03 were found as high frequency PMD. </span>
-<span class="co">#&gt; 28.03 were found as high frequency PMD. </span>
-<span class="co">#&gt; 30.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 42.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 49.02 were found as high frequency PMD. </span>
-<span class="co">#&gt; 58.04 were found as high frequency PMD. </span>
-<span class="co">#&gt; 66.05 were found as high frequency PMD. </span>
-<span class="co">#&gt; 68.06 were found as high frequency PMD. </span>
-<span class="co">#&gt; 82.08 were found as high frequency PMD. </span>
-<span class="co">#&gt; 116.08 were found as high frequency PMD. </span>
-<span class="co">#&gt; 126.14 were found as high frequency PMD.</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/globalstd.html">globalstd</a></span>(spmeinvivo)</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="co">#&gt; 75 retention time cluster found.</span></a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="co">#&gt; 435 paired masses found</span></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="co">#&gt; 10 unique PMD(s) used for further investigation.</span></a>
+<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6"><span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span></a>
+<a class="sourceLine" id="cb19-8" data-line-number="8"><span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9"><span class="co">#&gt; 4 group(s) with paired relationship without isotope</span></a>
+<a class="sourceLine" id="cb19-10" data-line-number="10"><span class="co">#&gt; 44 group(s) with paired relationship and isotope</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11"><span class="co">#&gt; 257 std mass found.</span></a>
+<a class="sourceLine" id="cb19-12" data-line-number="12"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a>
+<a class="sourceLine" id="cb19-13" data-line-number="13"><span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14"><span class="co">#&gt; 18 groups were found as high frequency PMD group.</span></a>
+<a class="sourceLine" id="cb19-15" data-line-number="15"><span class="co">#&gt; 0 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-16" data-line-number="16"><span class="co">#&gt; 1.98 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-17" data-line-number="17"><span class="co">#&gt; 2.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-18" data-line-number="18"><span class="co">#&gt; 13.98 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-19" data-line-number="19"><span class="co">#&gt; 14.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-20" data-line-number="20"><span class="co">#&gt; 14.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-21" data-line-number="21"><span class="co">#&gt; 15.99 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-22" data-line-number="22"><span class="co">#&gt; 16.03 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-23" data-line-number="23"><span class="co">#&gt; 28.03 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-24" data-line-number="24"><span class="co">#&gt; 30.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-25" data-line-number="25"><span class="co">#&gt; 42.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-26" data-line-number="26"><span class="co">#&gt; 49.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-27" data-line-number="27"><span class="co">#&gt; 58.04 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-28" data-line-number="28"><span class="co">#&gt; 66.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-29" data-line-number="29"><span class="co">#&gt; 68.06 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-30" data-line-number="30"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-31" data-line-number="31"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb19-32" data-line-number="32"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
 </div>
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">
