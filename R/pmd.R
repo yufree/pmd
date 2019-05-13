@@ -938,27 +938,28 @@ getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
                 diff2 = round(as.numeric(dis),digits = digits)
         )
         freq <- table(df$diff2)[order(table(df$diff2), decreasing = T)]
+        message(paste(length(freq),'pmd found.'))
         if(!is.null(top)){
                 freq <- utils::head(freq,top)
         }
         sda <- df[(df$diff2 %in% c(as.numeric(names(
                         freq[freq >= freqcutoff]
                 )))),]
+        # mz <- unique(c(sda$ms1,sda$ms2))
         pmd <- unique(sda$diff2)[order(unique(sda$diff2))]
-        df <- NULL
-        for(i in 1:length(pmd)){
-                mass <- unique(c(sda$ms1[sda$diff2==pmd[i]],sda$ms2[sda$diff2==pmd[i]]))
+        message(paste(length(pmd),'pmd used.'))
 
-                index <- round(mz,digits) %in% round(mass,digits)
-                if(is.null(df)){
-                        df <- index
-                }else{
-                        df <- cbind.data.frame(df,index)
-                }
+        df <- NULL
+
+        split <- split.data.frame(sda,sda$diff2)
+        rtpmd <- function(bin, i) {
+                mass <- unique(c(bin$ms1[bin$diff2==i],bin$ms2[bin$diff2==i]))
+                index <- mz %in% mass
+                return(index)
         }
-        colnames(df) <- pmd
-        rownames(df) <- mz
-        return(df)
+        result <- mapply(rtpmd, split, as.numeric(names(split)))
+        rownames(result) <- mz
+        return(as.data.frame(result))
 }
 #' Get pmd for specific reactions
 #' @param list a list with mzrt profile
