@@ -42,7 +42,8 @@ getpaired <-
                                         dis <-
                                                 stats::dist(bin$mz, method = "manhattan")
                                         # get intensity cor
-                                        cor <- stats::cor(t(bin[, -c(1, 2)]))
+                                        cor <-
+                                                stats::cor(t(bin[,-c(1, 2)]))
 
                                         df <-
                                                 data.frame(
@@ -58,7 +59,8 @@ getpaired <-
                                         # remove multi chargers
                                         multiindex <-
                                                 (round(df$diff %% 1, 1) == 0.5)
-                                        multiindex2 <- (round(df$diff, 1) == 0.5)
+                                        multiindex2 <-
+                                                (round(df$diff, 1) == 0.5)
                                         mass <-
                                                 unique(df[multiindex, 1], df[multiindex, 2])
                                         mass2 <-
@@ -66,52 +68,60 @@ getpaired <-
                                         multimass <-
                                                 mass[round(mass %% 1, 1) == 0.5 |
                                                              round(mass, 4) %in% round(mass2, 4)]
-                                        dfmulti <- df[multiindex, ]
+                                        dfmulti <- df[multiindex,]
                                         if (nrow(dfmulti) > 0) {
                                                 df <-
                                                         df[!(df[, 1] %in% multimass) &
-                                                                   !(df[, 2] %in% multimass),]
+                                                                   !(df[, 2] %in% multimass), ]
                                         }
                                         # remove isotope
                                         isoindex <-
                                                 (round(df$diff, 2) != 0) &
-                                                ((df$diff %% 1 < 0.01 &
-                                                          df$diff >= 1 &
-                                                          df$diff < 2) | (df$diff %% 2 < 0.01 &
-                                                                                  df$diff >= 2 &
-                                                                                  df$diff < 3)
+                                                ((
+                                                        df$diff %% 1 < 0.01 &
+                                                                df$diff >= 1 &
+                                                                df$diff < 2
+                                                ) | (
+                                                        df$diff %% 2 < 0.01 &
+                                                                df$diff >= 2 &
+                                                                df$diff < 3
+                                                )
                                                 )
                                         massstd <-
-                                                apply(df[isoindex,], 1, function(x)
+                                                apply(df[isoindex, ], 1, function(x)
                                                         min(x[1], x[2]))
                                         massstdmax <-
-                                                apply(df[isoindex,], 1, function(x)
+                                                apply(df[isoindex, ], 1, function(x)
                                                         max(x[1], x[2]))
                                         isomass <-
                                                 unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
-                                        dfiso <- df[isoindex, ]
+                                        dfiso <- df[isoindex,]
                                         if (nrow(dfiso) > 0) {
                                                 df <-
                                                         df[!(df[, 1] %in% isomass) &
-                                                                   !(df[, 2] %in% isomass), ]
+                                                                   !(df[, 2] %in% isomass),]
                                         }
                                         dfdiff <- df
-                                        return(list(
-                                                dfmulti = dfmulti,
-                                                dfiso = dfiso,
-                                                dfdiff = dfdiff,
-                                                solo = NULL
-                                        ))
+                                        return(
+                                                list(
+                                                        dfmulti = dfmulti,
+                                                        dfiso = dfiso,
+                                                        dfdiff = dfdiff,
+                                                        solo = NULL
+                                                )
+                                        )
                                 } else {
                                         solo <- cbind(bin[, c(1:2)],
                                                       rtg = i,
                                                       cor = 1)
-                                        return(list(
-                                                dfmulti = NULL,
-                                                dfiso = NULL,
-                                                dfdiff = NULL,
-                                                solo = solo
-                                        ))
+                                        return(
+                                                list(
+                                                        dfmulti = NULL,
+                                                        dfiso = NULL,
+                                                        dfdiff = NULL,
+                                                        solo = solo
+                                                )
+                                        )
                                 }
                         } else{
                                 if (nrow(bin) > 1) {
@@ -131,7 +141,8 @@ getpaired <-
                                         # remove multi chargers
                                         multiindex <-
                                                 (round(df$diff %% 1, 1) == 0.5)
-                                        multiindex2 <- (round(df$diff, 1) == 0.5)
+                                        multiindex2 <-
+                                                (round(df$diff, 1) == 0.5)
                                         mass <-
                                                 unique(df[multiindex, 1], df[multiindex, 2])
                                         mass2 <-
@@ -139,94 +150,110 @@ getpaired <-
                                         multimass <-
                                                 mass[round(mass %% 1, 1) == 0.5 |
                                                              round(mass, 4) %in% round(mass2, 4)]
-                                        dfmulti <- df[multiindex, ]
+                                        dfmulti <- df[multiindex,]
                                         if (nrow(dfmulti) > 0) {
                                                 resultmulti <- rbind(resultmulti,
                                                                      dfmulti)
                                                 df <-
                                                         df[!(df[, 1] %in% multimass) &
-                                                                   !(df[, 2] %in% multimass),]
+                                                                   !(df[, 2] %in% multimass), ]
                                         }
                                         # remove isotope
                                         isoindex <-
                                                 (round(df$diff, 2) != 0) &
-                                                ((df$diff %% 1 < 0.01 &
-                                                          df$diff >= 1 &
-                                                          df$diff < 2) | (df$diff %% 2 < 0.01 &
-                                                                                  df$diff >= 2 &
-                                                                                  df$diff < 3)
+                                                ((
+                                                        df$diff %% 1 < 0.01 &
+                                                                df$diff >= 1 &
+                                                                df$diff < 2
+                                                ) | (
+                                                        df$diff %% 2 < 0.01 &
+                                                                df$diff >= 2 &
+                                                                df$diff < 3
+                                                )
                                                 )
                                         massstd <-
-                                                apply(df[isoindex,], 1, function(x)
+                                                apply(df[isoindex, ], 1, function(x)
                                                         min(x[1], x[2]))
                                         massstdmax <-
-                                                apply(df[isoindex,], 1, function(x)
+                                                apply(df[isoindex, ], 1, function(x)
                                                         max(x[1], x[2]))
                                         isomass <-
                                                 unique(c(massstd[(massstd %in% massstdmax)], massstdmax))
-                                        dfiso <- df[isoindex, ]
+                                        dfiso <- df[isoindex,]
                                         if (nrow(dfiso) > 0) {
                                                 resultiso <- rbind(resultiso, dfiso)
                                                 df <-
                                                         df[!(df[, 1] %in% isomass) &
-                                                                   !(df[, 2] %in% isomass), ]
+                                                                   !(df[, 2] %in% isomass),]
                                         }
                                         dfdiff <- df
-                                        return(list(
-                                                dfmulti = dfmulti,
-                                                dfiso = dfiso,
-                                                dfdiff = dfdiff,
-                                                solo = NULL
-                                        ))
+                                        return(
+                                                list(
+                                                        dfmulti = dfmulti,
+                                                        dfiso = dfiso,
+                                                        dfdiff = dfdiff,
+                                                        solo = NULL
+                                                )
+                                        )
                                 } else {
                                         solo <- cbind(bin, rtg = i)
-                                        return(list(
-                                                dfmulti = NULL,
-                                                dfiso = NULL,
-                                                dfdiff = NULL,
-                                                solo = solo
-                                        ))
+                                        return(
+                                                list(
+                                                        dfmulti = NULL,
+                                                        dfiso = NULL,
+                                                        dfdiff = NULL,
+                                                        solo = solo
+                                                )
+                                        )
                                 }
                         }
                 }
 
                 rtpmdtemp <-
                         BiocParallel::bpmapply(rtpmd,
-                                 split,
-                                 as.numeric(names(split)),
-                                 BPPARAM = BPPARAM,
-                                 SIMPLIFY = F)
+                                               split,
+                                               as.numeric(names(split)),
+                                               BPPARAM = BPPARAM,
+                                               SIMPLIFY = F)
                 result <- do.call(Map, c(rbind, rtpmdtemp))
 
                 # filter the list get the rt cluster
                 list$rtcluster <- rtcluster
                 result$dfdiff$diff2 <- round(result$dfdiff$diff, 2)
                 # speed up
-                pmd <- as.numeric(names(table(result$dfdiff$diff2)[table(result$dfdiff$diff2) > ng]))
+                pmd <-
+                        as.numeric(names(table(result$dfdiff$diff2)[table(result$dfdiff$diff2) > ng]))
                 # pmd <- unique(result$dfdiff$diff2)
                 idx <- NULL
                 for (i in 1:length(pmd)) {
-                        l <- length(unique(
-                                result$dfdiff[result$dfdiff$diff2 == pmd[i], 'rtg']))
+                        l <- length(unique(result$dfdiff[result$dfdiff$diff2 == pmd[i], 'rtg']))
                         idx <-
                                 c(idx, ifelse(l > ng, T, F))
                 }
                 pmd2 <- pmd[idx]
-                list$paired <- result$dfdiff[result$dfdiff$diff2 %in% pmd2, ]
+                list$paired <-
+                        result$dfdiff[result$dfdiff$diff2 %in% pmd2,]
 
                 if (nrow(result$dfdiff) > 0) {
                         list$pairedindex <-
                                 paste(round(list$mz, 4), list$rtcluster) %in%
-                                paste(c(round(list$paired$ms1, 4), round(list$paired$ms2,
-                                                                         4)),
-                                      c(list$paired$rtg, list$paired$rtg))
+                                paste(c(
+                                        round(list$paired$ms1, 4),
+                                        round(list$paired$ms2,
+                                              4)
+                                ),
+                                c(list$paired$rtg, list$paired$rtg))
                 }
                 # get the data index by rt groups with high frequences
                 # PMD
-                list$diffindex <- paste(round(list$mz, 4), list$rtcluster) %in%
-                        paste(c(round(result$dfdiff$ms1, 4), round(result$dfdiff$ms2,
-                                                                   4)),
-                              c(result$dfdiff$rtg, result$dfdiff$rtg))
+                list$diffindex <-
+                        paste(round(list$mz, 4), list$rtcluster) %in%
+                        paste(c(
+                                round(result$dfdiff$ms1, 4),
+                                round(result$dfdiff$ms2,
+                                      4)
+                        ),
+                        c(result$dfdiff$rtg, result$dfdiff$rtg))
                 list$diff <- result$dfdiff
                 # get the data index by rt groups with single ions
                 if (!is.null(result$solo)) {
@@ -294,8 +321,8 @@ getstd <- function(list, corcutoff = NULL) {
         resultiso <- list$iso
 
         if (!is.null(corcutoff)) {
-                resultdiff <- resultdiff[resultdiff$cor > corcutoff,]
-                resultiso <- resultiso[resultiso$cor > corcutoff,]
+                resultdiff <- resultdiff[resultdiff$cor > corcutoff, ]
+                resultiso <- resultiso[resultiso$cor > corcutoff, ]
         }
         # filter the mass from mass pairs within retention time
         # group group 1: RT groups with solo peak
@@ -311,7 +338,8 @@ getstd <- function(list, corcutoff = NULL) {
                 !(
                         unique(list$rtcluster) %in% unique(resultdiff$rtg) |
                                 unique(list$rtcluster) %in% unique(resultiso$rtg)
-                ) & !(unique(list$rtcluster) %in% unique(list$solo$rtg))
+                ) &
+                !(unique(list$rtcluster) %in% unique(list$solo$rtg))
         rtg2A <- unique(list$rtcluster)[index2A]
         message(
                 paste(
@@ -320,14 +348,17 @@ getstd <- function(list, corcutoff = NULL) {
                 )
         )
         # print(rtg2A)
-        for (i in 1:length(rtg2A)) {
-                mass <- list$mz[list$rtcluster == rtg2A[i]]
-                rt <- list$rt[list$rtcluster == rtg2A[i]]
-                mass <- max(mass)
-                suppressWarnings(resultstdtemp <- c(mass, stats::median(rt),
-                                                    rtg2A[i]))
-                suppressWarnings(resultstd2A <- rbind(resultstd2A,
-                                                      resultstdtemp))
+        if (sum(index2A) > 0) {
+                for (i in 1:length(rtg2A)) {
+                        mass <- list$mz[list$rtcluster == rtg2A[i]]
+                        rt <- list$rt[list$rtcluster == rtg2A[i]]
+                        mass <- max(mass)
+                        suppressWarnings(resultstdtemp <-
+                                                 c(mass, stats::median(rt),
+                                                   rtg2A[i]))
+                        suppressWarnings(resultstd2A <- rbind(resultstd2A,
+                                                              resultstdtemp))
+                }
         }
         # group 2B: RT groups with multiple peaks with
         # isotope/paired relationship index2B <-
@@ -348,29 +379,36 @@ getstd <- function(list, corcutoff = NULL) {
                         'group(s) with multiple peaks with isotope without paired relationship'
                 )
         )
-        for (i in 1:length(rtg2B1)) {
-                # filter the isotope peaks
-                dfiso <- resultiso[resultiso$rtg == rtg2B1[i],]
-                if (nrow(dfiso) > 0) {
-                        massstd <- apply(dfiso, 1, function(x)
-                                min(x[1],
-                                    x[2]))
-                        massstdmax <- apply(dfiso, 1, function(x)
-                                max(x[1],
-                                    x[2]))
-                        mass <- unique(massstd[!(massstd %in% massstdmax)])
-                        suppressWarnings(
-                                resultstdtemp <- cbind(
-                                        mz = ifelse(is.na(mass), NULL, c(mass)),
-                                        rt = dfiso$rt,
-                                        rtg = dfiso$rtg
+        if (sum(index2B1) > 0) {
+                for (i in 1:length(rtg2B1)) {
+                        # filter the isotope peaks
+                        dfiso <-
+                                resultiso[resultiso$rtg == rtg2B1[i], ]
+                        if (nrow(dfiso) > 0) {
+                                massstd <- apply(dfiso, 1, function(x)
+                                        min(x[1],
+                                            x[2]))
+                                massstdmax <-
+                                        apply(dfiso, 1, function(x)
+                                                max(x[1],
+                                                    x[2]))
+                                mass <-
+                                        unique(massstd[!(massstd %in% massstdmax)])
+                                suppressWarnings(
+                                        resultstdtemp <- cbind(
+                                                mz = ifelse(is.na(mass), NULL, c(mass)),
+                                                rt = dfiso$rt,
+                                                rtg = dfiso$rtg
+                                        )
                                 )
-                        )
-                        resultstd2B1 <- rbind(resultstd2B1, resultstdtemp)
-                } else{
-                        resultstd2B1 <- NULL
+                                resultstd2B1 <-
+                                        rbind(resultstd2B1, resultstdtemp)
+                        } else{
+                                resultstd2B1 <- NULL
+                        }
                 }
         }
+
         # group 2B2: RT groups with multiple peaks with paired
         # relationship without isotope
         index2B2 <-
@@ -383,24 +421,32 @@ getstd <- function(list, corcutoff = NULL) {
                 sum(index2B2),
                 'group(s) with paired relationship without isotope'
         ))
-        for (i in 1:length(rtg2B2)) {
-                # filter the paired peaks
-                df <- resultdiff[resultdiff$rtg == rtg2B2[i],]
-                if (nrow(df) > 0) {
-                        mass <- apply(df, 1, function(x)
-                                min(x[1],
-                                    x[2]))
-                        mass <- unique(mass)
-                        suppressWarnings(resultstdtemp <-
-                                                 cbind(
-                                                         mz = ifelse(is.na(mass), NULL, c(mass)),
-                                                         rt = df$rt,
-                                                         rtg = df$rtg
-                                                 ))
-                        suppressWarnings(resultstd2B2 <- rbind(resultstd2B2,
-                                                               resultstdtemp))
+        if (sum(index2B2) > 0) {
+                for (i in 1:length(rtg2B2)) {
+                        # filter the paired peaks
+                        df <-
+                                resultdiff[resultdiff$rtg == rtg2B2[i], ]
+                        if (nrow(df) > 0) {
+                                mass <- apply(df, 1, function(x)
+                                        min(x[1],
+                                            x[2]))
+                                mass <- unique(mass)
+                                suppressWarnings(
+                                        resultstdtemp <-
+                                                cbind(
+                                                        mz = ifelse(is.na(mass), NULL, c(mass)),
+                                                        rt = df$rt,
+                                                        rtg = df$rtg
+                                                )
+                                )
+                                suppressWarnings(
+                                        resultstd2B2 <- rbind(resultstd2B2,
+                                                              resultstdtemp)
+                                )
+                        }
                 }
         }
+
         # group 2B3: RT groups with multiple peaks with paired
         # relationship and isotope
         index2B3 <-
@@ -413,89 +459,103 @@ getstd <- function(list, corcutoff = NULL) {
                 sum(index2B3),
                 'group(s) with paired relationship and isotope'
         ))
-        for (i in 1:length(rtg2B3)) {
-                # filter the isotope peaks
-                dfiso <- resultiso[resultiso$rtg == rtg2B3[i],]
-                dfpaired <- resultdiff[resultdiff$rtg == rtg2B3[i],]
-                if (nrow(dfiso) > 0 & nrow(dfpaired) > 0) {
-                        # remove peaks with more than one isotopes
-                        massstd <- apply(dfiso, 1, function(x)
-                                min(x[1],
-                                    x[2]))
-                        massstdmax <- apply(dfiso, 1, function(x)
-                                max(x[1],
-                                    x[2]))
-                        massstd <- unique(massstd[!(massstd %in% massstdmax)])
-                        dis <- stats::dist(massstd, method = "manhattan")
-                        df <- data.frame(
-                                ms1 = massstd[which(lower.tri(dis),
-                                                    arr.ind = T)[, 1]],
-                                ms2 = massstd[which(lower.tri(dis),
-                                                    arr.ind = T)[, 2]],
-                                diff = round(as.numeric(dis),
-                                             2)
-                        )
-                        # remove the adducts
-                        if (sum((df$diff %in% dfpaired$diff2)) > 0) {
-                                massstd <- unique(apply(df[df$diff %in%
-                                                                   dfpaired$diff2,], 1, function(x)
-                                                                           min(x[1],
-                                                                               x[2])))
-                                massused <- unique(c(df$ms1, df$ms2))
+        if (sum(index2B3) > 0) {
+                for (i in 1:length(rtg2B3)) {
+                        # filter the isotope peaks
+                        dfiso <- resultiso[resultiso$rtg == rtg2B3[i], ]
+                        dfpaired <- resultdiff[resultdiff$rtg == rtg2B3[i], ]
+                        if (nrow(dfiso) > 0 & nrow(dfpaired) > 0) {
+                                # remove peaks with more than one isotopes
+                                massstd <- apply(dfiso, 1, function(x)
+                                        min(x[1],
+                                            x[2]))
+                                massstdmax <- apply(dfiso, 1, function(x)
+                                        max(x[1],
+                                            x[2]))
+                                massstd <-
+                                        unique(massstd[!(massstd %in% massstdmax)])
+                                dis <-
+                                        stats::dist(massstd, method = "manhattan")
+                                df <- data.frame(
+                                        ms1 = massstd[which(lower.tri(dis),
+                                                            arr.ind = T)[, 1]],
+                                        ms2 = massstd[which(lower.tri(dis),
+                                                            arr.ind = T)[, 2]],
+                                        diff = round(as.numeric(dis),
+                                                     2)
+                                )
+                                # remove the adducts
+                                if (sum((df$diff %in% dfpaired$diff2)) > 0) {
+                                        massstd <- unique(apply(df[df$diff %in%
+                                                                           dfpaired$diff2, ], 1, function(x)
+                                                                                   min(x[1],
+                                                                                       x[2])))
+                                        massused <-
+                                                unique(c(df$ms1, df$ms2))
 
-                                massadd <- unique(c(df$ms1[df$diff %in%
-                                                                   dfpaired$diff2], df$ms2[df$diff %in%
-                                                                                                   dfpaired$diff2]))
-                                massextra <- massused[!(massused %in% massadd)]
-                                mass <- c(massextra, massstd)
-                        } else {
-                                mass <- massstd
+                                        massadd <-
+                                                unique(c(df$ms1[df$diff %in%
+                                                                        dfpaired$diff2], df$ms2[df$diff %in%
+                                                                                                        dfpaired$diff2]))
+                                        massextra <-
+                                                massused[!(massused %in% massadd)]
+                                        mass <- c(massextra, massstd)
+                                } else {
+                                        mass <- massstd
+                                }
+                                suppressWarnings(
+                                        resultstdtemp <- cbind(
+                                                mz = ifelse(is.na(mass), NULL, c(mass)),
+                                                rt = dfiso$rt,
+                                                rtg = dfiso$rtg
+                                        )
+                                )
+                                suppressWarnings(
+                                        resultstd2B3 <- rbind(resultstd2B3,
+                                                              resultstdtemp)
+                                )
+                        } else if (nrow(dfiso) > 0) {
+                                # remove peaks with more than one peaks
+                                massstd <- apply(dfiso, 1, function(x)
+                                        min(x[1],
+                                            x[2]))
+                                massstdmax <- apply(dfiso, 1, function(x)
+                                        max(x[1],
+                                            x[2]))
+                                mass <-
+                                        unique(massstd[!(massstd %in% massstdmax)])
+                                suppressWarnings(
+                                        resultstdtemp <- cbind(
+                                                mz = ifelse(is.na(mass), NULL, c(mass)),
+                                                rt = dfiso$rt,
+                                                rtg = dfiso$rtg
+                                        )
+                                )
+                                suppressWarnings(
+                                        resultstd2B3 <- rbind(resultstd2B3,
+                                                              resultstdtemp)
+                                )
+                        } else if (nrow(dfpaired) > 0) {
+                                mass <- apply(dfpaired, 1, function(x)
+                                        min(x[1],
+                                            x[2]))
+                                mass <- unique(mass)
+                                suppressWarnings(
+                                        resultstdtemp <- cbind(
+                                                mz = ifelse(is.na(mass), NULL, c(mass)),
+                                                rt = dfpaired$rt,
+                                                rtg = dfpaired$rtg
+                                        )
+                                )
+                                suppressWarnings(
+                                        resultstd2B3 <- rbind(resultstd2B3,
+                                                              resultstdtemp)
+                                )
+                        } else{
+                                resultstd2B3 <- NULL
                         }
-                        suppressWarnings(
-                                resultstdtemp <- cbind(
-                                        mz = ifelse(is.na(mass), NULL, c(mass)),
-                                        rt = dfiso$rt,
-                                        rtg = dfiso$rtg
-                                )
-                        )
-                        suppressWarnings(resultstd2B3 <- rbind(resultstd2B3,
-                                                               resultstdtemp))
-                } else if (nrow(dfiso) > 0) {
-                        # remove peaks with more than one peaks
-                        massstd <- apply(dfiso, 1, function(x)
-                                min(x[1],
-                                    x[2]))
-                        massstdmax <- apply(dfiso, 1, function(x)
-                                max(x[1],
-                                    x[2]))
-                        mass <- unique(massstd[!(massstd %in% massstdmax)])
-                        suppressWarnings(
-                                resultstdtemp <- cbind(
-                                        mz = ifelse(is.na(mass), NULL, c(mass)),
-                                        rt = dfiso$rt,
-                                        rtg = dfiso$rtg
-                                )
-                        )
-                        suppressWarnings(resultstd2B3 <- rbind(resultstd2B3,
-                                                               resultstdtemp))
-                } else if (nrow(dfpaired) > 0) {
-                        mass <- apply(dfpaired, 1, function(x)
-                                min(x[1],
-                                    x[2]))
-                        mass <- unique(mass)
-                        suppressWarnings(
-                                resultstdtemp <- cbind(
-                                        mz = ifelse(is.na(mass), NULL, c(mass)),
-                                        rt = dfpaired$rt,
-                                        rtg = dfpaired$rtg
-                                )
-                        )
-                        suppressWarnings(resultstd2B3 <- rbind(resultstd2B3,
-                                                               resultstdtemp))
-                } else{
-                        resultstd2B3 <- NULL
-                }
 
+                }
         }
 
         # Combine the peaks from rt groups with single ion
@@ -517,9 +577,10 @@ getstd <- function(list, corcutoff = NULL) {
         # use correlation to refine peaks within the same retention groups
         if (!is.null(corcutoff)) {
                 mzo <- NULL
-                for(i in 1:length(unique(list$rtcluster))){
-                        resulttemp <- list$data[list$rtcluster == i&list$stdmassindex,]
-                        mz <- list$mz[list$rtcluster == i&list$stdmassindex]
+                for (i in 1:length(unique(list$rtcluster))) {
+                        resulttemp <- list$data[list$rtcluster == i & list$stdmassindex, ]
+                        mz <-
+                                list$mz[list$rtcluster == i & list$stdmassindex]
                         cor2 <- stats::cor(t(resulttemp))
                         df <- data.frame(
                                 ms1 = mz[which(lower.tri(cor2),
@@ -528,16 +589,23 @@ getstd <- function(list, corcutoff = NULL) {
                                                arr.ind = T)[, 2]],
                                 cor = cor2[lower.tri(cor2)]
                         )
-                        df2 <- apply(df,1,function(x) ifelse(x[3]>corcutoff,x[1],NA))
+                        df2 <-
+                                apply(df, 1, function(x)
+                                        ifelse(x[3] > corcutoff, x[1], NA))
                         df2 <- unique(stats::na.omit(df2))
-                        mz2 <- paste0(round(mz[(round(mz,4) %in% round(df2,4))],4),'@',i)
-                        mzo <- c(mzo,mz2)
+                        mz2 <-
+                                paste0(round(mz[(round(mz, 4) %in% round(df2, 4))], 4), '@', i)
+                        mzo <- c(mzo, mz2)
                 }
-                list$stdmassindex <- list$stdmassindex & (!(paste0(round(list$mz,4),'@',list$rtcluster) %in% mzo))
+                list$stdmassindex <-
+                        list$stdmassindex &
+                        (!(paste0(
+                                round(list$mz, 4), '@', list$rtcluster
+                        ) %in% mzo))
                 # show message about std mass
                 n <- sum(list$stdmassindex)
                 message(paste(n, "std mass found."))
-        }else{
+        } else{
                 # show message about std mass
                 n <- nrow(resultstd)
                 message(paste(n, "std mass found."))
@@ -579,12 +647,12 @@ getsda <-
                 } else if (is.null(list$stdmass)) {
                         mz <- list$mz[list$pairedindex]
                         rt <- list$rt[list$pairedindex]
-                        data <- list$data[list$pairedindex,]
+                        data <- list$data[list$pairedindex, ]
                         rtg <- list$rtcluster[list$stdmassindex]
                 } else {
                         mz <- list$mz[list$stdmassindex]
                         rt <- list$rt[list$stdmassindex]
-                        data <- list$data[list$stdmassindex,]
+                        data <- list$data[list$stdmassindex, ]
                         rtg <- list$rtcluster[list$stdmassindex]
                 }
                 # PMD analysis
@@ -617,30 +685,38 @@ getsda <-
 
                         df$diff2 <- round(df$diff, 2)
 
-                        df <- df[df$rtgdiff > 0,]
+                        df <- df[df$rtgdiff > 0, ]
                         # use unique isomers
                         index <-
                                 !duplicated(paste0(round(df$ms1, 4), round(df$ms2, 4)))
                         diff <- df$diff2[index]
-                        freq <- table(diff)[order(table(diff), decreasing = T)]
-                        if(!is.null(top)){
-                                freq <- utils::head(freq,top)
-                                message(paste("Top", top, "high frequency PMD groups were remained.", "\n"))
+                        freq <-
+                                table(diff)[order(table(diff), decreasing = T)]
+                        if (!is.null(top)) {
+                                freq <- utils::head(freq, top)
+                                message(
+                                        paste(
+                                                "Top",
+                                                top,
+                                                "high frequency PMD groups were remained.",
+                                                "\n"
+                                        )
+                                )
                         }
 
                         if (sum(df$diff2 == 0) > freqcutoff) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         } else{
                                 list$sda <- df[(df$diff2 %in% c(as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         }
                         if (!is.null(corcutoff)) {
-                                list$sda <- list$sda[list$sda$cor > corcutoff, ]
+                                list$sda <- list$sda[list$sda$cor > corcutoff,]
                         }
 
                 } else{
@@ -664,27 +740,35 @@ getsda <-
 
                         df$diff2 <- round(df$diff, 2)
 
-                        df <- df[df$rtgdiff > 0,]
+                        df <- df[df$rtgdiff > 0, ]
                         # use unique isomers
                         index <-
                                 !duplicated(paste0(round(df$ms1, 4), round(df$ms2, 4)))
                         diff <- df$diff2[index]
-                        freq <- table(diff)[order(table(diff), decreasing = T)]
-                        if(!is.null(top)){
-                                freq <- utils::head(freq,top)
-                                message(paste("Top", top, "high frequency PMD groups were remained.", "\n"))
-                                }
+                        freq <-
+                                table(diff)[order(table(diff), decreasing = T)]
+                        if (!is.null(top)) {
+                                freq <- utils::head(freq, top)
+                                message(
+                                        paste(
+                                                "Top",
+                                                top,
+                                                "high frequency PMD groups were remained.",
+                                                "\n"
+                                        )
+                                )
+                        }
 
                         if (sum(df$diff2 == 0) > freqcutoff) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         } else{
                                 list$sda <- df[(df$diff2 %in% c(as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         }
                 }
 
@@ -717,8 +801,14 @@ globalstd <- function(list,
                       rtcutoff = 10,
                       ng = 10,
                       corcutoff = NULL,
-                      freqcutoff = 10, top = 50, BPPARAM = BiocParallel::bpparam()) {
-        list <- getpaired(list, rtcutoff = rtcutoff, ng = ng, BPPARAM = BPPARAM)
+                      freqcutoff = 10,
+                      top = 50,
+                      BPPARAM = BiocParallel::bpparam()) {
+        list <-
+                getpaired(list,
+                          rtcutoff = rtcutoff,
+                          ng = ng,
+                          BPPARAM = BPPARAM)
         if (sum(list$pairedindex) > 0) {
                 list2 <- getstd(list, corcutoff = corcutoff)
                 list3 <-
@@ -752,7 +842,9 @@ globalstd <- function(list,
 #' data(spmeinvivo)
 #' cluster <- getcorcluster(spmeinvivo)
 #' @export
-getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
+getcorcluster <- function(list,
+                          corcutoff = 0.9,
+                          rtcutoff = 10) {
         mz <- list$mz
         rt <- list$rt
 
@@ -767,7 +859,7 @@ getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
         for (i in 1:length(unique(rtcluster))) {
                 # find the mass within RT
                 rtxi <- rt[rtcluster == i]
-                bin <- data[rtcluster == i,]
+                bin <- data[rtcluster == i, ]
                 if (is.matrix(bin)) {
                         msdata <- apply(bin, 1, mean)
                 } else {
@@ -775,34 +867,38 @@ getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
                 }
                 mzt <- mz[rtcluster == i]
                 cor2 <- stats::cor(t(bin))
-                df <- data.frame(
-                        ms1 = mzt[which(lower.tri(cor2),
-                                       arr.ind = T)[, 1]],
-                        ms2 = mzt[which(lower.tri(cor2),
-                                       arr.ind = T)[, 2]],
-                        cor = cor2[lower.tri(cor2)]
-                )
-                df2 <- apply(df,1,function(x) ifelse(x[3]>corcutoff,x[1],NA))
+                df <- data.frame(ms1 = mzt[which(lower.tri(cor2),
+                                                 arr.ind = T)[, 1]],
+                                 ms2 = mzt[which(lower.tri(cor2),
+                                                 arr.ind = T)[, 2]],
+                                 cor = cor2[lower.tri(cor2)])
+                df2 <-
+                        apply(df, 1, function(x)
+                                ifelse(x[3] > corcutoff, x[1], NA))
                 df2 <- unique(stats::na.omit(df2))
                 mzi <- mzt[!(mzt %in% df2)]
                 clustert <- NULL
-                for (j in 1:length(mzi)){
-                        mzic <- df$ms1[round(df$ms2,4) == round(mzi[j],4)]
-                        mzic <- unique(c(mzic,mzi[j]))
-                        ins <- msdata[round(mzt,4) %in% round(mzic,4)]
-                        tdf <- cbind.data.frame(mzic,j,i,ins)
-                        clustert <- rbind(clustert,tdf)
+                for (j in 1:length(mzi)) {
+                        mzic <- df$ms1[round(df$ms2, 4) == round(mzi[j], 4)]
+                        mzic <- unique(c(mzic, mzi[j]))
+                        ins <-
+                                msdata[round(mzt, 4) %in% round(mzic, 4)]
+                        tdf <- cbind.data.frame(mzic, j, i, ins)
+                        clustert <- rbind(clustert, tdf)
                 }
-                cluster <- rbind(cluster,clustert)
-                mz1 <- stats::aggregate(clustert,by = list(clustert$j),max)
-                mz1 <- unique(mz1[,2])
-                mz2 <- paste0(round(mz[(round(mz,4) %in% round(df2,4))],4),'@',i)
-                mzo <- c(mzo,mz2)
-                mzs <- c(mzs,mz1)
+                cluster <- rbind(cluster, clustert)
+                mz1 <-
+                        stats::aggregate(clustert, by = list(clustert$j), max)
+                mz1 <- unique(mz1[, 2])
+                mz2 <-
+                        paste0(round(mz[(round(mz, 4) %in% round(df2, 4))], 4), '@', i)
+                mzo <- c(mzo, mz2)
+                mzs <- c(mzs, mz1)
         }
-        list$stdmassindex <- !(paste0(round(list$mz,4),'@',rtcluster) %in% mzo)
-        if(!is.null(mzs)){
-                list$stdmassindex2 <- round(list$mz,4) %in% round(mzs,4)
+        list$stdmassindex <-
+                !(paste0(round(list$mz, 4), '@', rtcluster) %in% mzo)
+        if (!is.null(mzs)) {
+                list$stdmassindex2 <- round(list$mz, 4) %in% round(mzs, 4)
         }
         list$rtcluster <- cluster
         return(list)
@@ -819,14 +915,14 @@ getcorcluster <- function(list, corcutoff = 0.9, rtcutoff = 10){
 #' cluster <- getcluster(re)
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{plotstd}}
 #' @export
-getcluster <- function(list, corcutoff = NULL){
+getcluster <- function(list, corcutoff = NULL) {
         mz <- list$mz[list$stdmassindex]
         rt <- list$rt[list$stdmassindex]
         rtg <- list$rtcluster[list$stdmassindex]
-        if(is.null(list$data)){
+        if (is.null(list$data)) {
                 message('You need intensity data to use corcutoff and export pseudospectra')
                 msdata <- NULL
-        }else{
+        } else{
                 data <- list$data
                 if (is.matrix(data)) {
                         msdata <- apply(data, 1, mean)
@@ -835,58 +931,68 @@ getcluster <- function(list, corcutoff = NULL){
                 }
         }
 
-        stdg <- rep('stdgroup',length(list$rtcluster))
+        stdg <- rep('stdgroup', length(list$rtcluster))
         # filter high freq ions and find std mass
         resultdiff <- list$paired
         resultiso <- list$iso
         resultmulti <- list$multi
 
         if (!is.null(corcutoff)) {
-                resultdiff <- resultdiff[resultdiff$cor > corcutoff,]
-                resultiso <- resultiso[resultiso$cor > corcutoff,]
-                resultmulti <- resultmulti[resultmulti$cor > corcutoff, ]
+                resultdiff <- resultdiff[resultdiff$cor > corcutoff, ]
+                resultiso <- resultiso[resultiso$cor > corcutoff, ]
+                resultmulti <-
+                        resultmulti[resultmulti$cor > corcutoff,]
         }
 
         # multi-charger
-        index1 <- paste0(round(resultmulti$ms1,4),'@',resultmulti$rtg)
-        index2 <- paste0(round(resultmulti$ms2,4),'@',resultmulti$rtg)
+        index1 <-
+                paste0(round(resultmulti$ms1, 4), '@', resultmulti$rtg)
+        index2 <-
+                paste0(round(resultmulti$ms2, 4), '@', resultmulti$rtg)
         # isotope
-        index3 <- paste0(round(resultiso$ms1,4),'@',resultiso$rtg)
-        index4 <- paste0(round(resultiso$ms2,4),'@',resultiso$rtg)
+        index3 <- paste0(round(resultiso$ms1, 4), '@', resultiso$rtg)
+        index4 <- paste0(round(resultiso$ms2, 4), '@', resultiso$rtg)
         # diff
-        index5 <- paste0(round(resultdiff$ms1,4),'@',resultdiff$rtg)
-        index6 <- paste0(round(resultdiff$ms2,4),'@',resultdiff$rtg)
+        index5 <- paste0(round(resultdiff$ms1, 4), '@', resultdiff$rtg)
+        index6 <- paste0(round(resultdiff$ms2, 4), '@', resultdiff$rtg)
 
-        index00 <- paste0(round(list$mz,4),'@',list$rtcluster)
+        index00 <- paste0(round(list$mz, 4), '@', list$rtcluster)
 
 
         cluster <- mzs <- NULL
-        for (i in 1:sum(list$stdmassindex)){
+        for (i in 1:sum(list$stdmassindex)) {
                 mzt <- mz[i]
                 rtgt <- rtg[i]
-                indexstd <- paste0(round(mzt,4),'@',rtgt)
+                indexstd <- paste0(round(mzt, 4), '@', rtgt)
 
-                multiover <- unique(c(resultmulti$ms2[index1 %in% indexstd],resultmulti$ms1[index2 %in% indexstd]))
-                isoover <- unique(c(resultiso$ms2[index3 %in% indexstd],resultiso$ms1[index4 %in% indexstd]))
-                diffover <- unique(c(resultdiff$ms2[index5 %in% indexstd],resultdiff$ms1[index6 %in% indexstd]))
-                stdmassg <- c(mzt,multiover,isoover,diffover)
-                stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt] <- paste0(stdg[round(list$mz,4) %in% round(stdmassg,4) & list$rtcluster == rtgt],'@',i)
-                if(!is.null(msdata)){
-                        index <- paste0(round(stdmassg,4),'@',rtgt)
-                        ins <- msdata[unique(index00)%in%index]
-                        tdf <- cbind.data.frame(stdmassg,i,rtgt,ins)
+                multiover <-
+                        unique(c(resultmulti$ms2[index1 %in% indexstd], resultmulti$ms1[index2 %in% indexstd]))
+                isoover <-
+                        unique(c(resultiso$ms2[index3 %in% indexstd], resultiso$ms1[index4 %in% indexstd]))
+                diffover <-
+                        unique(c(resultdiff$ms2[index5 %in% indexstd], resultdiff$ms1[index6 %in% indexstd]))
+                stdmassg <- c(mzt, multiover, isoover, diffover)
+                stdg[round(list$mz, 4) %in% round(stdmassg, 4) &
+                             list$rtcluster == rtgt] <-
+                        paste0(stdg[round(list$mz, 4) %in% round(stdmassg, 4) &
+                                            list$rtcluster == rtgt], '@', i)
+                if (!is.null(msdata)) {
+                        index <- paste0(round(stdmassg, 4), '@', rtgt)
+                        ins <- msdata[unique(index00) %in% index]
+                        tdf <- cbind.data.frame(stdmassg, i, rtgt, ins)
                         mzst <- index[which.max(tdf$ins)]
-                        mzs <- c(mzs,mzst)
-                }else{
-                        tdf <- cbind.data.frame(stdmassg,i,rtgt)
+                        mzs <- c(mzs, mzst)
+                } else{
+                        tdf <- cbind.data.frame(stdmassg, i, rtgt)
                 }
 
-                cluster <- rbind.data.frame(cluster,tdf)
+                cluster <- rbind.data.frame(cluster, tdf)
         }
         list$stdg <- stdg
         list$cluster <- cluster
-        if(!is.null(mzs)){
-                list$stdmassindex2 <- paste0(round(list$mz,4),'@',list$rtcluster) %in% mzs
+        if (!is.null(mzs)) {
+                list$stdmassindex2 <-
+                        paste0(round(list$mz, 4), '@', list$rtcluster) %in% mzs
         }
         return(list)
 }
@@ -905,62 +1011,66 @@ getcluster <- function(list, corcutoff = NULL){
 #' sda <- getrda(spmeinvivo$mz[std$stdmassindex])
 #' @seealso \code{\link{getsda}}
 #' @export
-getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
-        getmass <- function(data) {
-                if (grepl('-', data)) {
-                        name <- unlist(strsplit(data, '-'))
-                        iso1 <-
-                                rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
-                        iso2 <-
-                                rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
-                        cus <-
-                                as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
-                } else{
-                        iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
-                        cus <-
-                                as.numeric(iso[max(iso[, 2]), 1])
+getrda <-
+        function(mz,
+                 freqcutoff = 10,
+                 digits = 3,
+                 top = 20,
+                 formula = NULL) {
+                getmass <- function(data) {
+                        if (grepl('-', data)) {
+                                name <- unlist(strsplit(data, '-'))
+                                iso1 <-
+                                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
+                                iso2 <-
+                                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
+                                cus <-
+                                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
+                        } else{
+                                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
+                                cus <-
+                                        as.numeric(iso[max(iso[, 2]), 1])
+                        }
+                        return(cus)
                 }
-                return(cus)
-        }
-        if(is.null(formula)){
-                dis <- stats::dist(mz, method = "manhattan")
-        }else{
-                mz <- unlist(Map(getmass,formula))
-                dis <- stats::dist(mz, method = "manhattan")
+                if (is.null(formula)) {
+                        dis <- stats::dist(mz, method = "manhattan")
+                } else{
+                        mz <- unlist(Map(getmass, formula))
+                        dis <- stats::dist(mz, method = "manhattan")
 
-        }
-        mz <- unique(mz)
+                }
+                mz <- unique(mz)
 
-        df <- cbind.data.frame(
-                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,1]],
-                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,2]],
-                diff = as.numeric(dis),
-                diff2 = round(as.numeric(dis),digits = digits)
-        )
-        freq <- table(df$diff2)[order(table(df$diff2), decreasing = T)]
-        message(paste(length(freq),'pmd found.'))
-        if(!is.null(top)){
-                freq <- utils::head(freq,top)
-        }
-        sda <- df[(df$diff2 %in% c(as.numeric(names(
-                        freq[freq >= freqcutoff]
-                )))),]
-        # mz <- unique(c(sda$ms1,sda$ms2))
-        pmd <- unique(sda$diff2)[order(unique(sda$diff2))]
-        message(paste(length(pmd),'pmd used.'))
+                df <- cbind.data.frame(
+                        ms1 = mz[which(lower.tri(dis), arr.ind = T)[, 1]],
+                        ms2 = mz[which(lower.tri(dis), arr.ind = T)[, 2]],
+                        diff = as.numeric(dis),
+                        diff2 = round(as.numeric(dis), digits = digits)
+                )
+                freq <-
+                        table(df$diff2)[order(table(df$diff2), decreasing = T)]
+                message(paste(length(freq), 'pmd found.'))
+                if (!is.null(top)) {
+                        freq <- utils::head(freq, top)
+                }
+                sda <- df[(df$diff2 %in% c(as.numeric(names(freq[freq >= freqcutoff])))), ]
+                # mz <- unique(c(sda$ms1,sda$ms2))
+                pmd <- unique(sda$diff2)[order(unique(sda$diff2))]
+                message(paste(length(pmd), 'pmd used.'))
 
-        df <- NULL
+                df <- NULL
 
-        split <- split.data.frame(sda,sda$diff2)
-        rtpmd <- function(bin, i) {
-                mass <- unique(c(bin$ms1[bin$diff2==i],bin$ms2[bin$diff2==i]))
-                index <- mz %in% mass
-                return(index)
+                split <- split.data.frame(sda, sda$diff2)
+                rtpmd <- function(bin, i) {
+                        mass <- unique(c(bin$ms1[bin$diff2 == i], bin$ms2[bin$diff2 == i]))
+                        index <- mz %in% mass
+                        return(index)
+                }
+                result <- mapply(rtpmd, split, as.numeric(names(split)))
+                rownames(result) <- mz
+                return(as.data.frame(result))
         }
-        result <- mapply(rtpmd, split, as.numeric(names(split)))
-        rownames(result) <- mz
-        return(as.data.frame(result))
-}
 #' Get pmd for specific reactions
 #' @param list a list with mzrt profile
 #' @param pmd a specific paired mass distances
@@ -972,7 +1082,7 @@ getrda <- function(mz, freqcutoff = 10, digits = 3, top=20, formula = NULL){
 #' pmd <- getpmd(spmeinvivo,pmd=15.99)
 #' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}}
 #' @export
-getpmd <- function(list,pmd,rtcutoff = 10){
+getpmd <- function(list, pmd, rtcutoff = 10) {
         mz <- list$mz
         rt <- list$rt
         data <- list$data
@@ -986,34 +1096,36 @@ getpmd <- function(list,pmd,rtcutoff = 10){
         disrtg <- stats::dist(rtg, method = "manhattan")
 
         df <- data.frame(
-                                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
-                                                                            1]],
-                                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
-                                                                            2]],
-                                diff = as.numeric(dis),
-                                rt1 = rt[which(lower.tri(disrt),
-                                               arr.ind = T)[, 1]],
-                                rt2 = rt[which(lower.tri(disrt),
-                                               arr.ind = T)[, 2]],
-                                diffrt = as.numeric(disrt),
-                                rtg1 = rtg[which(lower.tri(disrtg),
-                                                 arr.ind = T)[, 1]],
-                                rtg2 = rtg[which(lower.tri(disrtg),
-                                                 arr.ind = T)[, 2]],
-                                rtgdiff = as.numeric(disrtg))
+                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                            1]],
+                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                            2]],
+                diff = as.numeric(dis),
+                rt1 = rt[which(lower.tri(disrt),
+                               arr.ind = T)[, 1]],
+                rt2 = rt[which(lower.tri(disrt),
+                               arr.ind = T)[, 2]],
+                diffrt = as.numeric(disrt),
+                rtg1 = rtg[which(lower.tri(disrtg),
+                                 arr.ind = T)[, 1]],
+                rtg2 = rtg[which(lower.tri(disrtg),
+                                 arr.ind = T)[, 2]],
+                rtgdiff = as.numeric(disrtg)
+        )
 
-                df$diff2 <- round(df$diff, 2)
+        df$diff2 <- round(df$diff, 2)
 
-                df <- df[df$rtgdiff > 0&df$diff2 == pmd,]
+        df <- df[df$rtgdiff > 0 & df$diff2 == pmd, ]
         list$pmd <- df
-        index <- c(paste(round(df$ms1,4),round(df$rt1,4)),paste(round(df$ms2,4),round(df$rt2,4)))
+        index <-
+                c(paste(round(df$ms1, 4), round(df$rt1, 4)), paste(round(df$ms2, 4), round(df$rt2, 4)))
         index <- unique(index)
-        indexh <- paste(round(df$ms1,4),round(df$rt1,4))
+        indexh <- paste(round(df$ms1, 4), round(df$rt1, 4))
         indexh <- unique(indexh)
-        indexl <- paste(round(df$ms2,4),round(df$rt2,4))
+        indexl <- paste(round(df$ms2, 4), round(df$rt2, 4))
         indexl <- unique(indexl)
 
-        index0 <- paste(round(list$mz,4),round(list$rt,4))
+        index0 <- paste(round(list$mz, 4), round(list$rt, 4))
         list$pmdindex <- index0 %in% index
         list$pmdindexh <- index0 %in% indexh
         list$pmdindexl <- index0 %in% indexl
@@ -1032,25 +1144,27 @@ getpmd <- function(list,pmd,rtcutoff = 10){
 #' index <- gettarget(std$rt[std$stdmassindex])
 #' table(index)
 #' @export
-gettarget <- function(rt,drt=10,n=6){
+gettarget <- function(rt, drt = 10, n = 6) {
         dis <- stats::dist(rt, method = "manhattan")
         fit <- stats::hclust(dis)
         inji <- rtcluster <- stats::cutree(fit, h = drt)
         maxd <- max(table(rtcluster))
         m <- length(unique(rtcluster))
-        inj <- ceiling(maxd/n)
-        message(paste('You need',inj,'injections!'))
-        for(i in c(1:m)) {
+        inj <- ceiling(maxd / n)
+        message(paste('You need', inj, 'injections!'))
+        for (i in c(1:m)) {
                 z = 1:inj
-                x <- rt[rtcluster==i]
-                while(length(x) > inj & length(x)>n){
-                        t <- sample(x,n)
-                        w <- sample(z,1)
+                x <- rt[rtcluster == i]
+                while (length(x) > inj & length(x) > n) {
+                        t <- sample(x, n)
+                        w <- sample(z, 1)
                         inji[rt %in% t] <- w
-                        z <- z[!(z%in%w)]
+                        z <- z[!(z %in% w)]
                         x <- x[!(x %in% t)]
                 }
-                inji[rtcluster==i & rt %in% x] <- sample(z,sum(rtcluster==i & rt %in% x),replace = T)
+                inji[rtcluster == i &
+                             rt %in% x] <- sample(z, sum(rtcluster == i &
+                                                                 rt %in% x), replace = T)
         }
         return(inji)
 }
