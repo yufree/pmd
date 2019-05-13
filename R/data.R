@@ -21,3 +21,13 @@
 #'   \item{group}{group information}
 #'   }
 "spmeinvivo"
+
+#' A list dataset containing HMDB unique accurate mass pmd analysis results
+#' @docType data
+#' @usage data(hmdbp)
+#' @format A list with two vectors
+#' \describe{
+#'   \item{massp}{all unique hmdb mass probability across all pmds}
+#'   \item{pmdp}{pmds probability across all unique hmdb mass}
+#'   }
+"hmdbp"
