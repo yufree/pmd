@@ -1,6 +1,8 @@
 # pmd 0.1.3
 
 - speed up GlobalStd by BiocParallel package
+- add message for getrda
+- add hmdb pmd analysis results as dataset
 
 # pmd 0.1.2
 
