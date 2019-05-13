@@ -24,6 +24,5 @@ Imports: RColorBrewer,
         rmarkdown,
         rcdk,
         stats,
-        utils,
-        BiocParallel
+        utils
 RoxygenNote: 6.1.1

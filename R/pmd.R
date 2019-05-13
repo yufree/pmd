@@ -2,7 +2,6 @@
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param ng cutoff of global PMD's retention time group numbers, default NULL
-#' @param BPPARAM An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
 #' data(spmeinvivo)
@@ -12,8 +11,7 @@
 getpaired <-
         function(list,
                  rtcutoff = 10,
-                 ng = NULL,
-                 BPPARAM = BiocParallel::bpparam()) {
+                 ng = NULL) {
                 # paired mass diff analysis
                 dis <- stats::dist(list$rt, method = "manhattan")
                 fit <- stats::hclust(dis)
@@ -210,10 +208,9 @@ getpaired <-
                 }
 
                 rtpmdtemp <-
-                        BiocParallel::bpmapply(rtpmd,
+                        mapply(rtpmd,
                                                split,
                                                as.numeric(names(split)),
-                                               BPPARAM = BPPARAM,
                                                SIMPLIFY = F)
                 result <- do.call(Map, c(rbind, rtpmdtemp))
 
@@ -790,7 +787,6 @@ getsda <-
 #' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
-#' @param BPPARAM An optional BiocParallelParam instance determining the parallel back-end to be used during evaluation.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
 #' data(spmeinvivo)
@@ -802,13 +798,11 @@ globalstd <- function(list,
                       ng = 10,
                       corcutoff = NULL,
                       freqcutoff = 10,
-                      top = 50,
-                      BPPARAM = BiocParallel::bpparam()) {
+                      top = 50) {
         list <-
                 getpaired(list,
                           rtcutoff = rtcutoff,
-                          ng = ng,
-                          BPPARAM = BPPARAM)
+                          ng = ng)
         if (sum(list$pairedindex) > 0) {
                 list2 <- getstd(list, corcutoff = corcutoff)
                 list3 <-

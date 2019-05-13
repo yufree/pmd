@@ -199,70 +199,76 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(index)</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; index</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  1  2  3  4  5  6 </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 37 26 54 37 43 60</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 40 36 53 41 50 37</span></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># show the ions for the first injection</span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10">std<span class="op">$</span>mz[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 110.0717 113.9638 118.0874 121.0851 132.0779 134.1185 137.0472</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 137.0477 139.0591 145.0358 149.9530 155.1293 158.9617 161.0967</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 162.0552 165.0787 167.0134 173.1335 177.1640 188.6484 191.1435</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 193.1597 209.1552 209.6639 214.9181 221.0851 226.1823 226.9522</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 226.9523 227.1847 229.2006 233.2268 239.1628 242.2863 244.1921</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 244.1920 245.1944 251.2385 252.1237 255.2077 257.2676 259.9651</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 261.1542 262.1656 262.1791 265.2539 267.9535 270.3185 270.3185</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 271.3216 271.3217 272.3230 273.8902 277.1418 282.2811 285.3002</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 293.2853 294.9076 297.2985 308.2954 309.0913 311.2377 315.1957</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 318.8919 319.3002 319.9302 320.3322 325.3294 327.2022 331.2101</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 336.3260 338.3435 338.6338 339.3477 341.3048 342.0183 348.9903</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 349.3476 352.9085 353.3603 356.3423 356.9094 358.3084 362.3032</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 365.1361 367.3784 372.2591 375.3066 377.3224 380.0033 383.1414</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 387.2851 394.4045 401.3421 403.2859 405.8957 417.3364 418.3398</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 424.8970 429.3733 430.0895 430.9137 431.0687 431.3847 435.3471</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 437.8672 445.3268 447.4055 452.2768 453.3436 454.4255 468.1028</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 469.1857 478.2940 483.3545 493.3138 494.3248 494.8113 494.8112</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [120] 498.9017 502.2931 505.3342 515.3598 521.3439 526.2952 527.2976</span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [127] 532.8946 535.4718 541.1208 547.5201 560.2193 560.4165 564.1885</span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [134] 578.1272 579.1247 583.9647 593.1578 594.3765 597.8743 598.8366</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [141] 600.4401 605.2231 608.4054 616.8569 624.8488 635.3784 635.8787</span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [148] 636.8788 642.8627 644.8326 650.8519 654.3332 663.4529 664.4577</span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [155] 665.8615 666.8256 670.4222 676.6791 679.6890 686.2013 695.5039</span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [162] 699.8553 702.6369 703.6382 705.1376 711.3532 727.4611 738.5066</span></a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [169] 739.6479 750.7856 772.3250 772.5904 776.6031 786.8255 787.8267</span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; [176] 789.5260 790.5377 791.5414 795.5448 799.8284 808.6510 816.1771</span></a>
-<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; [183] 828.8075 830.6313 831.6352 839.1707 840.3407 845.5232 848.7955</span></a>
-<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [190] 860.3354 861.8356 866.3142 866.6928 870.7857 873.3057 877.8092</span></a>
-<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; [197] 884.4968 894.3269 901.8120 906.8283 908.8258 915.3139 929.4891</span></a>
-<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt; [204] 942.7638 964.7811 969.7931 975.8147</span></a>
-<a class="sourceLine" id="cb8-41" data-line-number="41">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt;   [1]  874.5865 1079.4300  958.9555  348.3470  212.6550  355.8470  161.8250</span></a>
-<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt;   [8]  511.9035  511.2940   48.6340 1079.6400  759.5770  166.6990  645.5280</span></a>
-<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt;  [15]  511.2940  511.3690   76.2780  611.4120  639.3140  639.2075  611.4120</span></a>
-<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;  [22]  614.2000  611.4120  639.5280   76.9220  565.7700  611.4120  213.9270</span></a>
-<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;  [29] 1029.1800  416.3200  453.1780  639.1000  506.7940  809.1845  614.8420</span></a>
-<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt;  [36]  415.6790  615.0550  639.1010  591.4830  439.2490  587.8420  145.9660</span></a>
-<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt;  [43]  422.7480  408.3895  464.0430  618.2700  146.3950  538.0815  781.4320</span></a>
-<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  [50]  715.1720  858.8350  785.9345  145.9680  482.5790  639.1000  564.8035</span></a>
-<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;  [57]  618.2710  144.6820  639.3130  569.4105  568.7680  596.4120  522.6500</span></a>
-<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;  [64]  143.6480  594.9110  145.2280  639.0990  629.1980  170.3860  359.9200</span></a>
-<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;  [71]  622.7680  639.1010  639.1000  639.1000  612.2680  717.1025  508.9370</span></a>
-<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;  [78]  659.2440  144.0390  648.9580  594.4830  213.7270  650.2440  613.1270</span></a>
-<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;  [85]  578.1970  659.4400  169.8615  582.2700  594.6960  212.9175  605.5200</span></a>
-<a class="sourceLine" id="cb8-55" data-line-number="55"><span class="co">#&gt;  [92]  492.8650  682.3135  632.8410  570.0540  144.8700  603.4845  582.2680</span></a>
-<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co">#&gt;  [99]  213.7130  704.6740  717.1010  213.7270  762.3630  612.4840  581.9475</span></a>
-<a class="sourceLine" id="cb8-57" data-line-number="57"><span class="co">#&gt; [106]  145.0330  513.2230  639.3150  482.3650  170.5045  628.5540  717.1010</span></a>
-<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="co">#&gt; [113]  600.2700  494.3650  422.9640  540.6520  501.6510  782.9350  890.7680</span></a>
-<a class="sourceLine" id="cb8-59" data-line-number="59"><span class="co">#&gt; [120]  213.7270  492.2230  422.9630  537.2240  515.0340  493.5080  493.5080</span></a>
-<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="co">#&gt; [127]  213.5300  639.3130  762.5770  627.8060  340.9965  537.8650  762.5770</span></a>
-<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#&gt; [134]  819.4060  819.9415  212.7615  819.4060  561.2680  213.2320  216.9670</span></a>
-<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co">#&gt; [141]  455.1500  762.5750  434.7490  215.4160  215.9880  213.5480  213.7720</span></a>
-<a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#&gt; [148]  213.7425  214.5700  215.1920  215.6410  630.9135  800.2900  800.0760</span></a>
-<a class="sourceLine" id="cb8-64" data-line-number="64"><span class="co">#&gt; [155]  213.3840  216.7620  527.7930  638.8870  639.0980  883.0525  698.3510</span></a>
-<a class="sourceLine" id="cb8-65" data-line-number="65"><span class="co">#&gt; [162]  213.3340  639.1000  638.8855  639.2070  215.2290  538.8305  481.2930</span></a>
-<a class="sourceLine" id="cb8-66" data-line-number="66"><span class="co">#&gt; [169]  639.1005  217.4155  370.0360  624.2700  639.1010  215.4870  215.7020</span></a>
-<a class="sourceLine" id="cb8-67" data-line-number="67"><span class="co">#&gt; [176]  730.8590  780.5760  780.1460  492.8580  214.1780  628.5550  213.3340</span></a>
-<a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; [183]  215.6670  628.4490  628.3420  213.1200  213.3340  517.5090  214.6500</span></a>
-<a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; [190]  213.5055  213.3840  213.3840  632.6260  216.5120  639.2070  213.9270</span></a>
-<a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#&gt; [197]  213.3590  213.4215  214.3740  213.7270  213.6560  214.9660  213.3110</span></a>
-<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt; [204]  636.9060  215.6320  654.9580  213.7270</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 100.0763 113.9638 115.9640 123.0562 136.0401 138.1031 139.9877</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 145.0358 145.9553 152.0578 153.1277 154.0586 155.1294 156.0776</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 156.1777 158.1546 161.0967 162.1128 166.0867 168.9988 170.0932</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 173.1335 175.1481 175.1482 180.0660 180.1751 186.1854 193.9460</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 197.1285 210.1577 212.1655 213.2050 217.1483 220.1184 223.0652</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 239.1490 241.2366 242.2863 242.2863 244.1300 247.2072 252.1237</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 254.2122 258.1107 261.2591 264.2049 265.4216 267.9535 268.1893</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 270.3185 270.3185 270.3172 270.3185 270.3185 270.3185 271.3217</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 271.3217 272.3234 274.8744 278.2482 280.1630 282.2811 284.2956</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 285.3002 285.9630 286.3101 291.0712 300.1148 303.3062 309.2279</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 310.0883 310.9380 312.0163 313.3297 317.2846 331.0031 334.3101</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 337.1058 337.3298 338.3430 339.6388 342.0183 344.3500 350.9869</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 354.3365 358.2640 359.0292 362.3032 362.9280 365.3023 365.3196</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 365.8035 367.3375 368.3904 369.3534 371.3345 375.3066 377.3522</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 380.3526 383.3671 385.2926 387.2851 392.3135 393.2199 395.2208</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 396.3661 400.9174 406.8545 410.8485 419.3519 421.2323 422.2952</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 426.2189 429.0892 429.3692 445.2767 445.8289 448.2959 449.1148</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [120] 451.3633 456.8437 469.1857 472.9023 485.2901 494.8112 497.3440</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [127] 499.9050 502.2931 502.3382 506.3375 507.3303 507.3409 512.4158</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [134] 517.8314 518.3245 520.3415 526.2952 528.4109 533.3888 537.5353</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [141] 538.5405 541.1208 544.3398 545.3435 549.2836 551.3562 559.4247</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [148] 565.1922 567.3904 580.2907 581.2431 582.3700 585.4215 590.3223</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [155] 593.5980 616.4645 620.4358 628.1949 629.8618 634.8774 637.1995</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [162] 644.8326 648.4664 655.8704 665.4444 669.8727 673.8481 676.6791</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [169] 676.8604 680.4633 681.4675 682.5378 685.2035 690.6403 691.4631</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; [176] 694.6505 699.8553 702.8662 703.8660 708.3638 709.3670 711.3532</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; [183] 719.9400 720.8364 730.3384 731.6537 737.5030 752.8319 759.2230</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [190] 773.3274 773.6523 775.8295 779.3404 784.2366 787.3280 806.8262</span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; [197] 811.5099 820.8196 825.3507 826.6806 832.3212 840.3407 841.5715</span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt; [204] 854.8122 863.3158 869.8223 871.3033 873.3057 873.3343 878.3781</span></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt; [211] 879.3785 879.3804 883.7184 886.7613 888.6729 889.8086 901.8120</span></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt; [218] 907.1589 911.7489 920.4687 923.8020 929.4891 940.8177 941.3198</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt; [225] 945.7972 946.7398 956.7945 978.4752 984.4307</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;   [1]  170.1810 1079.4300   85.0640  231.0760  552.8035  874.6950   84.8490</span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;   [8]   48.6340   85.3855  219.5120  524.9460  212.6560  804.4690  227.6550</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt;  [15]  405.3890  470.3640  645.5280  256.1585  511.2940  135.4660  235.9920</span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt;  [22]  611.4120  614.4130  453.1780  431.1060  416.3190  501.3300  144.6815</span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  [29]  170.6010  611.4130  397.4615  594.9115  638.8870  170.8240  467.3650</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;  [36]  170.2755  639.0980  780.5760  611.4110  504.6540  606.2690  591.4830</span></a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;  [43]  451.6785  144.0390  639.1010  592.9830  145.8285  146.3950  452.5345</span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;  [50]  880.3720  501.6500    4.0610  604.7690  823.9060  670.2425  880.8005</span></a>
+<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;  [57]  858.8350  742.6450  218.5540  559.5550  583.7700  639.1000    3.9535</span></a>
+<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;  [64]  614.1970  147.4990  613.5555  161.3960  447.6060  639.1000  360.5630</span></a>
+<a class="sourceLine" id="cb8-55" data-line-number="55"><span class="co">#&gt;  [71]  567.9115  145.6800  212.8675  636.9560  608.1980  509.3650  608.1990</span></a>
+<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co">#&gt;  [78]  543.4380  595.1260  659.1360  639.0990  717.1025  638.9930  508.2950</span></a>
+<a class="sourceLine" id="cb8-57" data-line-number="57"><span class="co">#&gt;  [85]  594.4820  480.8010  717.0520  613.1270  213.9270  639.0990  656.2235</span></a>
+<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="co">#&gt;  [92]  639.2065  644.2420  682.3870  688.3880  551.7325  582.2700  650.0300</span></a>
+<a class="sourceLine" id="cb8-59" data-line-number="59"><span class="co">#&gt;  [99]  604.8765  699.7440  561.2700  492.8650  551.6260  613.5540  613.7680</span></a>
+<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="co">#&gt; [106]  594.2690  145.1090  145.0880  218.3130  656.0290  551.1970  639.5290</span></a>
+<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#&gt; [113]  601.1275  717.1020  613.1270  421.8915  513.2250  404.7480  717.1020</span></a>
+<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co">#&gt; [120]  553.5540  217.2465  600.2700  213.7270  582.6970  727.4325  536.5865</span></a>
+<a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#&gt; [127]  213.9270  492.2230  511.5080  423.1770  554.8390  422.9630  550.3385</span></a>
+<a class="sourceLine" id="cb8-64" data-line-number="64"><span class="co">#&gt; [134]  144.7890  495.3295  515.3650  493.5080  422.7495  537.2230  705.5300</span></a>
+<a class="sourceLine" id="cb8-65" data-line-number="65"><span class="co">#&gt; [141]  705.5310  762.5770  511.2270  511.0800  461.7930  551.4100  439.4630</span></a>
+<a class="sourceLine" id="cb8-66" data-line-number="66"><span class="co">#&gt; [148]  762.5760  213.3840  508.5080  630.9130  534.0090  434.7490  510.4370</span></a>
+<a class="sourceLine" id="cb8-67" data-line-number="67"><span class="co">#&gt; [155]  772.2180  454.9350  531.0080  642.7435  214.6170  213.7270  819.1920</span></a>
+<a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; [162]  215.1920  531.2240  213.3340  449.3220  213.5285  214.3560  638.8870</span></a>
+<a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; [169]  214.3560  468.4360  468.5430  551.5165  883.1575  594.0550  525.0090</span></a>
+<a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#&gt; [176]  639.1000  213.3340  213.7270  213.7270  481.0780  481.2940  215.2290</span></a>
+<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt; [183]  212.6510  215.1360  213.3840  595.1270  481.0790  215.2145  700.1720</span></a>
+<a class="sourceLine" id="cb8-72" data-line-number="72"><span class="co">#&gt; [190]  370.5620  613.5550  214.1480  214.9615  700.3870  215.4920  213.6270</span></a>
+<a class="sourceLine" id="cb8-73" data-line-number="73"><span class="co">#&gt; [197]  682.8535  215.2830  367.0375  628.4480  213.5140  213.3340  517.2940</span></a>
+<a class="sourceLine" id="cb8-74" data-line-number="74"><span class="co">#&gt; [204]  215.4170  639.1010  213.5020  639.2070  639.2070  213.5480  381.9255</span></a>
+<a class="sourceLine" id="cb8-75" data-line-number="75"><span class="co">#&gt; [211]  381.6350  373.7835  632.1990  217.3700  632.3055  215.2605  214.3740</span></a>
+<a class="sourceLine" id="cb8-76" data-line-number="76"><span class="co">#&gt; [218]  213.3590  650.4570  497.7940  215.4170  213.3110  213.5480  213.5480</span></a>
+<a class="sourceLine" id="cb8-77" data-line-number="77"><span class="co">#&gt; [225]  214.1550  800.2900  215.0405  480.2610  386.1965</span></a></code></pre></div>
 </div>
 <div id="validation-by-principal-components-analysispca" class="section level3">
 <h3 class="hasAnchor">
