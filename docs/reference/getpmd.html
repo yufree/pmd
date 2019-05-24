@@ -130,7 +130,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>getpmd</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>getpmd</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -145,10 +145,21 @@
     </tr>
     <tr>
       <th>rtcutoff</th>
-      <td><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p>
-<p>#' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.</p></td>
+      <td><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p>mass or mass to charge ratio accuracy for pmd, default 2</p></td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td><p>measured mass or mass to charge ratio in digits, default 4</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -164,6 +175,8 @@
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>

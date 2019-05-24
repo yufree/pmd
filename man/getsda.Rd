@@ -5,7 +5,7 @@
 \title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
 getsda(list, rtcutoff = 10, freqcutoff = 10, top = 50,
-  corcutoff = NULL)
+  corcutoff = NULL, digits = 2, accuracy = 4)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
@@ -17,6 +17,8 @@ getsda(list, rtcutoff = 10, freqcutoff = 10, top = 50,
 \item{top}{top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+
+\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.

@@ -3,6 +3,7 @@
 - speed up GlobalStd by mapply
 - add message for getrda
 - add hmdb pmd analysis results as dataset
+- add digits for mass accuracy
 
 # pmd 0.1.2
 

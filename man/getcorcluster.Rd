@@ -4,7 +4,7 @@
 \alias{getcorcluster}
 \title{Get Pseudo-Spectrum as peaks cluster based on correlation analysis.}
 \usage{
-getcorcluster(list, corcutoff = 0.9, rtcutoff = 10)
+getcorcluster(list, corcutoff = 0.9, rtcutoff = 10, accuracy = 4)
 }
 \arguments{
 \item{list}{a list with peaks intensity}
@@ -12,6 +12,8 @@ getcorcluster(list, corcutoff = 0.9, rtcutoff = 10)
 \item{corcutoff}{cutoff of the correlation coefficient, default 0.9}
 
 \item{rtcutoff}{cutoff of the distances in cluster, default 10}
+
+\item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
 list with Pseudo-Spectrum index

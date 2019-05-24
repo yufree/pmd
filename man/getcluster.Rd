@@ -4,12 +4,14 @@
 \alias{getcluster}
 \title{Get Pseudo-Spectrum as peaks cluster based on pmd analysis.}
 \usage{
-getcluster(list, corcutoff = NULL)
+getcluster(list, corcutoff = NULL, accuracy = 4)
 }
 \arguments{
 \item{list}{a list from getstd function}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+
+\item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
 list with Pseudo-Spectrum index

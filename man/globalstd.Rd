@@ -5,7 +5,7 @@
 \title{GlobalStd algorithm with structure/reaction directed analysis}
 \usage{
 globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
-  freqcutoff = 10, top = 50)
+  freqcutoff = 10, top = 50, digits = 2, accuracy = 4)
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
@@ -19,6 +19,10 @@ globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
 \item{freqcutoff}{cutoff of frequency of PMDs between RT cluster for independent peaks, default 10}
 
 \item{top}{top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50}
+
+\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
+
+\item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
 list with GlobalStd algorithm processed data.
