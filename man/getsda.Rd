@@ -19,6 +19,8 @@ getsda(list, rtcutoff = 10, freqcutoff = 10, top = 50,
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
+
+\item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.

@@ -305,6 +305,7 @@ getpaired <-
 #' Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
 #' @param list a list from getpaired function
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @return list with std mass index
 #' @examples
@@ -313,7 +314,7 @@ getpaired <-
 #' std <- getstd(pmd)
 #' @seealso \code{\link{getpaired}},\code{\link{getsda}},\code{\link{plotstd}}
 #' @export
-getstd <- function(list, corcutoff = NULL, accuracy = 4) {
+getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
         resultstd2A <- resultstd2B1 <- resultstd2B2 <- resultstd2B3 <- NULL
         # filter high freq ions and find std mass
         resultdiff <- list$paired
@@ -623,6 +624,7 @@ getstd <- function(list, corcutoff = NULL, accuracy = 4) {
 #' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
+#' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
 #' data(spmeinvivo)

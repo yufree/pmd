@@ -160,6 +160,10 @@
       <th>digits</th>
       <td><p>mass or mass to charge ratio accuracy for pmd, default 2</p></td>
     </tr>
+    <tr>
+      <th>accuracy</th>
+      <td><p>measured mass or mass to charge ratio in digits, default 4</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -173,7 +177,21 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>spmeinvivo</span>)
-<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getpaired.html'>getpaired</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='output co'>#&gt; <span class='message'>383 paired masses found </span></div><div class='output co'>#&gt; <span class='message'>5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></div><div class='output co'>#&gt; <span class='message'>583 isotopologue(s) related paired mass found.</span></div><div class='output co'>#&gt; <span class='message'>685 multi-charger(s) related paired mass found.</span></div><div class='input'><span class='no'>std</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getstd.html'>getstd</a></span>(<span class='no'>pmd</span>)</div><div class='output co'>#&gt; <span class='message'>11 group(s) with multiple peaks while no isotope/paired relationship</span></div><div class='output co'>#&gt; <span class='message'>9 group(s) with multiple peaks with isotope without paired relationship</span></div><div class='output co'>#&gt; <span class='message'>4 group(s) with paired relationship without isotope</span></div><div class='output co'>#&gt; <span class='message'>43 group(s) with paired relationship and isotope</span></div><div class='output co'>#&gt; <span class='error'>Error in data.frame(ms1 = massstd[which(lower.tri(dis), arr.ind = T)[,     1]], ms2 = massstd[which(lower.tri(dis), arr.ind = T)[, 2]],     diff = round(as.numeric(dis), digits)): object 'digits' not found</span></div><div class='input'><span class='no'>sda</span> <span class='kw'>&lt;-</span> <span class='fu'>getsda</span>(<span class='no'>std</span>)</div><div class='output co'>#&gt; <span class='error'>Error in getsda(std): object 'std' not found</span></div></pre>
+<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getpaired.html'>getpaired</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='output co'>#&gt; <span class='message'>383 paired masses found </span></div><div class='output co'>#&gt; <span class='message'>5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></div><div class='output co'>#&gt; <span class='message'>583 isotopologue(s) related paired mass found.</span></div><div class='output co'>#&gt; <span class='message'>685 multi-charger(s) related paired mass found.</span></div><div class='input'><span class='no'>std</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getstd.html'>getstd</a></span>(<span class='no'>pmd</span>)</div><div class='output co'>#&gt; <span class='message'>11 group(s) with multiple peaks while no isotope/paired relationship</span></div><div class='output co'>#&gt; <span class='message'>9 group(s) with multiple peaks with isotope without paired relationship</span></div><div class='output co'>#&gt; <span class='message'>4 group(s) with paired relationship without isotope</span></div><div class='output co'>#&gt; <span class='message'>43 group(s) with paired relationship and isotope</span></div><div class='output co'>#&gt; <span class='message'>252 std mass found.</span></div><div class='output co'>#&gt; <span class='message'>8 retention group(s) have single peaks.</span></div><div class='input'><span class='no'>sda</span> <span class='kw'>&lt;-</span> <span class='fu'>getsda</span>(<span class='no'>std</span>)</div><div class='output co'>#&gt; <span class='message'>Top 50 high frequency PMD groups were remained. </span></div><div class='output co'>#&gt; <span class='message'>15 groups were found as high frequency PMD group. </span></div><div class='output co'>#&gt; <span class='message'>0 were found as high frequency PMD. </span>
+#&gt; <span class='message'>2.02 were found as high frequency PMD. </span>
+#&gt; <span class='message'>13.98 were found as high frequency PMD. </span>
+#&gt; <span class='message'>14.02 were found as high frequency PMD. </span>
+#&gt; <span class='message'>14.05 were found as high frequency PMD. </span>
+#&gt; <span class='message'>15.99 were found as high frequency PMD. </span>
+#&gt; <span class='message'>16.03 were found as high frequency PMD. </span>
+#&gt; <span class='message'>28.03 were found as high frequency PMD. </span>
+#&gt; <span class='message'>30.05 were found as high frequency PMD. </span>
+#&gt; <span class='message'>42.05 were found as high frequency PMD. </span>
+#&gt; <span class='message'>49.02 were found as high frequency PMD. </span>
+#&gt; <span class='message'>66.05 were found as high frequency PMD. </span>
+#&gt; <span class='message'>68.06 were found as high frequency PMD. </span>
+#&gt; <span class='message'>82.08 were found as high frequency PMD. </span>
+#&gt; <span class='message'>126.14 were found as high frequency PMD. </span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

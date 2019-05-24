@@ -4,12 +4,14 @@
 \alias{getstd}
 \title{Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.}
 \usage{
-getstd(list, corcutoff = NULL, accuracy = 4)
+getstd(list, corcutoff = NULL, digits = 2, accuracy = 4)
 }
 \arguments{
 \item{list}{a list from getpaired function}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+
+\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
