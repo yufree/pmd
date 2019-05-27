@@ -814,13 +814,14 @@ globalstd <- function(list,
                           rtcutoff = rtcutoff,
                           ng = ng,digits = digits, accuracy = accuracy)
         if (sum(list$pairedindex) > 0) {
-                list2 <- getstd(list, corcutoff = corcutoff, accuracy = accuracy)
+                list2 <- getstd(list, corcutoff = corcutoff, digits = digits,accuracy = accuracy)
                 list3 <-
                         getsda(
                                 list2,
                                 rtcutoff = rtcutoff,
                                 freqcutoff = freqcutoff,
-                                corcutoff = corcutoff
+                                corcutoff = corcutoff,
+                                digits = digits
                         )
         } else{
                 message('no paired relationship, directly go to structure directed analysis.')
@@ -830,7 +831,8 @@ globalstd <- function(list,
                                 rtcutoff = rtcutoff,
                                 freqcutoff = freqcutoff,
                                 corcutoff = corcutoff,
-                                top = top
+                                top = top,
+                                digits = digits
                         )
         }
 
@@ -1125,12 +1127,16 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
 
         df <- df[df$rtgdiff > 0 & df$diff2 == pmd, ]
         list$pmd <- df
+        ms1 <- ifelse(df$ms1>df$ms2,df$ms1,df$ms2)
+        ms2 <- ifelse(df$ms1>df$ms2,df$ms2,df$ms1)
+        rtg1 <- ifelse(df$ms1>df$ms2,df$rtg1,df$rtg2)
+        rtg2 <- ifelse(df$ms1>df$ms2,df$rtg2,df$rtg1)
         index <-
-                c(paste(round(df$ms1, accuracy), df$rtg1), paste(round(df$ms2, accuracy), df$rtg2))
+                c(paste(round(ms1, accuracy), rtg1), paste(round(ms2, accuracy), rtg2))
         index <- unique(index)
-        indexh <- paste(round(df$ms1, accuracy), df$rtg1)
+        indexh <- paste(round(ms1, accuracy), rtg1)
         indexh <- unique(indexh)
-        indexl <- paste(round(df$ms2, accuracy), df$rtg2)
+        indexl <- paste(round(ms2, accuracy), rtg2)
         indexl <- unique(indexl)
 
         index0 <- paste(round(list$mz, accuracy), list$rtg)

@@ -4,6 +4,7 @@
 - add message for getrda
 - add hmdb pmd analysis results as dataset
 - add digits for mass accuracy
+- fix the ms1 larger issue in getpmd
 
 # pmd 0.1.2
 
