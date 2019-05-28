@@ -1139,7 +1139,7 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
         indexl <- paste(round(ms2, accuracy), rtg2)
         indexl <- unique(indexl)
 
-        index0 <- paste(round(list$mz, accuracy), list$rtg)
+        index0 <- paste(round(list$mz, accuracy), rtg)
         list$pmdindex <- index0 %in% index
         list$pmdindexh <- index0 %in% indexh
         list$pmdindexl <- index0 %in% indexl
