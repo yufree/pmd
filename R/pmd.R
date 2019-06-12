@@ -686,10 +686,8 @@ getsda <-
                                         rtgdiff = as.numeric(disrtg),
                                         cor = cor[lower.tri(cor)]
                                 )
-
-                        df$diff2 <- round(df$diff, digits)
-
                         df <- df[df$rtgdiff > 0, ]
+                        df$diff2 <- round(df$diff, digits)
                         # use unique isomers
                         index <-
                                 !duplicated(paste0(round(df$ms1, accuracy), round(df$ms2, accuracy)))
@@ -742,9 +740,9 @@ getsda <-
                                 rtgdiff = as.numeric(disrtg)
                         )
 
+                        df <- df[df$rtgdiff > 0, ]
                         df$diff2 <- round(df$diff, digits)
 
-                        df <- df[df$rtgdiff > 0, ]
                         # use unique isomers
                         index <-
                                 !duplicated(paste0(round(df$ms1, accuracy), round(df$ms2, accuracy)))

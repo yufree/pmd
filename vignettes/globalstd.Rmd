@@ -129,8 +129,8 @@ You need to check the GlobalStd algorithm's results by principal components anal
 ```{r pca}
 library(enviGCMS)
 par(mfrow = c(1,2),mar = c(4,4,2,1)+0.1)
-plotpca(std$data,lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
-plotpca(std$data[std$stdmassindex,],lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
+plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
+plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
 ```
 
 ### Comparision with other packages
@@ -150,9 +150,9 @@ You could also use `getcorcluster` to find peaks groups by correlation analysis 
 ```{r corcomp}
 corcluster <- getcorcluster(spmeinvivo)
 par(mfrow = c(1,3),mar = c(4,4,2,1)+0.1)
-plotpca(std$data,lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
-plotpca(std$data[std$stdmassindex,],lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
-plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks by correlationship)")))
+plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
+plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
+plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks by correlationship)")))
 ```
 
 
@@ -163,9 +163,9 @@ GlobalStd algorithm is designed to analysis data without intensity data. However
 ```{r globalcor}
 std2 <- getstd(pmd,corcutoff = 0.9)
 par(mfrow = c(1,3),mar = c(4,4,2,1)+0.1)
-plotpca(std2$data,lv = as.numeric(std2$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
-plotpca(std$data[std$stdmassindex,],lv = as.numeric(std$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
-plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(std2$group$class),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
+plotpca(std2$data,lv = as.numeric(as.factor(std2$group)),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
+plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
+plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std2$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
 ```
 
 
