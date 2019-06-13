@@ -321,7 +321,7 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
         resultiso <- list$iso
 
         if (!is.null(corcutoff)) {
-                resultdiff <- resultdiff[resultdiff$cor > corcutoff, ]
+                resultdiff <- resultdiff[abs(resultdiff$cor) > corcutoff, ]
                 resultiso <- resultiso[resultiso$cor > corcutoff, ]
         }
         # filter the mass from mass pairs within retention time
@@ -591,7 +591,7 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
                         )
                         df2 <-
                                 apply(df, 1, function(x)
-                                        ifelse(x[3] > corcutoff, x[1], NA))
+                                        ifelse(abs(x[3]) > corcutoff, x[1], NA))
                         df2 <- unique(stats::na.omit(df2))
                         mz2 <-
                                 paste0(round(mz[(round(mz, accuracy) %in% round(df2, accuracy))], accuracy), '@', i)
@@ -718,7 +718,7 @@ getsda <-
                                 )))), ]
                         }
                         if (!is.null(corcutoff)) {
-                                list$sda <- list$sda[list$sda$cor > corcutoff,]
+                                list$sda <- list$sda[abs(list$sda$cor) > corcutoff,]
                         }
 
                 } else{
@@ -880,7 +880,7 @@ getcorcluster <- function(list,
                                  cor = cor2[lower.tri(cor2)])
                 df2 <-
                         apply(df, 1, function(x)
-                                ifelse(x[3] > corcutoff, x[1], NA))
+                                ifelse(abs(x[3]) > corcutoff, x[1], NA))
                 df2 <- unique(stats::na.omit(df2))
                 mzi <- mzt[!(mzt %in% df2)]
                 clustert <- NULL
@@ -945,7 +945,7 @@ getcluster <- function(list, corcutoff = NULL, accuracy = 4) {
         resultmulti <- list$multi
 
         if (!is.null(corcutoff)) {
-                resultdiff <- resultdiff[resultdiff$cor > corcutoff, ]
+                resultdiff <- resultdiff[abs(resultdiff$cor) > corcutoff, ]
                 resultiso <- resultiso[resultiso$cor > corcutoff, ]
                 resultmulti <-
                         resultmulti[resultmulti$cor > corcutoff,]
