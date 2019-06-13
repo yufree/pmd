@@ -169,7 +169,7 @@ plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std2$group)),mai
 ```
 
 
-## Structure/reaction directed analysis
+## Structure/Reaction directed analysis
 
 `getsda` function could be used to perform Structure/reaction directed analysis. `freqcutoff` could be used to filter the PMD with high frequncy.
 
@@ -216,6 +216,25 @@ When you only have data of peaks without retention time or compounds list, struc
 sda <- getrda(spmeinvivo$mz[std$stdmassindex])
 ```
 
+### Structure/Reaction Network
+
+One peak or compounds could be involved in multiple reactions. You could construct a network by such relationship.
+
+```{r net}
+library(igraph)
+sda <- getsda(std, freqcutoff = 10)
+df <- sda$sda
+net <- graph_from_data_frame(df,directed = F)
+plot(net,vertex.label=NA,vertex.size = df$ms1/25,edge.width = df$diff2/20+0.00001)
+# Check the degree of the nodes
+# Show the degree distribution of the vertices
+deg <- degree(net, mode="all")
+degree_distribution(net)
+plot(net, vertex.size=deg/2,vertex.label=NA,vertex.size = df$ms1/25,edge.width = df$diff2/20+0.00001)
+# network community structure detection
+ceb <- cluster_edge_betweenness(net,weights = abs(E(net)$cor), directed = F) 
+plot(ceb, net,vertex.label=NA,) 
+```
 
 ## Parameters selection
 
