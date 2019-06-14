@@ -31,3 +31,13 @@
 #'   \item{pmdp}{pmds probability across all unique hmdb mass}
 #'   }
 "hmdbp"
+
+#' A dataframe containing HMDB top 10000 unique accurate mass pmd and related reactions
+#' @docType data
+#' @usage data(hmdb)
+#' @format A dataframe with atoms numbers of C, H, O, N, P, S
+#' \describe{
+#'   \item{percentage}{accuracy of atom numbers prediction}
+#'   \item{pmd}{pmd with two digits}
+#'   }
+"hmdb"
