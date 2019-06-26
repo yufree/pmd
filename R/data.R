@@ -41,3 +41,33 @@
 #'   \item{pmd}{pmd with two digits}
 #'   }
 "hmdb"
+
+#' A dataframe containing multiple reaction database ID and their related accurate mass pmd and related reactions
+#' @docType data
+#' @usage data(omics)
+#' @format A dataframe with reaction and their realted pmd
+#' \describe{
+#'   \item{KEGG}{KEGG reaction ID}
+#'   \item{RHEA_ID}{RHEA_ID}
+#'   \item{DIRECTION}{reaction direction}
+#'   \item{MASTER_ID}{master reaction RHEA ID}
+#'   \item{ec}{ec reaction ID}
+#'   \item{ecocyc}{ecocyc reaction ID}
+#'   \item{macie}{macie reaction ID}
+#'   \item{metacyc}{metacyc reaction ID}
+#'   \item{reactome}{reactome reaction ID}
+#'   \item{compounds}{reaction related compounds}
+#'   \item{pmd}{pmd with two digits}
+#'   \item{pmd2}{pmd with three digits}
+#'   }
+"omics"
+
+#' A dataframe containing all KEGG reaction related accurate mass pmd and related reactions formula
+#' @docType data
+#' @usage data(keggrall)
+#' @format A dataframe with KEGG reaction, their realted pmd and atoms numbers of C, H, O, N, P, S
+#' \describe{
+#'   \item{ID}{KEGG reaction ID}
+#'   \item{pmd}{pmd with three digits}
+#'   }
+"keggrall"
