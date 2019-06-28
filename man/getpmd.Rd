@@ -2,7 +2,7 @@
 % Please edit documentation in R/pmd.R
 \name{getpmd}
 \alias{getpmd}
-\title{Get pmd for specific reactions}
+\title{Get pmd for specific reaction}
 \usage{
 getpmd(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4)
 }
@@ -18,10 +18,10 @@ getpmd(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4)
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
-list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+list with paired peaks for specific pmd.
 }
 \description{
-Get pmd for specific reactions
+Get pmd for specific reaction
 }
 \examples{
 data(spmeinvivo)

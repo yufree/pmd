@@ -1078,13 +1078,13 @@ getrda <-
                 rownames(result) <- mz
                 return(as.data.frame(result))
         }
-#' Get pmd for specific reactions
+#' Get pmd for specific reaction
 #' @param list a list with mzrt profile
 #' @param pmd a specific paired mass distances
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
-#' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+#' @return list with paired peaks for specific pmd.
 #' @examples
 #' data(spmeinvivo)
 #' pmd <- getpmd(spmeinvivo,pmd=15.99)
@@ -1141,6 +1141,45 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
         list$pmdindex <- index0 %in% index
         list$pmdindexh <- index0 %in% indexh
         list$pmdindexl <- index0 %in% indexl
+        return(list)
+}
+
+#' Get quantitative paired peaks list for specific reaction/pmd
+#' @param list a list with mzrt profile and data
+#' @param pmd a specific paired mass distances
+#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2
+#' @param accuracy measured mass or mass to charge ratio in digits, default 4
+#' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
+#' @return list with quantitative paired peaks.
+#' @examples
+#' data(spmeinvivo)
+#' pmd <- getreact(spmeinvivo,pmd=15.99)
+#' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}},\code{\link{getpmd}},
+#' @export
+getreact <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4, ratiocv = 30){
+        p <- pmd::getpmd(list,pmd=pmd,rtcutoff = rtcutoff,digits = digits, accuracy = accuracy)
+        list <- enviGCMS::getfilter(p,p$pmdindex)
+        data <- list$data
+        pmd <- list$pmd
+        lv <- list$group
+        nlv <- unique(lv)
+        getr <- function(v,nlv){
+                ratio <- NULL
+                for(i in 1:length(nlv)){
+                        ratio1 <- sum(data[list$mz%in%v[1]&list$rt%in%v[4],grepl(nlv[i],list$group)])
+                        ratio2 <- sum(data[list$mz%in%v[2]&list$rt%in%v[5],grepl(nlv[i],list$group)])
+                        ratioi <- ratio1/ratio2
+                        ratio <- c(ratio,ratioi)
+                }
+                rsd <- stats::sd(ratio,na.rm = T)/mean(ratio,na.rm = T)*100
+                return(rsd)
+        }
+        list$pmd$r <- apply(pmd,1,getr,nlv)
+        list$pmd <- list$pmd[list$pmd$r<ratiocv,]
+        idx <- paste(list$mz,list$rt)
+        idx2 <- unique(c(paste(list$pmd$ms1,list$pmd$rt1),paste(list$pmd$ms2,list$pmd$rt2)))
+        list <- enviGCMS::getfilter(list,idx%in%idx2)
         return(list)
 }
 
