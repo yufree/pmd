@@ -1162,13 +1162,19 @@ getreact <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4, ratiocv
         list <- enviGCMS::getfilter(p,p$pmdindex)
         data <- list$data
         pmd <- list$pmd
-        lv <- list$group
-        nlv <- unique(lv)
+        if(NCOL(list$group)>1){
+                group <- apply(list$group, 1 , paste0, collapse = "")
+                nlv <- unique(group)
+        }else{
+                group <- list$group
+                nlv <- unique(group)
+        }
+
         getr <- function(v,nlv){
                 ratio <- NULL
                 for(i in 1:length(nlv)){
-                        ratio1 <- sum(data[list$mz%in%v[1]&list$rt%in%v[4],grepl(nlv[i],list$group)])
-                        ratio2 <- sum(data[list$mz%in%v[2]&list$rt%in%v[5],grepl(nlv[i],list$group)])
+                        ratio1 <- sum(data[list$mz%in%v[1]&list$rt%in%v[4],grepl(nlv[i],group)])
+                        ratio2 <- sum(data[list$mz%in%v[2]&list$rt%in%v[5],grepl(nlv[i],group)])
                         ratioi <- ratio1/ratio2
                         ratio <- c(ratio,ratioi)
                 }
