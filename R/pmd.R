@@ -1166,7 +1166,7 @@ getreact <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4, ratiocv
                 group <- apply(list$group, 1 , paste0, collapse = "")
                 nlv <- unique(group)
         }else{
-                group <- list$group
+                group <- c(t(list$group))
                 nlv <- unique(group)
         }
 
