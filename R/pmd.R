@@ -1102,6 +1102,7 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
         dis <- stats::dist(mz, method = "manhattan")
         disrt <- stats::dist(rt, method = "manhattan")
         disrtg <- stats::dist(rtg, method = "manhattan")
+        cor <- stats::cor(t(data))
 
         df <- data.frame(
                 ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
@@ -1118,7 +1119,8 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
                                  arr.ind = T)[, 1]],
                 rtg2 = rtg[which(lower.tri(disrtg),
                                  arr.ind = T)[, 2]],
-                rtgdiff = as.numeric(disrtg)
+                rtgdiff = as.numeric(disrtg),
+                cor = cor[lower.tri(cor)]
         )
 
         df$diff2 <- round(df$diff, digits)

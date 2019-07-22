@@ -5,6 +5,7 @@
 - add hmdb pmd analysis results as dataset
 - add digits for mass accuracy
 - fix the ms1 larger issue in getpmd
+- add correlationship in getpmd
 - add support for quantitative paired peaks list selection for specific reaction
 - add support for target pmd and compound analysis for reaction chain
 
