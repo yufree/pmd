@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get pmd for specific reaction — getpmd • pmd</title>
+<title>Get reaction chain for specific mass to charge ratio — getchain • pmd</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Get pmd for specific reaction — getpmd" />
+<meta property="og:title" content="Get reaction chain for specific mass to charge ratio — getchain" />
 
-<meta property="og:description" content="Get pmd for specific reaction" />
+<meta property="og:description" content="Get reaction chain for specific mass to charge ratio" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,18 +119,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get pmd for specific reaction</h1>
+    <h1>Get reaction chain for specific mass to charge ratio</h1>
     
-    <div class="hidden name"><code>getpmd.Rd</code></div>
+    <div class="hidden name"><code>getchain.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Get pmd for specific reaction</p>
+    <p>Get reaction chain for specific mass to charge ratio</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>getpmd</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
+    <pre class="usage"><span class='fu'>getchain</span>(<span class='no'>list</span>, <span class='no'>diff</span>, <span class='no'>mass</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,35 +140,32 @@
       <td><p>a list with mzrt profile</p></td>
     </tr>
     <tr>
-      <th>pmd</th>
-      <td><p>a specific paired mass distances</p></td>
+      <th>diff</th>
+      <td><p>paired mass distance(s) of interests</p></td>
     </tr>
     <tr>
-      <th>rtcutoff</th>
-      <td><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></td>
-    </tr>
-    <tr>
-      <th>digits</th>
-      <td><p>mass or mass to charge ratio accuracy for pmd, default 2</p></td>
+      <th>mass</th>
+      <td><p>a specific mass for known compound</p></td>
     </tr>
     <tr>
       <th>accuracy</th>
       <td><p>measured mass or mass to charge ratio in digits, default 4</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other parameters for getpmd</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list with paired peaks for specific pmd.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='getpaired.html'>getpaired</a></code>,<code><a href='getstd.html'>getstd</a></code>,<code><a href='getsda.html'>getsda</a></code>,<code><a href='getrda.html'>getrda</a></code></p></div>
+    <p>a list with mzrt profile and reaction chain dataframe</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>spmeinvivo</span>)
-<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'>getpmd</span>(<span class='no'>spmeinvivo</span>,<span class='kw'>pmd</span><span class='kw'>=</span><span class='fl'>15.99</span>)</div></pre>
+<span class='co'># check metabolites of C18H39NO</span>
+<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'>getchain</span>(<span class='no'>spmeinvivo</span>,<span class='kw'>diff</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2.02</span>,<span class='fl'>14.02</span>,<span class='fl'>15.99</span>,<span class='fl'>58.04</span>,<span class='fl'>13.98</span>),<span class='kw'>mass</span> <span class='kw'>=</span> <span class='fl'>286.3101</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -176,8 +173,6 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

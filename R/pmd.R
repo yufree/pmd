@@ -1143,6 +1143,37 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
         list$pmdindexl <- index0 %in% indexl
         return(list)
 }
+#' Get reaction chain for specific mass to charge ratio
+#' @param list a list with mzrt profile
+#' @param diff paired mass distance(s) of interests
+#' @param mass a specific mass for known compound
+#' @param accuracy measured mass or mass to charge ratio in digits, default 4
+#' @param ... other parameters for getpmd
+#' @return a list with mzrt profile and reaction chain dataframe
+#' @examples
+#' data(spmeinvivo)
+#' # check metabolites of C18H39NO
+#' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99,58.04,13.98),mass = 286.3101)
+#' @export
+getchain <- function(list,diff, mass, accuracy = 4,...){
+        sda <- getpmd(list, unique(diff)[1])$pmd
+        for(i in 2:length(unique(diff))){
+                masst <- getpmd(list, unique(diff)[i])
+                sda <- rbind.data.frame(sda,masst$pmd)
+        }
+
+        seed <- mass
+
+        ms1 <- round(sda$ms1,digits = accuracy)
+        ms2 <- round(sda$ms2,digits = accuracy)
+        sdat <- unique(c(mass,ms2[ms1 %in% seed],ms1[ms2 %in% seed]))
+        while(!identical(sdat,seed)){
+                seed <- sdat
+                sdat <- unique(c(ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+        }
+        list$sdac <- sda[ms1 %in% sdat|ms2 %in% sdat , ]
+        return(list)
+}
 
 #' Get quantitative paired peaks list for specific reaction/pmd
 #' @param list a list with mzrt profile and data

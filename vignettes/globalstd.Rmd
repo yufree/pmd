@@ -220,17 +220,29 @@ sda <- getrda(spmeinvivo$mz[std$stdmassindex])
 
 One peak or compounds could be involved in multiple reactions. You could construct a network by such relationship.
 
-```{r net}
+If you have a specific compound and want to check the metabolites of certain PMD, you could use `getchain` to extract the network of that compounds
+
+```{r tarnet}
 library(igraph)
+# check metabolites of C18H39NO
+chain <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99,58.04,13.98),mass = 286.3101)
+# show as network
+net <- graph_from_data_frame(chain$sdac,directed = F)
+plot(net,vertex.label=NA,vertex.size = as.numeric((names(V(net))))/25,edge.width = E(net)$diff2/20+0.00001)
+```
+
+If you want to see all the independant peaks' high frequency PMDs as a network, the following code will help
+
+```{r net}
 sda <- getsda(std, freqcutoff = 10)
 df <- sda$sda
 net <- graph_from_data_frame(df,directed = F)
-plot(net,vertex.label=NA,vertex.size = df$ms1/25,edge.width = df$diff2/20+0.00001)
+plot(net,vertex.label=NA,vertex.size = as.numeric((names(V(net))))/25,edge.width = E(net)$diff2/20+0.00001)
 # Check the degree of the nodes
 # Show the degree distribution of the vertices
 deg <- degree(net, mode="all")
 degree_distribution(net)
-plot(net, vertex.size=deg/2,vertex.label=NA,vertex.size = df$ms1/25,edge.width = df$diff2/20+0.00001)
+plot(net, vertex.size=deg/2,vertex.label=NA,vertex.size = as.numeric((names(V(net))))/25, edge.width = E(net)$diff2/20+0.00001)
 # network community structure detection
 ceb <- cluster_edge_betweenness(net,weights = abs(E(net)$cor), directed = F) 
 plot(ceb, net,vertex.label=NA,) 
