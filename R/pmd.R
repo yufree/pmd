@@ -1126,11 +1126,12 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
         df$diff2 <- round(df$diff, digits)
 
         df <- df[df$rtgdiff > 0 & df$diff2 == pmd, ]
-        list$pmd <- df
         ms1 <- ifelse(df$ms1>df$ms2,df$ms1,df$ms2)
         ms2 <- ifelse(df$ms1>df$ms2,df$ms2,df$ms1)
         rtg1 <- ifelse(df$ms1>df$ms2,df$rtg1,df$rtg2)
         rtg2 <- ifelse(df$ms1>df$ms2,df$rtg2,df$rtg1)
+        list$pmd <- df
+
         index <-
                 c(paste(round(ms1, accuracy), rtg1), paste(round(ms2, accuracy), rtg2))
         index <- unique(index)
