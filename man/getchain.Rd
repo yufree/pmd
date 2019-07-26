@@ -11,7 +11,7 @@ getchain(list, diff, mass, accuracy = 4, ...)
 
 \item{diff}{paired mass distance(s) of interests}
 
-\item{mass}{a specific mass for known compound}
+\item{mass}{a specific mass for known compound or a vector of masses}
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 

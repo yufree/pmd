@@ -1149,7 +1149,7 @@ getpmd <- function(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4) {
 #' Get reaction chain for specific mass to charge ratio
 #' @param list a list with mzrt profile
 #' @param diff paired mass distance(s) of interests
-#' @param mass a specific mass for known compound
+#' @param mass a specific mass for known compound or a vector of masses
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param ... other parameters for getpmd
 #' @return a list with mzrt profile and reaction chain dataframe
@@ -1164,18 +1164,55 @@ getchain <- function(list,diff, mass, accuracy = 4,...){
                 masst <- getpmd(list, unique(diff)[i])
                 sda <- rbind.data.frame(sda,masst$pmd)
         }
-
-        seed <- mass
-
+        seed <- NULL
         ms1 <- round(sda$ms1,digits = accuracy)
         ms2 <- round(sda$ms2,digits = accuracy)
-        sdat <- unique(c(mass,ms2[ms1 %in% seed],ms1[ms2 %in% seed]))
-        while(!identical(sdat,seed)){
-                seed <- sdat
-                sdat <- unique(c(ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+        if(length(mass)==1){
+                mass <- round(mass,accuracy)
+                sdat <- unique(c(mass,ms2[ms1 %in% mass],ms1[ms2 %in% mass]))
+                while(!identical(sdat,seed)){
+                        seed <- sdat
+                        sdat <- unique(sdat,c(ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+                }
+                list$sdac <- sda[ms1 %in% sdat|ms2 %in% sdat , ]
+                return(list)
+        }else if(length(mass)==0){
+                warning('No mass input and all mass in the list will be used for reaction chain construction!')
+                sdac <- NULL
+                mass <- round(list$mz,accuracy)
+                for(i in 1:length(mass)){
+                        sdat <- unique(c(mass[i],ms2[ms1 %in% mass[i]],ms1[ms2 %in% mass[i]]))
+                        if(length(sdat)!=1){
+                                while(!identical(sdat,seed)){
+                                        seed <- sdat
+                                        sdat <- unique(c(sdat,ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+                                }
+                                sdact <- sda[ms1 %in% sdat|ms2 %in% sdat , ]
+                                sdact$mass <- mass[i]
+                                sdac <- rbind.data.frame(sdac,sdact)
+                        }
+                }
+                list$sdac <- sdac[!duplicated(sdac),]
+                return(list)
+        }else{
+                sdac <- NULL
+                mass <- round(mass,accuracy)
+                for(i in 1:length(mass)){
+                        sdat <- unique(c(mass[i],ms2[ms1 %in% mass[i]],ms1[ms2 %in% mass[i]]))
+                        if(length(sdat)!=1){
+                        while(!identical(sdat,seed)){
+                                seed <- sdat
+                                sdat <- unique(c(sdat,ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+                        }
+                        sdact <- sda[ms1 %in% sdat|ms2 %in% sdat, ]
+                        sdact$mass <- mass[i]
+                        sdac <- rbind.data.frame(sdac,sdact)
+                        }
+                        }
+                list$sdac <- sdac[!duplicated(sdac),]
+                return(list)
         }
-        list$sdac <- sda[ms1 %in% sdat|ms2 %in% sdat , ]
-        return(list)
+
 }
 
 #' Get quantitative paired peaks list for specific reaction/pmd
