@@ -1172,7 +1172,7 @@ getchain <- function(list,diff, mass, accuracy = 4,...){
                 sdat <- unique(c(mass,ms2[ms1 %in% mass],ms1[ms2 %in% mass]))
                 while(!identical(sdat,seed)){
                         seed <- sdat
-                        sdat <- unique(sdat,c(ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
+                        sdat <- unique(c(sdat,ms2[ms1 %in% sdat],ms1[ms2 %in% sdat]))
                 }
                 list$sdac <- sda[ms1 %in% sdat|ms2 %in% sdat , ]
                 return(list)
