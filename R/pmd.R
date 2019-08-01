@@ -259,6 +259,7 @@ getpaired <-
                                 paste(round(result$solo$mz, accuracy), result$solo$rtg)
                         list$solo <- result$solo
                 }
+
                 # get the data index by rt groups with isotope ions
                 if (!is.null(result$dfiso)) {
                         list$isoindex <- paste(round(list$mz, accuracy), list$rtcluster) %in%
@@ -331,6 +332,10 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
                 resultstd1 <- cbind(list$solo$mz, list$solo$rt,
                                     list$solo$rtg)
         }
+        message(paste(c(
+                sum(list$soloindex),
+                "retention group(s) have single peaks.", list$rtcluster[list$soloindex]),collapse = ' '
+        ))
         # group 2: RT groups with multiple peaks group 2A: RT
         # groups with multiple peaks while no isotope/paired
         # relationship
@@ -343,8 +348,8 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
         rtg2A <- unique(list$rtcluster)[index2A]
         message(
                 paste(
-                        sum(index2A),
-                        'group(s) with multiple peaks while no isotope/paired relationship'
+                        c(sum(index2A),
+                        'group(s) with multiple peaks while no isotope/paired relationship',rtg2A),collapse=" "
                 )
         )
         # print(rtg2A)
@@ -375,8 +380,8 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
         # print(rtg2B1)
         message(
                 paste(
-                        sum(index2B1),
-                        'group(s) with multiple peaks with isotope without paired relationship'
+                        c(sum(index2B1),
+                        'group(s) with multiple peaks with isotope without paired relationship',rtg2B1), collapse=" "
                 )
         )
         if (sum(index2B1) > 0) {
@@ -416,11 +421,12 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
                 !(unique(list$rtcluster) %in% unique(resultiso$rtg)) &
                 !(unique(list$rtcluster) %in% unique(list$solo$rtg))
         rtg2B2 <- unique(list$rtcluster)[index2B2]
-        # print(rtg2B2)
-        message(paste(
+
+        message(paste(c(
                 sum(index2B2),
-                'group(s) with paired relationship without isotope'
+                'group(s) with paired relationship without isotope', rtg2B2),collapse = ' '
         ))
+        # print(rtg2B2)
         if (sum(index2B2) > 0) {
                 for (i in 1:length(rtg2B2)) {
                         # filter the paired peaks
@@ -454,11 +460,12 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
                 (unique(list$rtcluster) %in% unique(resultiso$rtg)) &
                 !(unique(list$rtcluster) %in% unique(list$solo$rtg))
         rtg2B3 <- unique(list$rtcluster)[index2B3]
-        # print(rtg2B3)
+
         message(paste(
-                sum(index2B3),
-                'group(s) with paired relationship and isotope'
+                c(sum(index2B3),
+                'group(s) with paired relationship and isotope',rtg2B3), collapse = ' '
         ))
+        # print(rtg2B3)
         if (sum(index2B3) > 0) {
                 for (i in 1:length(rtg2B3)) {
                         # filter the isotope peaks
@@ -610,10 +617,7 @@ getstd <- function(list, corcutoff = NULL, digits = 2, accuracy = 4) {
                 n <- nrow(resultstd)
                 message(paste(n, "std mass found."))
         }
-        message(paste(
-                sum(list$soloindex),
-                "retention group(s) have single peaks."
-        ))
+
         return(list)
 }
 
