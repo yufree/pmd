@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
       </span>
     </div>
 
@@ -82,7 +82,7 @@
       <h1>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2019-07-26</h4>
+            <h4 class="date">2019-08-02</h4>
       
       
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -140,9 +140,9 @@
 <a href="#retention-time-hierarchical-clustering" class="anchor"></a>Retention time hierarchical clustering</h3>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">pmd &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getpaired.html">getpaired</a></span>(spmeinvivo, <span class="dt">rtcutoff =</span> <span class="dv">10</span>, <span class="dt">ng =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; 75 retention time cluster found.</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 435 paired masses found</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 10 unique within RT clusters high frequency PMD(s) used for further investigation.</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 376 paired masses found</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 9 unique within RT clusters high frequency PMD(s) used for further investigation.</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 649 isotopologue(s) related paired mass found.</span></a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span></a>
 <a class="sourceLine" id="cb2-7" data-line-number="7"><span class="kw"><a href="../reference/plotrtg.html">plotrtg</a></span>(pmd)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/rtg-1.png" width="700"></p>
@@ -161,19 +161,19 @@
 <a class="sourceLine" id="cb4-4" data-line-number="4">        index &lt;-<span class="st"> </span>pmd<span class="op">$</span>paired<span class="op">$</span>diff2 <span class="op">==</span><span class="st"> </span>diff</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">        <span class="kw"><a href="../reference/plotpaired.html">plotpaired</a></span>(pmd,index)</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6">}</a></code></pre></div>
-<p><img src="globalstd_files/figure-html/pmdindex-1.png" width="700"><img src="globalstd_files/figure-html/pmdindex-2.png" width="700"><img src="globalstd_files/figure-html/pmdindex-3.png" width="700"><img src="globalstd_files/figure-html/pmdindex-4.png" width="700"><img src="globalstd_files/figure-html/pmdindex-5.png" width="700"><img src="globalstd_files/figure-html/pmdindex-6.png" width="700"><img src="globalstd_files/figure-html/pmdindex-7.png" width="700"><img src="globalstd_files/figure-html/pmdindex-8.png" width="700"><img src="globalstd_files/figure-html/pmdindex-9.png" width="700"><img src="globalstd_files/figure-html/pmdindex-10.png" width="700"></p>
+<p><img src="globalstd_files/figure-html/pmdindex-1.png" width="700"><img src="globalstd_files/figure-html/pmdindex-2.png" width="700"><img src="globalstd_files/figure-html/pmdindex-3.png" width="700"><img src="globalstd_files/figure-html/pmdindex-4.png" width="700"><img src="globalstd_files/figure-html/pmdindex-5.png" width="700"><img src="globalstd_files/figure-html/pmdindex-6.png" width="700"><img src="globalstd_files/figure-html/pmdindex-7.png" width="700"><img src="globalstd_files/figure-html/pmdindex-8.png" width="700"><img src="globalstd_files/figure-html/pmdindex-9.png" width="700"></p>
 </div>
 <div id="screen-the-independent-peaks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#screen-the-independent-peaks" class="anchor"></a>Screen the independent peaks</h3>
 <p>You could use <code>getstd</code> function to get the independent peaks.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">std &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; 4 group(s) with paired relationship without isotope</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 44 group(s) with paired relationship and isotope</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 257 std mass found.</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; 270 std mass found.</span></a></code></pre></div>
 <p>Here you could plot the peaks by <code>plotstd</code> function to show the distribution of independent peaks:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plotstd.html">plotstd</a></span>(std)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdplot-1.png" width="700"></p>
@@ -193,81 +193,93 @@
 <p>Independent peaks are supporsing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions’ fragmental ions in one injection with good sensitivity. You could use <code>gettarget</code> to generate the index for the injections and output the peaks for each run.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># you need retention time for independent peaks</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">index &lt;-<span class="st"> </span><span class="kw"><a href="../reference/gettarget.html">gettarget</a></span>(std<span class="op">$</span>rt[std<span class="op">$</span>stdmassindex])</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; You need 6 injections!</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; You need 7 injections!</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co"># output the ions for each injection</span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/table">table</a></span>(index)</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; index</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  1  2  3  4  5  6 </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 40 38 41 44 55 39</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  1  2  3  4  5  6  7 </span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 50 36 44 30 30 27 53</span></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># show the ions for the first injection</span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10">std<span class="op">$</span>mz[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 100.5107 110.0092 110.0717 132.0050 132.0779 134.1185 137.0477</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 147.9900 154.9677 158.1546 159.1575 162.0552 166.0867 171.0960</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 173.1335 174.9728 176.0418 177.0914 181.9872 185.1148 192.0132</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 195.1027 196.4492 203.0532 205.1276 206.0898 209.1552 211.1695</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 211.1698 220.9350 220.9991 226.2185 228.1969 228.9561 232.9354</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 235.2061 237.6615 242.2863 242.9260 244.0288 247.2421 251.0476</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 251.2385 259.1810 259.9651 261.1542 262.1791 269.2687 270.3185</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 271.3217 271.3217 272.3230 274.8744 281.0520 282.2811 283.2838</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 285.3002 285.3002 286.3101 288.9232 295.1910 300.2046 303.2325</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 305.3118 307.3001 308.0889 308.2954 309.3159 309.9372 314.9159</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 315.1781 319.3005 322.3185 324.2900 327.0777 328.0824 329.8840</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 336.3257 337.8946 338.3415 340.2606 341.0180 341.3048 352.3592</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 352.9085 353.3603 356.9094 364.3578 366.3006 371.3345 372.3478</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 377.3224 380.3526 385.3480 387.2851 390.2553 394.2617 394.3014</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 399.2514 400.3982 403.3586 407.3384 410.2585 414.2705 416.2862</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 416.8073 417.3364 420.3193 420.3568 429.2404 429.3192 430.8888</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 432.3878 432.9177 437.3747 440.8696 444.3844 448.1186 449.2874</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [120] 449.2989 457.3299 463.3975 468.1028 492.8839 493.3138 494.3248</span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [127] 494.8112 504.1096 508.3041 520.3415 522.3557 527.2976 533.3888</span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [134] 539.4158 541.1208 542.3991 546.3560 546.8234 556.8633 559.3841</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [141] 561.3616 565.3827 567.1783 570.2830 575.4280 576.8454 578.1272</span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [148] 580.3612 581.1925 590.4266 592.3902 596.1559 601.3844 603.4105</span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [155] 607.4262 610.1834 614.5358 626.3960 630.7621 631.8679 637.3048</span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [162] 640.1961 642.8627 660.3160 663.4529 664.4577 666.8256 679.4600</span></a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [169] 683.5412 694.6505 696.5070 702.6369 703.8660 709.5932 711.3532</span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; [176] 715.5204 723.4865 723.8579 733.8482 737.3591 741.8363 753.5196</span></a>
-<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; [183] 758.4735 765.5253 767.8423 770.8499 772.3250 773.5622 773.5940</span></a>
-<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [190] 784.4919 786.5069 788.5237 793.5135 794.6305 798.3265 801.8376</span></a>
-<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; [197] 805.3464 819.3943 825.6769 825.8384 832.8212 837.5278 839.1707</span></a>
-<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt; [204] 859.8318 860.3354 861.8356 866.6928 875.4962 880.8217 889.8086</span></a>
-<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt; [211] 896.7943 906.8283 911.7489 924.7999 929.4891 934.8077 941.8210</span></a>
-<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt; [218] 942.3193 949.3083 952.7628 971.8036 979.7901 983.7978 995.8063</span></a>
-<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt; [225] 998.7737</span></a>
-<a class="sourceLine" id="cb8-44" data-line-number="44">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt;   [1]   86.3490 1079.6500  874.5865   49.4910  212.6550  355.8470  511.9035</span></a>
-<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;   [8]  145.0880   70.2770  470.3640  470.3640  511.2940  511.2940  226.2130</span></a>
-<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt;  [15]  611.4120  145.5380  212.8690  574.3390   48.8480  364.4610  217.1820</span></a>
-<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt;  [22]  538.0810  145.1850  144.8840  370.7850  583.3410  611.4120  614.6250</span></a>
-<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt;  [29]  452.9630  213.8030  162.0390  639.1000  614.4140  213.9650  144.3605</span></a>
-<a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt;  [36]  608.1970  639.6355  711.5320  216.0600  212.6665  639.0995  605.8400</span></a>
-<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;  [43]  639.1010  890.9790  145.9660  422.7480  464.0430  639.1010  572.8400</span></a>
-<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;  [50]  880.8005  744.1460  785.9345  218.5540  617.4140  639.1000  595.2325</span></a>
-<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;  [57]  504.4370  670.6010  878.5520  213.5480  518.1520  172.2230  586.1240</span></a>
-<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;  [64]  639.1000  582.8050  568.9830  569.4105  594.0550  145.4960  145.8840</span></a>
-<a class="sourceLine" id="cb8-55" data-line-number="55"><span class="co">#&gt;  [71]  401.2135  622.7690  639.1000  556.5545  559.9820  560.1960  144.3380</span></a>
-<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co">#&gt;  [78]  557.6255  145.4960  614.9465  340.8480  717.1835  612.2680  648.9580</span></a>
-<a class="sourceLine" id="cb8-57" data-line-number="57"><span class="co">#&gt;  [85]  144.0390  648.9580  213.7270  642.2065  561.9110  551.7325  523.5950</span></a>
-<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="co">#&gt;  [92]  594.6960  604.8765  585.4825  492.8650  383.3190  639.1000  659.6710</span></a>
-<a class="sourceLine" id="cb8-59" data-line-number="59"><span class="co">#&gt;  [99]  551.4100  594.5915  585.8040  556.9840  633.9130  665.0280  169.8320</span></a>
-<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="co">#&gt; [106]  503.1515  603.4845  687.8085  655.9035  665.0270  557.1970  549.6980</span></a>
-<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#&gt; [113]  612.4845  213.9420  483.1250  214.8080  582.4815  717.1020  543.8650</span></a>
-<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co">#&gt; [120]  403.8915  582.0530  582.3755  717.1010  213.7130  540.6520  501.6510</span></a>
-<a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#&gt; [127]  890.7680  762.5750  532.7230  515.3650  546.4830  493.5080  537.2230</span></a>
-<a class="sourceLine" id="cb8-64" data-line-number="64"><span class="co">#&gt; [134]  547.1250  762.5770  439.6780  529.0810  218.1225  215.9830  534.0090</span></a>
-<a class="sourceLine" id="cb8-65" data-line-number="65"><span class="co">#&gt; [141]  457.8285  439.2500  762.3630  473.5890  213.0735  215.1975  819.4060</span></a>
-<a class="sourceLine" id="cb8-66" data-line-number="66"><span class="co">#&gt; [148]  552.6965  762.4690  548.6240  169.9680  819.5150  213.5920  530.7950</span></a>
-<a class="sourceLine" id="cb8-67" data-line-number="67"><span class="co">#&gt; [155]  613.5560  818.9790  639.0990  530.5830  145.1850  213.3340  630.7000</span></a>
-<a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; [162]  818.9790  214.5700  448.2490  800.2900  800.0760  216.7620  468.4360</span></a>
-<a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; [169]  551.4100  639.1000  698.6730  639.1000  213.7270  619.9850  215.2290</span></a>
-<a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#&gt; [176]  481.0790  463.1855  213.5020  213.3140  213.5480  214.1480  522.2240</span></a>
-<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt; [183]  522.4370  773.7190  213.3840  213.7720  370.0360  492.4390  624.2695</span></a>
-<a class="sourceLine" id="cb8-72" data-line-number="72"><span class="co">#&gt; [190]  667.1730  692.8890  730.6470  213.1700  613.5560  213.7260  213.5020</span></a>
-<a class="sourceLine" id="cb8-73" data-line-number="73"><span class="co">#&gt; [197]  213.5480  467.2110  628.5550  213.4215  213.7130  698.2460  213.1200</span></a>
-<a class="sourceLine" id="cb8-74" data-line-number="74"><span class="co">#&gt; [204]  213.3840  213.5055  213.3840  632.6260  213.0800  214.2320  215.2605</span></a>
-<a class="sourceLine" id="cb8-75" data-line-number="75"><span class="co">#&gt; [211]  215.4870  213.7270  650.4570  214.9990  213.3110  213.8030  213.7130</span></a>
-<a class="sourceLine" id="cb8-76" data-line-number="76"><span class="co">#&gt; [218]  214.2010  214.8495  654.3150  213.5485  213.9410  214.6300  213.5020</span></a>
-<a class="sourceLine" id="cb8-77" data-line-number="77"><span class="co">#&gt; [225]  215.6570</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 110.0717 114.0670 118.0652 118.0874 118.0873 120.0448 121.0287</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 131.0854 134.1185 135.1168 137.9879 138.0549 155.1294 155.1748</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 156.0426 156.9622 157.0842 158.1546 158.9617 163.0758 166.0867</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 168.0923 170.0932 174.9383 181.1597 190.9130 196.4492 197.1285</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 205.0872 208.1696 210.1577 212.2026 214.5185 219.2107 229.2008</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 229.2006 232.1334 236.1626 237.6615 239.1490 239.1628 242.2863</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 242.2863 242.2863 242.2863 242.9260 244.1921 244.1920 248.0592</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 249.1869 256.2645 258.8998 259.9651 261.1317 261.1542 261.2214</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 262.1453 263.2382 265.4216 266.1741 268.9123 269.0888 271.3216</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 271.3217 271.3216 272.0665 272.3230 272.9318 273.1854 279.1610</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 281.0520 282.9806 283.3000 286.3101 294.9076 301.1419 307.9421</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 308.0889 309.9372 311.2377 313.1439 315.1957 317.9344 320.3041</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 329.0928 329.2492 331.0031 335.3135 336.3259 337.1058 337.3313</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 338.3435 338.6338 340.2606 340.2846 340.7613 341.2662 341.3048</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 342.3637 344.3500 355.0696 357.0503 358.2640 358.3084 359.0292</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 359.2410 360.3230 363.9294 365.1361 365.3023 367.3784 367.9923</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 381.1324 382.3673 383.1282 383.2804 383.3313 383.3723 385.2753</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt; [120] 390.2490 392.3135 394.8754 398.2762 401.3421 409.1624 415.0377</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; [127] 421.2521 422.2366 429.0892 430.0895 431.1792 432.3878 432.9177</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; [134] 437.8672 447.3469 447.4055 448.2959 453.3436 457.3299 462.1467</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; [141] 462.3940 467.1031 468.1028 470.1010 472.9023 478.2940 480.3100</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; [148] 481.3120 488.3591 491.3195 500.9073 502.3382 504.1096 505.1055</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; [155] 505.3342 506.3375 507.3409 515.3598 517.8314 518.3245 522.3557</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt; [162] 523.1141 539.4158 539.5420 540.1628 541.3942 541.3942 542.3266</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; [169] 543.1198 549.3617 556.8633 559.4247 560.4165 565.1922 570.3554</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt; [176] 580.2907 592.3902 593.1578 600.4401 604.4152 607.4262 611.1844</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt; [183] 613.1827 617.4657 636.8788 637.1995 638.3081 642.8627 646.4585</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt; [190] 648.4664 649.6613 652.8473 654.2092 657.4778 659.4835 663.4897</span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt; [197] 665.4444 665.4664 668.8690 669.3724 682.5378 685.2035 689.8645</span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt; [204] 690.3683 690.6403 691.4631 692.4941 696.5070 699.8553 701.4938</span></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt; [211] 703.8660 704.1390 719.9400 720.8364 722.4391 727.4611 729.6484</span></a>
+<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt; [218] 730.6517 731.7391 738.5066 741.8363 751.6125 757.8509 764.8339</span></a>
+<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt; [225] 773.5622 780.8078 792.3470 793.5135 800.6217 804.5530 808.6510</span></a>
+<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt; [232] 813.3338 814.4154 825.3507 839.8413 840.3407 841.5715 848.6295</span></a>
+<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt; [239] 855.8153 858.6636 859.8318 863.3158 863.8189 867.4427 867.8179</span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt; [246] 870.7857 872.3052 872.4203 873.4237 873.8334 889.4890 894.3269</span></a>
+<a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt; [253] 900.3092 900.8085 901.8120 903.8164 906.8283 911.7489 915.3139</span></a>
+<a class="sourceLine" id="cb8-48" data-line-number="48"><span class="co">#&gt; [260] 915.8125 924.7338 924.7999 949.3083 949.8072 950.1442 952.7628</span></a>
+<a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt; [267] 956.7945 964.7811 968.7950 978.4752 983.3016 990.7855 997.8091</span></a>
+<a class="sourceLine" id="cb8-50" data-line-number="50">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb8-51" data-line-number="51"><span class="co">#&gt;   [1] 874.5865 267.1940 639.2070 958.9555 165.6830 511.7220 583.7690</span></a>
+<a class="sourceLine" id="cb8-52" data-line-number="52"><span class="co">#&gt;   [8] 611.4120 355.8470 639.3135 165.4680 511.2940 732.5740 405.6060</span></a>
+<a class="sourceLine" id="cb8-53" data-line-number="53"><span class="co">#&gt;  [15] 218.6020 145.5380 169.3150 470.3640 166.6990 576.9100 348.1340</span></a>
+<a class="sourceLine" id="cb8-54" data-line-number="54"><span class="co">#&gt;  [22] 511.2940 235.9920 216.1500 615.0530 218.0975 145.1850 170.6010</span></a>
+<a class="sourceLine" id="cb8-55" data-line-number="55"><span class="co">#&gt;  [29] 583.5530 415.6780 611.4130 594.4850 134.8230 639.1010 614.6260</span></a>
+<a class="sourceLine" id="cb8-56" data-line-number="56"><span class="co">#&gt;  [36] 453.1780 403.6780 430.6770 639.6355 170.2755 506.7940 880.3730</span></a>
+<a class="sourceLine" id="cb8-57" data-line-number="57"><span class="co">#&gt;  [43] 538.2950 747.3660 780.5760 216.0600 614.8420 415.6790 467.4715</span></a>
+<a class="sourceLine" id="cb8-58" data-line-number="58"><span class="co">#&gt;  [50] 645.4960 588.0530 217.2010 145.9660 169.7590 422.7480 556.7660</span></a>
+<a class="sourceLine" id="cb8-59" data-line-number="59"><span class="co">#&gt;  [57] 588.9100 602.1970 145.8285 416.1050 146.1810 161.3960 895.8020</span></a>
+<a class="sourceLine" id="cb8-60" data-line-number="60"><span class="co">#&gt;  [64] 699.9580 781.0040 141.0400 785.9345 145.7540 581.1950 583.7690</span></a>
+<a class="sourceLine" id="cb8-61" data-line-number="61"><span class="co">#&gt;  [71] 617.4140 146.0980 679.6010 631.8770 144.6820 583.7690 146.3215</span></a>
+<a class="sourceLine" id="cb8-62" data-line-number="62"><span class="co">#&gt;  [78] 568.9830 145.4960 596.4120 581.3045 522.6500 145.5170 595.1260</span></a>
+<a class="sourceLine" id="cb8-63" data-line-number="63"><span class="co">#&gt;  [85] 212.3870 596.4120 509.3650 608.1990 594.9125 543.4380 622.7700</span></a>
+<a class="sourceLine" id="cb8-64" data-line-number="64"><span class="co">#&gt;  [92] 639.1010 639.1000 340.8480 573.3765 172.7590 564.2670 612.2680</span></a>
+<a class="sourceLine" id="cb8-65" data-line-number="65"><span class="co">#&gt;  [99] 658.6000 638.9930 819.6220 717.1015 480.8010 650.2440 717.0520</span></a>
+<a class="sourceLine" id="cb8-66" data-line-number="66"><span class="co">#&gt; [106] 213.7505 639.0980 213.5990 578.1970 639.0990 659.4400 762.5750</span></a>
+<a class="sourceLine" id="cb8-67" data-line-number="67"><span class="co">#&gt; [113] 447.8210 616.5550 577.9840 547.0180 656.0300 616.1270 493.0800</span></a>
+<a class="sourceLine" id="cb8-68" data-line-number="68"><span class="co">#&gt; [120] 534.0100 551.6260 217.1550 492.2220 632.8410 482.4185 762.5750</span></a>
+<a class="sourceLine" id="cb8-69" data-line-number="69"><span class="co">#&gt; [127] 634.3425 551.4100 717.1020 717.1010 683.9940 612.4845 213.9420</span></a>
+<a class="sourceLine" id="cb8-70" data-line-number="70"><span class="co">#&gt; [134] 145.0330 711.4240 639.3150 404.7480 170.5045 582.0530 717.1010</span></a>
+<a class="sourceLine" id="cb8-71" data-line-number="71"><span class="co">#&gt; [141] 582.3755 717.1030 717.1010 717.1020 213.7270 494.3650 513.6510</span></a>
+<a class="sourceLine" id="cb8-72" data-line-number="72"><span class="co">#&gt; [148] 513.5445 540.8660 401.9620 213.9570 511.5080 762.5750 762.4675</span></a>
+<a class="sourceLine" id="cb8-73" data-line-number="73"><span class="co">#&gt; [155] 422.9630 423.1770 422.9630 537.2240 144.7890 495.3295 546.4830</span></a>
+<a class="sourceLine" id="cb8-74" data-line-number="74"><span class="co">#&gt; [162] 688.6000 547.1250 705.4235 762.3620 439.6770 628.3425 492.4360</span></a>
+<a class="sourceLine" id="cb8-75" data-line-number="75"><span class="co">#&gt; [169] 762.7890 418.7850 215.9830 439.4630 537.8650 762.5760 524.2585</span></a>
+<a class="sourceLine" id="cb8-76" data-line-number="76"><span class="co">#&gt; [176] 508.5080 169.9680 819.4060 455.1500 529.9730 613.5560 818.7650</span></a>
+<a class="sourceLine" id="cb8-77" data-line-number="77"><span class="co">#&gt; [183] 819.1920 455.1500 213.7425 819.1920 630.7000 214.5700 605.8410</span></a>
+<a class="sourceLine" id="cb8-78" data-line-number="78"><span class="co">#&gt; [190] 531.2240 637.2775 215.5645 819.4060 468.6500 468.0100 633.5910</span></a>
+<a class="sourceLine" id="cb8-79" data-line-number="79"><span class="co">#&gt; [197] 449.3220 528.0080 213.5090 213.5285 551.5165 883.1575 213.4215</span></a>
+<a class="sourceLine" id="cb8-80" data-line-number="80"><span class="co">#&gt; [204] 213.1890 594.0550 525.0090 528.2230 698.6730 213.3340 171.8625</span></a>
+<a class="sourceLine" id="cb8-81" data-line-number="81"><span class="co">#&gt; [211] 213.7270 639.1000 212.6510 215.1360 573.0545 538.8305 594.5905</span></a>
+<a class="sourceLine" id="cb8-82" data-line-number="82"><span class="co">#&gt; [218] 594.6980 659.2430 481.2930 214.1480 624.2705 213.2940 213.7270</span></a>
+<a class="sourceLine" id="cb8-83" data-line-number="83"><span class="co">#&gt; [225] 492.4390 214.7290 213.4660 213.1700 642.9965 631.5555 628.5550</span></a>
+<a class="sourceLine" id="cb8-84" data-line-number="84"><span class="co">#&gt; [232] 214.9295 490.2940 367.0375 213.7720 213.3340 517.2940 503.2585</span></a>
+<a class="sourceLine" id="cb8-85" data-line-number="85"><span class="co">#&gt; [239] 215.4970 646.7630 213.3840 639.1010 639.1000 494.3650 214.4150</span></a>
+<a class="sourceLine" id="cb8-86" data-line-number="86"><span class="co">#&gt; [246] 216.5120 639.0990 472.0790 471.3075 213.5090 213.6405 213.4215</span></a>
+<a class="sourceLine" id="cb8-87" data-line-number="87"><span class="co">#&gt; [253] 213.5480 213.7720 214.3740 213.5020 213.7270 650.4570 214.9660</span></a>
+<a class="sourceLine" id="cb8-88" data-line-number="88"><span class="co">#&gt; [260] 214.6300 636.9560 214.9990 214.8495 214.6300 213.3340 654.3150</span></a>
+<a class="sourceLine" id="cb8-89" data-line-number="89"><span class="co">#&gt; [267] 215.0405 215.6320 213.9410 480.2610 214.6300 215.2260 213.3590</span></a></code></pre></div>
 </div>
 <div id="validation-by-principal-components-analysispca" class="section level3">
 <h3 class="hasAnchor">
@@ -303,12 +315,12 @@
 <a href="#globalstd-algorithm-with-intensity-data" class="anchor"></a>GlobalStd algorithm with intensity data</h3>
 <p>GlobalStd algorithm is designed to analysis data without intensity data. However, if you have intensity data, the independant peaks could be selected with more confindence. You could set up cutoff of Pearson Correlation Coefficient between peaks to refine the peaks selected by GlobalStd within same retention time groups.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">std2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getstd.html">getstd</a></span>(pmd,<span class="dt">corcutoff =</span> <span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; 24 group(s) with multiple peaks while no isotope/paired relationship</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; 12 group(s) with multiple peaks with isotope without paired relationship</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 3 group(s) with paired relationship without isotope</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 28 group(s) with paired relationship and isotope</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 116 std mass found.</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; 24 group(s) with multiple peaks while no isotope/paired relationship 2 4 5 7 8 10 11 15 18 22 26 35 39 41 42 49 50 59 62 68 69 70 72 73</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; 13 group(s) with multiple peaks with isotope without paired relationship 9 12 24 27 28 34 51 52 57 60 64 66 71</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 3 group(s) with paired relationship without isotope 1 53 74</span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 27 group(s) with paired relationship and isotope 3 6 13 16 17 19 20 21 25 29 30 31 36 37 38 40 43 44 45 46 47 48 58 61 63 65 67</span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 118 std mass found.</span></a>
 <a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/par">par</a></span>(<span class="dt">mfrow =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">3</span>),<span class="dt">mar =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>)<span class="op">+</span><span class="fl">0.1</span>)</a>
 <a class="sourceLine" id="cb13-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std2<span class="op">$</span>data,<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(std2<span class="op">$</span>group)),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(all peaks)"</span>)))</a>
 <a class="sourceLine" id="cb13-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/enviGCMS/topics/plotpca">plotpca</a></span>(std<span class="op">$</span>data[std<span class="op">$</span>stdmassindex,],<span class="dt">lv =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(std<span class="op">$</span>group)),<span class="dt">main =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/substitute">substitute</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/grDevices/topics/plotmath">italic</a></span>(<span class="st">'in vivo'</span>), <span class="st">" SPME samples(selected peaks)"</span>)))</a>
@@ -322,7 +334,7 @@
 <p><code>getsda</code> function could be used to perform Structure/reaction directed analysis. <code>freqcutoff</code> could be used to filter the PMD with high frequncy.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(std, <span class="dt">freqcutoff =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; 18 groups were found as high frequency PMD group.</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; 20 groups were found as high frequency PMD group.</span></a>
 <a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; 0 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; 1.98 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; 2.02 were found as high frequency PMD. </span></a>
@@ -338,9 +350,11 @@
 <a class="sourceLine" id="cb14-16" data-line-number="16"><span class="co">#&gt; 58.04 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb14-17" data-line-number="17"><span class="co">#&gt; 66.05 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb14-18" data-line-number="18"><span class="co">#&gt; 68.06 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
+<a class="sourceLine" id="cb14-19" data-line-number="19"><span class="co">#&gt; 74.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21"><span class="co">#&gt; 88.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
 <p>You could use <code>plotstdsda</code> to show the distribution of the selected paired peaks.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="kw"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(sda)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/stdsda-1.png" width="700"></p>
@@ -367,7 +381,7 @@
 <a href="#structurereaction-directed-analysis-for-peakscompounds-only" class="anchor"></a>Structure/reaction directed analysis for peaks/compounds only</h3>
 <p>When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by <code>getrda</code> function.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getrda.html">getrda</a></span>(spmeinvivo<span class="op">$</span>mz[std<span class="op">$</span>stdmassindex])</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt; 28374 pmd found.</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="co">#&gt; 31441 pmd found.</span></a>
 <a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt; 9 pmd used.</span></a></code></pre></div>
 </div>
 <div id="structurereaction-network" class="section level3">
@@ -393,7 +407,7 @@
 <p>If you want to see all the independant peaks’ high frequency PMDs as a network, the following code will help</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">sda &lt;-<span class="st"> </span><span class="kw"><a href="../reference/getsda.html">getsda</a></span>(std, <span class="dt">freqcutoff =</span> <span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb20-2" data-line-number="2"><span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; 18 groups were found as high frequency PMD group.</span></a>
+<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="co">#&gt; 20 groups were found as high frequency PMD group.</span></a>
 <a class="sourceLine" id="cb20-4" data-line-number="4"><span class="co">#&gt; 0 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb20-5" data-line-number="5"><span class="co">#&gt; 1.98 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb20-6" data-line-number="6"><span class="co">#&gt; 2.02 were found as high frequency PMD. </span></a>
@@ -409,27 +423,29 @@
 <a class="sourceLine" id="cb20-16" data-line-number="16"><span class="co">#&gt; 58.04 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb20-17" data-line-number="17"><span class="co">#&gt; 66.05 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb20-18" data-line-number="18"><span class="co">#&gt; 68.06 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb20-19" data-line-number="19"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb20-20" data-line-number="20"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb20-21" data-line-number="21"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a>
-<a class="sourceLine" id="cb20-22" data-line-number="22">df &lt;-<span class="st"> </span>sda<span class="op">$</span>sda</a>
-<a class="sourceLine" id="cb20-23" data-line-number="23">net &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph_from_data_frame</a></span>(df,<span class="dt">directed =</span> F)</a>
-<a class="sourceLine" id="cb20-24" data-line-number="24"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(net,<span class="dt">vertex.label=</span><span class="ot">NA</span>,<span class="dt">vertex.size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/V">V</a></span>(net))))<span class="op">/</span><span class="dv">25</span>,<span class="dt">edge.width =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/E">E</a></span>(net)<span class="op">$</span>diff2<span class="op">/</span><span class="dv">20</span><span class="fl">+0.00001</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb20-19" data-line-number="19"><span class="co">#&gt; 74.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb20-20" data-line-number="20"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb20-21" data-line-number="21"><span class="co">#&gt; 88.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb20-22" data-line-number="22"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb20-23" data-line-number="23"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a>
+<a class="sourceLine" id="cb20-24" data-line-number="24">df &lt;-<span class="st"> </span>sda<span class="op">$</span>sda</a>
+<a class="sourceLine" id="cb20-25" data-line-number="25">net &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/graph_from_data_frame">graph_from_data_frame</a></span>(df,<span class="dt">directed =</span> F)</a>
+<a class="sourceLine" id="cb20-26" data-line-number="26"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(net,<span class="dt">vertex.label=</span><span class="ot">NA</span>,<span class="dt">vertex.size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/V">V</a></span>(net))))<span class="op">/</span><span class="dv">25</span>,<span class="dt">edge.width =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/E">E</a></span>(net)<span class="op">$</span>diff2<span class="op">/</span><span class="dv">20</span><span class="fl">+0.00001</span>)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/net-1.png" width="700"></p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="co"># Check the degree of the nodes</span></a>
 <a class="sourceLine" id="cb21-2" data-line-number="2"><span class="co"># Show the degree distribution of the vertices</span></a>
 <a class="sourceLine" id="cb21-3" data-line-number="3">deg &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/degree">degree</a></span>(net, <span class="dt">mode=</span><span class="st">"all"</span>)</a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/degree">degree_distribution</a></span>(net)</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt;  [1] 0.000000000 0.270270270 0.207207207 0.099099099 0.090090090</span></a>
-<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co">#&gt;  [6] 0.072072072 0.054054054 0.081081081 0.027027027 0.054054054</span></a>
-<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="co">#&gt; [11] 0.009009009 0.000000000 0.009009009 0.000000000 0.000000000</span></a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [16] 0.000000000 0.018018018 0.000000000 0.000000000 0.000000000</span></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="co">#&gt;  [1] 0.000000000 0.286764706 0.257352941 0.095588235 0.088235294</span></a>
+<a class="sourceLine" id="cb21-6" data-line-number="6"><span class="co">#&gt;  [6] 0.058823529 0.036764706 0.058823529 0.036764706 0.044117647</span></a>
+<a class="sourceLine" id="cb21-7" data-line-number="7"><span class="co">#&gt; [11] 0.007352941 0.000000000 0.007352941 0.000000000 0.000000000</span></a>
+<a class="sourceLine" id="cb21-8" data-line-number="8"><span class="co">#&gt; [16] 0.000000000 0.014705882 0.000000000 0.000000000 0.000000000</span></a>
 <a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co">#&gt; [21] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000</span></a>
 <a class="sourceLine" id="cb21-10" data-line-number="10"><span class="co">#&gt; [26] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000</span></a>
 <a class="sourceLine" id="cb21-11" data-line-number="11"><span class="co">#&gt; [31] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000</span></a>
 <a class="sourceLine" id="cb21-12" data-line-number="12"><span class="co">#&gt; [36] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000</span></a>
 <a class="sourceLine" id="cb21-13" data-line-number="13"><span class="co">#&gt; [41] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000</span></a>
-<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="co">#&gt; [46] 0.000000000 0.000000000 0.000000000 0.009009009</span></a>
+<a class="sourceLine" id="cb21-14" data-line-number="14"><span class="co">#&gt; [46] 0.000000000 0.000000000 0.000000000 0.007352941</span></a>
 <a class="sourceLine" id="cb21-15" data-line-number="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(net, <span class="dt">vertex.size=</span>deg<span class="op">/</span><span class="dv">2</span>,<span class="dt">vertex.label=</span><span class="ot">NA</span>,<span class="dt">vertex.size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>((<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/V">V</a></span>(net))))<span class="op">/</span><span class="dv">25</span>, <span class="dt">edge.width =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/igraph/topics/E">E</a></span>(net)<span class="op">$</span>diff2<span class="op">/</span><span class="dv">20</span><span class="fl">+0.00001</span>)</a></code></pre></div>
 <p><img src="globalstd_files/figure-html/net-2.png" width="700"></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="co"># network community structure detection</span></a>
@@ -460,18 +476,18 @@
 <p><code>globalstd</code> function is a wrap funtion to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the <code>list</code> objects from <code>globalstd</code> function.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">result &lt;-<span class="st"> </span><span class="kw"><a href="../reference/globalstd.html">globalstd</a></span>(spmeinvivo)</a>
 <a class="sourceLine" id="cb23-2" data-line-number="2"><span class="co">#&gt; 75 retention time cluster found.</span></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co">#&gt; 435 paired masses found</span></a>
-<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="co">#&gt; 10 unique within RT clusters high frequency PMD(s) used for further investigation.</span></a>
-<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt; 583 isotopologue(s) related paired mass found.</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="co">#&gt; 376 paired masses found</span></a>
+<a class="sourceLine" id="cb23-4" data-line-number="4"><span class="co">#&gt; 9 unique within RT clusters high frequency PMD(s) used for further investigation.</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5"><span class="co">#&gt; 649 isotopologue(s) related paired mass found.</span></a>
 <a class="sourceLine" id="cb23-6" data-line-number="6"><span class="co">#&gt; 685 multi-charger(s) related paired mass found.</span></a>
-<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship</span></a>
-<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; 8 group(s) with multiple peaks with isotope without paired relationship</span></a>
-<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; 4 group(s) with paired relationship without isotope</span></a>
-<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; 44 group(s) with paired relationship and isotope</span></a>
-<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co">#&gt; 257 std mass found.</span></a>
-<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="co">#&gt; 8 retention group(s) have single peaks.</span></a>
+<a class="sourceLine" id="cb23-7" data-line-number="7"><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8"><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></a>
+<a class="sourceLine" id="cb23-9" data-line-number="9"><span class="co">#&gt; 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></a>
+<a class="sourceLine" id="cb23-10" data-line-number="10"><span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span></a>
+<a class="sourceLine" id="cb23-11" data-line-number="11"><span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></a>
+<a class="sourceLine" id="cb23-12" data-line-number="12"><span class="co">#&gt; 270 std mass found.</span></a>
 <a class="sourceLine" id="cb23-13" data-line-number="13"><span class="co">#&gt; Top 50 high frequency PMD groups were remained.</span></a>
-<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="co">#&gt; 18 groups were found as high frequency PMD group.</span></a>
+<a class="sourceLine" id="cb23-14" data-line-number="14"><span class="co">#&gt; 20 groups were found as high frequency PMD group.</span></a>
 <a class="sourceLine" id="cb23-15" data-line-number="15"><span class="co">#&gt; 0 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb23-16" data-line-number="16"><span class="co">#&gt; 1.98 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb23-17" data-line-number="17"><span class="co">#&gt; 2.02 were found as high frequency PMD. </span></a>
@@ -487,9 +503,11 @@
 <a class="sourceLine" id="cb23-27" data-line-number="27"><span class="co">#&gt; 58.04 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb23-28" data-line-number="28"><span class="co">#&gt; 66.05 were found as high frequency PMD. </span></a>
 <a class="sourceLine" id="cb23-29" data-line-number="29"><span class="co">#&gt; 68.06 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb23-30" data-line-number="30"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb23-31" data-line-number="31"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
-<a class="sourceLine" id="cb23-32" data-line-number="32"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
+<a class="sourceLine" id="cb23-30" data-line-number="30"><span class="co">#&gt; 74.02 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb23-31" data-line-number="31"><span class="co">#&gt; 82.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb23-32" data-line-number="32"><span class="co">#&gt; 88.05 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb23-33" data-line-number="33"><span class="co">#&gt; 116.08 were found as high frequency PMD. </span></a>
+<a class="sourceLine" id="cb23-34" data-line-number="34"><span class="co">#&gt; 126.14 were found as high frequency PMD.</span></a></code></pre></div>
 </div>
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">
