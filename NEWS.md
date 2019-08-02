@@ -1,3 +1,7 @@
+# pmd 0.1.4
+
+- isotope selection improved to get rid of 1&2 issue 
+
 # pmd 0.1.3
 
 - speed up GlobalStd by mapply

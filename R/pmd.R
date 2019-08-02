@@ -87,6 +87,14 @@ getpaired <-
                                                         df$diff %% 2 < 0.01 &
                                                                 df$diff >= 2 &
                                                                 df$diff < 3
+                                                ) | (
+                                                        df$diff %% 1 > 0.99 &
+                                                                df$diff >= 1 &
+                                                                df$diff < 2
+                                                ) |(
+                                                        df$diff %% 1 > 0.99 &
+                                                                df$diff >= 0 &
+                                                                df$diff < 1
                                                 )
                                                 )
                                         massstd <-
