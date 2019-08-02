@@ -718,7 +718,8 @@ getsda <-
                                 )
                         }
 
-                        if (sum(df$diff2 == 0) > freqcutoff) {
+                        if (sum(df$diff2 == 0) > freqcutoff & 0 %in% as.numeric(names(
+                                freq))) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
@@ -831,6 +832,7 @@ globalstd <- function(list,
                                 rtcutoff = rtcutoff,
                                 freqcutoff = freqcutoff,
                                 corcutoff = corcutoff,
+                                top = top,
                                 digits = digits
                         )
         } else{
