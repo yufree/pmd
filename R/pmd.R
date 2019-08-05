@@ -978,7 +978,8 @@ getcluster <- function(list, corcutoff = NULL, accuracy = 4) {
         index6 <- paste0(round(resultdiff$ms2, accuracy), '@', resultdiff$rtg)
 
         index00 <- paste0(round(list$mz, accuracy), '@', list$rtcluster)
-
+        msdata <- msdata[!duplicated(index00)]
+        index000 <- unique(index00)
 
         cluster <- mzs <- NULL
         for (i in 1:sum(list$stdmassindex)) {
@@ -993,14 +994,17 @@ getcluster <- function(list, corcutoff = NULL, accuracy = 4) {
                 diffover <-
                         unique(c(resultdiff$ms2[index5 %in% indexstd], resultdiff$ms1[index6 %in% indexstd]))
                 stdmassg <- c(mzt, multiover, isoover, diffover)
+                mzx <- mz[mz %in% stdmassg]
                 stdg[round(list$mz, accuracy) %in% round(stdmassg, accuracy) &
                              list$rtcluster == rtgt] <-
                         paste0(stdg[round(list$mz, accuracy) %in% round(stdmassg, accuracy) &
                                             list$rtcluster == rtgt], '@', i)
                 if (!is.null(msdata)) {
-                        index <- paste0(round(stdmassg, accuracy), '@', rtgt)
-                        ins <- msdata[unique(index00) %in% index]
-                        tdf <- cbind.data.frame(stdmassg, i, rtgt, ins)
+
+                        index <- paste0(round(mzx, accuracy), '@', rtgt)
+                        ins <- msdata[index000 %in% unique(index)]
+
+                        tdf <- cbind.data.frame(mz = mzx[!duplicated(index)], i, rtgt, ins)
                         mzst <- index[which.max(tdf$ins)]
                         mzs <- c(mzs, mzst)
                 } else{

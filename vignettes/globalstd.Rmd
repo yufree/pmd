@@ -139,8 +139,8 @@ GlobalStd algorithm in `pmd` package could be treated as a way to extract pseudo
 
 ```{r comp}
 stdcluster <- getcluster(std)
-# extract pseudospectra for std peak 1
-plot(stdcluster$cluster$stdmassg[stdcluster$cluster$i==42],stdcluster$cluster$ins[stdcluster$cluster$i==42],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 42')
+# extract pseudospectra for std peak 71
+plot(stdcluster$cluster$mz[stdcluster$cluster$i==71],stdcluster$cluster$ins[stdcluster$cluster$i==71],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 711')
 # export peaks with the highest intensities in each GlobalStd peaks groups.
 data <- stdcluster$data[stdcluster$stdmassindex2,]
 ```
