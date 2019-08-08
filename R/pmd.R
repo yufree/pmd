@@ -1258,7 +1258,9 @@ getchain <- function(list, diff, mass, accuracy = 4, ...) {
         sda <- getpmd(list, unique(diff)[1], ...)$pmd
         for (i in 2:length(unique(diff))) {
                 masst <- getpmd(list, unique(diff)[i], ...)
-                sda <- rbind.data.frame(sda, masst$pmd)
+                if(NROW(masst$pmd)>0){
+                        sda <- rbind.data.frame(sda, masst$pmd)
+                }
         }
         seed <- NULL
         ms1 <- round(sda$ms1, digits = accuracy)
