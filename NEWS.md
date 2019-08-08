@@ -3,6 +3,7 @@
 - isotope selection improved to get rid of 1&2 issue 
 - fix top issue in getsda
 - fix peak index issue in getcluster
+- add corcutoff for getpmd
 
 # pmd 0.1.3
 

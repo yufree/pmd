@@ -5,7 +5,7 @@
 \title{Get quantitative paired peaks list for specific reaction/pmd}
 \usage{
 getreact(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4,
-  ratiocv = 30)
+  ratiocv = 30, ...)
 }
 \arguments{
 \item{list}{a list with mzrt profile and data}
@@ -19,6 +19,8 @@ getreact(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4,
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
 \item{ratiocv}{ratio cv cutoff for quantitative paired peaks, default 30}
+
+\item{...}{other parameters for getpmd}
 }
 \value{
 list with quantitative paired peaks.
