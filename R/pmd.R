@@ -1256,10 +1256,12 @@ getpmd <-
 #' @export
 getchain <- function(list, diff, mass, accuracy = 4, ...) {
         sda <- getpmd(list, unique(diff)[1], ...)$pmd
-        for (i in 2:length(unique(diff))) {
-                masst <- getpmd(list, unique(diff)[i], ...)
-                if(NROW(masst$pmd)>0){
-                        sda <- rbind.data.frame(sda, masst$pmd)
+        if(length(unique(diff))>1){
+                for (i in 2:length(unique(diff))) {
+                        masst <- getpmd(list, unique(diff)[i], ...)
+                        if(NROW(masst$pmd)>0){
+                                sda <- rbind.data.frame(sda, masst$pmd)
+                        }
                 }
         }
         seed <- NULL
@@ -1353,17 +1355,6 @@ getreact <-
                                 accuracy = accuracy,
                                 ...
                         )
-                list <- enviGCMS::getfilter(p, p$pmdindex)
-                data <- list$data
-                pmd <- list$pmd
-                if (NCOL(list$group) > 1) {
-                        group <- apply(list$group, 1 , paste0, collapse = "")
-                        nlv <- unique(group)
-                } else{
-                        group <- c(t(list$group))
-                        nlv <- unique(group)
-                }
-
                 getr <- function(v, nlv) {
                         ratio <- NULL
                         for (i in 1:length(nlv)) {
@@ -1378,16 +1369,30 @@ getreact <-
                                 stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
                         return(rsd)
                 }
-                list$pmd$r <- apply(pmd, 1, getr, nlv)
-                list$pmd <- list$pmd[list$pmd$r < ratiocv, ]
-                idx <- paste(list$mz, list$rt)
-                idx2 <-
-                        unique(c(
-                                paste(list$pmd$ms1, list$pmd$rt1),
-                                paste(list$pmd$ms2, list$pmd$rt2)
-                        ))
-                list <- enviGCMS::getfilter(list, idx %in% idx2)
-                return(list)
+                if (NCOL(list$group) > 1) {
+                        group <- apply(list$group, 1 , paste0, collapse = "")
+                        nlv <- unique(group)
+                } else{
+                        group <- c(t(list$group))
+                        nlv <- unique(group)
+                }
+                if(sum(p$pmdindex)>0){
+                        list <- enviGCMS::getfilter(p, p$pmdindex)
+                        data <- list$data
+                        pmd <- list$pmd
+                        list$pmd$r <- apply(pmd, 1, getr, nlv)
+                        list$pmd <- list$pmd[list$pmd$r < ratiocv, ]
+                        idx <- paste(list$mz, list$rt)
+                        idx2 <-
+                                unique(c(
+                                        paste(list$pmd$ms1, list$pmd$rt1),
+                                        paste(list$pmd$ms2, list$pmd$rt2)
+                                ))
+                        list <- enviGCMS::getfilter(list, idx %in% idx2)
+                        return(list)
+                }else{
+                        message('No quantitative peaks could be used.')
+                }
         }
 
 #' Get multiple injections index for selected retention time
