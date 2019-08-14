@@ -23,6 +23,8 @@ install.packages('pmd')
 Usage
 -----
 
+[Tutorial](https://yufree.github.io/pmd/articles/globalstd.html)
+
 To perform GlobalStd algorithem, use the following code:
 
 ``` {r}
