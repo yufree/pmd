@@ -62,7 +62,7 @@
 #'   }
 "omics"
 
-#' A dataframe containing all KEGG reaction related accurate mass pmd and related reactions formula
+#' A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID
 #' @docType data
 #' @usage data(keggrall)
 #' @format A dataframe with KEGG reaction, their realted pmd and atoms numbers of C, H, O, N, P, S
