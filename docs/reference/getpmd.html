@@ -73,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
       </span>
     </div>
 
@@ -130,7 +130,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>getpmd</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
+    <pre class="usage"><span class='fu'>getpmd</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +147,10 @@
     <tr>
       <th>rtcutoff</th>
       <td><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></td>
+    </tr>
+    <tr>
+      <th>corcutoff</th>
+      <td><p>cutoff of the correlation coefficient, default NULL</p></td>
     </tr>
     <tr>
       <th>digits</th>
