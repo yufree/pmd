@@ -1252,7 +1252,7 @@ getpmd <-
 #' @examples
 #' data(spmeinvivo)
 #' # check metabolites of C18H39NO
-#' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99,58.04,13.98),mass = 286.3101)
+#' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 #' @export
 getchain <- function(list, diff, mass, accuracy = 4, ...) {
         sda <- getpmd(list, unique(diff)[1], ...)$pmd
