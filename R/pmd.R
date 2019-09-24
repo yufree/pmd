@@ -1246,24 +1246,62 @@ getpmd <-
 #' @param list a list with mzrt profile
 #' @param diff paired mass distance(s) of interests
 #' @param mass a specific mass for known compound or a vector of masses
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
-#' @param ... other parameters for getpmd
+#' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
+#' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @return a list with mzrt profile and reaction chain dataframe
 #' @examples
 #' data(spmeinvivo)
 #' # check metabolites of C18H39NO
 #' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 #' @export
-getchain <- function(list, diff, mass, accuracy = 4, ...) {
-        sda <- getpmd(list, unique(diff)[1], ...)$pmd
-        if(length(unique(diff))>1){
-                for (i in 2:length(unique(diff))) {
-                        masst <- getpmd(list, unique(diff)[i], ...)
-                        if(NROW(masst$pmd)>0){
-                                sda <- rbind.data.frame(sda, masst$pmd)
-                        }
-                }
+getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, corcutoff=0.6) {
+        mz <- list$mz
+        rt <- list$rt
+        data <- list$data
+        dis <- stats::dist(rt, method = "manhattan")
+        fit <- stats::hclust(dis)
+        rtg <- stats::cutree(fit, h = rtcutoff)
+        # PMD analysis
+        # remove isomers
+        dis <- stats::dist(mz, method = "manhattan")
+        disrt <- stats::dist(rt, method = "manhattan")
+        disrtg <- stats::dist(rtg, method = "manhattan")
+        cor <- stats::cor(t(data))
+
+        df <- data.frame(
+                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                            1]],
+                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                                            2]],
+                diff = as.numeric(dis),
+                rt1 = rt[which(lower.tri(disrt),
+                               arr.ind = T)[, 1]],
+                rt2 = rt[which(lower.tri(disrt),
+                               arr.ind = T)[, 2]],
+                diffrt = as.numeric(disrt),
+                rtg1 = rtg[which(lower.tri(disrtg),
+                                 arr.ind = T)[, 1]],
+                rtg2 = rtg[which(lower.tri(disrtg),
+                                 arr.ind = T)[, 2]],
+                rtgdiff = as.numeric(disrtg),
+                cor = cor[lower.tri(cor)]
+        )
+
+        if (!is.null(corcutoff)) {
+                df <- df[abs(df$cor) >= corcutoff, ]
         }
+
+        df$diff2 <- round(df$diff, digits)
+
+        df <- df[df$rtgdiff > 0,]
+        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
+        rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
+        rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
+
+        sda <- df[df$diff2 %in% diff,]
         seed <- NULL
         ms1 <- round(sda$ms1, digits = accuracy)
         ms2 <- round(sda$ms2, digits = accuracy)

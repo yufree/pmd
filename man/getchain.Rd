@@ -4,7 +4,8 @@
 \alias{getchain}
 \title{Get reaction chain for specific mass to charge ratio}
 \usage{
-getchain(list, diff, mass, accuracy = 4, ...)
+getchain(list, diff, mass, digits = 2, accuracy = 4, rtcutoff = 10,
+  corcutoff = 0.6)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
@@ -13,9 +14,13 @@ getchain(list, diff, mass, accuracy = 4, ...)
 
 \item{mass}{a specific mass for known compound or a vector of masses}
 
+\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
+
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
-\item{...}{other parameters for getpmd}
+\item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
+
+\item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 }
 \value{
 a list with mzrt profile and reaction chain dataframe
