@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Data format
 
-```{r echo=FALSE,out.width = "500px"}
+```{r echo=FALSE}
 knitr::include_graphics('https://yufree.github.io/presentation/figure/democsv.png')
 ```
 

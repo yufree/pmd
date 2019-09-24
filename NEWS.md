@@ -1,3 +1,8 @@
+# pmd 0.1.6
+
+- rewrite getchain to speed up
+- add shiny application pmdnet to perform PMD network analysis
+
 # pmd 0.1.5
 
 - CRAN
