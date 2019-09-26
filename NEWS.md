@@ -2,6 +2,7 @@
 
 - rewrite getchain to speed up
 - add shiny application pmdnet to perform PMD network analysis
+- add support for formula in getchain to find compounds ions
 
 # pmd 0.1.5
 

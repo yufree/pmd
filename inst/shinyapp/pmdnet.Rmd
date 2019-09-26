@@ -29,7 +29,10 @@ inputPanel(
   sliderInput("corcutoff", label = "Cutoff for the correlation coefficient",
               min = 0, max = 1, value = NULL, step = 0.1),
   textInput('diff', label = 'PMD set', value='2.02,15.99,18.01,14.02,162.05'),
-  textInput('mass', label = 'Compound ion(s)', value= '542.7446')
+  textInput('mass', label = 'Compound ion(s)', value= '542.7446'),
+  textInput('formula', label = 'Compound Formula (alpha)', value= 'C15H11Br4O2'),
+  sliderInput("ppm", label = "mass accuracy of formula or mass in ppm",
+              min = 0, max = 100, value = 20, step = 1)
 )
 ```
 
@@ -58,8 +61,13 @@ datachain <- reactive({
         list <- datainput()
         if(!is.null(list)){
                 x <- as.numeric(unlist(strsplit(input$diff,",")))
-                y <- as.numeric(unlist(strsplit(input$mass,",")))
-                list <- getchain(list,rtcutoff = as.numeric(input$rtcutoff),accuracy = 4,digits=as.numeric(input$digits), mass = y, diff = x, corcutoff=as.numeric(input$corcutoff))
+                if(length(input$mass)==0){
+                  y <- as.numeric(unlist(strsplit(input$mass,",")))
+                  list <- getchain(list,rtcutoff = as.numeric(input$rtcutoff),accuracy = 4,digits=as.numeric(input$digits), mass = y, diff = x, corcutoff=as.numeric(input$corcutoff))
+                }else{
+                  y <- unlist(strsplit(input$formula,","))
+                  list <- getchain(list,rtcutoff = as.numeric(input$rtcutoff),accuracy = 4,digits=as.numeric(input$digits), mass = y, diff = x, corcutoff=as.numeric(input$corcutoff), ppm = input$ppm)
+                }
         }
         return(list)
 })
@@ -83,10 +91,41 @@ downloadHandler('net.csv', content = function(file) {
 actionButton("go", "Get figure")
 library(igraph)
 library(RColorBrewer)
+getmass <- function(data) {
+        if (grepl('-', data)) {
+                name <- unlist(strsplit(data, '-'))
+                iso1 <-
+                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
+                iso2 <-
+                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
+                cus <-
+                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
+        } else{
+                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
+                cus <-
+                        as.numeric(iso[max(iso[, 2]), 1])
+        }
+        return(cus)
+}
 p <- eventReactive(input$go, {
         list <- datachain()
         x <- as.numeric(unlist(strsplit(input$diff,",")))
-        y <- as.numeric(unlist(strsplit(input$mass,",")))
+        if(length(input$mass)==0){
+          y <- as.numeric(unlist(strsplit(input$mass,",")))
+        }else{
+          y <- unlist(strsplit(input$formula,","))
+          mass <- unlist(Map(getmass, y))
+                massup <- mass+mass*input$ppm/10e6
+                massdown <- mass-mass*input$ppm/10e6
+                up <- sapply(Map(function(x)
+                        x < massup, list$mz), function(x)
+                                x || x)
+                down <- sapply(Map(function(x)
+                        x > massdown, list$mz), function(x)
+                                x || x)
+                mass <- list$mz[up & down]
+                y <- unique(round(mass,4))
+        }
         pal <- (grDevices::colorRampPalette(rev(
                         RColorBrewer::brewer.pal(11,
                                                  "RdYlBu")

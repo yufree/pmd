@@ -5,14 +5,14 @@
 \title{Get reaction chain for specific mass to charge ratio}
 \usage{
 getchain(list, diff, mass, digits = 2, accuracy = 4, rtcutoff = 10,
-  corcutoff = 0.6)
+  corcutoff = 0.6, ppm = 25)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
 
 \item{diff}{paired mass distance(s) of interests}
 
-\item{mass}{a specific mass for known compound or a vector of masses}
+\item{mass}{a specific mass for known compound or a vector of masses. You could also input formula for certain compounds}
 
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
@@ -21,6 +21,8 @@ getchain(list, diff, mass, digits = 2, accuracy = 4, rtcutoff = 10,
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+
+\item{ppm}{all the peaks within this mass accuracy as seed mass or formula}
 }
 \value{
 a list with mzrt profile and reaction chain dataframe

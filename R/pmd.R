@@ -1,3 +1,23 @@
+#' getmass from formula
+#'
+#' @noRd
+getmass <- function(data) {
+        if (grepl('-', data)) {
+                name <- unlist(strsplit(data, '-'))
+                iso1 <-
+                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
+                iso2 <-
+                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
+                cus <-
+                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
+        } else{
+                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
+                cus <-
+                        as.numeric(iso[max(iso[, 2]), 1])
+        }
+        return(cus)
+}
+
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
@@ -1106,22 +1126,7 @@ getrda <-
                  digits = 3,
                  top = 20,
                  formula = NULL) {
-                getmass <- function(data) {
-                        if (grepl('-', data)) {
-                                name <- unlist(strsplit(data, '-'))
-                                iso1 <-
-                                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
-                                iso2 <-
-                                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
-                                cus <-
-                                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
-                        } else{
-                                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
-                                cus <-
-                                        as.numeric(iso[max(iso[, 2]), 1])
-                        }
-                        return(cus)
-                }
+
                 if (is.null(formula)) {
                         dis <- stats::dist(mz, method = "manhattan")
                 } else{
@@ -1245,18 +1250,33 @@ getpmd <-
 #' Get reaction chain for specific mass to charge ratio
 #' @param list a list with mzrt profile
 #' @param diff paired mass distance(s) of interests
-#' @param mass a specific mass for known compound or a vector of masses
+#' @param mass a specific mass for known compound or a vector of masses. You could also input formula for certain compounds
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
+#' @param ppm all the peaks within this mass accuracy as seed mass or formula
 #' @return a list with mzrt profile and reaction chain dataframe
 #' @examples
 #' data(spmeinvivo)
 #' # check metabolites of C18H39NO
 #' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 #' @export
-getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, corcutoff=0.6) {
+getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, corcutoff=0.6,ppm=25) {
+        if (is.character(mass)) {
+                mass <- unlist(Map(getmass, mass))
+        }
+        massup <- mass+mass*ppm/10e6
+        massdown <- mass-mass*ppm/10e6
+        up <- sapply(Map(function(x)
+                x < massup, list$mz), function(x)
+                        x || x)
+        down <- sapply(Map(function(x)
+                x > massdown, list$mz), function(x)
+                        x || x)
+        mass <- list$mz[up & down]
+        mass <- unique(round(mass,accuracy))
+
         mz <- list$mz
         rt <- list$rt
         data <- list$data
@@ -1470,3 +1490,4 @@ gettarget <- function(rt, drt = 10, n = 6) {
         }
         return(inji)
 }
+
