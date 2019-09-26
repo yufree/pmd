@@ -687,8 +687,6 @@ getstd <-
 #' Perform structure/reaction directed analysis for peaks list.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param freqcutoff cutoff of frequency of PMDs between RT cluster for peaks, default 10
-#' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
@@ -703,8 +701,6 @@ getstd <-
 getsda <-
         function(list,
                  rtcutoff = 10,
-                 freqcutoff = 10,
-                 top = 50,
                  corcutoff = NULL,
                  digits = 2,
                  accuracy = 4) {
@@ -764,30 +760,42 @@ getsda <-
                         diff <- df$diff2[index]
                         freq <-
                                 table(diff)[order(table(diff), decreasing = T)]
-                        if (!is.null(top)) {
-                                freq <- utils::head(freq, top)
-                                message(
-                                        paste(
-                                                "Top",
-                                                top,
-                                                "high frequency PMD groups were remained.",
-                                                "\n"
-                                        )
-                                )
+                        i <- n <- t <- 1
+                        while(n>=t){
+                                pmd <- as.numeric(names(freq[freq>i]))
+                                dfx <- df[df$diff2 %in% pmd,c(1,2)]
+                                net <- igraph::graph_from_data_frame(dfx,directed = F)
+                                t <- n
+                                n <- length(igraph::groups(igraph::components(net)))
+                                i <- i+1
                         }
-
-                        if (sum(df$diff2 == 0) > freqcutoff &
-                            0 %in% as.numeric(names(freq))) {
-                                list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
-                                        freq[freq >=
-                                                     freqcutoff]
-                                )))),]
-                        } else{
-                                list$sda <- df[(df$diff2 %in% c(as.numeric(names(
-                                        freq[freq >=
-                                                     freqcutoff]
-                                )))),]
-                        }
+                        message(paste("PMD frequency cutoff is", i-1, 'by PMD network analysis with',t,'clusters.'))
+                        freq <- freq[freq>(i-1)]
+                        list$sda <- df[df$diff2 %in% as.numeric(names(freq)),]
+                        # if (!is.null(top)) {
+                        #         freq <- utils::head(freq, top)
+                        #         message(
+                        #                 paste(
+                        #                         "Top",
+                        #                         top,
+                        #                         "high frequency PMD groups were remained.",
+                        #                         "\n"
+                        #                 )
+                        #         )
+                        # }
+                        #
+                        # if (sum(df$diff2 == 0) > freqcutoff &
+                        #     0 %in% as.numeric(names(freq))) {
+                        #         list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
+                        #                 freq[freq >=
+                        #                              freqcutoff]
+                        #         )))),]
+                        # } else{
+                        #         list$sda <- df[(df$diff2 %in% c(as.numeric(names(
+                        #                 freq[freq >=
+                        #                              freqcutoff]
+                        #         )))),]
+                        # }
                         if (!is.null(corcutoff)) {
                                 list$sda <- list$sda[abs(list$sda$cor) >= corcutoff, ]
                         }
@@ -823,37 +831,48 @@ getsda <-
                         diff <- df$diff2[index]
                         freq <-
                                 table(diff)[order(table(diff), decreasing = T)]
-                        if (!is.null(top)) {
-                                freq <- utils::head(freq, top)
-                                message(
-                                        paste(
-                                                "Top",
-                                                top,
-                                                "high frequency PMD groups were remained.",
-                                                "\n"
-                                        )
-                                )
+                        i <- n <- 1
+                        while(n>=t){
+                                pmd <- as.numeric(names(freq[freq>i]))
+                                dfx <- df[df$diff2 %in% pmd,c(1,2)]
+                                net <- igraph::graph_from_data_frame(dfx,directed = F)
+                                t <- n
+                                n <- length(igraph::groups(igraph::components(net)))
+                                i <- i+1
                         }
-
-                        if (sum(df$diff2 == 0) > freqcutoff) {
-                                list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
-                                        freq[freq >=
-                                                     freqcutoff]
-                                )))),]
-                        } else{
-                                list$sda <- df[(df$diff2 %in% c(as.numeric(names(
-                                        freq[freq >=
-                                                     freqcutoff]
-                                )))),]
-                        }
+                        message(paste("PMD frequency cutoff is", i-1, 'by PMD network analysis with',t,'clusters.'))
+                        freq <- freq[freq>(i-1)]
+                        list$sda <- df[df$diff2 %in% as.numeric(names(freq)),]
+                        # if (!is.null(top)) {
+                        #         freq <- utils::head(freq, top)
+                        #         message(
+                        #                 paste(
+                        #                         "Top",
+                        #                         top,
+                        #                         "high frequency PMD groups were remained.",
+                        #                         "\n"
+                        #                 )
+                        #         )
+                        # }
+                        #
+                        # if (sum(df$diff2 == 0) > freqcutoff) {
+                        #         list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
+                        #                 freq[freq >=
+                        #                              freqcutoff]
+                        #         )))),]
+                        # } else{
+                        #         list$sda <- df[(df$diff2 %in% c(as.numeric(names(
+                        #                 freq[freq >=
+                        #                              freqcutoff]
+                        #         )))),]
+                        # }
                 }
 
 
                 # show message about std mass
                 sub <- names(table(list$sda$diff2))
                 n <- length(sub)
-                message(paste(n, "groups were found as high frequency PMD group.",
-                              "\n"))
+                message(paste(n, "groups were found as high frequency PMD group."))
                 message(paste(sub, "were found as high frequency PMD.",
                               "\n"))
                 return(list)
@@ -863,9 +882,7 @@ getsda <-
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster, default 10
 #' @param ng cutoff of global PMD's retention time group numbers
-#' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
-#' @param freqcutoff cutoff of frequency of PMDs between RT cluster for independent peaks, default 10
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @return list with GlobalStd algorithm processed data.
@@ -876,10 +893,8 @@ getsda <-
 #' @export
 globalstd <- function(list,
                       rtcutoff = 10,
-                      ng = 10,
+                      ng = NULL,
                       corcutoff = NULL,
-                      freqcutoff = 10,
-                      top = 50,
                       digits = 2,
                       accuracy = 4) {
         list <-
@@ -902,9 +917,7 @@ globalstd <- function(list,
                         getsda(
                                 list2,
                                 rtcutoff = rtcutoff,
-                                freqcutoff = freqcutoff,
                                 corcutoff = corcutoff,
-                                top = top,
                                 digits = digits
                         )
         } else{
@@ -913,9 +926,7 @@ globalstd <- function(list,
                         getsda(
                                 list,
                                 rtcutoff = rtcutoff,
-                                freqcutoff = freqcutoff,
                                 corcutoff = corcutoff,
-                                top = top,
                                 digits = digits
                         )
         }

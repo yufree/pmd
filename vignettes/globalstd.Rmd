@@ -171,10 +171,10 @@ plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std2$group)),mai
 
 ## Structure/Reaction directed analysis
 
-`getsda` function could be used to perform Structure/reaction directed analysis. `freqcutoff` could be used to filter the PMD with high frequncy.
+`getsda` function could be used to perform Structure/reaction directed analysis. The cutoff of freqency is automately found by PMD network analysis with most cluster numbers.
 
 ```{r sda}
-sda <- getsda(std, freqcutoff = 10)
+sda <- getsda(std)
 ```
 
 You could use `plotstdsda` to show the distribution of the selected paired peaks.
@@ -187,7 +187,7 @@ You could also use index to show the distribution of certain PMDs.
 
 ```{r stdsdaidx}
 par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
-plotstdsda(sda,sda$sda$diff2 == 0)
+plotstdsda(sda,sda$sda$diff2 == 2.02)
 plotstdsda(sda,sda$sda$diff2 == 13.98)
 plotstdsda(sda,sda$sda$diff2 == 15.99)
 plotstdsda(sda,sda$sda$diff2 == 14.02)
@@ -197,10 +197,10 @@ plotstdsda(sda,sda$sda$diff2 == 58.04)
 
 Structure/reaction directed analysis could be directily performed on all the peaks, which is slow to process:
 
-```{r all,eval=F}
+```{r all}
 sdaall <- getsda(spmeinvivo)
 par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
-plotstdsda(sdaall,sdaall$sda$diff2 == 0)
+plotstdsda(sdaall,sdaall$sda$diff2 == 2.02)
 plotstdsda(sdaall,sdaall$sda$diff2 == 13.98)
 plotstdsda(sdaall,sdaall$sda$diff2 == 15.99)
 plotstdsda(sdaall,sdaall$sda$diff2 == 14.02)
@@ -239,7 +239,7 @@ legend("topright",bty = "n",
 If you want to see all the independant peaks' high frequency PMDs as a network, the following code will help
 
 ```{r net}
-sda <- getsda(std, freqcutoff = 10)
+sda <- getsda(std)
 df <- sda$sda
 net <- graph_from_data_frame(df,directed = F)
 pal <- (grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11,"RdYlBu")
@@ -264,8 +264,6 @@ Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 1
 
 Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the empirical global PMD's retention time group numbers.
 
-As for the cutoff of the frequency of PMDs, you could change the frequency until you find certain PMD which you're sure that it should appear in your dataset. For example, 16 should be considered as a good start. Any pmd with the frequency larger than PMD 16 could be further discussed.
-
 Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.
 
 ## Wrap function
@@ -273,7 +271,7 @@ Another important hint is that pre-filter your peak list by black samples or oth
 `globalstd` function is a wrap funtion to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the `list` objects from `globalstd` function.
 
 ```{r wrap}
-result <- globalstd(spmeinvivo)
+result <- globalstd(spmeinvivo,ng=10)
 ```
 
 ## Shiny application

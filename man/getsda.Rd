@@ -4,17 +4,13 @@
 \alias{getsda}
 \title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
-getsda(list, rtcutoff = 10, freqcutoff = 10, top = 50,
-  corcutoff = NULL, digits = 2, accuracy = 4)
+getsda(list, rtcutoff = 10, corcutoff = NULL, digits = 2,
+  accuracy = 4)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
-
-\item{freqcutoff}{cutoff of frequency of PMDs between RT cluster for peaks, default 10}
-
-\item{top}{top n pmd freqency cutoff when the freqcutoff is too small for large data set, default 50}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 

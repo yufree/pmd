@@ -135,7 +135,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>getchain</span>(<span class='no'>list</span>, <span class='no'>diff</span>, <span class='no'>mass</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='fl'>0.6</span>)</pre>
+  <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>ppm</span> <span class='kw'>=</span> <span class='fl'>25</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,7 +150,7 @@
     </tr>
     <tr>
       <th>mass</th>
-      <td><p>a specific mass for known compound or a vector of masses</p></td>
+      <td><p>a specific mass for known compound or a vector of masses. You could also input formula for certain compounds</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -167,6 +167,10 @@
     <tr>
       <th>corcutoff</th>
       <td><p>cutoff of the correlation coefficient, default NULL</p></td>
+    </tr>
+    <tr>
+      <th>ppm</th>
+      <td><p>all the peaks within this mass accuracy as seed mass or formula</p></td>
     </tr>
     </table>
 
