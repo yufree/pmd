@@ -5,7 +5,7 @@
 \title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
 getsda(list, rtcutoff = 10, corcutoff = NULL, digits = 2,
-  accuracy = 4)
+  accuracy = 4, freqcutoff = NULL)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
@@ -17,6 +17,8 @@ getsda(list, rtcutoff = 10, corcutoff = NULL, digits = 2,
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
+
+\item{freqcutoff}{pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
