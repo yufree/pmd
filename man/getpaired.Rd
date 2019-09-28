@@ -11,7 +11,7 @@ getpaired(list, rtcutoff = 10, ng = 10, digits = 2, accuracy = 4)
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
-\item{ng}{cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20% of RT cluster will be used as ng.}
+\item{ng}{cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.}
 
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 

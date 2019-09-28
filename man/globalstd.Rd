@@ -12,7 +12,7 @@ globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
 
 \item{rtcutoff}{cutoff of the distances in cluster, default 10}
 
-\item{ng}{cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20% of RT cluster will be used as ng.}
+\item{ng}{cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 

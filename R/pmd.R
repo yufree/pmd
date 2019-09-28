@@ -21,7 +21,7 @@ getmass <- function(data) {
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20% of RT cluster will be used as ng.
+#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
@@ -809,7 +809,7 @@ getsda <-
 #' GlobalStd algorithm with structure/reaction directed analysis
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster, default 10
-#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20% of RT cluster will be used as ng.
+#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
