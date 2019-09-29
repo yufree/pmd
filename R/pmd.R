@@ -801,7 +801,7 @@ getsda <-
                 sub <- names(table(list$sda$diff2))
                 n <- length(sub)
                 message(paste(n, "groups were found as high frequency PMD group."))
-                message(paste(sub, "were found as high frequency PMD.",
+                message(paste(sub, "was found as high frequency PMD.",
                               "\n"))
                 return(list)
         }
@@ -980,14 +980,15 @@ getcluster <- function(list,
         }
 
         # multi-charger
+        # From HMDB lowest mass with 0.5 is 394.4539, remove those ions related pmd
         index1 <-
-                paste0(round(resultmulti$ms1, accuracy),
+                paste0(round(resultmulti$ms1, accuracy)[round(resultmulti$ms1 %% 1, 1) == 0.5 & resultmulti$ms1<350],
                        '@',
-                       resultmulti$rtg)
+                       resultmulti$rtg[round(resultmulti$ms1 %% 1, 1) == 0.5 & resultmulti$ms1<350])
         index2 <-
-                paste0(round(resultmulti$ms2, accuracy),
+                paste0(round(resultmulti$ms2, accuracy)[round(resultmulti$ms2 %% 1, 1) == 0.5 & resultmulti$ms2<350],
                        '@',
-                       resultmulti$rtg)
+                       resultmulti$rtg[round(resultmulti$ms2 %% 1, 1) == 0.5 & resultmulti$ms2<350])
         # isotope
         index3 <-
                 paste0(round(resultiso$ms1, accuracy), '@', resultiso$rtg)
@@ -1018,26 +1019,41 @@ getcluster <- function(list,
                         unique(c(resultdiff$ms2[index5 %in% indexstd], resultdiff$ms1[index6 %in% indexstd]))
                 stdmassg <- c(mzt, multiover, isoover, diffover)
                 mzx <- mz[mz %in% stdmassg]
-                stdg[round(list$mz, accuracy) %in% round(stdmassg, accuracy) &
-                             list$rtcluster == rtgt] <-
-                        paste0(stdg[round(list$mz, accuracy) %in% round(stdmassg, accuracy) &
-                                            list$rtcluster == rtgt], '@', i)
                 if (!is.null(msdata)) {
                         index <- paste0(round(mzx, accuracy), '@', rtgt)
                         ins <- msdata[index000 %in% unique(index)]
 
                         tdf <-
                                 cbind.data.frame(mz = mzx[!duplicated(index)], i, rtgt, ins)
-                        mzst <- index[which.max(tdf$ins)]
-                        mzs <- c(mzs, mzst)
                 } else{
                         tdf <- cbind.data.frame(stdmassg, i, rtgt)
                 }
 
                 cluster <- rbind.data.frame(cluster, tdf)
+
         }
-        list$stdg <- stdg
-        list$cluster <- cluster
+        mergegroup <- function(temp){
+                t <- any(table(temp$mz)>1)
+                if(t){
+                        cluster2 <- temp[!duplicated(temp$mz),]
+                        ti<-igraph::components(igraph::graph_from_data_frame(temp))$membership[1:length(cluster2$mz)]
+                        cluster2$largei <- paste0(ti,'@',cluster2$rtgt)
+                        return(cluster2)
+                }else{
+                        temp$largei <-  paste0(temp$i,'@',temp$rtgt)
+                        return(temp)
+                }
+        }
+        cl <- split(cluster,cluster$rtgt)
+        cluster <- lapply(cl, mergegroup)
+        list$cluster <- do.call("rbind", cluster)
+        if (!is.null(msdata)) {
+        for(i in unique(list$cluster$largei)){
+                t <- list$cluster[list$cluster$largei==i,]
+                mzst <- paste0(unique(round(t$mz[which.max(t$ins)],accuracy)),'@',t$rtgt[1])
+                mzs <- c(mzs, mzst)
+        }
+        }
         if (!is.null(mzs)) {
                 list$stdmassindex2 <-
                         paste0(round(list$mz, accuracy), '@', list$rtcluster) %in% mzs

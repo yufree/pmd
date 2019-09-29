@@ -135,12 +135,13 @@ plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main =
 
 ### Comparision with other packages
 
-GlobalStd algorithm in `pmd` package could be treated as a way to extract pseudospectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks. Then you could choose export peaks with the highest intensities in each GlobalStd peaks groups.
+GlobalStd algorithm in `pmd` package could be treated as a method to extract pseudospectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks. This function would consider the merge of GlobalStd peaks when certain peak is involved in multiple clusters. Then you could choose export peaks with the highest intensities in each GlobalStd merged peaks groups.
 
 ```{r comp}
 stdcluster <- getcluster(std)
 # extract pseudospectra for std peak 71
-plot(stdcluster$cluster$mz[stdcluster$cluster$i==71],stdcluster$cluster$ins[stdcluster$cluster$i==71],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 711')
+idx <- unique(stdcluster$cluster$largei[stdcluster$cluster$i==71])
+plot(stdcluster$cluster$mz[stdcluster$cluster$largei==idx],stdcluster$cluster$ins[stdcluster$cluster$largei==idx],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 71')
 # export peaks with the highest intensities in each GlobalStd peaks groups.
 data <- stdcluster$data[stdcluster$stdmassindex2,]
 ```

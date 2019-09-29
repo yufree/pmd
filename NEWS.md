@@ -4,6 +4,7 @@
 - add shiny application pmdnet to perform PMD network analysis
 - add support for formula in getchain to find compounds ions
 - remove frequency cutoff in getsda and use PMD network clusters analysis to determine the cutoff
+- add merge feature for getcluster and such methods could be used to furthor reduce the GlobalStd peaks
 
 # pmd 0.1.5
 
