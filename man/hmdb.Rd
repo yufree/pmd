@@ -3,7 +3,7 @@
 \docType{data}
 \name{hmdb}
 \alias{hmdb}
-\title{A dataframe containing HMDB top 10000 unique accurate mass pmd and related reactions}
+\title{A dataframe containing HMDB with unique accurate mass pmd frequence larger than 100.}
 \format{A dataframe with atoms numbers of C, H, O, N, P, S
 \describe{
   \item{percentage}{accuracy of atom numbers prediction}
@@ -13,6 +13,6 @@
 data(hmdb)
 }
 \description{
-A dataframe containing HMDB top 10000 unique accurate mass pmd and related reactions
+A dataframe containing HMDB with unique accurate mass pmd frequence larger than 100.
 }
 \keyword{datasets}

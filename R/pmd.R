@@ -1225,10 +1225,10 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
         massdown <- mass-mass*ppm/10e6
         up <- sapply(Map(function(x)
                 x < massup, list$mz), function(x)
-                        x || x)
+                        sum(x&T)>0)
         down <- sapply(Map(function(x)
                 x > massdown, list$mz), function(x)
-                        x || x)
+                        sum(x&T)>0)
         mass <- list$mz[up & down]
         mass <- unique(round(mass,accuracy))
 

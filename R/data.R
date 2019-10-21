@@ -22,17 +22,7 @@
 #'   }
 "spmeinvivo"
 
-#' A list dataset containing HMDB unique accurate mass pmd analysis results
-#' @docType data
-#' @usage data(hmdbp)
-#' @format A list with two vectors
-#' \describe{
-#'   \item{massp}{all unique hmdb mass probability across all pmds}
-#'   \item{pmdp}{pmds probability across all unique hmdb mass}
-#'   }
-"hmdbp"
-
-#' A dataframe containing HMDB top 10000 unique accurate mass pmd and related reactions
+#' A dataframe containing HMDB with unique accurate mass pmd frequence larger than 100.
 #' @docType data
 #' @usage data(hmdb)
 #' @format A dataframe with atoms numbers of C, H, O, N, P, S
