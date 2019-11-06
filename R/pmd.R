@@ -1409,14 +1409,19 @@ getreact <-
                         list$pmd$r <- apply(pmd, 1, getr)
                         list$pmd <- list$pmd[list$pmd$r < ratiocv & abs(list$pmd$cor)>corcutoff , ]
                         list$pmd <- list$pmd[complete.cases(list$pmd),]
-                        idx <- paste(list$mz, list$rt)
-                        idx2 <-
-                                unique(c(
-                                        paste(list$pmd$ms1, list$pmd$rt1),
-                                        paste(list$pmd$ms2, list$pmd$rt2)
-                                ))
-                        list <- enviGCMS::getfilter(list, idx %in% idx2)
-                        return(list)
+                        if(nrow(list$pmd)>0){
+                                idx <- paste(list$mz, list$rt)
+                                idx2 <-
+                                        unique(c(
+                                                paste(list$pmd$ms1, list$pmd$rt1),
+                                                paste(list$pmd$ms2, list$pmd$rt2)
+                                        ))
+                                list <- enviGCMS::getfilter(list, idx %in% idx2)
+                                return(list)
+                        }else{
+                                message('No quantitative peaks could be used.')
+                        }
+
                 }else{
                         message('No quantitative peaks could be used.')
                 }
