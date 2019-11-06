@@ -1344,6 +1344,7 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
+#' @param corcutoff cutoff of the correlation coefficient of paired peaks, default 0.6
 #' @param ... other parameters for getpmd
 #' @return list with quantitative paired peaks.
 #' @examples
@@ -1358,6 +1359,7 @@ getreact <-
                  digits = 2,
                  accuracy = 4,
                  ratiocv = 30,
+                 corcutoff = 0.6,
                  ...) {
                 p <-
                         pmd::getpmd(
@@ -1368,33 +1370,45 @@ getreact <-
                                 accuracy = accuracy,
                                 ...
                         )
-                getr <- function(v, nlv) {
+                # getr0 <- function(v, nlv) {
+                #         ratio <- NULL
+                #         for (i in 1:length(nlv)) {
+                #                 ratio1 <-
+                #                         sum(data[list$mz %in% v[1] & list$rt %in% v[4], grepl(nlv[i], group)])
+                #                 ratio2 <-
+                #                         sum(data[list$mz %in% v[2] & list$rt %in% v[5], grepl(nlv[i], group)])
+                #                 ratioi <- ratio1 / ratio2
+                #                 ratio <- c(ratio, ratioi)
+                #         }
+                #         rsd <-
+                #                 stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
+                #         return(rsd)
+                # }
+                getr <- function(v) {
                         ratio <- NULL
-                        for (i in 1:length(nlv)) {
-                                ratio1 <-
-                                        sum(data[list$mz %in% v[1] & list$rt %in% v[4], grepl(nlv[i], group)])
-                                ratio2 <-
-                                        sum(data[list$mz %in% v[2] & list$rt %in% v[5], grepl(nlv[i], group)])
-                                ratioi <- ratio1 / ratio2
-                                ratio <- c(ratio, ratioi)
-                        }
+                        ratio1 <-
+                                        data[list$mz %in% v[1] & list$rt %in% v[4], ]
+                        ratio2 <-
+                                        data[list$mz %in% v[2] & list$rt %in% v[5], ]
+                        ratio <- ratio1 / ratio2
                         rsd <-
                                 stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
                         return(rsd)
                 }
-                if (NCOL(list$group) > 1) {
-                        group <- apply(list$group, 1 , paste0, collapse = "")
-                        nlv <- unique(group)
-                } else{
-                        group <- c(t(list$group))
-                        nlv <- unique(group)
-                }
+                # if (NCOL(list$group) > 1) {
+                #         group <- apply(list$group, 1 , paste0, collapse = "")
+                #         nlv <- unique(group)
+                # } else{
+                #         group <- c(t(list$group))
+                #         nlv <- unique(group)
+                # }
                 if(sum(p$pmdindex)>0){
                         list <- enviGCMS::getfilter(p, p$pmdindex)
                         data <- list$data
                         pmd <- list$pmd
-                        list$pmd$r <- apply(pmd, 1, getr, nlv)
-                        list$pmd <- list$pmd[list$pmd$r < ratiocv, ]
+                        list$pmd$r <- apply(pmd, 1, getr)
+                        list$pmd <- list$pmd[list$pmd$r < ratiocv & abs(list$pmd$cor)>corcutoff , ]
+                        list$pmd <- list$pmd[complete.cases(list$pmd),]
                         idx <- paste(list$mz, list$rt)
                         idx2 <-
                                 unique(c(
