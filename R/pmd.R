@@ -1406,7 +1406,7 @@ getreact <-
                         pmd <- list$pmd
                         list$pmd$r <- apply(pmd, 1, getr)
                         list$pmd <- list$pmd[list$pmd$r < ratiocv , ]
-                        list$pmd <- list$pmd[complete.cases(list$pmd),]
+                        list$pmd <- list$pmd[stats::complete.cases(list$pmd),]
                         if(nrow(list$pmd)>0){
                                 idx <- paste(list$mz, list$rt)
                                 idx2 <-
