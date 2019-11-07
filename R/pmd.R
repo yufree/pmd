@@ -1344,7 +1344,6 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
-#' @param corcutoff cutoff of the correlation coefficient of paired peaks, default 0.6
 #' @param ... other parameters for getpmd
 #' @return list with quantitative paired peaks.
 #' @examples
@@ -1359,7 +1358,6 @@ getreact <-
                  digits = 2,
                  accuracy = 4,
                  ratiocv = 30,
-                 corcutoff = 0.6,
                  ...) {
                 p <-
                         pmd::getpmd(
@@ -1407,7 +1405,7 @@ getreact <-
                         data <- list$data
                         pmd <- list$pmd
                         list$pmd$r <- apply(pmd, 1, getr)
-                        list$pmd <- list$pmd[list$pmd$r < ratiocv & abs(list$pmd$cor)>corcutoff , ]
+                        list$pmd <- list$pmd[list$pmd$r < ratiocv , ]
                         list$pmd <- list$pmd[complete.cases(list$pmd),]
                         if(nrow(list$pmd)>0){
                                 idx <- paste(list$mz, list$rt)
@@ -1423,7 +1421,7 @@ getreact <-
                         }
 
                 }else{
-                        message('No quantitative peaks could be used.')
+                        message('No pmd peaks could be found.')
                 }
         }
 
