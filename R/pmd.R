@@ -1388,7 +1388,7 @@ getreact <-
                                         data[list$mz %in% v[1] & list$rt %in% v[4], ]
                         ratio2 <-
                                         data[list$mz %in% v[2] & list$rt %in% v[5], ]
-                        ratio <- ratio1 / ratio2
+                        ratio <- as.numeric(ratio1) / as.numeric(ratio2)
                         rsd <-
                                 stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
                         return(rsd)
