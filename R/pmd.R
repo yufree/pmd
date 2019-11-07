@@ -1344,6 +1344,7 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
+#' @param outlier logical, if true, outliar of ratio will be removed, default False.
 #' @param ... other parameters for getpmd
 #' @return list with quantitative paired peaks.
 #' @examples
@@ -1358,6 +1359,7 @@ getreact <-
                  digits = 2,
                  accuracy = 4,
                  ratiocv = 30,
+                 outlier = F,
                  ...) {
                 p <-
                         pmd::getpmd(
@@ -1389,6 +1391,10 @@ getreact <-
                         ratio2 <-
                                         data[list$mz %in% v[2] & list$rt %in% v[5], ]
                         ratio <- as.numeric(ratio1) / as.numeric(ratio2)
+                        if(outlier){
+                                outlier_values <- grDevices::boxplot.stats(ratio)$out
+                                ratio <- ratio[!ratio%in%outlier_values]
+                        }
                         rsd <-
                                 stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
                         return(rsd)
