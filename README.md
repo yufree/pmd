@@ -50,3 +50,24 @@ To use the shiny application within the package, use the following code:
 ```{r}
 runPMD()
 ```
+
+To check the pmd reaction database:
+
+```{r}
+# all reaction
+data("omics")
+View(omics)
+# kegg reaction
+data("keggrall")
+View(keggrall)
+# literature reaction for mass spectrometry
+data("sda")
+View(sda)
+```
+
+To check the HMDB pmd database:
+
+```{r}
+data("hmdb")
+View(hmdb)
+```

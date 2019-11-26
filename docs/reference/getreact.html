@@ -135,7 +135,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>getreact</span>(<span class='no'>list</span>, <span class='no'>pmd</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>ratiocv</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>ratiocv</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>outlier</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,6 +163,10 @@
     <tr>
       <th>ratiocv</th>
       <td><p>ratio cv cutoff for quantitative paired peaks, default 30</p></td>
+    </tr>
+    <tr>
+      <th>outlier</th>
+      <td><p>logical, if true, outliar of ratio will be removed, default False.</p></td>
     </tr>
     <tr>
       <th>...</th>

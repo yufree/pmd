@@ -108,6 +108,19 @@ std &lt;- getstd(pmd)</a></code></pre>
 <pre class="{r}"><code>result &lt;- globalstd(spmeinvivo)</code></pre>
 <p>To use the shiny application within the package, use the following code:</p>
 <pre class="{r}"><code><a href="reference/runPMD.html">runPMD()</a></code></pre>
+<p>To check the pmd reaction database:</p>
+<pre class="{r}"><code><a href="https://rdrr.io/r/utils/data.html"># all reaction
+data("omics")
+View(omics)
+# kegg reaction
+data("keggrall")
+View(keggrall)
+# literature reaction for mass spectrometry
+data("sda")
+View(sda)</a></code></pre>
+<p>To check the HMDB pmd database:</p>
+<pre class="{r}"><code><a href="https://rdrr.io/r/utils/data.html">data("hmdb")
+View(hmdb)</a></code></pre>
 </div>
 </div>
   </div>

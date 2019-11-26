@@ -84,7 +84,7 @@
       <h1>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2019-11-07</h4>
+            <h4 class="date">2019-11-26</h4>
       
       
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -200,44 +200,40 @@
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/table.html">table</a></span>(index)</a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; index</span></a>
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 24 28 37 27 16 37 52 27 14 35</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt; 21 35 22 40 27 25 37 19 39 32</span></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># show the ions for the first injection</span></a>
 <a class="sourceLine" id="cb8-10" data-line-number="10">std<span class="op">$</span>mz[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 100.0763 110.0717 111.0203 118.0652 132.0779 140.0688 152.0578</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 160.1338 162.0552 166.2924 170.0330 175.1200 181.9871 192.0132</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 197.9893 211.1695 221.0851 242.2863 242.2863 245.1944 249.1869</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 259.9651 261.2591 262.1656 262.2258 267.0639 267.2693 269.9189</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 270.3185 272.3230 277.1817 285.3002 285.9630 286.3104 294.2875</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 302.1454 307.3001 310.3117 317.9344 327.3449 335.3135 349.2230</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 352.3592 356.9094 357.8170 368.3395 370.3567 371.3577 372.3197</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 377.3522 378.9015 383.1414 387.1807 395.2208 400.9174 410.8485</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 413.2687 417.0350 420.3193 429.3192 432.0690 441.2976 447.3469</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 463.3975 483.3545 508.3041 515.9785 521.3439 524.1178 540.8890</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 542.1221 543.1198 543.4015 549.3617 554.2887 559.1521 563.3761</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 569.3449 579.1247 593.5980 598.8366 603.4105 608.4285 621.4195</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 635.3784 642.8627 655.8704 674.5057 684.2033 708.4889 710.8511</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 718.8373 722.4391 750.6089 752.8319 757.8509 758.3546 765.5253</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 766.3701 771.8544 776.6031 790.5377 796.5418 814.4154 825.3520</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; [106] 831.6352 837.5278 848.6295 863.8189 872.8054 883.7184 904.8150</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; [113] 921.4730 968.2956 975.1471 982.8002 984.7703</span></a>
-<a class="sourceLine" id="cb8-28" data-line-number="28">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt;   [1] 170.1810 228.0840  86.1350 639.2070 212.6550 212.7160 219.5120</span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt;   [8] 328.4180 511.2940 511.2940 215.0585 260.8720 147.8970 217.1820</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt;  [15] 145.5380 614.6250 565.7700 880.3730 780.5760 615.0550 645.4960</span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt;  [22] 145.9660 639.1010 408.3895 556.7670 568.7680 633.3765 144.6810</span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt;  [29] 767.5050 785.9345 491.1510 614.1970 147.4990 696.9585 618.5915</span></a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;  [36] 583.9810 582.8050 618.4820 145.5170 647.4575 608.1990 533.4745</span></a>
-<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt;  [43] 648.9580 213.7270 639.0990 644.2430 688.3880 688.6010 659.8815</span></a>
-<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt;  [50] 650.0300 215.8460 605.5200 482.3650 613.7680 145.1090 218.3130</span></a>
-<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt;  [57] 512.7510 762.6820 687.8085 557.1970 762.3610 688.1715 711.4240</span></a>
-<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt;  [64] 582.3755 422.9640 532.7230 212.8690 515.0340 690.5290 213.7260</span></a>
-<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt;  [71] 762.5760 762.7890 439.2500 418.7850 512.7940 161.3970 439.4630</span></a>
-<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt;  [78] 510.6510 819.9415 772.2180 216.9670 530.7950 613.3395 454.9350</span></a>
-<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt;  [85] 213.5480 214.5700 213.3340 468.4360 883.2670 525.0090 214.4150</span></a>
-<a class="sourceLine" id="cb8-42" data-line-number="42"><span class="co">#&gt;  [92] 215.4870 573.0545 624.2710 215.2145 213.2940 213.5120 773.7190</span></a>
-<a class="sourceLine" id="cb8-43" data-line-number="43"><span class="co">#&gt;  [99] 462.0070 213.7720 639.1010 780.5760 519.8660 490.2940 376.2490</span></a>
-<a class="sourceLine" id="cb8-44" data-line-number="44"><span class="co">#&gt; [106] 628.3420 698.2460 503.2585 639.1000 639.1010 632.1990 213.3595</span></a>
-<a class="sourceLine" id="cb8-45" data-line-number="45"><span class="co">#&gt; [113] 497.7940 213.5120 213.4215 214.4360 215.0690</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt;   [1] 103.0547 113.9638 125.9874 156.0426 160.1338 163.1487 169.0976</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt;   [8] 170.0330 170.1541 188.6484 192.1604 195.1745 217.1483 232.1334</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt;  [15] 233.2268 235.1692 236.1626 247.2421 255.2077 256.2645 258.8998</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;  [22] 264.1944 268.1893 270.3185 282.0531 285.3002 286.3101 294.2054</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt;  [29] 294.2875 295.1910 309.2046 311.1865 314.9159 331.0031 340.3481</span></a>
+<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;  [36] 340.7613 341.0937 341.3512 357.3004 365.1361 366.3006 367.3373</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt;  [43] 374.3041 380.0033 385.3484 405.2616 410.8485 415.2132 419.3519</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt;  [50] 420.3193 421.2521 437.3747 442.3373 446.1216 473.3445 497.3440</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt;  [57] 499.9050 500.3789 501.3829 522.3557 536.1655 538.1637 539.1646</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt;  [64] 545.4035 556.4416 561.3616 583.9647 593.5980 600.4401 608.4054</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt;  [71] 608.4285 611.1844 639.3115 644.8326 652.8473 679.4600 698.7711</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  [78] 701.4938 702.6369 703.2147 719.9400 737.3591 738.5072 741.8363</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt;  [85] 760.2210 767.8423 774.5655 804.8442 814.4154 825.8384 836.6816</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt;  [92] 837.5278 839.1707 870.7857 873.3343 879.3804 914.8115 941.8210</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt;  [99] 942.7638 945.7972 946.8063 983.7978</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">std<span class="op">$</span>rt[index<span class="op">==</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt;   [1]  348.1340 1079.4300   76.4910  218.6020  328.4180  612.9110  169.7530</span></a>
+<a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt;   [8]  215.0585  638.9930  639.2075  337.3920  594.4850  638.8870  403.6780</span></a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt;  [15]  639.1000  576.9100  430.6770  639.0995  439.2490  588.0530  217.2010</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt;  [22]  473.1445  452.5345  838.9070  617.8400  614.1970  672.5290  452.0005</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt;  [29]  618.5915  518.1520  600.9120  495.2220  145.8840  509.3650  638.8870</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt;  [36]  172.7590  574.0185  639.3140  590.8380  578.1970  561.9110  585.2700</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt;  [43]  582.4840  212.9175  644.4580  547.3380  218.3130  507.8650  656.0290</span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;  [50]  687.8085  634.3425  483.1250  404.5340  717.1020  553.4470  536.5865</span></a>
+<a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt;  [57]  213.9270  422.9630  422.9630  546.4830  762.5770  762.7890  762.7890</span></a>
+<a class="sourceLine" id="cb8-36" data-line-number="36"><span class="co">#&gt;  [64]  579.9130  546.9100  457.8285  212.7615  772.2180  455.1500  434.7490</span></a>
+<a class="sourceLine" id="cb8-37" data-line-number="37"><span class="co">#&gt;  [71]  613.3395  818.7650  630.8060  215.1920  215.5645  468.4360  218.0975</span></a>
+<a class="sourceLine" id="cb8-38" data-line-number="38"><span class="co">#&gt;  [78]  171.8625  639.1000  663.7645  212.6510  213.5480  752.9310  214.1480</span></a>
+<a class="sourceLine" id="cb8-39" data-line-number="39"><span class="co">#&gt;  [85]  700.3870  213.3840  492.5440  213.5090  490.2940  213.4215  646.6000</span></a>
+<a class="sourceLine" id="cb8-40" data-line-number="40"><span class="co">#&gt;  [92]  698.2460  213.1200  216.5120  213.5480  373.7835  214.4360  213.7130</span></a>
+<a class="sourceLine" id="cb8-41" data-line-number="41"><span class="co">#&gt;  [99]  636.9060  214.1550  213.6155  214.6300</span></a></code></pre></div>
 </div>
 <div id="validation-by-principal-components-analysispca" class="section level3">
 <h3 class="hasAnchor">
@@ -834,6 +830,86 @@
 <p>An interactive document has been included in this package to perform PMD analysis. You need to prepare a csv file with m/z and retention time of peaks. Such csv file could be generated by run <code><a href="https://rdrr.io/pkg/enviGCMS/man/getmzrtcsv.html">enviGCMS::getmzrtcsv()</a></code> on the <code>list</code> object from <code><a href="https://rdrr.io/pkg/enviGCMS/man/getmzrt.html">enviGCMS::getmzrt(xset)</a></code> or <code><a href="https://rdrr.io/pkg/enviGCMS/man/getmzrt2.html">enviGCMS::getmzrt2(xset)</a></code> function. You could also generate the csv file by <code><a href="https://rdrr.io/pkg/enviGCMS/man/getmzrt.html">enviGCMS::getmzrt(xset,name = 'test')</a></code> or <code><a href="https://rdrr.io/pkg/enviGCMS/man/getmzrt2.html">enviGCMS::getmzrt2(xset, name = 'test')</a></code>. You will find the csv file in the working dictionary named <code>test.csv</code>.</p>
 <p>Then you could run <code><a href="../reference/runPMD.html">runPMD()</a></code> to start the Graphical user interface(GUI) for GlobalStd algorithm and structure/reaction directed analysis. The PMD network for certain compound could be generated by run <code><a href="../reference/runPMDnet.html">runPMDnet()</a></code>.</p>
 </div>
+<div id="database" class="section level2">
+<h2 class="hasAnchor">
+<a href="#database" class="anchor"></a>Database</h2>
+<p>To check the pmd reaction database:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="co"># all reaction</span></a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"omics"</span>)</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(omics)</a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co">#&gt;     KEGG RHEA_ID DIRECTION MASTER_ID ec ecocyc macie</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5"><span class="co">#&gt; 1 R00001   22455        BI     22452 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-6" data-line-number="6"><span class="co">#&gt; 2 R00004   24579        BI     24576 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-7" data-line-number="7"><span class="co">#&gt; 3 R00005   19032        BI     19029 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-8" data-line-number="8"><span class="co">#&gt; 4 R00005   19032        BI     19029 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-9" data-line-number="9"><span class="co">#&gt; 5 R00006   20504        BI     20501 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-10" data-line-number="10"><span class="co">#&gt; 6 R00008   22751        BI     22748 NA   &lt;NA&gt;    NA</span></a>
+<a class="sourceLine" id="cb24-11" data-line-number="11"><span class="co">#&gt;                   metacyc reactome</span></a>
+<a class="sourceLine" id="cb24-12" data-line-number="12"><span class="co">#&gt; 1 ENDOPOLYPHOSPHATASE-RXN       NA</span></a>
+<a class="sourceLine" id="cb24-13" data-line-number="13"><span class="co">#&gt; 2   INORGPYROPHOSPHAT-RXN       NA</span></a>
+<a class="sourceLine" id="cb24-14" data-line-number="14"><span class="co">#&gt; 3                    &lt;NA&gt;       NA</span></a>
+<a class="sourceLine" id="cb24-15" data-line-number="15"><span class="co">#&gt; 4                    &lt;NA&gt;       NA</span></a>
+<a class="sourceLine" id="cb24-16" data-line-number="16"><span class="co">#&gt; 5                    &lt;NA&gt;       NA</span></a>
+<a class="sourceLine" id="cb24-17" data-line-number="17"><span class="co">#&gt; 6                    &lt;NA&gt;       NA</span></a>
+<a class="sourceLine" id="cb24-18" data-line-number="18"><span class="co">#&gt;                                                compounds   pmd   pmd2</span></a>
+<a class="sourceLine" id="cb24-19" data-line-number="19"><span class="co">#&gt; 1  [phosphate](n+1) + n H2O &lt;=&gt; n H(+) + (n+1) phosphate    NA     NA</span></a>
+<a class="sourceLine" id="cb24-20" data-line-number="20"><span class="co">#&gt; 2               diphosphate + H2O &lt;=&gt; H(+) + 2 phosphate 79.97 79.966</span></a>
+<a class="sourceLine" id="cb24-21" data-line-number="21"><span class="co">#&gt; 3 3 H(+) + H2O + urea-1-carboxylate &lt;=&gt; 2 CO2 + 2 NH4(+)  0.98  0.984</span></a>
+<a class="sourceLine" id="cb24-22" data-line-number="22"><span class="co">#&gt; 4 3 H(+) + H2O + urea-1-carboxylate &lt;=&gt; 2 CO2 + 2 NH4(+) 60.03 60.032</span></a>
+<a class="sourceLine" id="cb24-23" data-line-number="23"><span class="co">#&gt; 5             H(+) + 2 pyruvate &lt;=&gt; 2-acetolactate + CO2 44.03 44.026</span></a>
+<a class="sourceLine" id="cb24-24" data-line-number="24"><span class="co">#&gt; 6       4-hydroxy-4-methyl-2-oxoglutarate &lt;=&gt; 2 pyruvate 88.02 88.016</span></a>
+<a class="sourceLine" id="cb24-25" data-line-number="25"><span class="co"># kegg reaction</span></a>
+<a class="sourceLine" id="cb24-26" data-line-number="26"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"keggrall"</span>)</a>
+<a class="sourceLine" id="cb24-27" data-line-number="27"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(keggrall)</a>
+<a class="sourceLine" id="cb24-28" data-line-number="28"><span class="co">#&gt;         ID      ms1      formula1      ms2      formula2  C  H O N P S</span></a>
+<a class="sourceLine" id="cb24-29" data-line-number="29"><span class="co">#&gt; 2.1 R00002  18.0106           H2O 427.0294 C10H15N5O10P2 10 13 9 5 2 0</span></a>
+<a class="sourceLine" id="cb24-30" data-line-number="30"><span class="co">#&gt; 2.2 R00002  18.0106           H2O  97.9769         H3PO4  0  1 3 0 1 0</span></a>
+<a class="sourceLine" id="cb24-31" data-line-number="31"><span class="co">#&gt; 2.3 R00002 506.9957 C10H16N5O13P3 427.0294 C10H15N5O10P2  0  1 3 0 1 0</span></a>
+<a class="sourceLine" id="cb24-32" data-line-number="32"><span class="co">#&gt; 2.4 R00002 506.9957 C10H16N5O13P3  97.9769         H3PO4 10 13 9 5 2 0</span></a>
+<a class="sourceLine" id="cb24-33" data-line-number="33"><span class="co">#&gt; 3.1 R00004  18.0106           H2O  97.9769         H3PO4  0  1 3 0 1 0</span></a>
+<a class="sourceLine" id="cb24-34" data-line-number="34"><span class="co">#&gt; 3.2 R00004 177.9432        H4P2O7  97.9769         H3PO4  0  1 3 0 1 0</span></a>
+<a class="sourceLine" id="cb24-35" data-line-number="35"><span class="co">#&gt;         pmd</span></a>
+<a class="sourceLine" id="cb24-36" data-line-number="36"><span class="co">#&gt; 2.1 409.019</span></a>
+<a class="sourceLine" id="cb24-37" data-line-number="37"><span class="co">#&gt; 2.2  79.966</span></a>
+<a class="sourceLine" id="cb24-38" data-line-number="38"><span class="co">#&gt; 2.3  79.966</span></a>
+<a class="sourceLine" id="cb24-39" data-line-number="39"><span class="co">#&gt; 2.4 409.019</span></a>
+<a class="sourceLine" id="cb24-40" data-line-number="40"><span class="co">#&gt; 3.1  79.966</span></a>
+<a class="sourceLine" id="cb24-41" data-line-number="41"><span class="co">#&gt; 3.2  79.966</span></a>
+<a class="sourceLine" id="cb24-42" data-line-number="42"><span class="co"># literature reaction for mass spectrometry</span></a>
+<a class="sourceLine" id="cb24-43" data-line-number="43"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"sda"</span>)</a>
+<a class="sourceLine" id="cb24-44" data-line-number="44"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(sda)</a>
+<a class="sourceLine" id="cb24-45" data-line-number="45"><span class="co">#&gt;         PMD</span></a>
+<a class="sourceLine" id="cb24-46" data-line-number="46"><span class="co">#&gt; 1  0.984016</span></a>
+<a class="sourceLine" id="cb24-47" data-line-number="47"><span class="co">#&gt; 2  1.995663</span></a>
+<a class="sourceLine" id="cb24-48" data-line-number="48"><span class="co">#&gt; 3  2.015650</span></a>
+<a class="sourceLine" id="cb24-49" data-line-number="49"><span class="co">#&gt; 4  7.004671</span></a>
+<a class="sourceLine" id="cb24-50" data-line-number="50"><span class="co">#&gt; 5  8.965779</span></a>
+<a class="sourceLine" id="cb24-51" data-line-number="51"><span class="co">#&gt; 6 13.979265</span></a>
+<a class="sourceLine" id="cb24-52" data-line-number="52"><span class="co">#&gt;                                                            origin</span></a>
+<a class="sourceLine" id="cb24-53" data-line-number="53"><span class="co">#&gt; 1                    OH ↔ NH2, e.g. de-amidiation, CHNO compounds</span></a>
+<a class="sourceLine" id="cb24-54" data-line-number="54"><span class="co">#&gt; 2 F ↔ OH, halogen exchange with hydroxy group (typically -F + OH)</span></a>
+<a class="sourceLine" id="cb24-55" data-line-number="55"><span class="co">#&gt; 3                         ± 2H, opening or forming of double bond</span></a>
+<a class="sourceLine" id="cb24-56" data-line-number="56"><span class="co">#&gt; 4                       F ↔ CN, halogen exchange with cyano group</span></a>
+<a class="sourceLine" id="cb24-57" data-line-number="57"><span class="co">#&gt; 5                      Cl ↔ CN, halogen exchange with cyano group</span></a>
+<a class="sourceLine" id="cb24-58" data-line-number="58"><span class="co">#&gt; 6               O ↔ 2H, e.g. Oxidation follwed by H2O elimination</span></a>
+<a class="sourceLine" id="cb24-59" data-line-number="59"><span class="co">#&gt;                                            Ref. mode</span></a>
+<a class="sourceLine" id="cb24-60" data-line-number="60"><span class="co">#&gt; 1 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a>
+<a class="sourceLine" id="cb24-61" data-line-number="61"><span class="co">#&gt; 2 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a>
+<a class="sourceLine" id="cb24-62" data-line-number="62"><span class="co">#&gt; 3 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a>
+<a class="sourceLine" id="cb24-63" data-line-number="63"><span class="co">#&gt; 4 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a>
+<a class="sourceLine" id="cb24-64" data-line-number="64"><span class="co">#&gt; 5 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a>
+<a class="sourceLine" id="cb24-65" data-line-number="65"><span class="co">#&gt; 6 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></a></code></pre></div>
+<p>To check the HMDB pmd database:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"hmdb"</span>)</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(hmdb)</a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="co">#&gt;        C H O N P S percentage    pmd  pmd2</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="co">#&gt; 14.016 1 2 0 0 0 0  0.9754763 14.016 14.02</span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="co">#&gt; 2.016  0 2 0 0 0 0  0.9702587  2.016  2.02</span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="co">#&gt; 28.031 2 4 0 0 0 0  0.9782698 28.031 28.03</span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="co">#&gt; 26.016 2 2 0 0 0 0  0.9775361 26.016 26.02</span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="co">#&gt; 15.995 0 0 1 0 0 0  0.9807784 15.995 15.99</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="co">#&gt; 12     1 0 0 0 0 0  0.9826470 12.000 12.00</span></a></code></pre></div>
+</div>
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
@@ -854,6 +930,7 @@
       <li><a href="#parameters-selection">Parameters selection</a></li>
       <li><a href="#wrap-function">Wrap function</a></li>
       <li><a href="#shiny-application">Shiny application</a></li>
+      <li><a href="#database">Database</a></li>
       <li><a href="#conclusion">Conclusion</a></li>
       </ul>
 </div>
