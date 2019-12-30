@@ -4,8 +4,16 @@
 \alias{getchain}
 \title{Get reaction chain for specific mass to charge ratio}
 \usage{
-getchain(list, diff, mass, digits = 2, accuracy = 4, rtcutoff = 10,
-  corcutoff = 0.6, ppm = 25)
+getchain(
+  list,
+  diff,
+  mass,
+  digits = 2,
+  accuracy = 4,
+  rtcutoff = 10,
+  corcutoff = 0.6,
+  ppm = 25
+)
 }
 \arguments{
 \item{list}{a list with mzrt profile}

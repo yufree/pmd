@@ -4,8 +4,15 @@
 \alias{globalstd}
 \title{GlobalStd algorithm with structure/reaction directed analysis}
 \usage{
-globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
-  digits = 2, accuracy = 4)
+globalstd(
+  list,
+  rtcutoff = 10,
+  ng = 10,
+  corcutoff = NULL,
+  digits = 2,
+  accuracy = 4,
+  freqcutoff = NULL
+)
 }
 \arguments{
 \item{list}{a peaks list with mass to charge, retention time and intensity data}
@@ -19,6 +26,8 @@ globalstd(list, rtcutoff = 10, ng = 10, corcutoff = NULL,
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
+
+\item{freqcutoff}{pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
 }
 \value{
 list with GlobalStd algorithm processed data.

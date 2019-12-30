@@ -4,8 +4,16 @@
 \alias{getreact}
 \title{Get quantitative paired peaks list for specific reaction/pmd}
 \usage{
-getreact(list, pmd, rtcutoff = 10, digits = 2, accuracy = 4,
-  ratiocv = 30, outlier = F, ...)
+getreact(
+  list,
+  pmd,
+  rtcutoff = 10,
+  digits = 2,
+  accuracy = 4,
+  ratiocv = 30,
+  outlier = F,
+  ...
+)
 }
 \arguments{
 \item{list}{a list with mzrt profile and data}

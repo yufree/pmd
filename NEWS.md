@@ -7,6 +7,7 @@
 - add merge feature for getcluster and such methods could be used to furthor reduce the GlobalStd peaks
 - remove hmdbp data since pmd network analysis could cover this topic
 - remove the dependance of group for quantitative paired peaks
+- improve shiny application for sda analysis
 
 # pmd 0.1.5
 

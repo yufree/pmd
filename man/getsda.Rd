@@ -4,8 +4,14 @@
 \alias{getsda}
 \title{Perform structure/reaction directed analysis for peaks list.}
 \usage{
-getsda(list, rtcutoff = 10, corcutoff = NULL, digits = 2,
-  accuracy = 4, freqcutoff = NULL)
+getsda(
+  list,
+  rtcutoff = 10,
+  corcutoff = NULL,
+  digits = 2,
+  accuracy = 4,
+  freqcutoff = NULL
+)
 }
 \arguments{
 \item{list}{a list with mzrt profile}

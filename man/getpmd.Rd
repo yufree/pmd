@@ -4,8 +4,7 @@
 \alias{getpmd}
 \title{Get pmd for specific reaction}
 \usage{
-getpmd(list, pmd, rtcutoff = 10, corcutoff = NULL, digits = 2,
-  accuracy = 4)
+getpmd(list, pmd, rtcutoff = 10, corcutoff = NULL, digits = 2, accuracy = 4)
 }
 \arguments{
 \item{list}{a list with mzrt profile}

@@ -7,7 +7,7 @@ runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = F)
 ```
 
 ## Inputs
@@ -15,10 +15,22 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Data format
 
 ```{r echo=FALSE,out.width = "500px"}
-knitr::include_graphics('https://yufree.github.io/presentation/figure/democsv.png')
+knitr::include_graphics('https://yufree.github.io/presentation/figure/demomzrt.png')
 ```
 
-The uploaded file should be one csv file. The first column should be peak ID. The second column should be mass to charge ratio of peaks. The third column should be retention time in seconds. The other column should be peaks intensities in each samples. The header should be 'mz', 'rt', and sample names. The second row should include group information of each sample. Such file could be output by `getcsv` function for a 'mzrt' object from enviGCMS package. However, it's also easy to manually write one csv file as shown above. Here is the demo csv [file](https://raw.githubusercontent.com/yufree/democode/master/data/tbbpamzrt.csv).
+The uploaded file should be one csv file. The first column should be peak ID. The second column should be mass to charge ratio of peaks. The third column should be retention time in seconds. The other column should be peaks intensities in each samples. The header should be 'mz', 'rt', and sample names. The second row should include group information of each sample. Such file could be output by `getcsv` function for a 'mzrt' object from enviGCMS package. However, it's also easy to manually write one csv file as shown above. Here is the demo csv [file](https://raw.githubusercontent.com/yufree/rmwf/master/inst/demodata/demomzrt.csv).
+
+### Parameters
+
+- Cutoff for retention time cluster analysis: Hierarchical Clustering cutoff of retention time bins for peaks from the sample compounds. For HPLC, 5-10s is fine while UPLC should be 1-5s or even lower depending on the column efficiency。
+
+- Cutoff of PMD (within RT cluster)'s  retention time group numbers: For a certain PMD, the minimize numbers of this PMD (within RT cluster) appeared across the retention time groups. For example, 10 means at least 10 retention time groups contain this PMD.
+
+- Cutoff of PMD (cross RT clusters) freqency  for structures or reactions: For a certain PMD, the minimize numbers of this PMD appeared across the retention time groups among GlobalStd peaks. 
+
+- Digits of mass to charge ratio: 2 for ToF and 3 for obitrap.
+
+- Measured mass or mass to charge ratio in digits: 4 for ToF and 4 or 5 for obitrap.
 
 ```{r globalstd, echo=FALSE}
 library(pmd)
@@ -26,16 +38,20 @@ inputPanel(
   fileInput('file',label = 'Upload csv file with m/z, retention time, peaklist and group info',accept = c('.csv')),
   sliderInput("rtcutoff", label = "Cutoff for retention time cluster analysis:",
               min = 1, max = 20, value = 9, step = 1),
-  sliderInput("ng", label = "cutoff of PMD(within RT cluster)'s  retention time group numbers:",
-              min = 5, max = 200, value = 10, step = 1)
+  sliderInput("ng", label = "Cutoff of PMD (within RT cluster)'s retention time group numbers:",
+              min = 5, max = 200, value = 10, step = 1),
+  sliderInput("freqcutoff", label = "Cutoff of PMD (cross RT clusters) freqency  for structures or reactions:",
+              min = 1, max = 200, value = 10, step = 1),
+  sliderInput("digits", label = "Digits of mass to charge ratio",
+              min = 1, max = 10, value = 2, step = 1),
+  sliderInput("accuracy", label = "Measured mass or mass to charge ratio in digits",
+              min = 1, max = 10, value = 4, step = 1)
 )
 ```
 
 ## Outputs
 
-### Download the results
-
-```{r output,echo=FALSE}
+```{r output}
 datainput <- reactive({
                 if (!is.null(input$file)){
                         dataraw <- read.csv(input$file$datapath,skip = 1)
@@ -54,26 +70,47 @@ datainput <- reactive({
 datastd <- reactive({
         list <- datainput()
         if(!is.null(list)){
-                list <- globalstd(list,input$rtcutoff,input$ng)
+                list <- globalstd(list,input$rtcutoff,input$ng,digits=input$digits,accuracy = input$accuracy, freqcutoff=input$freqcutoff)
         }
         return(list)
 })
+
 stdcsv <- reactive({
         list <- datastd()
         data <- cbind(mz = list$mz[list$stdmassindex], rt = list$rt[list$stdmassindex], list$data[list$stdmassindex,])
         data <- t(cbind(group = t(cbind(mz = 'mz',rt = 'rt',t(list$group))), t(data)))
         return(data)
 })
-# show the download
-downloadHandler('globalstd.csv', content = function(file) {
-                data <- stdcsv()
-                write.csv(data, file)
-        })
+
+isocsv <- reactive({
+        list <- datastd()
+        
+        return(list$iso)
+})
+ionscsv <- reactive({
+        list <- datastd()
+        
+        return(list$multi)
+})
+sdacsv <- reactive({
+        list <- datastd()
+        
+        return(list$sda)
+})
 ```
 
 ### Show the retention time groups
 
 ```{r plotrtg, echo=FALSE}
+diffcsv <- reactive({
+        list <- datastd()
+        return(list$diff)
+})
+paircsv <- reactive({
+        list <- datastd()
+        
+        return(list$paired)
+})
 renderPlot({
         list <- datastd()
         if(!is.null(list)){
@@ -110,13 +147,77 @@ renderPlot({
 })
 ```
 
+#### Show the paired mass distances table
+
+```{r}
+renderDataTable({
+  list <- datastd()
+        if(!is.null(list)&sum(list$diffindex)>0){
+          list$diff
+          }
+})
+# show the download
+downloadHandler('diff.csv', outputArgs = list(label="in-group peaks' PMDs"), content = function(file) {
+                data <- diffcsv()
+                write.csv(data, file)
+        })
+```
+
+#### Show the high freqency paired mass distances table
+
+```{r}
+renderDataTable({
+  list <- datastd()
+        if(!is.null(list)&sum(list$pairedindex)>0){
+          list$paired
+          }
+})
+# show the download
+downloadHandler('paired.csv', outputArgs = list(label="High frequency in-group peaks' PMDs"), content = function(file) {
+                data <- paircsv()
+                write.csv(data, file)
+        })
+```
+
+#### Show the isotope related in-group peaks' PMDs table
+
+```{r}
+renderDataTable({
+  list <- datastd()
+        if(!is.null(list)&sum(list$isoindex)>0){
+          list$iso
+          }
+})
+# show the download
+downloadHandler('iso.csv', outputArgs = list(label="Isotope related in-group peaks' PMDs"), content = function(file) {
+                data <- isocsv()
+                write.csv(data, file)
+        })
+```
+
+#### Show the multiple charged ions related in-group peaks' PMDs table
+
+```{r}
+renderDataTable({
+  list <- datastd()
+        if(!is.null(list)&sum(list$multiindex)>0){
+          list$multi
+          }
+})
+# show the download
+downloadHandler('multi.csv', outputArgs = list(label="Multiple charged ions related in-group peaks' PMDs"), content = function(file) {
+                data <- ionscsv()
+                write.csv(data, file)
+        })
+```
+
 ### Show the Global cross-group PMDs distribution
 
 ```{r plotstdsda,echo=F}
 renderPlot({
         list <- datastd()
         if(!is.null(list)){
-                if(sum(list$pairedindex)>0){
+                if(sum(list$stdmassindex)>0){
                 plotstdsda(list)
                 }else{
                 plot(1,1,type = 'n')
@@ -130,7 +231,23 @@ renderPlot({
 })
 ```
 
-### Show the globalstd peaks and all peaks
+#### Structure/reaction directed analysis results table
+
+```{r}
+renderDataTable({
+  list <- datastd()
+        if(!is.null(list)&sum(list$multiindex)>0){
+          list$sda
+          }
+})
+# show the download
+downloadHandler('sda.csv', outputArgs = list(label="Structure/reaction directed analysis results"), content = function(file) {
+                data <- sdacsv()
+                write.csv(data, file)
+        })
+```
+
+#### Show the globalstd peaks and all peaks
 
 ```{r plotstd,echo=FALSE}
 renderPlot({
@@ -148,4 +265,15 @@ renderPlot({
                 
         }
 })
+```
+
+#### Download GlobalStd peaks list
+
+```{r }
+# show the download
+downloadHandler('globalstd.csv', outputArgs = list(label='GlobalStd peaks'), content = function(file) {
+                data <- stdcsv()
+                write.csv(data, file)
+        })
+
 ```

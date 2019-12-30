@@ -813,6 +813,7 @@ getsda <-
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
+#' @param freqcutoff pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
 #' data(spmeinvivo)
@@ -824,7 +825,8 @@ globalstd <- function(list,
                       ng = 10,
                       corcutoff = NULL,
                       digits = 2,
-                      accuracy = 4) {
+                      accuracy = 4,
+                      freqcutoff = NULL) {
         list <-
                 getpaired(
                         list,
@@ -846,7 +848,8 @@ globalstd <- function(list,
                                 list2,
                                 rtcutoff = rtcutoff,
                                 corcutoff = corcutoff,
-                                digits = digits
+                                digits = digits,
+                                freqcutoff = freqcutoff
                         )
         } else{
                 message('no paired relationship, directly go to structure directed analysis.')
@@ -855,7 +858,8 @@ globalstd <- function(list,
                                 list,
                                 rtcutoff = rtcutoff,
                                 corcutoff = corcutoff,
-                                digits = digits
+                                digits = digits,
+                                freqcutoff = freqcutoff
                         )
         }
 
