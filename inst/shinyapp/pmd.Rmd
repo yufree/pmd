@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = F)
 
 ### Data format
 
-```{r echo=FALSE,out.width = "500px"}
+```{r echo=FALSE}
 knitr::include_graphics('https://yufree.github.io/presentation/figure/demomzrt.png')
 ```
 
@@ -27,6 +27,10 @@ The uploaded file should be one csv file. The first column should be peak ID. Th
 - Cutoff of PMD (within RT cluster)'s  retention time group numbers: For a certain PMD, the minimize numbers of this PMD (within RT cluster) appeared across the retention time groups. For example, 10 means at least 10 retention time groups contain this PMD.
 
 - Cutoff of PMD (cross RT clusters) freqency  for structures or reactions: For a certain PMD, the minimize numbers of this PMD appeared across the retention time groups among GlobalStd peaks. 
+
+- Use intensity: If you check this, correlation coefficient cutoff would be used.
+
+- Cutoff for the correlation coefficient: For a certain PMD, the cutoff of Pearson's correlation coefficient.
 
 - Digits of mass to charge ratio: 2 for ToF and 3 for obitrap.
 
@@ -42,6 +46,9 @@ inputPanel(
               min = 5, max = 200, value = 10, step = 1),
   sliderInput("freqcutoff", label = "Cutoff of PMD (cross RT clusters) freqency  for structures or reactions:",
               min = 1, max = 200, value = 10, step = 1),
+  checkboxInput("cor", label = 'Use intensity',value = F),
+  sliderInput("corcutoff", label = "Cutoff for the correlation coefficient",
+              min = 0, max = 1, value = NULL, step = 0.1),
   sliderInput("digits", label = "Digits of mass to charge ratio",
               min = 1, max = 10, value = 2, step = 1),
   sliderInput("accuracy", label = "Measured mass or mass to charge ratio in digits",
@@ -70,7 +77,12 @@ datainput <- reactive({
 datastd <- reactive({
         list <- datainput()
         if(!is.null(list)){
-                list <- globalstd(list,input$rtcutoff,input$ng,digits=input$digits,accuracy = input$accuracy, freqcutoff=input$freqcutoff)
+          if(input$cor){
+            list <- globalstd(list,input$rtcutoff,input$ng,digits=input$digits,accuracy = input$accuracy, freqcutoff=input$freqcutoff, corcutoff=input$corcutoff)
+          }else{
+            list <- globalstd(list,input$rtcutoff,input$ng,digits=input$digits,accuracy = input$accuracy, freqcutoff=input$freqcutoff, corcutoff=NULL)
+          }
+                
         }
         return(list)
 })
