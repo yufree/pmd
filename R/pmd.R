@@ -964,9 +964,9 @@ getcluster <- function(list,
         } else{
                 data <- list$data
                 if (is.matrix(data)) {
-                        msdata <- apply(data, 1, mean)
+                        msdata <- apply(data, 1, sum)
                 } else {
-                        msdata <- mean(data)
+                        msdata <-sum(data)
                 }
         }
 
@@ -984,15 +984,11 @@ getcluster <- function(list,
         }
 
         # multi-charger
-        # From HMDB lowest mass with 0.5 is 394.4539, remove those ions related pmd
         index1 <-
-                paste0(round(resultmulti$ms1, accuracy)[round(resultmulti$ms1 %% 1, 1) == 0.5 & resultmulti$ms1<350],
-                       '@',
-                       resultmulti$rtg[round(resultmulti$ms1 %% 1, 1) == 0.5 & resultmulti$ms1<350])
+                paste0(round(resultmulti$ms1, accuracy), '@', resultmulti$rtg)
         index2 <-
-                paste0(round(resultmulti$ms2, accuracy)[round(resultmulti$ms2 %% 1, 1) == 0.5 & resultmulti$ms2<350],
-                       '@',
-                       resultmulti$rtg[round(resultmulti$ms2 %% 1, 1) == 0.5 & resultmulti$ms2<350])
+                paste0(round(resultmulti$ms2, accuracy), '@', resultmulti$rtg)
+
         # isotope
         index3 <-
                 paste0(round(resultiso$ms1, accuracy), '@', resultiso$rtg)
@@ -1022,7 +1018,7 @@ getcluster <- function(list,
                 diffover <-
                         unique(c(resultdiff$ms2[index5 %in% indexstd], resultdiff$ms1[index6 %in% indexstd]))
                 stdmassg <- c(mzt, multiover, isoover, diffover)
-                mzx <- mz[mz %in% stdmassg]
+                mzx <- list$mz[list$mz %in% stdmassg]
                 if (!is.null(msdata)) {
                         index <- paste0(round(mzx, accuracy), '@', rtgt)
                         ins <- msdata[index000 %in% unique(index)]
@@ -1052,11 +1048,11 @@ getcluster <- function(list,
         cluster <- lapply(cl, mergegroup)
         list$cluster <- do.call("rbind", cluster)
         if (!is.null(msdata)) {
-        for(i in unique(list$cluster$largei)){
-                t <- list$cluster[list$cluster$largei==i,]
-                mzst <- paste0(unique(round(t$mz[which.max(t$ins)],accuracy)),'@',t$rtgt[1])
-                mzs <- c(mzs, mzst)
-        }
+                for(i in unique(list$cluster$largei)){
+                        t <- list$cluster[list$cluster$largei==i,]
+                        mzst <- paste0(unique(round(t$mz[which.max(t$ins)],accuracy)),'@',t$rtgt[1])
+                        mzs <- c(mzs, mzst)
+                }
         }
         if (!is.null(mzs)) {
                 list$stdmassindex2 <-
@@ -1064,7 +1060,6 @@ getcluster <- function(list,
         }
         return(list)
 }
-
 #' Perform structure/reaction directed analysis for mass only.
 #' @param mz numeric vector for independant mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automately
 #' @param freqcutoff pmd freqency cutoff for structures or reactions, default 10
