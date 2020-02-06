@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot the std mass from GlobalStd algorithm — plotstd • pmd</title>
+<title>Show MS/MS pmd annotation result from `pmdanno` function — plotpmdanno • pmd</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Plot the std mass from GlobalStd algorithm — plotstd" />
-<meta property="og:description" content="Plot the std mass from GlobalStd algorithm" />
+<meta property="og:title" content="Show MS/MS pmd annotation result from `pmdanno` function — plotpmdanno" />
+<meta property="og:description" content="Show MS/MS pmd annotation result from `pmdanno` function" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,39 +125,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot the std mass from GlobalStd algorithm</h1>
+    <h1>Show MS/MS pmd annotation result from `pmdanno` function</h1>
     
-    <div class="hidden name"><code>plotstd.Rd</code></div>
+    <div class="hidden name"><code>plotpmdanno.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plot the std mass from GlobalStd algorithm</p>
+    <p>Show MS/MS pmd annotation result from `pmdanno` function</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotstd</span>(<span class='no'>list</span>)</pre>
+    <pre class="usage"><span class='fu'>plotpmdanno</span>(<span class='no'>anno</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>list</th>
-      <td><p>a list from getstd function</p></td>
+      <th>anno</th>
+      <td><p>list from pmdanno function</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='getstd.html'>getstd</a></code>, <code><a href='globalstd.html'>globalstd</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>spmeinvivo</span>)
-<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getpaired.html'>getpaired</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='output co'>#&gt; <span class='message'>380 paired masses found </span></div><div class='output co'>#&gt; <span class='message'>9 unique within RT clusters high frequency PMD(s) used for further investigation.</span></div><div class='output co'>#&gt; <span class='message'>719 isotopologue(s) related paired mass found.</span></div><div class='output co'>#&gt; <span class='message'>492 multi-charger(s) related paired mass found.</span></div><div class='input'><span class='no'>std</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getstd.html'>getstd</a></span>(<span class='no'>pmd</span>)</div><div class='output co'>#&gt; <span class='message'>8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></div><div class='output co'>#&gt; <span class='message'>11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></div><div class='output co'>#&gt; <span class='message'>9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></div><div class='output co'>#&gt; <span class='message'>4 group(s) with paired relationship without isotope 1 10 15 18</span></div><div class='output co'>#&gt; <span class='message'>43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></div><div class='output co'>#&gt; <span class='message'>297 std mass found.</span></div><div class='input'><span class='fu'>plotstd</span>(<span class='no'>std</span>)</div><div class='img'><img src='plotstd-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"challenge-msms.mgf"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"pmd"</span>)
+<span class='no'>anno</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='pmdanno.html'>pmdanno</a></span>(<span class='no'>file</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: mzR has been built against a different Rcpp version (1.0.2)</span>
+#&gt; <span class='warning'>than is installed on your system (1.0.3). This might lead to errors</span>
+#&gt; <span class='warning'>when loading mzR. If you encounter such issues, please send a report,</span>
+#&gt; <span class='warning'>including the output of sessionInfo() to the Bioc support forum at </span>
+#&gt; <span class='warning'>https://support.bioconductor.org/. For details see also</span>
+#&gt; <span class='warning'>https://github.com/sneumann/mzR/wiki/mzR-Rcpp-compiler-linker-issue.</span></div><div class='output co'>#&gt; .</div><div class='input'><span class='fu'>plotpmdanno</span>(<span class='no'>anno</span>)</div><div class='img'><img src='plotpmdanno-1.png' alt='' width='700' height='433' /></div><div class='img'><img src='plotpmdanno-2.png' alt='' width='700' height='433' /></div><div class='img'><img src='plotpmdanno-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
