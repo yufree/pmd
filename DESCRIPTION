@@ -23,6 +23,7 @@ biocViews:
 Depends: R (>= 3.5.0)
 Imports: RColorBrewer,
         stats,
+        graphics,
         utils,
         igraph,
         enviGCMS

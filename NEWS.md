@@ -1,3 +1,8 @@
+# pmd 0.1.7
+
+- add function for pmd ms/ms annotation
+- detach rcdk package
+
 # pmd 0.1.6
 
 - rewrite getchain to speed up
