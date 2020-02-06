@@ -1,23 +1,3 @@
-#' getmass from formula
-#'
-#' @noRd
-getmass <- function(data) {
-        if (grepl('-', data)) {
-                name <- unlist(strsplit(data, '-'))
-                iso1 <-
-                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[1]))
-                iso2 <-
-                        rcdk::get.isotopes.pattern(rcdk::get.formula(name[2]))
-                cus <-
-                        as.numeric(iso1[max(iso1[, 2]), 1]) - as.numeric(iso2[max(iso2[, 2]), 1])
-        } else{
-                iso <- rcdk::get.isotopes.pattern(rcdk::get.formula(data))
-                cus <-
-                        as.numeric(iso[max(iso[, 2]), 1])
-        }
-        return(cus)
-}
-
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
@@ -1084,7 +1064,7 @@ getrda <-
                 if (is.null(formula)) {
                         dis <- stats::dist(mz, method = "manhattan")
                 } else{
-                        mz <- unlist(Map(getmass, formula))
+                        mz <- unlist(Map(enviGCMS::getmass, formula))
                         dis <- stats::dist(mz, method = "manhattan")
 
                 }
@@ -1218,7 +1198,7 @@ getpmd <-
 #' @export
 getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, corcutoff=0.6,ppm=25) {
         if (is.character(mass)) {
-                mass <- unlist(Map(getmass, mass))
+                mass <- unlist(Map(enviGCMS::getmass, mass))
         }
         massup <- mass+mass*ppm/10e6
         massdown <- mass-mass*ppm/10e6
