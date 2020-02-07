@@ -44,7 +44,7 @@ pmdanno <- function(file,db='qtof',ppm = 10,prems = 1.1,pmdc=0.6){
                         }
                 }else if(db == 'orb'){
                         orb <- get("orb")
-                        pmdt <- unique(round(as.numeric(pmdt), digits = 3))
+                        pmdt <- unique(round(as.numeric(pmdt), digits = 2))
                         range <- cbind(orb$mz-prems,orb$mz+prems)
                         idxmz <- enviGCMS::getoverlapmass(range,matrix(c(prec-ppm/prec,prec+ppm/prec),nrow = 1))
                         if(sum(idxmz)>0){
