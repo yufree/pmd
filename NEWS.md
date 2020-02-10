@@ -1,6 +1,7 @@
 # pmd 0.1.7
 
 - add function for pmd ms/ms annotation
+- add function to read in msp file as database
 - detach rcdk package
 
 # pmd 0.1.6
