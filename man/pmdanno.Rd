@@ -9,7 +9,7 @@ pmdanno(file, db = "qtof", ppm = 10, prems = 1.1, pmdc = 0.6)
 \arguments{
 \item{file}{mgf file generated from MS/MS data}
 
-\item{db}{database could be 'qtof', 'qqq', 'orb' data base from hmdb}
+\item{db}{database could be 'qtof', 'qqq', 'orb' data base from hmdb or list object from `getms2pmd`}
 
 \item{ppm}{mass accuracy, default 10}
 
