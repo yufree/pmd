@@ -4,7 +4,7 @@
 \alias{getmspmd}
 \title{read in MSP file as list for EI-MS annotation}
 \usage{
-getmspmd(file, digits = 2)
+getmspmd(file, digits = 2, icf = 10)
 }
 \arguments{
 \item{file}{the path to your MSP file}

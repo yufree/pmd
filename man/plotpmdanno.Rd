@@ -12,8 +12,3 @@ plotpmdanno(anno)
 \description{
 Show MS/MS pmd annotation result from `pmdanno` function
 }
-\examples{
-file <- system.file("extdata", "challenge-msms.mgf", package = "pmd")
-anno <- pmdanno(file)
-plotpmdanno(anno)
-}

@@ -4,12 +4,12 @@
 \alias{pmdanno}
 \title{Perform MS/MS pmd annotation for mgf file}
 \usage{
-pmdanno(file, db = "qtof", ppm = 10, prems = 1.1, pmdc = 0.6)
+pmdanno(file, db = NULL, ppm = 10, prems = 1.1, pmdc = 0.6)
 }
 \arguments{
 \item{file}{mgf file generated from MS/MS data}
 
-\item{db}{database could be 'qtof', 'qqq', 'orb' data base from hmdb or list object from `getms2pmd`}
+\item{db}{database could be list object from `getms2pmd`}
 
 \item{ppm}{mass accuracy, default 10}
 
@@ -18,12 +18,8 @@ pmdanno(file, db = "qtof", ppm = 10, prems = 1.1, pmdc = 0.6)
 \item{pmdc}{pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database}
 }
 \value{
-list with HMDB annotation results
+list with MSMS annotation results
 }
 \description{
 Perform MS/MS pmd annotation for mgf file
-}
-\examples{
-file <- system.file("extdata", "challenge-msms.mgf", package = "pmd")
-anno <- pmdanno(file)
 }

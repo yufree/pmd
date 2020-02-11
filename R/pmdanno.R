@@ -1,16 +1,13 @@
 #' Perform MS/MS pmd annotation for mgf file
 #' @param file mgf file generated from MS/MS data
-#' @param db database could be 'qtof', 'qqq', 'orb' data base from hmdb or list object from `getms2pmd`
+#' @param db database could be list object from `getms2pmd`
 #' @param ppm mass accuracy, default 10
 #' @param prems precersor mass range, default 1.1 to include M+H or M-H
 #' @param pmdc pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database
-#' @return list with HMDB annotation results
-#' @examples
-#' file <- system.file("extdata", "challenge-msms.mgf", package = "pmd")
-#' anno <- pmdanno(file)
+#' @return list with MSMS annotation results
 #' @export
 pmdanno <- function(file,
-                    db = 'qtof',
+                    db = NULL,
                     ppm = 10,
                     prems = 1.1,
                     pmdc = 0.6) {
@@ -25,37 +22,35 @@ pmdanno <- function(file,
                 ins <- unlist(ins)[idx]
                 pmdt <- stats::dist(mz, method = "manhattan")
 
-                if (db == 'qtof') {
-                        qtof <- get("qtof")
+                if(class(db) == "list"){
                         pmdt <-
                                 unique(round(as.numeric(pmdt), digits = 2))
-                        range <- cbind(qtof$mz - prems, qtof$mz + prems)
+                        range <- cbind(db$mz - prems, db$mz + prems)
                         idxmz <-
                                 enviGCMS::getoverlapmass(range, matrix(
                                         c(prec - ppm / prec, prec + ppm / prec),
                                         nrow = 1
                                 ))
                         if (sum(idxmz) > 0) {
-                                msms <- qtof$msms[idxmz]
-                                name <- qtof$name[idxmz]
-                                mz2 <- qtof$mz[idxmz]
-                                msmsraw <- qtof$msmsraw[idxmz]
-                                i <-
-                                        function(x)
-                                                sum(pmdt %in% unique(x))
-                                result <- sapply(msms, i)
+                                msmsd <- db$msms[idxmz]
+                                name <- db$name[idxmz]
+                                mz2 <- db$mz[idxmz]
+                                msmsraw <- db$msmsraw[idxmz]
+
+                                result <- sapply(msmsd, function(x)
+                                        sum(pmdt %in% unique(x)))
                                 t <-
                                         list(
                                                 name = name[result > length(pmdt) * pmdc],
                                                 mz = mz2[result > length(pmdt) * pmdc],
-                                                msms = msms[result > length(pmdt) * pmdc],
+                                                msms = msmsd[result > length(pmdt) * pmdc],
                                                 msmsraw = msmsraw[result > length(pmdt) * pmdc],
                                                 dmz = mz,
                                                 dprc = prec,
                                                 dins = ins / max(ins) * 100,
                                                 file = namemgf
                                         )
-                                if (sum(result) == 0) {
+                                if (sum(result > length(pmdt) * pmdc) == 0) {
                                         return(NULL)
                                 } else{
                                         return(t)
@@ -63,82 +58,8 @@ pmdanno <- function(file,
                         } else{
                                 return(NULL)
                         }
-                } else if (db == 'orb') {
-                        orb <- get("orb")
-                        pmdt <-
-                                unique(round(as.numeric(pmdt), digits = 2))
-                        range <- cbind(orb$mz - prems, orb$mz + prems)
-                        idxmz <-
-                                enviGCMS::getoverlapmass(range, matrix(
-                                        c(prec - ppm / prec, prec + ppm / prec),
-                                        nrow = 1
-                                ))
-                        if (sum(idxmz) > 0) {
-                                msms <- orb$msms[idxmz]
-                                name <- orb$name[idxmz]
-                                mz2 <- orb$mz[idxmz]
-                                msmsraw <- orb$msmsraw[idxmz]
-                                i <-
-                                        function(x)
-                                                sum(pmdt %in% unique(x))
-                                result <- sapply(msms, i)
-                                t <-
-                                        list(
-                                                name = name[result > length(pmdt) * pmdc],
-                                                mz = mz2[result > length(pmdt) * pmdc],
-                                                msms = msms[result > length(pmdt) * pmdc],
-                                                msmsraw = msmsraw[result > length(pmdt) * pmdc],
-                                                dmz = mz,
-                                                dprc = prec,
-                                                dins = ins / max(ins) * 100,
-                                                file = namemgf
-                                        )
-                                if (sum(result) == 0) {
-                                        return(NULL)
-                                } else{
-                                        return(t)
-                                }
-                        } else{
-                                return(NULL)
-                        }
-                } else if (db == 'qqq') {
-                        qqq <- get("qqq")
-                        pmdt <-
-                                unique(round(as.numeric(pmdt), digits = 0))
-                        range <- cbind(qqq$mz - prems, qqq$mz + prems)
-                        idxmz <-
-                                enviGCMS::getoverlapmass(range, matrix(
-                                        c(prec - ppm / prec, prec + ppm / prec),
-                                        nrow = 1
-                                ))
-                        if (sum(idxmz) > 0) {
-                                msms <- qqq$msms[idxmz]
-                                name <- qqq$name[idxmz]
-                                mz2 <- qqq$mz[idxmz]
-                                msmsraw <- orb$msmsraw[idxmz]
-                                i <-
-                                        function(x)
-                                                sum(pmdt %in% unique(x))
-                                result <- sapply(msms, i)
-                                t <-
-                                        list(
-                                                name = name[result > length(pmdt) * pmdc],
-                                                mz = mz2[result > length(pmdt) * pmdc],
-                                                msms = msms[result > length(pmdt) * pmdc],
-                                                msmsraw = msmsraw[result > length(pmdt) * pmdc],
-                                                dmz = mz,
-                                                dprc = prec,
-                                                dins = ins / max(ins) * 100,
-                                                file = namemgf
-                                        )
-                                if (sum(result) == 0) {
-                                        return(NULL)
-                                } else{
-                                        return(t)
-                                }
-                        } else{
-                                return(NULL)
-                        }
+                }else{
+                        return(NULL)
                 }
         } else{
                 return(NULL)
@@ -148,10 +69,6 @@ pmdanno <- function(file,
 #' Show MS/MS pmd annotation result from `pmdanno` function
 #' @param anno list from pmdanno function
 #' @return NULL
-#' @examples
-#' file <- system.file("extdata", "challenge-msms.mgf", package = "pmd")
-#' anno <- pmdanno(file)
-#' plotpmdanno(anno)
 #' @export
 plotpmdanno <- function(anno) {
         for (i in 1:length(anno$msms)) {
@@ -233,7 +150,7 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
                                 name = name,
                                 prec = prec,
                                 msms = NULL,
-                                pmd = diff
+                                pmd = NULL
                         ))
                 }
 
@@ -261,7 +178,7 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
 #' @param icf intensity cutoff, default 10 percentage
 #' @return list a list with MSP information for EI-MS annotation
 #' @export
-getmspmd <- function(file, digits = 2) {
+getmspmd <- function(file, digits = 2, icf = 10) {
         # this part is modified from compMS2Miner's code: https://github.com/WMBEdmands/compMS2Miner/blob/ee20d3d632b11729d6bbb5b5b93cd468b097251d/R/metID.matchSpectralDB.R
         msp <- readLines(file)
         # remove empty lines
@@ -307,7 +224,7 @@ getmspmd <- function(file, digits = 2) {
                         return(list(
                                 name = name,
                                 msms = NULL,
-                                pmd = diff
+                                pmd = NULL
                         ))
                 }
         }
