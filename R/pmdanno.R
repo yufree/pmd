@@ -248,10 +248,10 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
         msmsraw <- lapply(li, function(x)
                 x$msms)
         return(list(
-                name = name,
-                mz = mz,
-                msms = msms,
-                msmsraw = msmsraw
+                name = unname(name),
+                mz = unname(mz),
+                msms = unname(msms),
+                msmsraw = unname(msmsraw)
         ))
 }
 
@@ -319,8 +319,8 @@ getmspmd <- function(file, digits = 2) {
         msmsraw <- lapply(li, function(x)
                 x$msms)
         return(list(
-                name = name,
-                msms = msms,
-                msmsraw = msmsraw
+                name = unname(name),
+                msms = unname(msms),
+                msmsraw = unname(msmsraw)
         ))
 }
