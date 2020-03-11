@@ -1448,3 +1448,29 @@ gettarget <- function(rt, drt = 10, n = 6) {
         return(inji)
 }
 
+#' Link pos mode peak list with neg mode peak list by pmd.
+#' @param pos a list with mzrt profile collected from positive mode.
+#' @param neg a list with mzrt profile collected from negative mode.
+#' @param pmd numeric or numeric vector
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2
+#' @return dataframe with filtered postive and negative peak list
+#' @export
+getposneg <- function(pos,neg, pmd = 2.02, digits = 2){
+        df <- NULL
+        x <- rep(NA,length(pos$mz))
+        for(i in 1:length(pos$mz)){
+                if(sum(round((pos$mz[i]-neg$mz),digits) %in% pmd) != 0){
+                        index <- round((pos$mz[i]-neg$mz),digits) %in% pmd
+                        if(sum(index)>1){
+                                cor <- apply(neg$data[index,],1,function(x) suppressWarnings(cor(x,pos$data[i,])))
+                        }else{
+                                cor <- suppressWarnings(cor(pos$data[i,],neg$data[index,]))
+                        }
+
+                        t <- cbind.data.frame(pos=pos$mz[i],rt = pos$rt[i],neg=neg$mz[index],rt=neg$rt[index],diffmz=pos$mz[i]-neg$mz[index],diffrt=pos$rt[i]-neg$rt[index],cor=cor)
+                        df <- rbind.data.frame(df,t)
+                }
+        }
+        return(df)
+}
+

@@ -1,86 +1,3 @@
-#' Perform MS/MS pmd annotation for mgf file
-#' @param file mgf file generated from MS/MS data
-#' @param db database could be list object from `getms2pmd`
-#' @param ppm mass accuracy, default 10
-#' @param prems precersor mass range, default 1.1 to include M+H or M-H
-#' @param pmdc pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database
-#' @return list with MSMS annotation results
-#' @export
-pmdanno <- function(file,
-                    db = NULL,
-                    ppm = 10,
-                    prems = 1.1,
-                    pmdc = 0.6) {
-        namemgf <- basename(file)
-        sample <- MSnbase::readMgfData(file)
-        prec <- MSnbase::precursorMz(sample)
-        mz <- MSnbase::mz(sample)
-        ins <- MSnbase::intensity(sample)
-        idx <- unlist(ins) / max(unlist(ins)) > 0
-        if (sum(idx) > 0) {
-                mz <- unlist(mz)[idx]
-                ins <- unlist(ins)[idx]
-                pmdt <- stats::dist(mz, method = "manhattan")
-
-                if(class(db) == "list"){
-                        pmdt <-
-                                unique(round(as.numeric(pmdt), digits = 2))
-                        range <- cbind(db$mz - prems, db$mz + prems)
-                        idxmz <-
-                                enviGCMS::getoverlapmass(range, matrix(
-                                        c(prec - ppm / prec, prec + ppm / prec),
-                                        nrow = 1
-                                ))
-                        if (sum(idxmz) > 0) {
-                                msmsd <- db$msms[idxmz]
-                                name <- db$name[idxmz]
-                                mz2 <- db$mz[idxmz]
-                                msmsraw <- db$msmsraw[idxmz]
-
-                                result <- sapply(msmsd, function(x)
-                                        sum(pmdt %in% unique(x)))
-                                t <-
-                                        list(
-                                                name = name[result > length(pmdt) * pmdc],
-                                                mz = mz2[result > length(pmdt) * pmdc],
-                                                msms = msmsd[result > length(pmdt) * pmdc],
-                                                msmsraw = msmsraw[result > length(pmdt) * pmdc],
-                                                dmz = mz,
-                                                dprc = prec,
-                                                dins = ins / max(ins) * 100,
-                                                file = namemgf
-                                        )
-                                if (sum(result > length(pmdt) * pmdc) == 0) {
-                                        return(NULL)
-                                } else{
-                                        return(t)
-                                }
-                        } else{
-                                return(NULL)
-                        }
-                }else{
-                        return(NULL)
-                }
-        } else{
-                return(NULL)
-        }
-}
-
-#' Show MS/MS pmd annotation result from `pmdanno` function
-#' @param anno list from pmdanno function
-#' @return NULL
-#' @export
-plotpmdanno <- function(anno) {
-        for (i in 1:length(anno$msms)) {
-                graphics::plot(anno$msmsraw[[i]],
-                               type = 'h',
-                               main = anno$name[[i]])
-                graphics::points(anno$dins ~ anno$dmz,
-                                 type = 'h',
-                                 col = 'red')
-        }
-}
-
 #' read in MSP file as list for ms/ms annotation
 #' @param file the path to your MSP file
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
@@ -99,7 +16,8 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
         li <- split(msp, f = splitFactorTmp)
         getmsp <- function(x) {
                 namet <- x[grep('^NAME:', x, ignore.case = TRUE)]
-                name <- gsub('^NAME: ', '', namet, ignore.case = TRUE)
+                name <-
+                        gsub('^NAME: ', '', namet, ignore.case = TRUE)
                 prect <-
                         x[grep(
                                 '^PRECURSORMZ: |^PRECURSOR M/Z: |^PRECURSOR MZ: |^PEPMASS: ',
@@ -115,12 +33,15 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
                                         ignore.case = TRUE
                                 )
                         )
-                npt <- x[grep('^Num Peaks: ', x, ignore.case = TRUE)]
-                np <- gsub('^Num Peaks: ', '', npt, ignore.case = TRUE)
+                npt <-
+                        x[grep('^Num Peaks: ', x, ignore.case = TRUE)]
+                np <-
+                        gsub('^Num Peaks: ', '', npt, ignore.case = TRUE)
                 if (as.numeric(np) > 0) {
                         # matrix of masses and intensities
                         massIntIndx <-
-                                which(grepl('^[0-9]', x) & !grepl(': ', x))
+                                which(grepl('^[0-9]', x) &
+                                              !grepl(': ', x))
                         massesInts <-
                                 unlist(strsplit(x[massIntIndx], '\t| '))
                         massesInts <-
@@ -133,7 +54,7 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
                                 massesInts[seq(2, length(massesInts), 2)]
                         ins <- ins / max(ins) * 100
                         msms <- cbind.data.frame(mz = mz, ins = ins)
-                        msms <- msms[msms$ins > icf, ]
+                        msms <- msms[msms$ins > icf,]
                         dis <-
                                 stats::dist(msms$mz, method = "manhattan")
                         diff <-
@@ -190,13 +111,17 @@ getmspmd <- function(file, digits = 2, icf = 10) {
         li <- split(msp, f = splitFactorTmp)
         getmsp <- function(x) {
                 namet <- x[grep('^NAME:', x, ignore.case = TRUE)]
-                name <- gsub('^NAME: ', '', namet, ignore.case = TRUE)
-                npt <- x[grep('^Num Peaks: ', x, ignore.case = TRUE)]
-                np <- gsub('^Num Peaks: ', '', npt, ignore.case = TRUE)
+                name <-
+                        gsub('^NAME: ', '', namet, ignore.case = TRUE)
+                npt <-
+                        x[grep('^Num Peaks: ', x, ignore.case = TRUE)]
+                np <-
+                        gsub('^Num Peaks: ', '', npt, ignore.case = TRUE)
                 if (as.numeric(np) > 0) {
                         # matrix of masses and intensities
                         massIntIndx <-
-                                which(grepl('^[0-9]', x) & !grepl(': ', x))
+                                which(grepl('^[0-9]', x) &
+                                              !grepl(': ', x))
                         massesInts <-
                                 unlist(strsplit(x[massIntIndx], '\t| '))
                         massesInts <-
@@ -209,7 +134,7 @@ getmspmd <- function(file, digits = 2, icf = 10) {
                                 massesInts[seq(2, length(massesInts), 2)]
                         ins <- ins / max(ins) * 100
                         msms <- cbind.data.frame(mz = mz, ins = ins)
-                        msms <- msms[msms$ins > icf, ]
+                        msms <- msms[msms$ins > icf,]
                         dis <-
                                 stats::dist(msms$mz, method = "manhattan")
                         diff <-
@@ -240,4 +165,73 @@ getmspmd <- function(file, digits = 2, icf = 10) {
                 msms = unname(msms),
                 msmsraw = unname(msmsraw)
         ))
+}
+
+#' Perform MS/MS pmd annotation for mgf file
+#' @param file mgf file generated from MS/MS data
+#' @param db database could be list object from `getms2pmd`
+#' @param ppm mass accuracy, default 10
+#' @param prems precersor mass range, default 1.1 to include M+H or M-H
+#' @param pmdc pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database
+#' @return list with MSMS annotation results
+#' @export
+pmdanno <- function(file,
+                    db = NULL,
+                    ppm = 10,
+                    prems = 1.1,
+                    pmdc = 0.6) {
+        namemgf <- basename(file)
+        sample <- MSnbase::readMgfData(file)
+        prec <- MSnbase::precursorMz(sample)
+        mz <- MSnbase::mz(sample)
+        ins <- MSnbase::intensity(sample)
+        idx <- unlist(ins) / max(unlist(ins)) > 0
+        if (sum(idx) > 0) {
+                mz <- unlist(mz)[idx]
+                ins <- unlist(ins)[idx]
+                ins = ins / max(ins) * 100
+                pmdt <- stats::dist(mz, method = "manhattan")
+
+                if (class(db) == "list") {
+                        pmdt <-
+                                unique(round(as.numeric(pmdt), digits = 2))
+                        range <- cbind(db$mz - prems, db$mz + prems)
+                        idxmz <-
+                                enviGCMS::getoverlapmass(range, matrix(
+                                        c(prec - ppm / prec*1e-06, prec + ppm / prec*1e-06),
+                                        nrow = 1
+                                ))
+                        if (sum(idxmz) > 0) {
+                                msmsd <- db$msms[idxmz]
+                                name <- db$name[idxmz]
+                                mz2 <- db$mz[idxmz]
+                                msmsraw <- db$msmsraw[idxmz]
+
+                                result <- sapply(msmsd, function(x)
+                                        sum(pmdt %in% unique(x)))
+                                t <-
+                                        list(
+                                                name = name[result > length(pmdt) * pmdc],
+                                                mz = mz2[result > length(pmdt) * pmdc],
+                                                msms = msmsd[result > length(pmdt) * pmdc],
+                                                msmsraw = msmsraw[result > length(pmdt) * pmdc],
+                                                dmz = mz,
+                                                dprc = prec,
+                                                dins = ins,
+                                                file = namemgf
+                                        )
+                                if (sum(result > length(pmdt) * pmdc) == 0) {
+                                        return(NULL)
+                                } else{
+                                        return(t)
+                                }
+                        } else{
+                                return(NULL)
+                        }
+                } else{
+                        return(NULL)
+                }
+        } else{
+                return(NULL)
+        }
 }

@@ -3,6 +3,7 @@
 - add function for pmd ms/ms annotation
 - add function to read in msp file as database
 - detach rcdk package
+- add function to link pos/neg by pmd
 
 # pmd 0.1.6
 
