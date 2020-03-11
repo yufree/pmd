@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Perform MS/MS pmd annotation for mgf file — pmdanno • pmd</title>
+<title>Link pos mode peak list with neg mode peak list by pmd. — getposneg • pmd</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Perform MS/MS pmd annotation for mgf file — pmdanno" />
-<meta property="og:description" content="Perform MS/MS pmd annotation for mgf file" />
+<meta property="og:title" content="Link pos mode peak list with neg mode peak list by pmd. — getposneg" />
+<meta property="og:description" content="Link pos mode peak list with neg mode peak list by pmd." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -125,45 +125,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Perform MS/MS pmd annotation for mgf file</h1>
+    <h1>Link pos mode peak list with neg mode peak list by pmd.</h1>
     
-    <div class="hidden name"><code>pmdanno.Rd</code></div>
+    <div class="hidden name"><code>getposneg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Perform MS/MS pmd annotation for mgf file</p>
+    <p>Link pos mode peak list with neg mode peak list by pmd.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pmdanno</span>(<span class='no'>file</span>, <span class='kw'>db</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ppm</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>prems</span> <span class='kw'>=</span> <span class='fl'>1.1</span>, <span class='kw'>pmdc</span> <span class='kw'>=</span> <span class='fl'>0.6</span>)</pre>
+    <pre class="usage"><span class='fu'>getposneg</span>(<span class='no'>pos</span>, <span class='no'>neg</span>, <span class='kw'>pmd</span> <span class='kw'>=</span> <span class='fl'>2.02</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>file</th>
-      <td><p>mgf file generated from MS/MS data</p></td>
+      <th>pos</th>
+      <td><p>a list with mzrt profile collected from positive mode.</p></td>
     </tr>
     <tr>
-      <th>db</th>
-      <td><p>database could be list object from `getms2pmd`</p></td>
+      <th>neg</th>
+      <td><p>a list with mzrt profile collected from negative mode.</p></td>
     </tr>
     <tr>
-      <th>ppm</th>
-      <td><p>mass accuracy, default 10</p></td>
+      <th>pmd</th>
+      <td><p>numeric or numeric vector</p></td>
     </tr>
     <tr>
-      <th>prems</th>
-      <td><p>precersor mass range, default 1.1 to include M+H or M-H</p></td>
-    </tr>
-    <tr>
-      <th>pmdc</th>
-      <td><p>pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database</p></td>
+      <th>digits</th>
+      <td><p>mass or mass to charge ratio accuracy for pmd, default 2</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>list with MSMS annotation results</p>
+    <p>dataframe with filtered postive and negative peak list</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
