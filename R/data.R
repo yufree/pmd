@@ -22,7 +22,7 @@
 #'   }
 "spmeinvivo"
 
-#' A dataframe containing HMDB with unique accurate mass pmd with three digits frequence larger than 1 and accuracy percentage larger than 0.5.
+#' A dataframe containing HMDB with unique accurate mass pmd with three digits frequence larger than 1 and accuracy percentage larger than 0.9.
 #' @docType data
 #' @usage data(hmdb)
 #' @format A dataframe with atoms numbers of C, H, O, N, P, S
