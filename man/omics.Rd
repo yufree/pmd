@@ -4,7 +4,8 @@
 \name{omics}
 \alias{omics}
 \title{A dataframe containing multiple reaction database ID and their related accurate mass pmd and related reactions}
-\format{A dataframe with reaction and their realted pmd
+\format{
+A dataframe with reaction and their realted pmd
 \describe{
   \item{KEGG}{KEGG reaction ID}
   \item{RHEA_ID}{RHEA_ID}
@@ -18,7 +19,8 @@
   \item{compounds}{reaction related compounds}
   \item{pmd}{pmd with two digits}
   \item{pmd2}{pmd with three digits}
-  }}
+  }
+}
 \usage{
 data(omics)
 }

@@ -3,16 +3,19 @@
 \docType{data}
 \name{hmdb}
 \alias{hmdb}
-\title{A dataframe containing HMDB with unique accurate mass pmd frequence larger than 100.}
-\format{A dataframe with atoms numbers of C, H, O, N, P, S
+\title{A dataframe containing HMDB with unique accurate mass pmd with three digits frequence larger than 1 and accuracy percentage larger than 0.5.}
+\format{
+A dataframe with atoms numbers of C, H, O, N, P, S
 \describe{
   \item{percentage}{accuracy of atom numbers prediction}
-  \item{pmd}{pmd with two digits}
-  }}
+  \item{pmd2}{pmd with two digits}
+  \item{pmd}{pmd with three digits}
+  }
+}
 \usage{
 data(hmdb)
 }
 \description{
-A dataframe containing HMDB with unique accurate mass pmd frequence larger than 100.
+A dataframe containing HMDB with unique accurate mass pmd with three digits frequence larger than 1 and accuracy percentage larger than 0.5.
 }
 \keyword{datasets}

@@ -1,3 +1,11 @@
+# pmd 0.1.9
+
+- CRAN
+
+# pmd 0.1.8
+
+- update kegg/hmdb database
+
 # pmd 0.1.7
 
 - add function for pmd ms/ms annotation

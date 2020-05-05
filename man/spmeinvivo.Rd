@@ -4,13 +4,15 @@
 \name{spmeinvivo}
 \alias{spmeinvivo}
 \title{A peaks list dataset containing 9 samples from 3 fish with triplicates samples for each fish from LC-MS.}
-\format{A list with 4 variables from 1459 LC-MS peaks:
+\format{
+A list with 4 variables from 1459 LC-MS peaks:
 \describe{
   \item{mz}{mass to charge ratios}
   \item{rt}{retention time}
   \item{data}{intensity matrix}
   \item{group}{group information}
-  }}
+  }
+}
 \usage{
 data(spmeinvivo)
 }
