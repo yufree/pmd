@@ -653,7 +653,7 @@ getstd <-
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
-#' @param freqcutoff pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
+#' @param freqcutoff pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
 #' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
 #' data(spmeinvivo)
@@ -744,21 +744,39 @@ getsda <-
                         freq <-
                                 table(diff)[order(table(diff), decreasing = T)]
                 if (is.null(freqcutoff)) {
-                        i <- n <- t <- 1
-                        while(n>=t){
-                                pmd <- as.numeric(names(freq[freq>i]))
+                        dis <- c()
+                        for (i in c(1:ifelse(length(freq)>100,100,length(freq)))){
+                                pmd <- as.numeric(names(freq))[1:i]
                                 dfx <- df[df$diff2 %in% pmd,c(1,2)]
                                 net <- igraph::graph_from_data_frame(dfx,directed = F)
-                                t <- n
-                                n <- length(igraph::groups(igraph::components(net)))
-                                i <- i+1
+                                dis[i] <- igraph::mean_distance(net)
                         }
-                        message(paste("PMD frequency cutoff is", i-1, 'by PMD network analysis with',t,'clusters.'))
-                        if(sum(df$diff2 == 0)>(i-1) & 0 %in% as.numeric(names(freq))){
-                                list$sda <- df[df$diff2 %in% c(0,as.numeric(names(freq[freq>(i-1)]))),]
+                        n <- which.max(dis)
+                        freqt <- freq[n-1]
+                        if(n==100){
+                                warning("Average distance is still increasing, you need to check manually for frequency cutoff.")
+                        }
+                        if(sum(df$diff2 == 0)>freqt & 0 %in% as.numeric(names(freq))){
+                        list$sda <- df[df$diff2 %in% c(0,as.numeric(names(freq[freq>freqt]))),]
                         }else{
-                                list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq>(i-1)])),]
+                        list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq>freqt])),]
                         }
+                        message(paste("PMD frequency cutoff is", freqt, 'by PMD network analysis with largest network average distance',round(max(dis),2),'.'))
+                        # i <- dis <- t <- 1
+                        # while(n>=t){
+                        #         pmd <- as.numeric(names(freq[freq>i]))
+                        #         dfx <- df[df$diff2 %in% pmd,c(1,2)]
+                        #         net <- igraph::graph_from_data_frame(dfx,directed = F)
+                        #         t <- n
+                        #         n <- length(igraph::groups(igraph::components(net)))
+                        #         i <- i+1
+                        # }
+                        # message(paste("PMD frequency cutoff is", i-1, 'by PMD network analysis with',t,'clusters.'))
+                        # if(sum(df$diff2 == 0)>(i-1) & 0 %in% as.numeric(names(freq))){
+                        #         list$sda <- df[df$diff2 %in% c(0,as.numeric(names(freq[freq>(i-1)]))),]
+                        # }else{
+                        #         list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq>(i-1)])),]
+                        # }
                         }else{
                                 if (sum(df$diff2 == 0) > freqcutoff &
                                     0 %in% as.numeric(names(freq))) {

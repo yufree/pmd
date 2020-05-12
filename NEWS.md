@@ -5,6 +5,7 @@
 # pmd 0.1.8
 
 - update kegg/hmdb database
+- update getsda to use largest average distance to find pmd freqency cutoff, more robust to large dataset
 
 # pmd 0.1.7
 

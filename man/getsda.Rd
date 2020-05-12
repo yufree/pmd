@@ -24,7 +24,7 @@ getsda(
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
-\item{freqcutoff}{pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
+\item{freqcutoff}{pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
 }
 \value{
 list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
