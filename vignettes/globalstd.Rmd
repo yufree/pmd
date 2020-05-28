@@ -172,7 +172,7 @@ plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std2$group)),mai
 
 ## Structure/Reaction directed analysis
 
-`getsda` function could be used to perform Structure/reaction directed analysis. The cutoff of freqency is automately found by PMD network analysis with most cluster numbers.
+`getsda` function could be used to perform Structure/reaction directed analysis. The cutoff of frequency is automately found by PMD network analysis with most cluster numbers.
 
 ```{r sda}
 sda <- getsda(std)
@@ -187,11 +187,8 @@ plotstdsda(sda)
 You could also use index to show the distribution of certain PMDs.
 
 ```{r stdsdaidx}
-par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
+par(mfrow = c(1,3),mar = c(4,4,2,1)+0.1)
 plotstdsda(sda,sda$sda$diff2 == 2.02)
-plotstdsda(sda,sda$sda$diff2 == 13.98)
-plotstdsda(sda,sda$sda$diff2 == 15.99)
-plotstdsda(sda,sda$sda$diff2 == 14.02)
 plotstdsda(sda,sda$sda$diff2 == 28.03)
 plotstdsda(sda,sda$sda$diff2 == 58.04)
 ```
@@ -200,11 +197,8 @@ Structure/reaction directed analysis could be directily performed on all the pea
 
 ```{r all}
 sdaall <- getsda(spmeinvivo)
-par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
+par(mfrow = c(1,3),mar = c(4,4,2,1)+0.1)
 plotstdsda(sdaall,sdaall$sda$diff2 == 2.02)
-plotstdsda(sdaall,sdaall$sda$diff2 == 13.98)
-plotstdsda(sdaall,sdaall$sda$diff2 == 15.99)
-plotstdsda(sdaall,sdaall$sda$diff2 == 14.02)
 plotstdsda(sdaall,sdaall$sda$diff2 == 28.03)
 plotstdsda(sdaall,sdaall$sda$diff2 == 58.04)
 ```
@@ -259,6 +253,18 @@ ceb <- cluster_edge_betweenness(net,weights = abs(E(net)$cor), directed = F)
 plot(ceb, net,vertex.label=NA,) 
 ```
 
+### Source appointment
+
+Peaks from samples could be from endogenous compounds or exogenous compounds. However, it's hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenbiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.
+
+```{r source}
+median(deg)
+endogenous <- names(deg)[deg>median(deg)]
+exogenous <- names(deg)[deg<=median(deg)]
+```
+
+In this case, we will have `r length(endogenous)` endogenous compounds while `r length(exogenous)` exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.
+
 ## Parameters selection
 
 Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.
@@ -269,7 +275,7 @@ Another important hint is that pre-filter your peak list by black samples or oth
 
 ## Wrap function
 
-`globalstd` function is a wrap funtion to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the `list` objects from `globalstd` function.
+`globalstd` function is a wrap function to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the `list` objects from `globalstd` function.
 
 ```{r wrap}
 result <- globalstd(spmeinvivo,ng=10)

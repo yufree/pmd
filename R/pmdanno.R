@@ -173,19 +173,21 @@ getmspmd <- function(file, digits = 2, icf = 10) {
 #' @param ppm mass accuracy, default 10
 #' @param prems precersor mass range, default 1.1 to include M+H or M-H
 #' @param pmdc pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database
+#' @param scutoff relative intensity cutoff for input spectra for pmd analysis, default 0.1
 #' @return list with MSMS annotation results
 #' @export
 pmdanno <- function(file,
                     db = NULL,
                     ppm = 10,
                     prems = 1.1,
-                    pmdc = 0.6) {
+                    pmdc = 0.6,
+                    scutoff = 0.1) {
         namemgf <- basename(file)
         sample <- MSnbase::readMgfData(file)
         prec <- MSnbase::precursorMz(sample)
         mz <- MSnbase::mz(sample)
         ins <- MSnbase::intensity(sample)
-        idx <- unlist(ins) / max(unlist(ins)) > 0
+        idx <- unlist(ins) / max(unlist(ins)) > scutoff
         if (sum(idx) > 0) {
                 mz <- unlist(mz)[idx]
                 ins <- unlist(ins)[idx]

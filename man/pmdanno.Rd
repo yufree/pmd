@@ -4,7 +4,7 @@
 \alias{pmdanno}
 \title{Perform MS/MS pmd annotation for mgf file}
 \usage{
-pmdanno(file, db = NULL, ppm = 10, prems = 1.1, pmdc = 0.6)
+pmdanno(file, db = NULL, ppm = 10, prems = 1.1, pmdc = 0.6, scutoff = 0.1)
 }
 \arguments{
 \item{file}{mgf file generated from MS/MS data}
@@ -16,6 +16,8 @@ pmdanno(file, db = NULL, ppm = 10, prems = 1.1, pmdc = 0.6)
 \item{prems}{precersor mass range, default 1.1 to include M+H or M-H}
 
 \item{pmdc}{pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database}
+
+\item{scutoff}{relative intensity cutoff for input spectra for pmd analysis, default 0.1}
 }
 \value{
 list with MSMS annotation results
