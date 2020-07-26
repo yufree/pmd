@@ -812,6 +812,7 @@ getsda <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param freqcutoff pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
+#' @param sda logical, option to perform structure/reaction directed analysis, default T.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
 #' data(spmeinvivo)
@@ -824,7 +825,8 @@ globalstd <- function(list,
                       corcutoff = NULL,
                       digits = 2,
                       accuracy = 4,
-                      freqcutoff = NULL) {
+                      freqcutoff = NULL,
+                      sda = T) {
         list <-
                 getpaired(
                         list,
@@ -850,17 +852,21 @@ globalstd <- function(list,
                                 freqcutoff = freqcutoff
                         )
         } else{
-                message('no paired relationship, directly go to structure directed analysis.')
-                list3 <-
-                        getsda(
-                                list,
-                                rtcutoff = rtcutoff,
-                                corcutoff = corcutoff,
-                                digits = digits,
-                                freqcutoff = freqcutoff
-                        )
-        }
+                if(sda){
+                        message('no paired relationship, directly go to structure directed analysis.')
+                        list3 <-
+                                getsda(
+                                        list,
+                                        rtcutoff = rtcutoff,
+                                        corcutoff = corcutoff,
+                                        digits = digits,
+                                        freqcutoff = freqcutoff
+                                )
+                }else{
+                        message('no paired relationship found.')
+                }
 
+        }
         return(list3)
 }
 

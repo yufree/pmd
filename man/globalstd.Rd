@@ -11,7 +11,8 @@ globalstd(
   corcutoff = NULL,
   digits = 2,
   accuracy = 4,
-  freqcutoff = NULL
+  freqcutoff = NULL,
+  sda = T
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ globalstd(
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
 \item{freqcutoff}{pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
+
+\item{sda}{logical, option to perform structure/reaction directed analysis, default T.}
 }
 \value{
 list with GlobalStd algorithm processed data.

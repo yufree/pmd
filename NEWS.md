@@ -1,3 +1,7 @@
+# pmd 0.2.0
+
+- add option to skip sda in GlobalStd algorithm
+
 # pmd 0.1.9
 
 - CRAN
