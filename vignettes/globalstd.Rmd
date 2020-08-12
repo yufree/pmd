@@ -4,7 +4,7 @@ author: "Miao Yu"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{PMD analysis}
+  %\VignetteIndexEntry{Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
