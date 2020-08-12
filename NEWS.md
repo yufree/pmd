@@ -1,6 +1,10 @@
 # pmd 0.2.0
 
 - add option to skip sda in GlobalStd algorithm
+- organize the R file
+- add vignette for reactomics analysis
+- add correlation directed analysis function
+- modified getcorcluster function to find independent peaks
 
 # pmd 0.1.9
 

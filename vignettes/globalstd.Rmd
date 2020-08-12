@@ -18,17 +18,17 @@ knitr::opts_chunk$set(
 
 ## Introduction of Paired Mass Distance analysis
 
-`pmd` package use Paired Mass Distance (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the distance between two masses or mass to charge ratios. In mass spectrometry, PMD would keep the same between two masses or two mass to charge ratios(m/z). There are twe kinds of PMD involved in this package: PMD within same retention time group and PMD from different retention time groups.
+`pmd` package use Paired Mass Distance (PMD) relationship to analysis the GC/LC-MS based non-targeted data. PMD means the distance between two masses or mass to charge ratios. In mass spectrometry, PMD would keep the same value between two masses and two mass to charge ratios(m/z). There are two kinds of PMD involved in this package: PMD from the same compound and PMD from different compounds. In GC/LC-MS or XCMS based non-targeted data analysis, peaks could be separated by chronograph and same compound means ions from similar retention times or ions co-eluted by certain column.
 
-### PMD within same retention time group
+### PMD from the same compound
 
-In GC/LC-MS based non-targeted analysis, peaks could be seperated by chromatograph. We could build retention time(RT) bins to assign peaks into different RT groups by retention time hierarchical clustering analysis. For each RT group, the peaks should come from same compounds or co-elutes. If certain PMD appeared in multiple RT groups, it would be related to the relationship about adducts, neutral loss, isotopologues or commen fragments ions.
+For MS1 full scan data, we could build retention time(RT) bins to assign peaks into different RT groups by retention time hierarchical clustering analysis. For each RT group, the peaks should come from same compounds or co-elutes. If certain PMD appeared in multiple RT groups, it would be related to the relationship about adducts, neutral loss, isotopologues or common fragments ions.
 
-### PMD from different retention time groups
+### PMD from different compounds
 
-The peaks from different retention time groups would like to be different compounds seperated by chromatograph. The PMD would reflect the relationship about homologous series or chemical reactions.
+The peaks from different retention time groups would like to be different compounds separated by chronograph. The PMD would reflect the relationship about homologous series or chemical reactions.
 
-GlobalStd algorithm use the PMD within same RT group to find independent peaks among certain dataset. Structure/reaction directed analysis use PMD from different RT groups to screen important compounds or reactions.
+GlobalStd algorithm use the PMD within same RT group to find independent peaks among certain data set. Then, structure/reaction directed analysis use PMD from different RT groups to screen important compounds or reactions.
 
 ## Data format
 
@@ -39,7 +39,7 @@ The input data should be a `list` object with at least two elements from a peaks
 
 However, I suggested to add intensity and group information to the list for validation of PMD analysis.
 
-In this package, a dataset from *in vivo* solid phase micro-extraction(SPME) was attached. This dataset contain 9 samples from 3 fish with triplicates samples for each fish. Here is the data strcture:
+In this package, a data set from *in vivo* solid phase micro-extraction(SPME) was attached. This data set contain 9 samples from 3 fish with triplicates samples for each fish. Here is the data structure:
 
 ```{r demodata}
 library(pmd)
@@ -51,18 +51,27 @@ You could build this `list` object from the `xcms` objects via `enviGCMS` packag
 
 ## GlobalStd algorithm
 
-GlobalStd algorithm try to find independent peaks among certain peaks list. The first step is retention time hierarchical clustering analysis. The second step is to find the relationship among adducts, neutral loss, isotopologues and commen fragments ions. The third step is to screen the independent peaks.
+GlobalStd algorithm try to find independent peaks among certain peaks list. The first step is retention time hierarchical clustering analysis. The second step is to find the relationship among adducts, neutral loss, isotopologues and common fragments ions. The third step is to screen the independent peaks.
 
-### Retention time hierarchical clustering
+Here is a workflow for this algorithm:
+
+```{r}
+knitr::include_graphics('https://yufree.github.io/presentation/figure/GlobalStd.png')
+```
+
+
+### STEP1: Retention time hierarchical clustering
 
 ```{r rtg}
 pmd <- getpaired(spmeinvivo, rtcutoff = 10, ng = 10)
 plotrtg(pmd)
 ```
 
-This plot would show the distribution of RT groups. The `rtcutoff` in function `getpaired` could be used to set the cutoff of the distances in retention time hierarchical clustering analysis.
+This plot would show the distribution of RT groups. The `rtcutoff` in function `getpaired` could be used to set the cutoff of the distances in retention time hierarchical clustering analysis. 
 
-### Relationship among adducts, neutral loss, isotopologues and commen fragments ions
+Take care of the retention time cluster with lots of peaks. In this case, such cluster could be co-eluted compounds on certain column. It would be wise to trim the retention time window for high quality peaks.
+
+### STEP2: Relationship among adducts, neutral loss, isotopologues and common fragments ions
 
 The `ng` in function `getpaired` could be used to set cutoff of global PMD's retention time group numbers. If `ng` is 10, at least 10 of the retention time groups should contain the shown PMD relationship. You could use `plotpaired` to show the distribution.
 
@@ -81,9 +90,11 @@ for(i in 1:length(unique(pmd$paired$diff2))){
 }
 ```
 
-### Screen the independent peaks
+This is an easy way to find potential adducts of the data by high frequency PMD from the same compound. For example, 21.98 Da could be the mass distances between $[M+H]^+$ and $[M+Na]^+$. In this case, user could find the potential adducts or neutral loss even when they have no preferred adducts list. If one adduct exist in certain analytical system, the high frequency PMD will reveal such relationship. The high frequency PMD list could also be used to check the fragmental pattern of in-source reactions as long as such patterns are popular among all collected ions.
 
-You could use `getstd` function to get the independent peaks.
+### STEP3: Screen the independent peaks
+
+You could use `getstd` function to get the independent peaks. Independent peaks mean the peaks list removing the redundant peaks such as adducts, neutral loss, isotopologues and comment fragments ions found by PMD analysis in STEP2. Ideally, those peaks could be molecular ions while they might still contain redundant peaks.
 
 ```{r std}
 std <- getstd(pmd)
@@ -107,24 +118,9 @@ plotstdrt(std,rtcluster = 49,main = 'Retention time group 49')
 plotstdrt(std,rtcluster = 6,main = 'Retention time group 6')
 ```
 
-### Use independent peaks for MS/MS validation
+## Validation by principal components analysis(PCA)
 
-Independent peaks are supporsing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions' fragmental ions in one injection with good sensitivity. You could use `gettarget` to generate the index for the injections and output the peaks for each run.
-
-```{r gettarget}
-# you need retention time for independent peaks
-index <- gettarget(std$rt[std$stdmassindex])
-# output the ions for each injection
-table(index)
-# show the ions for the first injection
-std$mz[index==1]
-std$rt[index==1]
-```
-
-
-### Validation by principal components analysis(PCA)
-
-You need to check the GlobalStd algorithm's results by principal components analysis(PCA).
+You need to check the GlobalStd algorithm's results by principal components analysis(PCA). If we removed too much peaks containing information, the score plot of reduced data set would show great changes.
 
 ```{r pca}
 library(enviGCMS)
@@ -133,33 +129,52 @@ plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = substitute(paste(i
 plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
 ```
 
-### Comparision with other packages
+## Comparison with other pseudo spectra extraction method
 
-GlobalStd algorithm in `pmd` package could be treated as a method to extract pseudospectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks. This function would consider the merge of GlobalStd peaks when certain peak is involved in multiple clusters. Then you could choose export peaks with the highest intensities in each GlobalStd merged peaks groups.
+GlobalStd algorithm in `pmd` package could be treated as a method to extract pseudo spectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks. This function would consider the merge of GlobalStd peaks when certain peak is involved in multiple clusters. Then you could choose export peaks with the highest intensities or base peaks in each GlobalStd merged peaks groups. Meanwhile, you could also include the correlation coefficient cutoff to further improve the data quality.
 
 ```{r comp}
 stdcluster <- getcluster(std)
 # extract pseudospectra for std peak 71
 idx <- unique(stdcluster$cluster$largei[stdcluster$cluster$i==71])
-plot(stdcluster$cluster$mz[stdcluster$cluster$largei==idx],stdcluster$cluster$ins[stdcluster$cluster$largei==idx],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudospectra for GlobalStd peak 71')
+plot(stdcluster$cluster$mz[stdcluster$cluster$largei==idx],stdcluster$cluster$ins[stdcluster$cluster$largei==idx],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for GlobalStd peak 71')
 # export peaks with the highest intensities in each GlobalStd peaks groups.
 data <- stdcluster$data[stdcluster$stdmassindex2,]
+# considering the correlation coefficient cutoff
+stdcluster2 <- getcluster(std, corcutoff = 0.9)
 ```
 
-You could also use `getcorcluster` to find peaks groups by correlation analysis only.
+We supplied `getcorcluster` to find peaks groups by correlation analysis only. The base peaks of correlation cluster were selected to stand for the compounds. 
+
+```{r corpeak}
+corcluster <- getcorcluster(spmeinvivo)
+# extract pseudospectra 1@46
+peak <- corcluster$cluster[corcluster$cluster$largei == '1@46',]
+plot(peak$ins~peak$mz,type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for correlation cluster')
+```
+
+Then we could compare the compare reduced result using PCA similarity factor. A good peak selection algorithm could show a high PCA similarity factor compared with original data set while retain the minmized number of peaks.
 
 ```{r corcomp}
-corcluster <- getcorcluster(spmeinvivo)
-par(mfrow = c(1,3),mar = c(4,4,2,1)+0.1)
-plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(all peaks)")))
-plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
-plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks by correlationship)")))
+par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
+plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = paste(sum(std$stdmassindex),"independent peaks"))
+plotpca(std$data[stdcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster$stdmassindex2),"base peaks"))
+plotpca(std$data[stdcluster2$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster2$stdmassindex2),"independent base peaks"))
+plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = paste(sum(corcluster$stdmassindex),"peaks without correlationship"))
+plotpca(std$data[corcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(corcluster$stdmassindex2),"base peaks without correlationship"))
+plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = paste(nrow(std$data),"all peaks"))
+pcasf(std$data, std$data[std$stdmassindex,])
+pcasf(std$data, std$data[stdcluster$stdmassindex2,])
+pcasf(std$data, std$data[stdcluster2$stdmassindex2,])
+pcasf(std$data, std$data[corcluster$stdmassindex,])
+pcasf(std$data, std$data[corcluster$stdmassindex2,])
 ```
 
+In this case, five peaks selection algorithms are fine to stand for the original peaks with PCA similarity score larger than 0.9. However, the independent base peaks retain the most information with relative low numbers of peaks.
 
-### GlobalStd algorithm with intensity data
+## GlobalStd algorithm with intensity data
 
-GlobalStd algorithm is designed to analysis data without intensity data. However, if you have intensity data, the independant peaks could be selected with more confindence. You could set up cutoff of Pearson Correlation Coefficient between peaks to refine the peaks selected by GlobalStd within same retention time groups.
+As mentioned above, GlobalStd algorithm is designed to analysis data without intensity data. However, if you have intensity data, the independent peaks could be selected with more confidence. You could set up cutoff of Pearson Correlation Coefficient between peaks to refine the peaks selected by GlobalStd within same retention time groups.
 
 ```{r globalcor}
 std2 <- getstd(pmd,corcutoff = 0.9)
@@ -169,10 +184,9 @@ plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main =
 plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std2$group)),main = substitute(paste(italic('in vivo'), " SPME samples(selected peaks)")))
 ```
 
-
 ## Structure/Reaction directed analysis
 
-`getsda` function could be used to perform Structure/reaction directed analysis. The cutoff of frequency is automately found by PMD network analysis with most cluster numbers.
+`getsda` function could be used to perform Structure/reaction directed analysis. The cutoff of frequency is automate found by PMD network analysis with most cluster numbers.
 
 ```{r sda}
 sda <- getsda(std)
@@ -193,7 +207,7 @@ plotstdsda(sda,sda$sda$diff2 == 28.03)
 plotstdsda(sda,sda$sda$diff2 == 58.04)
 ```
 
-Structure/reaction directed analysis could be directily performed on all the peaks, which is slow to process:
+Structure/reaction directed analysis could be directly performed on all the peaks, which is slow to process:
 
 ```{r all}
 sdaall <- getsda(spmeinvivo)
@@ -203,67 +217,13 @@ plotstdsda(sdaall,sdaall$sda$diff2 == 28.03)
 plotstdsda(sdaall,sdaall$sda$diff2 == 58.04)
 ```
 
-### Structure/reaction directed analysis for peaks/compounds only
+### Structure/reaction directed analysis for peaks/compounds only data
 
 When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by `getrda` function.
 
 ```{r rda}
 sda <- getrda(spmeinvivo$mz[std$stdmassindex])
 ```
-
-### Structure/Reaction Network
-
-One peak or compounds could be involved in multiple reactions. You could construct a network by such relationship.
-
-If you have a specific compound and want to check the metabolites of certain PMD, you could use `getchain` to extract the network of that compounds
-
-```{r tarnet}
-library(igraph)
-# check metabolites of C18H39NO
-chain <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99,58.04,13.98),mass = 286.3101,digits = 2,corcutoff = 0)
-# show as network
-net <- graph_from_data_frame(chain$sdac,directed = F)
-pal <- (grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11,"RdYlBu")
-                )))(5)
-plot(net,vertex.label=round(as.numeric(V(net)$name),2),vertex.size =5,edge.width = 5,edge.color = pal[as.numeric(as.factor(E(net)$diff2))],vertex.label.dist=1,vertex.color=ifelse(round(as.numeric(V(net)$name),4) %in% 286.3101,'red','black'),main = 'PMD network')
-legend("topright",bty = "n",
-       legend=unique(E(net)$diff2),
-       fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-```
-
-If you want to see all the independant peaks' high frequency PMDs as a network, the following code will help
-
-```{r net}
-sda <- getsda(std)
-df <- sda$sda
-net <- graph_from_data_frame(df,directed = F)
-pal <- (grDevices::colorRampPalette(rev(RColorBrewer::brewer.pal(11,"RdYlBu")
-                )))(length(unique(E(net)$diff2)))
-plot(net,vertex.label=round(as.numeric(V(net)$name)),vertex.size = 7,edge.width = 5,edge.color = pal[as.numeric(as.factor(E(net)$diff2))],main = 'PMD network')
-legend("topright",bty = "n",
-       legend=unique(E(net)$diff2),
-       fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-# Check the degree of the nodes
-# Show the degree distribution of the vertices
-deg <- degree(net, mode="all")
-degree_distribution(net)
-plot(net, vertex.size=deg/2,vertex.label=NA,vertex.size = 7, edge.width = 5)
-# network community structure detection
-ceb <- cluster_edge_betweenness(net,weights = abs(E(net)$cor), directed = F) 
-plot(ceb, net,vertex.label=NA,) 
-```
-
-### Source appointment
-
-Peaks from samples could be from endogenous compounds or exogenous compounds. However, it's hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenbiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.
-
-```{r source}
-median(deg)
-endogenous <- names(deg)[deg>median(deg)]
-exogenous <- names(deg)[deg<=median(deg)]
-```
-
-In this case, we will have `r length(endogenous)` endogenous compounds while `r length(exogenous)` exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.
 
 ## Parameters selection
 
@@ -281,34 +241,25 @@ Another important hint is that pre-filter your peak list by black samples or oth
 result <- globalstd(spmeinvivo,ng=10)
 ```
 
+## Use independent peaks for MS/MS validation (PMDDA)
+
+Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions' fragmental ions in one injection with good sensitivity. You could use `gettarget` to generate the index for the injections and output the peaks for each run.
+
+```{r gettarget}
+# you need retention time for independent peaks
+index <- gettarget(std$rt[std$stdmassindex])
+# output the ions for each injection
+table(index)
+# show the ions for the first injection
+std$mz[index==1]
+std$rt[index==1]
+```
+
 ## Shiny application
 
 An interactive document has been included in this package to perform PMD analysis. You need to prepare a csv file with m/z and retention time of peaks. Such csv file could be generated by run `enviGCMS::getmzrtcsv()` on the `list` object from `enviGCMS::getmzrt(xset)` or `enviGCMS::getmzrt2(xset)` function. You could also generate the csv file by `enviGCMS::getmzrt(xset,name = 'test')` or `enviGCMS::getmzrt2(xset, name = 'test')`. You will find the csv file in the working dictionary named `test.csv`.
 
-Then you could run `runPMD()` to start the Graphical user interface(GUI) for GlobalStd algorithm and structure/reaction directed analysis. The PMD network for certain compound could be generated by run `runPMDnet()`.
-
-## Database
-
-To check the pmd reaction database:
-
-```{r}
-# all reaction
-data("omics")
-head(omics)
-# kegg reaction
-data("keggrall")
-head(keggrall)
-# literature reaction for mass spectrometry
-data("sda")
-head(sda)
-```
-
-To check the HMDB pmd database:
-
-```{r}
-data("hmdb")
-head(hmdb)
-```
+Then you could run `runPMD()` to start the Graphical user interface(GUI) for GlobalStd algorithm and structure/reaction directed analysis. 
 
 ## Conclusion
 

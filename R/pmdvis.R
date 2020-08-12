@@ -333,36 +333,36 @@ plotsda <- function(list, ...) {
         )
 }
 
-#' Compare matrices using PCA similarity factor
-#'
-#' @param x Matrix with sample in column and features in row
-#' @param y Matrix is compared to x.
-#' @param dim number of retained dimensions in the comparison. Defaults to all.
-#' @return Ratio of projected variance to total variance
-#' @references Singhal, A. and Seborg, D. E. (2005), Clustering multivariate time-series data. J. Chemometrics, 19: 427-438. doi: 10.1002/cem.945
-#' @author Edgar Zanella Alvarenga
+#' plot PMD KEGG network for certain compounds and output network average distance and degree
+#' @param formula Chemical formula
+#' @param name Compound name
+#' @param pmd specific paired mass distances
 #' @export
 #' @examples
-#' c1 <- matrix(rnorm(16),nrow=4)
-#' c2 <- matrix(rnorm(16),nrow=4)
-#' pcasf(c1, c2)
-#'
-pcasf <- function(x, y, dim = NULL) {
-        cov.x <- stats::cov(x)
-        cov.y <- stats::cov(y)
-
-        if (is.null(dim)){
-                dim = dim(cov.x)[1]
+#' plotcn('C6H12O6','Glucose',c(2.016,14.016,15.995))
+plotcn <- function(formula, name, pmd){
+        keggrall <- get("keggrall")
+        all <- keggrall[,c(3,5,6)]
+        # limit the pmd
+        all2 <- all[all$pmd %in% pmd,]
+        ms1 <- as.character(all2$formula1)
+        ms2 <- as.character(all2$formula2)
+        sdat <- unique(c(formula, ms2[ms1 %in% formula], ms1[ms2 %in% formula]))
+        seed <- NULL
+        while (!identical(sdat, seed)) {
+                seed <- sdat
+                sdat <- unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
         }
-
-        eg.x <- eigen(cov.x)
-        eg.y <- eigen(cov.y)
-        eg.x.values <- eg.x$values[1:dim]
-        eg.y.values <- eg.y$values[1:dim]
-        eg.x.vectors <- eg.x$vectors[,1:dim]
-        eg.y.vectors <- eg.y$vectors[,1:dim]
-
-        total_var <- eg.x.values %*% eg.y.values
-
-        return (c(pcasf = sum((eg.x.values %o% eg.y.values) * ((t(eg.x.vectors) %*% (eg.y.vectors))**2))/total_var))
+        df <- all2[ms1 %in% sdat | ms2 %in% sdat ,]
+        df2 <- df[!duplicated(df),]
+        pal <- grDevices::rainbow(length(pmd))
+        net <- igraph::graph_from_data_frame(df2,directed = F)
+        dis <- igraph::mean_distance(net,directed = F)
+        message(paste('Average distance of PMD network is', dis))
+        message(paste('Average degree',mean(igraph::degree(net))))
+        # igraph::V(net)$label.cex <- 1
+        graphics::plot(net,vertex.size =1,edge.width = 3,edge.color = pal[as.numeric(as.factor(igraph::E(net)$pmd))],vertex.label=ifelse(igraph::V(net)$name == formula,name,NA),vertex.label.dist=1,vertex.color=ifelse(igraph::V(net)$name == formula,'red','black'))
+        graphics::legend("topright",bty = "n",
+               legend=unique(igraph::E(net)$pmd),
+               fill=unique(pal[as.numeric(as.factor(igraph::E(net)$pmd))]), border=NA,horiz = F,ncol = 2)
 }

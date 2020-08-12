@@ -1,14 +1,14 @@
 Package: pmd
 Type: Package
-Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis
+Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis and Reactomics Analysis
 Version: 0.2.0
-Date: 2020-07-26
+Date: 2020-08-11
 Authors@R: person(given = "Miao", family = "YU",
         role = c("aut", "cre"), 
         email = "yufreecas@gmail.com",
         comment = c(ORCID = "0000-0002-2804-6014"))
 Maintainer: Miao YU <yufreecas@gmail.com>
-Description: Paired mass distance (PMD) analysis proposed in Yu, Olkowicz and Pawliszyn (2018) <doi:10.1016/j.aca.2018.10.062> for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. A GUI for PMD analysis is also included as a 'shiny' application.
+Description: Paired mass distance (PMD) analysis proposed in Yu, Olkowicz and Pawliszyn (2018) <doi:10.1016/j.aca.2018.10.062> for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. Reactomics analysis could also be performed to build PMD network, assign sources and make biomarker reaction discovery. GUIs for PMD analysis is also included as 'shiny' applications.
 URL: https://yufree.github.io/pmd
 BugReports: https://github.com/yufree/pmd/issues
 License: GPL-2
@@ -27,4 +27,4 @@ Imports: RColorBrewer,
         utils,
         igraph,
         enviGCMS
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
