@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID — keggrall • pmd</title>
+<title>Perform correlation directed analysis for peaks list. — getcda • pmd</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID — keggrall" />
-<meta property="og:description" content="A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID" />
+<meta property="og:title" content="Perform correlation directed analysis for peaks list. — getcda" />
+<meta property="og:description" content="Perform correlation directed analysis for peaks list." />
 
 
 
@@ -136,28 +136,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yufree/pmd/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>keggrall.Rd</code></div>
+    <h1>Perform correlation directed analysis for peaks list.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yufree/pmd/blob/master/R/sda.R'><code>R/sda.R</code></a></small>
+    <div class="hidden name"><code>getcda.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID</p>
+    <p>Perform correlation directed analysis for peaks list.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>keggrall</span>)</pre>
+    <pre class="usage"><span class='fu'>getcda</span>(<span class='no'>list</span>, <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>list</th>
+      <td><p>a list with mzrt profile</p></td>
+    </tr>
+    <tr>
+      <th>corcutoff</th>
+      <td><p>cutoff of the correlation coefficient, default NULL</p></td>
+    </tr>
+    <tr>
+      <th>rtcutoff</th>
+      <td><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td><p>measured mass or mass to charge ratio in digits, default 4</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A dataframe with KEGG reaction, their realted pmd and atoms numbers of C, H, O, N, P, S</p><dl'>
-  <dt>ID</dt><dd><p>KEGG reaction ID</p></dd>
-  <dt>pmd</dt><dd><p>pmd with three digits</p></dd>
+    <p>list with correlation directed analysis results</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-  
-</dl>
+    <div class='dont-index'><p><code><a href='getsda.html'>getsda</a></code>,<code><a href='getrda.html'>getrda</a></code></p></div>
 
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>spmeinvivo</span>)
+<span class='no'>cluster</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getcorcluster.html'>getcorcluster</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='input'><span class='no'>cbp</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>enviGCMS</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/enviGCMS/man/getfilter.html'>getfilter</a></span>(<span class='no'>cluster</span>,<span class='kw'>rowindex</span> <span class='kw'>=</span> <span class='no'>cluster</span>$<span class='no'>stdmassindex2</span>)
+<span class='no'>cda</span> <span class='kw'>&lt;-</span> <span class='fu'>getcda</span>(<span class='no'>cbp</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

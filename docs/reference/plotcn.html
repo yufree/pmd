@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID — keggrall • pmd</title>
+<title>plot PMD KEGG network for certain compounds and output network average distance and degree — plotcn • pmd</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID — keggrall" />
-<meta property="og:description" content="A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID" />
+<meta property="og:title" content="plot PMD KEGG network for certain compounds and output network average distance and degree — plotcn" />
+<meta property="og:description" content="plot PMD KEGG network for certain compounds and output network average distance and degree" />
 
 
 
@@ -136,28 +136,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yufree/pmd/blob/master/R/data.R'><code>R/data.R</code></a></small>
-    <div class="hidden name"><code>keggrall.Rd</code></div>
+    <h1>plot PMD KEGG network for certain compounds and output network average distance and degree</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yufree/pmd/blob/master/R/pmdvis.R'><code>R/pmdvis.R</code></a></small>
+    <div class="hidden name"><code>plotcn.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A dataframe containing reaction related accurate mass pmd and related reaction formula with KEGG ID</p>
+    <p>plot PMD KEGG network for certain compounds and output network average distance and degree</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>keggrall</span>)</pre>
+    <pre class="usage"><span class='fu'>plotcn</span>(<span class='no'>formula</span>, <span class='no'>name</span>, <span class='no'>pmd</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>formula</th>
+      <td><p>Chemical formula</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>Compound name</p></td>
+    </tr>
+    <tr>
+      <th>pmd</th>
+      <td><p>specific paired mass distances</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>A dataframe with KEGG reaction, their realted pmd and atoms numbers of C, H, O, N, P, S</p><dl'>
-  <dt>ID</dt><dd><p>KEGG reaction ID</p></dd>
-  <dt>pmd</dt><dd><p>pmd with three digits</p></dd>
-
-  
-</dl>
-
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>plotcn</span>(<span class='st'>'C6H12O6'</span>,<span class='st'>'Glucose'</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2.016</span>,<span class='fl'>14.016</span>,<span class='fl'>15.995</span>))</div><div class='output co'>#&gt; <span class='message'>Average distance of PMD network is 9.42710759198882</span></div><div class='output co'>#&gt; <span class='message'>Average degree 2.84210526315789</span></div><div class='img'><img src='plotcn-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
