@@ -686,6 +686,7 @@ globalstd <- function(list,
                                 digits = digits,
                                 accuracy = accuracy
                         )
+                if(sda){
                 list3 <-
                         getsda(
                                 list2,
@@ -694,6 +695,7 @@ globalstd <- function(list,
                                 digits = digits,
                                 freqcutoff = freqcutoff
                         )
+                }
         } else{
                 if(sda){
                         message('no paired relationship, directly go to structure directed analysis.')
