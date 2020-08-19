@@ -88,13 +88,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="reactomics_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reactomics</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2020-08-14</h4>
+            <h4 class="date">2020-08-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/reactomics.Rmd"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
@@ -112,7 +112,7 @@
 <p>In untargeted metabolites profiles from HRMS, two ions or peaks could be treated together as long as they could be connected by relationship. Regular untargeted workflow prefers intensity correlation between compounds. However, PMD could also be the chemical bridge between two compounds or ions. For example, oxidation would add oxygen atom to the parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or compound could be involved in multiple reactions. In this case, we could build PMD network for certain ion or compound.</p>
 <p>However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exdogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.</p>
 <p>PMD network analysis is the analysis to check or explorer the PMD relationship among co-existed ions from one sample or multiple samples. The edge between ions in the network means certain PMD relationship are valid in this data set. Meanwhile, the intensity correlation between paired ions could also be considered to connect the vertices. Such network is build based on local recursive search for all possible connections.</p>
-<p>PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites’ MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get overview of metabolites networks. Identification could follow the discovery from MS1 data.</p>
+<p>PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites’ MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get the overview of metabolites networks. Identification could follow the discovery from MS1 data.</p>
 <p>If you have a specific compound and want to check the metabolites of certain PMD, you could use <code>getchain</code> to extract the network of that compounds</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">igraph</span>)
 <span class="co">#&gt; </span>
@@ -129,7 +129,7 @@
 <span class="co"># show as network</span>
 <span class="no">net</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span>(<span class="no">chain</span>$<span class="no">sdac</span>,<span class="kw">directed</span> <span class="kw">=</span> <span class="no">F</span>)
 <span class="no">pal</span> <span class="kw">&lt;-</span> <span class="kw pkg">grDevices</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">5</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">2</span>),<span class="kw">vertex.size</span> <span class="kw">=</span><span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">vertex.label.dist</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">vertex.color</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">4</span>) <span class="kw">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span>), <span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">2</span>),<span class="kw">vertex.size</span> <span class="kw">=</span><span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">vertex.label.dist</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">vertex.color</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">4</span>) <span class="kw">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span>), <span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topright"</span>,<span class="kw">bty</span> <span class="kw">=</span> <span class="st">"n"</span>,
        <span class="kw">legend</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>),
        <span class="kw">fill</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))]), <span class="kw">border</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">horiz</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
@@ -139,7 +139,7 @@
 <span class="co"># show as network</span>
 <span class="no">net</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span>(<span class="no">chain</span>$<span class="no">sdac</span>,<span class="kw">directed</span> <span class="kw">=</span> <span class="no">F</span>)
 <span class="no">pal</span> <span class="kw">&lt;-</span> <span class="kw pkg">grDevices</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fl">5</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">2</span>),<span class="kw">vertex.size</span> <span class="kw">=</span><span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">vertex.label.dist</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">vertex.color</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">4</span>) <span class="kw">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span>), <span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">2</span>),<span class="kw">vertex.size</span> <span class="kw">=</span><span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">vertex.label.dist</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">vertex.color</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span>(<span class="no">net</span>)$<span class="no">name</span>),<span class="fl">4</span>) <span class="kw">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span>), <span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topright"</span>,<span class="kw">bty</span> <span class="kw">=</span> <span class="st">"n"</span>,
        <span class="kw">legend</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>),
        <span class="kw">fill</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))]), <span class="kw">border</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">horiz</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
@@ -158,65 +158,6 @@
 <span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span>
 <span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span>
 <span class="co">#&gt; 297 std mass found.</span>
-<span class="co">#&gt; PMD frequency cutoff is 6 by PMD network analysis with largest network average distance 5.99 .</span>
-<span class="co">#&gt; 57 groups were found as high frequency PMD group.</span>
-<span class="co">#&gt; 0 was found as high frequency PMD. </span>
-<span class="co">#&gt; 1.98 was found as high frequency PMD. </span>
-<span class="co">#&gt; 2.01 was found as high frequency PMD. </span>
-<span class="co">#&gt; 2.02 was found as high frequency PMD. </span>
-<span class="co">#&gt; 6.97 was found as high frequency PMD. </span>
-<span class="co">#&gt; 11.96 was found as high frequency PMD. </span>
-<span class="co">#&gt; 12 was found as high frequency PMD. </span>
-<span class="co">#&gt; 12.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 13.98 was found as high frequency PMD. </span>
-<span class="co">#&gt; 14.02 was found as high frequency PMD. </span>
-<span class="co">#&gt; 14.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 15.99 was found as high frequency PMD. </span>
-<span class="co">#&gt; 16.03 was found as high frequency PMD. </span>
-<span class="co">#&gt; 19.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 28.03 was found as high frequency PMD. </span>
-<span class="co">#&gt; 30.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 31.99 was found as high frequency PMD. </span>
-<span class="co">#&gt; 37.02 was found as high frequency PMD. </span>
-<span class="co">#&gt; 42.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 48.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 48.98 was found as high frequency PMD. </span>
-<span class="co">#&gt; 49.02 was found as high frequency PMD. </span>
-<span class="co">#&gt; 54.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 56.06 was found as high frequency PMD. </span>
-<span class="co">#&gt; 56.1 was found as high frequency PMD. </span>
-<span class="co">#&gt; 58.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 58.08 was found as high frequency PMD. </span>
-<span class="co">#&gt; 58.11 was found as high frequency PMD. </span>
-<span class="co">#&gt; 63.96 was found as high frequency PMD. </span>
-<span class="co">#&gt; 66.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 68.06 was found as high frequency PMD. </span>
-<span class="co">#&gt; 70.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 70.08 was found as high frequency PMD. </span>
-<span class="co">#&gt; 74.02 was found as high frequency PMD. </span>
-<span class="co">#&gt; 80.03 was found as high frequency PMD. </span>
-<span class="co">#&gt; 82.08 was found as high frequency PMD. </span>
-<span class="co">#&gt; 88.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 91.1 was found as high frequency PMD. </span>
-<span class="co">#&gt; 93.12 was found as high frequency PMD. </span>
-<span class="co">#&gt; 96.09 was found as high frequency PMD. </span>
-<span class="co">#&gt; 101.05 was found as high frequency PMD. </span>
-<span class="co">#&gt; 108.13 was found as high frequency PMD. </span>
-<span class="co">#&gt; 110.11 was found as high frequency PMD. </span>
-<span class="co">#&gt; 112.16 was found as high frequency PMD. </span>
-<span class="co">#&gt; 116.08 was found as high frequency PMD. </span>
-<span class="co">#&gt; 122.15 was found as high frequency PMD. </span>
-<span class="co">#&gt; 124.16 was found as high frequency PMD. </span>
-<span class="co">#&gt; 126.14 was found as high frequency PMD. </span>
-<span class="co">#&gt; 148.04 was found as high frequency PMD. </span>
-<span class="co">#&gt; 150.2 was found as high frequency PMD. </span>
-<span class="co">#&gt; 173.18 was found as high frequency PMD. </span>
-<span class="co">#&gt; 191.08 was found as high frequency PMD. </span>
-<span class="co">#&gt; 191.15 was found as high frequency PMD. </span>
-<span class="co">#&gt; 192.19 was found as high frequency PMD. </span>
-<span class="co">#&gt; 194.2 was found as high frequency PMD. </span>
-<span class="co">#&gt; 267.25 was found as high frequency PMD. </span>
-<span class="co">#&gt; 325.3 was found as high frequency PMD.</span>
 <span class="no">sda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">std</span>,<span class="kw">freqcutoff</span> <span class="kw">=</span> <span class="fl">12</span>)
 <span class="co">#&gt; 10 groups were found as high frequency PMD group.</span>
 <span class="co">#&gt; 0 was found as high frequency PMD. </span>
@@ -232,7 +173,7 @@
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="no">sda</span>$<span class="no">sda</span>
 <span class="no">net</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span>(<span class="no">df</span>,<span class="kw">directed</span> <span class="kw">=</span> <span class="no">F</span>)
 <span class="no">pal</span> <span class="kw">&lt;-</span> <span class="kw pkg">grDevices</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>)))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">edge.color</span> <span class="kw">=</span> <span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))],<span class="kw">main</span> <span class="kw">=</span> <span class="st">'PMD network'</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topright"</span>,<span class="kw">bty</span> <span class="kw">=</span> <span class="st">"n"</span>,
        <span class="kw">legend</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>),
        <span class="kw">fill</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">pal</span>[<span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">net</span>)$<span class="no">diff2</span>))]), <span class="kw">border</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">horiz</span> <span class="kw">=</span> <span class="no">F</span>)</pre></body></html></div>
@@ -247,7 +188,7 @@
 <span class="co">#&gt; F): At community.c:467 :Modularity calculation with weighted edge betweenness</span>
 <span class="co">#&gt; community detection might not make sense -- modularity treats edge weights as</span>
 <span class="co">#&gt; similarities while edge betwenness treats them as distances</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">ceb</span>, <span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">ceb</span>, <span class="no">net</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,)</pre></body></html></div>
 <p><img src="reactomics_files/figure-html/nwa-1.png" width="700"></p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># output membership</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">ceb</span>$<span class="no">membership</span>,<span class="no">ceb</span>$<span class="no">names</span>))
@@ -265,7 +206,7 @@
 <span class="co"># filter based on retention time differences larger than 2 mins</span>
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="no">df</span>[<span class="no">df</span>$<span class="no">diffrt</span><span class="kw">&gt;</span><span class="fl">120</span>,]
 <span class="no">netc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span>(<span class="no">df</span>,<span class="kw">directed</span> <span class="kw">=</span> <span class="no">F</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">netc</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'Correlation network'</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">netc</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="fl">NA</span>,<span class="kw">vertex.size</span> <span class="kw">=</span> <span class="fl">5</span>,<span class="kw">edge.width</span> <span class="kw">=</span> <span class="fl">3</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'Correlation network'</span>)</pre></body></html></div>
 <p><img src="reactomics_files/figure-html/cda-1.png" width="700"></p>
 <p>As shown above, correlation network without PMD might merge into one big network, which lose the details of chemical reactions.</p>
 <div id="shiny-application" class="section level3">

@@ -88,13 +88,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="globalstd_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2020-08-14</h4>
+            <h4 class="date">2020-08-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/globalstd.Rmd"><code>vignettes/globalstd.Rmd</code></a></small>
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -238,7 +238,7 @@
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">stdcluster</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getcluster.html">getcluster</a></span>(<span class="no">std</span>)
 <span class="co"># extract pseudospectra for std peak 71</span>
 <span class="no">idx</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span>[<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">i</span><span class="kw">==</span><span class="fl">71</span>])
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">mz</span>[<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span><span class="kw">==</span><span class="no">idx</span>],<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">ins</span>[<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span><span class="kw">==</span><span class="no">idx</span>],<span class="kw">type</span> <span class="kw">=</span> <span class="st">'h'</span>,<span class="kw">xlab</span> <span class="kw">=</span> <span class="st">'m/z'</span>,<span class="kw">ylab</span> <span class="kw">=</span> <span class="st">'intensity'</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'pseudo spectra for GlobalStd peak 71'</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">mz</span>[<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span><span class="kw">==</span><span class="no">idx</span>],<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">ins</span>[<span class="no">stdcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span><span class="kw">==</span><span class="no">idx</span>],<span class="kw">type</span> <span class="kw">=</span> <span class="st">'h'</span>,<span class="kw">xlab</span> <span class="kw">=</span> <span class="st">'m/z'</span>,<span class="kw">ylab</span> <span class="kw">=</span> <span class="st">'intensity'</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'pseudo spectra for GlobalStd peak 71'</span>)</pre></body></html></div>
 <p><img src="globalstd_files/figure-html/comp-1.png" width="700"></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="co"># export peaks with the highest intensities in each GlobalStd peaks groups.</span>
 <span class="no">data</span> <span class="kw">&lt;-</span> <span class="no">stdcluster</span>$<span class="no">data</span>[<span class="no">stdcluster</span>$<span class="no">stdmassindex2</span>,]
@@ -251,9 +251,9 @@
 <span class="co">#&gt; 75 retention time cluster found.</span>
 <span class="co"># extract pseudospectra 1@46</span>
 <span class="no">peak</span> <span class="kw">&lt;-</span> <span class="no">corcluster</span>$<span class="no">cluster</span>[<span class="no">corcluster</span>$<span class="no">cluster</span>$<span class="no">largei</span> <span class="kw">==</span> <span class="st">'1@46'</span>,]
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="no">peak</span>$<span class="no">ins</span>~<span class="no">peak</span>$<span class="no">mz</span>,<span class="kw">type</span> <span class="kw">=</span> <span class="st">'h'</span>,<span class="kw">xlab</span> <span class="kw">=</span> <span class="st">'m/z'</span>,<span class="kw">ylab</span> <span class="kw">=</span> <span class="st">'intensity'</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'pseudo spectra for correlation cluster'</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">peak</span>$<span class="no">ins</span>~<span class="no">peak</span>$<span class="no">mz</span>,<span class="kw">type</span> <span class="kw">=</span> <span class="st">'h'</span>,<span class="kw">xlab</span> <span class="kw">=</span> <span class="st">'m/z'</span>,<span class="kw">ylab</span> <span class="kw">=</span> <span class="st">'intensity'</span>,<span class="kw">main</span> <span class="kw">=</span> <span class="st">'pseudo spectra for correlation cluster'</span>)</pre></body></html></div>
 <p><img src="globalstd_files/figure-html/corpeak-1.png" width="700"></p>
-<p>Then we could compare the compare reduced result using PCA similarity factor. A good peak selection algorithm could show a high PCA similarity factor compared with original data set while retain the minmized number of peaks.</p>
+<p>Then we could compare the compare reduced result using PCA similarity factor. A good peak selection algorithm could show a high PCA similarity factor compared with original data set while retain the minimized number of peaks.</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">3</span>,<span class="fl">3</span>),<span class="kw">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">1</span>)+<span class="fl">0.1</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/plotpca.html">plotpca</a></span>(<span class="no">std</span>$<span class="no">data</span>[<span class="no">std</span>$<span class="no">stdmassindex</span>,],<span class="kw">lv</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">std</span>$<span class="no">group</span>)),<span class="kw">main</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">std</span>$<span class="no">stdmassindex</span>),<span class="st">"independent peaks"</span>))
 <span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/plotpca.html">plotpca</a></span>(<span class="no">std</span>$<span class="no">data</span>[<span class="no">stdcluster</span>$<span class="no">stdmassindex2</span>,],<span class="kw">lv</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span>(<span class="no">std</span>$<span class="no">group</span>)),<span class="kw">main</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">stdcluster</span>$<span class="no">stdmassindex2</span>),<span class="st">"base peaks"</span>))
@@ -286,7 +286,7 @@
 <div id="structurereaction-directed-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#structurereaction-directed-analysis" class="anchor"></a>Structure/Reaction directed analysis</h2>
-<p><code>getsda</code> function could be used to perform Structure/reaction directed analysis. The cutoff of frequency is automate found by PMD network analysis with most cluster numbers.</p>
+<p><code>getsda</code> function could be used to perform Structure/reaction directed analysis. The cutoff of frequency is automate found by PMD network analysis with the largest mean distance of all nodes.</p>
 <div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">sda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">std</span>)
 <span class="co">#&gt; PMD frequency cutoff is 6 by PMD network analysis with largest network average distance 5.99 .</span>
 <span class="co">#&gt; 57 groups were found as high frequency PMD group.</span>
@@ -347,17 +347,42 @@
 <span class="co">#&gt; 194.2 was found as high frequency PMD. </span>
 <span class="co">#&gt; 267.25 was found as high frequency PMD. </span>
 <span class="co">#&gt; 325.3 was found as high frequency PMD.</span></pre></body></html></div>
+<p>Such largest mean distance of all nodes is calculated for top 1 to 100 (if possible) high frequency PMDs. Here is a demo for the network generation process.</p>
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">igraph</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'igraph'</span>
+<span class="co">#&gt; The following objects are masked from 'package:stats':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     decompose, spectrum</span>
+<span class="co">#&gt; The following object is masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     union</span>
+<span class="no">cdf</span> <span class="kw">&lt;-</span> <span class="no">sda</span>$<span class="no">sda</span>
+<span class="co"># get the PMDs and frequency</span>
+<span class="no">pmds</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">cdf</span>$<span class="no">diff2</span>)[<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">cdf</span>$<span class="no">diff2</span>))]))
+<span class="no">freq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">cdf</span>$<span class="no">diff2</span>)[<span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">cdf</span>$<span class="no">diff2</span>))])
+<span class="co"># filter the frequency larger than 10 for demo</span>
+<span class="no">pmds</span> <span class="kw">&lt;-</span> <span class="no">pmds</span>[<span class="no">freq</span><span class="kw">&gt;</span><span class="fl">10</span>]
+<span class="no">cdf</span> <span class="kw">&lt;-</span> <span class="no">sda</span>$<span class="no">sda</span>[<span class="no">sda</span>$<span class="no">sda</span>$<span class="no">diff2</span> <span class="kw">%in%</span> <span class="no">pmds</span>,]
+<span class="no">g</span> <span class="kw">&lt;-</span> <span class="kw pkg">igraph</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span>(<span class="no">cdf</span>,<span class="kw">directed</span> <span class="kw">=</span> <span class="no">F</span>)
+<span class="no">l</span> <span class="kw">&lt;-</span> <span class="kw pkg">igraph</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/layout_with_fr.html">layout_with_fr</a></span>(<span class="no">g</span>)
+<span class="kw">for</span>(<span class="no">i</span> <span class="kw">in</span> <span class="fl">1</span>:<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">pmds</span>)){
+  <span class="no">g2</span> <span class="kw">&lt;-</span> <span class="kw pkg">igraph</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/delete_edges.html">delete_edges</a></span>(<span class="no">g</span>,<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span>(<span class="no">g</span>)$<span class="no">diff2</span><span class="kw">%in%</span><span class="no">pmds</span>[<span class="fl">1</span>:<span class="no">i</span>]))
+  <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">g2</span>,<span class="kw">edge.width</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">vertex.label</span><span class="kw">=</span><span class="st">""</span>,<span class="kw">vertex.size</span><span class="kw">=</span><span class="fl">1</span>,<span class="kw">layout</span><span class="kw">=</span><span class="no">l</span>,<span class="kw">main</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">'Top'</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">pmds</span>)-<span class="no">i</span>,<span class="st">'high frequency PMDs'</span>))
+}</pre></body></html></div>
+<p><img src="globalstd_files/figure-html/unnamed-chunk-2-1.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-2.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-3.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-4.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-5.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-6.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-7.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-8.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-9.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-10.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-11.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-12.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-13.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-14.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-15.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-16.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-17.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-18.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-19.png" width="700"></p>
+<p>Here we could find more and more compounds will be connected with more high frequency PMDs. Meanwhile, the mean distance of all network nodes will increase. However, some PMDs are generated by random combination of ions. In this case, if we included those PMDs for the network, the mean distance of all network nodes will decrease. Here, the largest mean distance means no more information will be found for certain data set and such value is used as the cutoff for high frequency PMDs selection.</p>
 <p>You could use <code>plotstdsda</code> to show the distribution of the selected paired peaks.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda</span>)</pre></body></html></div>
 <p><img src="globalstd_files/figure-html/stdsda-1.png" width="700"></p>
 <p>You could also use index to show the distribution of certain PMDs.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">3</span>),<span class="kw">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">1</span>)+<span class="fl">0.1</span>)
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">3</span>),<span class="kw">mar</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">4</span>,<span class="fl">4</span>,<span class="fl">2</span>,<span class="fl">1</span>)+<span class="fl">0.1</span>)
 <span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda</span>,<span class="no">sda</span>$<span class="no">sda</span>$<span class="no">diff2</span> <span class="kw">==</span> <span class="fl">2.02</span>)
 <span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda</span>,<span class="no">sda</span>$<span class="no">sda</span>$<span class="no">diff2</span> <span class="kw">==</span> <span class="fl">28.03</span>)
 <span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda</span>,<span class="no">sda</span>$<span class="no">sda</span>$<span class="no">diff2</span> <span class="kw">==</span> <span class="fl">58.04</span>)</pre></body></html></div>
 <p><img src="globalstd_files/figure-html/stdsdaidx-1.png" width="700"></p>
 <p>Structure/reaction directed analysis could be directly performed on all the peaks, which is slow to process:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">sdaall</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">spmeinvivo</span>)
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">sdaall</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">spmeinvivo</span>)
 <span class="co">#&gt; PMD frequency cutoff is 104 by PMD network analysis with largest network average distance 14.06 .</span>
 <span class="co">#&gt; 6 groups were found as high frequency PMD group.</span>
 <span class="co">#&gt; 0 was found as high frequency PMD. </span>
@@ -375,7 +400,7 @@
 <h3 class="hasAnchor">
 <a href="#extra-filter-with-correlation-coefficient-cutoff-1" class="anchor"></a>Extra filter with correlation coefficient cutoff</h3>
 <p>Structure/Reaction directed analysis could also use correlation to restrict the paired ions. However, similar to GlobalStd algorithm, such cutoff will remove low intensity data. Researcher should have a clear idea to use this cutoff.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">sda2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">std</span>, <span class="kw">corcutoff</span> <span class="kw">=</span> <span class="fl">0.9</span>)
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">sda2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span>(<span class="no">std</span>, <span class="kw">corcutoff</span> <span class="kw">=</span> <span class="fl">0.9</span>)
 <span class="co">#&gt; PMD frequency cutoff is 6 by PMD network analysis with largest network average distance 5.99 .</span>
 <span class="co">#&gt; 45 groups were found as high frequency PMD group.</span>
 <span class="co">#&gt; 0 was found as high frequency PMD. </span>
@@ -424,13 +449,13 @@
 <span class="co">#&gt; 267.25 was found as high frequency PMD. </span>
 <span class="co">#&gt; 325.3 was found as high frequency PMD.</span>
 <span class="fu"><a href="../reference/plotstdsda.html">plotstdsda</a></span>(<span class="no">sda2</span>)</pre></body></html></div>
-<p><img src="globalstd_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="globalstd_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div id="structurereaction-directed-analysis-for-peakscompounds-only-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#structurereaction-directed-analysis-for-peakscompounds-only-data" class="anchor"></a>Structure/reaction directed analysis for peaks/compounds only data</h3>
 <p>When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by <code>getrda</code> function.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">sda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getrda.html">getrda</a></span>(<span class="no">spmeinvivo</span>$<span class="no">mz</span>[<span class="no">std</span>$<span class="no">stdmassindex</span>])
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">sda</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getrda.html">getrda</a></span>(<span class="no">spmeinvivo</span>$<span class="no">mz</span>[<span class="no">std</span>$<span class="no">stdmassindex</span>])
 <span class="co">#&gt; 38116 pmd found.</span>
 <span class="co">#&gt; 11 pmd used.</span></pre></body></html></div>
 </div>
@@ -439,14 +464,14 @@
 <h2 class="hasAnchor">
 <a href="#parameters-selection" class="anchor"></a>Parameters selection</h2>
 <p>Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.</p>
-<p>Global PMD’s retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the empirical global PMD’s retention time group numbers.</p>
+<p>Global PMD’s retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD’s retention time group numbers.</p>
 <p>Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.</p>
 </div>
 <div id="wrap-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#wrap-function" class="anchor"></a>Wrap function</h2>
 <p><code>globalstd</code> function is a wrap function to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the <code>list</code> objects from <code>globalstd</code> function.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">result</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span>(<span class="no">spmeinvivo</span>,<span class="kw">ng</span><span class="kw">=</span><span class="fl">10</span>)
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">result</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span>(<span class="no">spmeinvivo</span>,<span class="kw">ng</span><span class="kw">=</span><span class="fl">10</span>)
 <span class="co">#&gt; 75 retention time cluster found.</span>
 <span class="co">#&gt; 380 paired masses found</span>
 <span class="co">#&gt; 9 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
@@ -522,41 +547,41 @@
 <h2 class="hasAnchor">
 <a href="#use-independent-peaks-for-msms-validation-pmdda" class="anchor"></a>Use independent peaks for MS/MS validation (PMDDA)</h2>
 <p>Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions’ fragmental ions in one injection with good sensitivity. You could use <code>gettarget</code> to generate the index for the injections and output the peaks for each run.</p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="co"># you need retention time for independent peaks</span>
+<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="co"># you need retention time for independent peaks</span>
 <span class="no">index</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/gettarget.html">gettarget</a></span>(<span class="no">std</span>$<span class="no">rt</span>[<span class="no">std</span>$<span class="no">stdmassindex</span>])
 <span class="co">#&gt; You need 10 injections!</span>
 <span class="co"># output the ions for each injection</span>
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">index</span>)
 <span class="co">#&gt; index</span>
 <span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span>
-<span class="co">#&gt; 19 40 30 16 29 24 44 29 40 26</span>
+<span class="co">#&gt; 20 23 22 22 22 40 33 59 20 36</span>
 <span class="co"># show the ions for the first injection</span>
 <span class="no">std</span>$<span class="no">mz</span>[<span class="no">index</span><span class="kw">==</span><span class="fl">1</span>]
-<span class="co">#&gt;  [1] 110.0717 137.9879 138.0549 156.1777 168.0923 174.1489 175.1200 195.1138</span>
-<span class="co">#&gt;  [9] 197.9893 198.1854 209.1552 212.2026 214.9181 228.9561 242.2863 242.2863</span>
-<span class="co">#&gt; [17] 251.0476 251.1650 255.1591 267.0639 271.3216 271.3217 282.2811 293.1755</span>
-<span class="co">#&gt; [25] 300.1148 302.1454 313.3297 317.9344 319.3005 326.3060 328.8778 329.2492</span>
-<span class="co">#&gt; [33] 339.3477 349.1829 352.3592 359.2410 359.3151 365.1059 377.3522 393.2199</span>
-<span class="co">#&gt; [41] 393.2990 406.2651 418.9952 426.3146 429.3192 445.8289 447.3469 448.1186</span>
-<span class="co">#&gt; [49] 460.3112 468.3078 470.1010 494.8112 507.3409 515.9785 527.1586 527.2976</span>
-<span class="co">#&gt; [57] 535.4718 549.3617 567.3904 567.5729 584.8611 607.4028 616.8569 621.4195</span>
-<span class="co">#&gt; [65] 651.9510 655.8704 659.4835 669.3724 676.2120 677.6839 695.5039 708.3638</span>
-<span class="co">#&gt; [73] 710.8511 729.6484 730.3384 736.8574 765.5253 787.3280 787.5110 805.8473</span>
-<span class="co">#&gt; [81] 836.3301 843.8158 848.6295 879.3785 883.7184 884.5937 897.2942 907.4933</span>
-<span class="co">#&gt; [89] 911.7489 938.7728 964.7811 975.1471 991.7894 992.7899</span>
+<span class="co">#&gt;  [1] 104.0090 121.0851 136.4826 167.0709 172.9774 180.1751 193.1415 197.1285</span>
+<span class="co">#&gt;  [9] 201.2040 208.0978 209.9806 215.1268 227.1847 228.1969 255.9443 257.9694</span>
+<span class="co">#&gt; [17] 259.1148 259.1810 261.1542 262.1453 264.2049 270.3185 271.3217 288.9232</span>
+<span class="co">#&gt; [25] 297.2408 306.2514 311.2377 317.2846 319.9302 324.2900 327.0091 329.8840</span>
+<span class="co">#&gt; [33] 338.3415 338.6338 365.8035 367.2694 367.9923 368.3169 369.3534 371.3173</span>
+<span class="co">#&gt; [41] 375.2147 384.3350 390.2553 417.3364 424.8970 431.2614 442.8446 447.2935</span>
+<span class="co">#&gt; [49] 448.8862 454.4255 462.3940 471.3317 494.8112 494.8112 537.5353 538.3435</span>
+<span class="co">#&gt; [57] 539.5420 540.1628 541.3942 542.3266 546.3560 560.3877 565.5679 606.2235</span>
+<span class="co">#&gt; [65] 614.1816 630.7621 646.4585 655.3369 663.4529 666.8256 669.8727 677.8593</span>
+<span class="co">#&gt; [73] 691.6443 694.6505 738.5066 739.6479 745.3469 745.8474 751.6125 753.5196</span>
+<span class="co">#&gt; [81] 760.8210 773.5622 781.8130 833.8251 840.5683 861.8356 873.4237 881.8224</span>
+<span class="co">#&gt; [89] 884.8301 894.3269 900.8085 911.8014 930.1575 934.8077</span>
 <span class="no">std</span>$<span class="no">rt</span>[<span class="no">index</span><span class="kw">==</span><span class="fl">1</span>]
-<span class="co">#&gt;  [1] 228.0840 165.4680 511.2940 405.3890 511.2940 337.4180 260.8720 169.9680</span>
-<span class="co">#&gt;  [9] 145.5380 415.9985 611.4120 594.4850  76.9220 213.9650 631.5560 780.5760</span>
-<span class="co">#&gt; [17] 605.8400 576.2670 482.5790 568.7680 895.8020 699.9580 594.9100 553.5540</span>
-<span class="co">#&gt; [25] 447.6060 583.9810 636.9560 145.5170 622.7690 570.2690 144.2610 596.4120</span>
-<span class="co">#&gt; [33] 639.1000 169.3825 648.9580 213.7505 612.4820 143.9315 650.0300 613.5540</span>
-<span class="co">#&gt; [41] 659.6730 547.4460 819.1920 404.5330 557.1970 513.2250 711.4240 717.1020</span>
-<span class="co">#&gt; [49] 169.9670 491.1510 717.1020 890.7680 422.9630 212.8690 142.3240 493.5080</span>
-<span class="co">#&gt; [57] 639.3130 418.7850 213.3840 735.7900 215.7865 434.9630 215.4160 454.9350</span>
-<span class="co">#&gt; [65] 212.6570 213.3340 468.0100 213.5285 819.4080 638.8870 698.3510 481.0780</span>
-<span class="co">#&gt; [73] 214.4150 594.5905 213.3840 213.5090 773.7190 215.4920 692.6730 213.5090</span>
-<span class="co">#&gt; [81] 213.3740 213.9640 503.2585 381.6350 632.1990 515.6235 215.8710 213.0430</span>
-<span class="co">#&gt; [89] 650.4570 216.4125 215.6320 213.4215 215.3500 214.7840</span></pre></body></html></div>
+<span class="co">#&gt;  [1]  48.8480 348.3470 144.8960 538.2950 163.3250 416.3190 462.1140 170.6010</span>
+<span class="co">#&gt;  [9] 521.5790 430.4650 147.8780 302.2750 416.3200 614.4140  76.7060 146.3970</span>
+<span class="co">#&gt; [17] 144.0380 890.9790 422.7480 588.9100 592.9830 447.3925 880.8005 213.5480</span>
+<span class="co">#&gt; [25] 568.7670 599.6270 596.4120 608.1980 145.2280 556.5545 509.5330 144.3380</span>
+<span class="co">#&gt; [33] 614.9465 639.1000 639.2065 382.6770 762.5750 570.0560 688.3880 659.6710</span>
+<span class="co">#&gt; [41] 218.8600 656.0105 383.3190 603.4845 213.7130 446.3230 643.3840 404.5340</span>
+<span class="co">#&gt; [49] 215.8650 628.5540 582.3755 540.8660 817.9060 803.7190 705.5300 537.2240</span>
+<span class="co">#&gt; [57] 705.4235 762.3620 439.6770 492.4360 529.0810 533.3660 735.1450 762.7890</span>
+<span class="co">#&gt; [65] 818.8705 145.1850 605.8410 475.7210 800.2900 216.7620 213.5285 214.8145</span>
+<span class="co">#&gt; [73] 594.0560 639.1000 481.2930 639.1005 215.2830 214.5090 624.2705 522.2240</span>
+<span class="co">#&gt; [81] 215.6320 492.4390 215.0690 214.0170 517.5660 213.3840 471.3075 214.4090</span>
+<span class="co">#&gt; [89] 213.5140 213.4215 213.7720 214.0170 213.5310 213.8030</span></pre></body></html></div>
 </div>
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">

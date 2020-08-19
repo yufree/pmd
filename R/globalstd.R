@@ -712,7 +712,11 @@ globalstd <- function(list,
                 }
 
         }
-        return(list3)
+        if(sda){
+                return(list3)
+        }else{
+                return(list2)
+        }
 }
 
 #' Get Pseudo-Spectrum as peaks cluster based on correlation analysis.

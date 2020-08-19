@@ -31,7 +31,7 @@ getsda <-
                         mz <- list$mz[list$pairedindex]
                         rt <- list$rt[list$pairedindex]
                         data <- list$data[list$pairedindex,]
-                        rtg <- list$rtcluster[list$stdmassindex]
+                        rtg <- list$rtcluster[list$pairedindex]
                 } else {
                         mz <- list$mz[list$stdmassindex]
                         rt <- list$rt[list$stdmassindex]
