@@ -28,7 +28,7 @@ Usage
 
 - [Reactomics Analysis Tutorial](https://yufree.github.io/pmd/articles/reactomics.html)
 
-- [Slides](http://yufree.github.io/presentation/reactomics/pres-asms.html). This is the slides for ASMS 2020 Reboot and here is the link to the vedio of presentation. Press "P" and you will see the notes for each slide with details. Another full version of reactomics presentation for one hour presentation could be found [here](http://yufree.github.io/presentation/reactomics/pres). I will not update the conference presentation while I will add new contents for the full version of reactomics presentation whenever I have new results.
+- [Slides](http://yufree.github.io/presentation/reactomics/pres-asms.html). This is the slides for ASMS 2020 Reboot and here is the [video](https://youtu.be/-mT3HcVygHE) of presentation. Press "P" and you will see the notes for each slide with details. Another full version of reactomics presentation for one hour presentation could be found [here](http://yufree.github.io/presentation/reactomics/pres). I will not update the conference presentation while I will add new contents for the full version of reactomics presentation whenever I have new results.
 
 - [Reactomics Preprint on BioRxiv](https://www.biorxiv.org/content/10.1101/855148v3). This preprint contain the same contents as shown in the presentation. I will update the manuscript later in this week for some changes.
 
