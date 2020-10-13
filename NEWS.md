@@ -6,6 +6,7 @@
 - add correlation directed analysis function
 - modified getcorcluster function to find independent peaks
 - add vignette section for reduced independent peaks selection in GlobalStd algorithm
+- fix the issue for getchain with multiple masses
 
 # pmd 0.1.9
 
