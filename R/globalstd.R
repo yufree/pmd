@@ -1,7 +1,7 @@
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a list with mzrt profile
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.
+#' @param ng cutoff of global PMD's retention time group numbers, If ng = NULL, 20 percent of RT cluster will be used as ng, default NULL.
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
@@ -13,7 +13,7 @@
 getpaired <-
         function(list,
                  rtcutoff = 10,
-                 ng = 10,
+                 ng = NULL,
                  digits = 2,
                  accuracy = 4) {
                 # paired mass diff analysis
@@ -235,7 +235,7 @@ getpaired <-
                                 ),
                                 c(list$paired$rtg, list$paired$rtg))
                 }
-                # get the data index by rt groups with high frequences
+                # get the data index by rt groups with high frequencies
                 # PMD
                 list$diffindex <-
                         paste(round(list$mz, accuracy), list$rtcluster) %in%
@@ -287,6 +287,7 @@ getpaired <-
                                 "unique within RT clusters high frequency PMD(s) used for further investigation."
                         )
                 )
+                message(paste(c("The unique within RT clusters high frequency PMD(s) is(are) ", unique(list$paired$diff2)), collapse=" "), '.')
                 message(paste(
                         sum(list$isoindex),
                         "isotopologue(s) related paired mass found."
@@ -650,12 +651,12 @@ getstd <-
 #' GlobalStd algorithm with structure/reaction directed analysis
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in cluster, default 10
-#' @param ng cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.
+#' @param ng cutoff of global PMD's retention time group numbers, If ng = NULL, 20 percent of RT cluster will be used as ng, default NULL.
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param freqcutoff pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
-#' @param sda logical, option to perform structure/reaction directed analysis, default T.
+#' @param sda logical, option to perform structure/reaction directed analysis, default FALSE.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
 #' data(spmeinvivo)
@@ -664,12 +665,12 @@ getstd <-
 #' @export
 globalstd <- function(list,
                       rtcutoff = 10,
-                      ng = 10,
+                      ng = NULL,
                       corcutoff = NULL,
                       digits = 2,
                       accuracy = 4,
                       freqcutoff = NULL,
-                      sda = T) {
+                      sda = FALSE) {
         list <-
                 getpaired(
                         list,
@@ -840,7 +841,7 @@ getcluster <- function(list,
                 msdata <- NULL
         } else{
                 data <- list$data
-                if (is.matrix(data)) {
+                if (is.matrix(data)|is.data.frame(data)) {
                         msdata <- apply(data, 1, sum)
                 } else {
                         msdata <-sum(data)

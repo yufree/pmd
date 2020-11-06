@@ -145,7 +145,7 @@
     <p>Compare matrices using PCA similarity factor</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pcasf</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>dim</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>pcasf</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, dim <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,12 +170,16 @@
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Singhal, A. and Seborg, D. E. (2005), Clustering multivariate time-series data. J. Chemometrics, 19: 427-438. doi: 10.1002/cem.945</p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Edgar Zanella Alvarenga</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>c1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>16</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>4</span>)
-<span class='no'>c2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>16</span>),<span class='kw'>nrow</span><span class='kw'>=</span><span class='fl'>4</span>)
-<span class='fu'>pcasf</span>(<span class='no'>c1</span>, <span class='no'>c2</span>)</div><div class='output co'>#&gt;     pcasf 
-#&gt; 0.4599716 </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>c1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>16</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='va'>c2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>16</span><span class='op'>)</span>,nrow<span class='op'>=</span><span class='fl'>4</span><span class='op'>)</span>
+<span class='fu'>pcasf</span><span class='op'>(</span><span class='va'>c1</span>, <span class='va'>c2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;     pcasf 
+#&gt; 0.5300772 </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -192,7 +196,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

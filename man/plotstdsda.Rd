@@ -18,7 +18,7 @@ Plot the std mass from GlobalStd algorithm in structure directed analysis(SDA) g
 }
 \examples{
 data(spmeinvivo)
-re <- globalstd(spmeinvivo)
+re <- globalstd(spmeinvivo, sda=TRUE)
 plotstdsda(re)
 }
 \seealso{

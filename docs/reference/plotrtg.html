@@ -145,7 +145,7 @@
     <p>Plot the retention time group</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plotrtg</span>(<span class='no'>list</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>plotrtg</span><span class='op'>(</span><span class='va'>list</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -165,8 +165,10 @@
     <div class='dont-index'><p><code><a href='getpaired.html'>getpaired</a></code>, <code><a href='globalstd.html'>globalstd</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>spmeinvivo</span>)
-<span class='no'>pmd</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='getpaired.html'>getpaired</a></span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='output co'>#&gt; <span class='message'>380 paired masses found </span></div><div class='output co'>#&gt; <span class='message'>9 unique within RT clusters high frequency PMD(s) used for further investigation.</span></div><div class='output co'>#&gt; <span class='message'>719 isotopologue(s) related paired mass found.</span></div><div class='output co'>#&gt; <span class='message'>492 multi-charger(s) related paired mass found.</span></div><div class='input'><span class='fu'>plotrtg</span>(<span class='no'>pmd</span>)</div><div class='img'><img src='plotrtg-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>spmeinvivo</span><span class='op'>)</span>
+<span class='va'>pmd</span> <span class='op'>&lt;-</span> <span class='fu'><a href='getpaired.html'>getpaired</a></span><span class='op'>(</span><span class='va'>spmeinvivo</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div><div class='output co'>#&gt; <span class='message'>369 paired masses found </span></div><div class='output co'>#&gt; <span class='message'>5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></div><div class='output co'>#&gt; <span class='message'>The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span></div><div class='output co'>#&gt; <span class='message'>719 isotopologue(s) related paired mass found.</span></div><div class='output co'>#&gt; <span class='message'>492 multi-charger(s) related paired mass found.</span></div><div class='input'><span class='fu'>plotrtg</span><span class='op'>(</span><span class='va'>pmd</span><span class='op'>)</span>
+</div><div class='img'><img src='plotrtg-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -182,7 +184,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

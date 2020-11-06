@@ -202,7 +202,7 @@ plotstdrt <- function(list, rtcluster, ...) {
 #' @seealso \code{\link{getstd}}, \code{\link{globalstd}},\code{\link{plotstd}},\code{\link{plotpaired}},\code{\link{plotstdrt}}
 #' @examples
 #' data(spmeinvivo)
-#' re <- globalstd(spmeinvivo)
+#' re <- globalstd(spmeinvivo, sda=TRUE)
 #' plotstdsda(re)
 #' @export
 plotstdsda <- function(list, index = NULL, ...) {

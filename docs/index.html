@@ -94,7 +94,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#pmd-paired-mass-distance-analysis-for-gclc-ms-based-non-targeted-analysis-and-reactomics-analysis" class="anchor"></a>pmd: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis and Reactomics Analysis</h1></div>
 
-<p>Paired mass distance (PMD) analysis proposed in Yu, Olkowicz and Pawliszyn (2018) for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. Reactomics analysis could also be performed to build PMD network, assign sources and make biomarker reaction discovery. GUIs for PMD analysis is also included as ‘shiny’ applications.</p>
+<p>Paired mass distance (PMD) analysis proposed in Yu, Olkowicz and Pawliszyn (2018) and PMD based reactomics proposed in Yu and Petrick (2020) for gas/liquid chromatography–mass spectrometry (GC/LC-MS) based non-targeted analysis. PMD analysis including GlobalStd algorithm and structure/reaction directed analysis. GlobalStd algorithm could found independent peaks in m/z-retention time profiles based on retention time hierarchical cluster analysis and frequency analysis of paired mass distances within retention time groups. Structure directed analysis could be used to find potential relationship among those independent peaks in different retention time groups based on frequency of paired mass distances. Reactomics analysis could also be performed to build PMD network, assign sources and make biomarker reaction discovery. GUIs for PMD analysis is also included as ‘shiny’ applications.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -109,13 +109,14 @@
 <ul>
 <li><p><a href="https://yufree.github.io/pmd/articles/globalstd.html">PMD Analysis Tutorial</a></p></li>
 <li><p><a href="https://yufree.github.io/pmd/articles/reactomics.html">Reactomics Analysis Tutorial</a></p></li>
+<li><p><a href="https://www.sciencedirect.com/science/article/abs/pii/S0003267018313047">PMD analysis paper</a>. This paper proposed structure/reaction directed analysis with PMD.</p></li>
+<li><p><a href="https://www.nature.com/articles/s42004-020-00403-z">Reactomics paper</a>. This paper contained the concepts of PMD based reactomics, applications and data mining of reaction database and compounds database.</p></li>
 <li><p><a href="http://yufree.github.io/presentation/reactomics/pres-asms.html">Slides</a>. This is the slides for ASMS 2020 Reboot and here is the <a href="https://youtu.be/-mT3HcVygHE">video</a> of presentation. Press “P” and you will see the notes for each slide with details. Another full version of reactomics presentation for one hour presentation could be found <a href="http://yufree.github.io/presentation/reactomics/pres">here</a>. I will not update the conference presentation while I will add new contents for the full version of reactomics presentation whenever I have new results.</p></li>
-<li><p><a href="https://www.biorxiv.org/content/10.1101/855148v3">Reactomics Preprint on BioRxiv</a>. This preprint contain the same contents as shown in the presentation. I will update the manuscript later in this week for some changes.</p></li>
 </ul>
 <p>To perform GlobalStd algorithem, use the following code:</p>
-<pre class="{r}"><code><a href="https://rdrr.io/pkg/pmd/man">library(pmd)
+<pre class="{r}"><code><a href="https://yufree.github.io/pmd">library(pmd)
 data("spmeinvivo")
-pmd &lt;- getpaired(spmeinvivo, rtcutoff = 10, ng = 10)
+pmd &lt;- getpaired(spmeinvivo)
 std &lt;- getstd(pmd)</a></code></pre>
 <p>To perform structure/reaction directed analysis, use the following code:</p>
 <pre class="{r}"><code>sda &lt;- getsda(std)</code></pre>
@@ -136,6 +137,8 @@ View(sda)</a></code></pre>
 <p>To check the HMDB pmd database:</p>
 <pre class="{r}"><code><a href="https://rdrr.io/r/utils/data.html">data("hmdb")
 View(hmdb)</a></code></pre>
+<p>To cite related papers:</p>
+<pre class="{r}"><code><a href="https://rdrr.io/r/utils/citation.html">citation('pmd')</a></code></pre>
 </div>
 </div>
   </div>
@@ -156,6 +159,12 @@ View(hmdb)</a></code></pre>
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-2">GPL-2</a></li>
+</ul>
+</div>
+<div class="citation">
+<h2>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html">Citing pmd</a></li>
 </ul>
 </div>
 <div class="developers">
@@ -184,7 +193,7 @@ View(hmdb)</a></code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

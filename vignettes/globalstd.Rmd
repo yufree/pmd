@@ -47,7 +47,7 @@ data("spmeinvivo")
 str(spmeinvivo)
 ```
 
-You could build this `list` object from the `xcms` objects via `enviGCMS` package. When you have a `xcmsSet` object or `XCMSnExp` object named `xset`, you could use `enviGCMS::getmzrt(xset)` or `enviGCMS::getmzrt2(xset)` to get such list. Of course you could build such list by yourself.
+You could build this `list` or `mzrt` object from the `xcms` objects via `enviGCMS` package. When you have a `xcmsSet` object or `XCMSnExp` object named `xset`, you could use `enviGCMS::getmzrt(xset)` to get such list. Of course you could build such list by yourself.
 
 ## GlobalStd algorithm
 
@@ -63,13 +63,15 @@ knitr::include_graphics('https://yufree.github.io/presentation/figure/GlobalStd.
 ### STEP1: Retention time hierarchical clustering
 
 ```{r rtg}
-pmd <- getpaired(spmeinvivo, rtcutoff = 10, ng = 10)
+pmd <- getpaired(spmeinvivo)
 plotrtg(pmd)
 ```
 
-This plot would show the distribution of RT groups. The `rtcutoff` in function `getpaired` could be used to set the cutoff of the distances in retention time hierarchical clustering analysis. 
+This plot would show the distribution of RT groups. The `rtcutoff` in function `getpaired` could be used to set the cutoff of the distances in retention time hierarchical clustering analysis. Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.
 
-Take care of the retention time cluster with lots of peaks. In this case, such cluster could be co-eluted compounds on certain column. It would be wise to trim the retention time window for high quality peaks.
+Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD's retention time group numbers. If you don't specificlly assign a value to `ng`, the algorithm will select such recommendation by default setting.
+
+Take care of the retention time cluster with lots of peaks. In this case, such cluster could be co-eluted compounds on certain column. It would be wise to trim the retention time window for high quality peaks. Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.
 
 ### STEP2: Relationship among adducts, neutral loss, isotopologues and common fragments ions
 
@@ -172,8 +174,8 @@ Then we could compare the compare reduced result using PCA similarity factor. A 
 ```{r corcomp}
 par(mfrow = c(3,3),mar = c(4,4,2,1)+0.1)
 plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = paste(sum(std$stdmassindex),"independent peaks"))
-plotpca(std$data[stdcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster$stdmassindex2),"base peaks"))
-plotpca(std$data[stdcluster2$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster2$stdmassindex2),"independent base peaks"))
+plotpca(std$data[stdcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster$stdmassindex2),"independent base peaks"))
+plotpca(std$data[stdcluster2$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(stdcluster2$stdmassindex2),"independent reduced base peaks"))
 plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group)),main = paste(sum(corcluster$stdmassindex),"peaks without correlationship"))
 plotpca(std$data[corcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group)),main = paste(sum(corcluster$stdmassindex2),"base peaks without correlationship"))
 plotpca(std$data,lv = as.numeric(as.factor(std$group)),main = paste(nrow(std$data),"all peaks"))
@@ -259,20 +261,12 @@ When you only have data of peaks without retention time or compounds list, struc
 sda <- getrda(spmeinvivo$mz[std$stdmassindex])
 ```
 
-## Parameters selection
+## Wrap function for GlobalStd algorithm
 
-Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.
-
-Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD's retention time group numbers.
-
-Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.
-
-## Wrap function
-
-`globalstd` function is a wrap function to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the `list` objects from `globalstd` function.
+`globalstd` function is a wrap function to process GlobalStd algorithm and structure/reaction directed analysis in one line. All the plot function could be directly used on the `list` objects from `globalstd` function. If you want to perform structure/reaction directed analysis, set the `sda=T` in the `globalstd` function. 
 
 ```{r wrap}
-result <- globalstd(spmeinvivo,ng=10)
+result <- globalstd(spmeinvivo, sda=FALSE)
 ```
 
 ## Use independent peaks for MS/MS validation (PMDDA)
@@ -291,7 +285,7 @@ std$rt[index==1]
 
 ## Shiny application
 
-An interactive document has been included in this package to perform PMD analysis. You need to prepare a csv file with m/z and retention time of peaks. Such csv file could be generated by run `enviGCMS::getmzrtcsv()` on the `list` object from `enviGCMS::getmzrt(xset)` or `enviGCMS::getmzrt2(xset)` function. You could also generate the csv file by `enviGCMS::getmzrt(xset,name = 'test')` or `enviGCMS::getmzrt2(xset, name = 'test')`. You will find the csv file in the working dictionary named `test.csv`.
+An interactive document has been included in this package to perform PMD analysis. You need to prepare a csv file with m/z and retention time of peaks. Such csv file could be generated by run `enviGCMS::getcsv()` on the `list` object from `enviGCMS::getmzrt(xset)` function. The `xset` should be `XCMSnExp` object or `xcmsSet` object. You could also generate the csv file by `enviGCMS::getmzrt(xset,name = 'test')`. You will find the csv file in the working dictionary named `test.csv`.
 
 Then you could run `runPMD()` to start the Graphical user interface(GUI) for GlobalStd algorithm and structure/reaction directed analysis. 
 

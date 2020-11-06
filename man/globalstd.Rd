@@ -7,12 +7,12 @@
 globalstd(
   list,
   rtcutoff = 10,
-  ng = 10,
+  ng = NULL,
   corcutoff = NULL,
   digits = 2,
   accuracy = 4,
   freqcutoff = NULL,
-  sda = T
+  sda = FALSE
 )
 }
 \arguments{
@@ -20,7 +20,7 @@ globalstd(
 
 \item{rtcutoff}{cutoff of the distances in cluster, default 10}
 
-\item{ng}{cutoff of global PMD's retention time group numbers, default 10. If ng = NULL, 20 percent of RT cluster will be used as ng.}
+\item{ng}{cutoff of global PMD's retention time group numbers, If ng = NULL, 20 percent of RT cluster will be used as ng, default NULL.}
 
 \item{corcutoff}{cutoff of the correlation coefficient, default NULL}
 
@@ -30,7 +30,7 @@ globalstd(
 
 \item{freqcutoff}{pmd freqency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
 
-\item{sda}{logical, option to perform structure/reaction directed analysis, default T.}
+\item{sda}{logical, option to perform structure/reaction directed analysis, default FALSE.}
 }
 \value{
 list with GlobalStd algorithm processed data.

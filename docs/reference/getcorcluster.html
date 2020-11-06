@@ -145,7 +145,7 @@
     <p>Get Pseudo-Spectrum as peaks cluster based on correlation analysis.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>getcorcluster</span>(<span class='no'>list</span>, <span class='kw'>corcutoff</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>rtcutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>accuracy</span> <span class='kw'>=</span> <span class='fl'>4</span>)</pre>
+    <pre class="usage"><span class='fu'>getcorcluster</span><span class='op'>(</span><span class='va'>list</span>, corcutoff <span class='op'>=</span> <span class='fl'>0.9</span>, rtcutoff <span class='op'>=</span> <span class='fl'>10</span>, accuracy <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,8 +173,9 @@
     <p>list with Pseudo-Spectrum index</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>spmeinvivo</span>)
-<span class='no'>cluster</span> <span class='kw'>&lt;-</span> <span class='fu'>getcorcluster</span>(<span class='no'>spmeinvivo</span>)</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>spmeinvivo</span><span class='op'>)</span>
+<span class='va'>cluster</span> <span class='op'>&lt;-</span> <span class='fu'>getcorcluster</span><span class='op'>(</span><span class='va'>spmeinvivo</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>75 retention time cluster found.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -190,7 +191,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

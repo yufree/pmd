@@ -51,9 +51,9 @@ getposneg <- function(pos,neg, pmd = 2.02, digits = 2){
                 if(sum(round((pos$mz[i]-neg$mz),digits) %in% pmd) != 0){
                         index <- round((pos$mz[i]-neg$mz),digits) %in% pmd
                         if(sum(index)>1){
-                                cor <- apply(neg$data[index,],1,function(x) suppressWarnings(cor(x,pos$data[i,])))
+                                cor <- apply(neg$data[index,],1,function(x) suppressWarnings(cor(as.numeric(x),as.numeric(pos$data[i,]))))
                         }else{
-                                cor <- suppressWarnings(cor(pos$data[i,],neg$data[index,]))
+                                cor <- suppressWarnings(cor(as.numeric(pos$data[i,]),as.numeric(neg$data[index,])))
                         }
 
                         t <- cbind.data.frame(pos=pos$mz[i],rt = pos$rt[i],neg=neg$mz[index],rt=neg$rt[index],diffmz=pos$mz[i]-neg$mz[index],diffrt=pos$rt[i]-neg$rt[index],cor=cor)
