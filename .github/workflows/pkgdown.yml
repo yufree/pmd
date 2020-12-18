@@ -44,8 +44,9 @@ jobs:
 
       - name: Deploy package
         run: Rscript -e 'pkgdown::build_site()'
-      - uses: actions-go/push@master
-      - with:
+      - name: Update website
+        uses: actions-go/push@master
+        with:
           commit-message: '[Auto] update package website'
           remote: origin      
   
