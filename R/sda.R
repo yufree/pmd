@@ -93,7 +93,7 @@ getsda <-
                         ))
                 diff <- df$diff2[index]
                 freq <-
-                        table(diff)[order(table(diff), decreasing = T)]
+                        sort(table(diff),decreasing = T)
                 if (is.null(freqcutoff)) {
                         dis <- c()
                         for (i in c(1:ifelse(length(freq)>100,100,length(freq)))){
@@ -176,13 +176,14 @@ getrda <-
                  formula = NULL) {
 
                 if (is.null(formula)) {
+                        mz <- unique(mz)
                         dis <- stats::dist(mz, method = "manhattan")
                 } else{
                         mz <- unlist(Map(enviGCMS::getmass, formula))
+                        mz <- unique(mz)
                         dis <- stats::dist(mz, method = "manhattan")
 
                 }
-                mz <- unique(mz)
 
                 df <- cbind.data.frame(
                         ms1 = mz[which(lower.tri(dis), arr.ind = T)[, 1]],
@@ -191,7 +192,7 @@ getrda <-
                         diff2 = round(as.numeric(dis), digits = digits)
                 )
                 freq <-
-                        table(df$diff2)[order(table(df$diff2), decreasing = T)]
+                        sort(table(df$diff2),decreasing = T)
                 message(paste(length(freq), 'pmd found.'))
                 if (!is.null(top)) {
                         freq <- utils::head(freq, top)

@@ -198,33 +198,39 @@ pmdanno <- function(file,
                         pmdt <-
                                 unique(round(as.numeric(pmdt), digits = 2))
                         range <- cbind(db$mz - prems, db$mz + prems)
-                        idxmz <-
-                                enviGCMS::getoverlapmass(range, matrix(
-                                        c(prec - ppm / prec*1e-06, prec + ppm / prec*1e-06),
-                                        nrow = 1
-                                ))
-                        if (sum(idxmz) > 0) {
-                                msmsd <- db$msms[idxmz]
-                                name <- db$name[idxmz]
-                                mz2 <- db$mz[idxmz]
-                                msmsraw <- db$msmsraw[idxmz]
+                        mza <- data.table::as.data.table(cbind.data.frame(mzmin=db$mz - prems,mzmax= db$mz + prems))
+                        mzb <- data.table::as.data.table(cbind.data.frame(mzmin=prec - ppm / prec*1e-06,mzmax= prec + ppm / prec*1e-06))
+                        colnames(mza) <- colnames(mzb) <- c("min","max")
+                        data.table::setkey(mzb, min, max)
+                        overlapms <- data.table::foverlaps(mza, mzb, which = TRUE)
+                        over <- overlapms[stats::complete.cases(overlapms)&!duplicated(overlapms),]
+                        re <- data.frame(over)
+                        if (nrow(re) > 0) {
+                                msmsd <- db$msms[re$xid]
+                                name <- db$name[re$xid]
+                                mz2 <- db$mz[re$xid]
+                                msmsraw <- db$msmsraw[re$xid]
 
                                 result <- sapply(msmsd, function(x)
                                         sum(pmdt %in% unique(x)))
-                                t <-
-                                        list(
-                                                name = name[result > length(pmdt) * pmdc],
-                                                mz = mz2[result > length(pmdt) * pmdc],
-                                                msms = msmsd[result > length(pmdt) * pmdc],
-                                                msmsraw = msmsraw[result > length(pmdt) * pmdc],
-                                                dmz = mz,
-                                                dprc = prec,
-                                                dins = ins,
-                                                file = namemgf
-                                        )
+                                result <- c(result)
+
                                 if (sum(result > length(pmdt) * pmdc) == 0) {
                                         return(NULL)
                                 } else{
+                                        re0 <- result[result > length(pmdt) * pmdc]
+                                        order <- order(re0,decreasing = T)
+                                        t <-
+                                                list(
+                                                        name = name[result > length(pmdt) * pmdc][order],
+                                                        mz = mz2[result > length(pmdt) * pmdc][order],
+                                                        msms = msmsd[result > length(pmdt) * pmdc][order],
+                                                        msmsraw = msmsraw[result > length(pmdt) * pmdc][order],
+                                                        dmz = mz,
+                                                        dprc = prec,
+                                                        dins = ins,
+                                                        file = namemgf
+                                                )
                                         return(t)
                                 }
                         } else{

@@ -204,8 +204,8 @@ Such largest mean distance of all nodes is calculated for top 1 to 100 (if possi
 library(igraph)
 cdf <- sda$sda
 # get the PMDs and frequency
-pmds <- as.numeric(names(table(cdf$diff2)[order(table(cdf$diff2))]))
-freq <- as.numeric(table(cdf$diff2)[order(table(cdf$diff2))])
+pmds <- as.numeric(names(sort(table(cdf$diff2),decreasing = T)))
+freq <- sort(table(cdf$diff2),decreasing = T)
 # filter the frequency larger than 10 for demo
 pmds <- pmds[freq>10]
 cdf <- sda$sda[sda$sda$diff2 %in% pmds,]
