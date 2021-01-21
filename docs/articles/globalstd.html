@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2021-01-20</h4>
+            <h4 class="date">2021-01-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/globalstd.Rmd"><code>vignettes/globalstd.Rmd</code></a></small>
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -131,7 +131,7 @@
 <p>However, I suggested to add intensity and group information to the list for validation of PMD analysis.</p>
 <p>In this package, a data set from <em>in vivo</em> solid phase micro-extraction(SPME) was attached. This data set contain 9 samples from 3 fish with triplicates samples for each fish. Here is the data structure:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd">pmd</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/">pmd</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span>
 <span class="co">#&gt; List of 4</span>
@@ -506,34 +506,38 @@
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span>
 <span class="co">#&gt; index</span>
 <span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span>
-<span class="co">#&gt; 18 40 23 19 29 22 47 15 31 47</span>
+<span class="co">#&gt; 21 43 36 26 26 37 23 20 30 29</span>
 <span class="co"># show the ions for the first injection</span>
 <span class="va">std</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span>
-<span class="co">#&gt;  [1] 100.5107 110.0717 134.1185 155.1294 167.0134 170.1541 172.1705 174.0392</span>
-<span class="co">#&gt;  [9] 174.9383 180.1751 195.1024 195.1138 203.0532 208.1693 230.0794 235.1692</span>
-<span class="co">#&gt; [17] 242.2863 242.9260 261.2591 264.1944 270.3185 279.1610 286.3101 293.1755</span>
-<span class="co">#&gt; [25] 294.2054 295.1910 296.9066 304.3081 311.2377 311.2560 317.9344 320.3322</span>
-<span class="co">#&gt; [33] 338.6338 340.2604 349.0556 351.3455 367.9923 371.3345 383.3313 400.2536</span>
-<span class="co">#&gt; [41] 412.8751 416.8073 417.2462 418.9952 420.3193 429.0892 439.2698 440.8696</span>
-<span class="co">#&gt; [49] 445.3874 447.9910 493.3138 494.8112 503.1093 507.3303 538.1637 540.8890</span>
-<span class="co">#&gt; [57] 557.0950 570.3554 592.3902 599.4366 600.4401 602.3103 605.2231 614.5358</span>
-<span class="co">#&gt; [65] 638.2008 638.3081 646.4585 652.8473 684.8449 689.8645 702.6369 704.1390</span>
-<span class="co">#&gt; [73] 736.4916 739.6479 765.5253 787.9269 806.8262 815.4180 816.5102 825.3507</span>
-<span class="co">#&gt; [81] 826.6806 838.8393 863.8189 864.3202 872.3052 874.3049 915.8125 921.4730</span>
-<span class="co">#&gt; [89] 941.3198 946.7164 997.8091</span>
+<span class="co">#&gt;   [1] 111.0203 120.0812 155.1293 174.0392 175.1200 180.1751 181.9871 193.1415</span>
+<span class="co">#&gt;   [9] 212.2026 229.2006 230.0794 235.4382 239.1490 242.2863 244.0288 249.1869</span>
+<span class="co">#&gt;  [17] 252.0510 255.1591 257.9694 258.8998 259.1148 265.2539 269.0888 277.1815</span>
+<span class="co">#&gt;  [25] 295.1910 299.9249 304.3081 305.1578 309.9372 327.0777 338.3430 338.6338</span>
+<span class="co">#&gt;  [33] 340.3481 341.3512 349.3476 352.3214 355.3391 358.3084 362.3032 365.1361</span>
+<span class="co">#&gt;  [41] 365.3196 366.3006 372.2591 377.8991 399.1231 418.9952 422.2366 429.0892</span>
+<span class="co">#&gt;  [49] 429.3733 436.3425 454.4255 491.3195 493.3138 494.8113 498.9017 505.1055</span>
+<span class="co">#&gt;  [57] 507.3409 516.3893 521.3439 526.4841 532.8946 533.9698 534.9708 541.3942</span>
+<span class="co">#&gt;  [65] 546.3560 568.8923 602.3103 607.4262 614.5358 616.8569 635.3784 664.4577</span>
+<span class="co">#&gt;  [73] 683.5412 684.8449 690.6403 695.5039 703.3651 704.6384 708.8218 712.2190</span>
+<span class="co">#&gt;  [81] 719.2988 729.6484 730.6517 731.7391 741.8363 757.8509 786.8255 825.3507</span>
+<span class="co">#&gt;  [89] 831.6352 838.8393 839.8413 859.8318 884.1633 914.8115 915.8125 923.8020</span>
+<span class="co">#&gt;  [97] 929.8218 942.7638 946.7398 952.7628 971.8036 976.8122 983.7978 984.7703</span>
+<span class="co">#&gt; [105] 985.7859</span>
 <span class="va">std</span><span class="op">$</span><span class="va">rt</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span>
-<span class="co">#&gt;  [1]  86.3490 228.0840 355.8470 732.5740  76.2780 638.9930 478.9360 216.6520</span>
-<span class="co">#&gt;  [9] 216.1500 416.3190 574.1260 169.9680 144.8840 611.4110 431.3200 576.9100</span>
-<span class="co">#&gt; [17] 667.7130 216.0600 639.1010 473.1445 838.9070 583.7690 732.0395 553.5540</span>
-<span class="co">#&gt; [25] 452.0005 518.1520 145.1090 639.1000 596.4120 585.6975 145.5170 639.0990</span>
-<span class="co">#&gt; [33] 639.1000 171.4335 136.3250 626.0920 762.5750 551.7325 656.0300 551.4100</span>
-<span class="co">#&gt; [41] 144.2540 503.1515 444.6075 819.1920 687.8085 717.1020 639.3130 214.8080</span>
-<span class="co">#&gt; [49] 582.4825 212.6570 540.6520 772.2180 762.5770 554.8390 762.7890 213.7260</span>
-<span class="co">#&gt; [57] 762.5765 524.2585 169.9680 454.9350 455.1500 469.3330 762.5750 639.0990</span>
-<span class="co">#&gt; [65] 819.1920 630.7000 605.8410 215.5645 215.2430 213.4215 639.1000 639.1000</span>
-<span class="co">#&gt; [73] 714.7460 639.1005 773.7190 212.7600 213.6270 490.4010 213.3340 367.0375</span>
-<span class="co">#&gt; [81] 628.4480 213.7270 639.1000 639.2070 639.0990 638.7790 214.6300 497.7940</span>
-<span class="co">#&gt; [89] 213.5480 637.1710 213.3590</span></code></pre></div>
+<span class="co">#&gt;   [1]  86.1350 348.1340 775.8610 216.6520 260.8720 416.3190 147.8970 462.1140</span>
+<span class="co">#&gt;   [9] 594.4850 453.1780 431.3200 144.0400 170.2755 780.5760 212.6665 645.4960</span>
+<span class="co">#&gt;  [17] 606.2680 482.5790 146.3970 217.2010 144.0380 618.2700 161.3960 588.6960</span>
+<span class="co">#&gt;  [25] 518.1520 146.2780 639.1000 169.8415 145.4960 559.9820 659.1360 639.1000</span>
+<span class="co">#&gt;  [33] 638.8870 639.3140 659.2440 582.4820 594.4820 650.2440 613.1270 578.1970</span>
+<span class="co">#&gt;  [41] 656.2235 561.9110 169.8615 145.1090 527.9020 819.1920 551.4100 717.1020</span>
+<span class="co">#&gt;  [49] 704.6740 664.8160 628.5540 401.9620 540.6520 782.9350 213.7270 762.4675</span>
+<span class="co">#&gt;  [57] 422.9630 540.8620 515.0340 638.9925 213.5300 639.2075 639.0995 439.6770</span>
+<span class="co">#&gt;  [65] 529.0810 213.7270 469.3330 613.5560 639.0990 215.4160 213.5480 800.0760</span>
+<span class="co">#&gt;  [73] 551.4100 215.2430 594.0550 698.3510 213.5480 639.0980 214.8000 883.6945</span>
+<span class="co">#&gt;  [81] 365.5325 594.5905 594.6980 659.2430 214.1480 213.2940 215.4870 367.0375</span>
+<span class="co">#&gt;  [89] 628.3420 213.7270 213.7720 213.3840 213.5090 214.4360 214.6300 215.4170</span>
+<span class="co">#&gt;  [97] 213.3340 636.9060 800.2900 654.3150 213.5485 213.8565 214.6300 215.0690</span>
+<span class="co">#&gt; [105] 215.0680</span></code></pre></div>
 </div>
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">
