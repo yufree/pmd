@@ -9,7 +9,7 @@ citEntry(
 	year = "2019",
 	issn = "0003-2670",
 	doi = "10.1016/j.aca.2018.10.062",
-	url = "http://www.sciencedirect.com/science/article/pii/S0003267018313047",
+	url = "https://www.sciencedirect.com/science/article/pii/S0003267018313047",
         author = "Miao Yu and Mariola Olkowicz and Janusz Pawliszyn",
         textVersion = paste("Miao Yu, Mariola Olkowicz, Janusz Pawliszyn",
 	"2019",
