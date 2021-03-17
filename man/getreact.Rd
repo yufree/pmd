@@ -11,7 +11,7 @@ getreact(
   digits = 2,
   accuracy = 4,
   ratiocv = 30,
-  outlier = F,
+  outlier = FALSE,
   ...
 )
 }
@@ -28,7 +28,7 @@ getreact(
 
 \item{ratiocv}{ratio cv cutoff for quantitative paired peaks, default 30}
 
-\item{outlier}{logical, if true, outliar of ratio will be removed, default False.}
+\item{outlier}{logical, if true, outlier of ratio will be removed, default False.}
 
 \item{...}{other parameters for getpmd}
 }

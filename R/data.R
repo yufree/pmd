@@ -4,7 +4,7 @@
 #' @format A data frame with 94 rows and 4 variables:
 #' \describe{
 #'   \item{PMD}{Paired mass distances}
-#'   \item{origin}{potentical sources}
+#'   \item{origin}{potential sources}
 #'   \item{Ref.}{references}
 #'   \item{mode}{positive, negative or both mode to find corresponding PMDs}
 #'   }
@@ -22,7 +22,7 @@
 #'   }
 "spmeinvivo"
 
-#' A dataframe containing HMDB with unique accurate mass pmd with three digits frequence larger than 1 and accuracy percentage larger than 0.9.
+#' A dataframe containing HMDB with unique accurate mass pmd with three digits frequency larger than 1 and accuracy percentage larger than 0.9.
 #' @docType data
 #' @usage data(hmdb)
 #' @format A dataframe with atoms numbers of C, H, O, N, P, S

@@ -356,13 +356,13 @@ plotcn <- function(formula, name, pmd){
         df <- all2[ms1 %in% sdat | ms2 %in% sdat ,]
         df2 <- df[!duplicated(df),]
         pal <- grDevices::rainbow(length(pmd))
-        net <- igraph::graph_from_data_frame(df2,directed = F)
-        dis <- igraph::mean_distance(net,directed = F)
+        net <- igraph::graph_from_data_frame(df2,directed = FALSE)
+        dis <- igraph::mean_distance(net,directed = FALSE)
         message(paste('Average distance of PMD network is', dis))
         message(paste('Average degree',mean(igraph::degree(net))))
         # igraph::V(net)$label.cex <- 1
         graphics::plot(net,vertex.size =1,edge.width = 3,edge.color = pal[as.numeric(as.factor(igraph::E(net)$pmd))],vertex.label=ifelse(igraph::V(net)$name == formula,name,NA),vertex.label.dist=1,vertex.color=ifelse(igraph::V(net)$name == formula,'red','black'))
         graphics::legend("topright",bty = "n",
                legend=unique(igraph::E(net)$pmd),
-               fill=unique(pal[as.numeric(as.factor(igraph::E(net)$pmd))]), border=NA,horiz = F,ncol = 2)
+               fill=unique(pal[as.numeric(as.factor(igraph::E(net)$pmd))]), border=NA,horiz = FALSE,ncol = 2)
 }

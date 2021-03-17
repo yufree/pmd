@@ -1,8 +1,7 @@
 Package: pmd
 Type: Package
 Title: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis and Reactomics Analysis
-Version: 0.2.1
-Date: 2021-01-20
+Version: 0.2.3
 Authors@R: person(given = "Miao", family = "YU",
         role = c("aut", "cre"), 
         email = "yufreecas@gmail.com",

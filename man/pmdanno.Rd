@@ -13,7 +13,7 @@ pmdanno(file, db = NULL, ppm = 10, prems = 1.1, pmdc = 0.6, scutoff = 0.1)
 
 \item{ppm}{mass accuracy, default 10}
 
-\item{prems}{precersor mass range, default 1.1 to include M+H or M-H}
+\item{prems}{precursor mass range, default 1.1 to include M+H or M-H}
 
 \item{pmdc}{pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database}
 

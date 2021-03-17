@@ -47,39 +47,39 @@ getsda <-
                         cor <- stats::cor(t(data))
                         df <-
                                 data.frame(
-                                        ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                                     1]],
-                                        ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                                     2]],
                                         diff = as.numeric(dis),
                                         rt1 = rt[which(lower.tri(disrt),
-                                                       arr.ind = T)[, 1]],
+                                                       arr.ind = TRUE)[, 1]],
                                         rt2 = rt[which(lower.tri(disrt),
-                                                       arr.ind = T)[, 2]],
+                                                       arr.ind = TRUE)[, 2]],
                                         diffrt = as.numeric(disrt),
                                         rtg1 = rtg[which(lower.tri(disrtg),
-                                                         arr.ind = T)[, 1]],
+                                                         arr.ind = TRUE)[, 1]],
                                         rtg2 = rtg[which(lower.tri(disrtg),
-                                                         arr.ind = T)[, 2]],
+                                                         arr.ind = TRUE)[, 2]],
                                         rtgdiff = as.numeric(disrtg),
                                         cor = cor[lower.tri(cor)]
                                 )
                 }else{
                         df <- data.frame(
-                                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                             1]],
-                                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                             2]],
                                 diff = as.numeric(dis),
                                 rt1 = rt[which(lower.tri(disrt),
-                                               arr.ind = T)[, 1]],
+                                               arr.ind = TRUE)[, 1]],
                                 rt2 = rt[which(lower.tri(disrt),
-                                               arr.ind = T)[, 2]],
+                                               arr.ind = TRUE)[, 2]],
                                 diffrt = as.numeric(disrt),
                                 rtg1 = rtg[which(lower.tri(disrtg),
-                                                 arr.ind = T)[, 1]],
+                                                 arr.ind = TRUE)[, 1]],
                                 rtg2 = rtg[which(lower.tri(disrtg),
-                                                 arr.ind = T)[, 2]],
+                                                 arr.ind = TRUE)[, 2]],
                                 rtgdiff = as.numeric(disrtg)
                         )
                 }
@@ -93,13 +93,13 @@ getsda <-
                         ))
                 diff <- df$diff2[index]
                 freq <-
-                        sort(table(diff),decreasing = T)
+                        sort(table(diff),decreasing = TRUE)
                 if (is.null(freqcutoff)) {
                         dis <- c()
                         for (i in c(1:ifelse(length(freq)>100,100,length(freq)))){
                                 pmd <- as.numeric(names(freq))[1:i]
                                 dfx <- df[df$diff2 %in% pmd,c(1,2)]
-                                net <- igraph::graph_from_data_frame(dfx,directed = F)
+                                net <- igraph::graph_from_data_frame(dfx,directed = FALSE)
                                 dis[i] <- igraph::mean_distance(net)
                         }
                         n <- which.max(dis)
@@ -117,7 +117,7 @@ getsda <-
                         # while(n>=t){
                         #         pmd <- as.numeric(names(freq[freq>i]))
                         #         dfx <- df[df$diff2 %in% pmd,c(1,2)]
-                        #         net <- igraph::graph_from_data_frame(dfx,directed = F)
+                        #         net <- igraph::graph_from_data_frame(dfx,directed = FALSE)
                         #         t <- n
                         #         n <- length(igraph::groups(igraph::components(net)))
                         #         i <- i+1
@@ -155,12 +155,12 @@ getsda <-
                 return(list)
         }
 #' Perform structure/reaction directed analysis for mass only.
-#' @param mz numeric vector for independant mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automately
-#' @param freqcutoff pmd freqency cutoff for structures or reactions, default 10
+#' @param mz numeric vector for independent mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automated
+#' @param freqcutoff pmd frequency cutoff for structures or reactions, default 10
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 3
-#' @param top top n pmd freqency cutoff when the freqcutoff is too small for large data set
+#' @param top top n pmd frequency cutoff when the freqcutoff is too small for large data set
 #' @param formula vector for formula when you don't have mass or mass to charge ratio data
-#' @return logical matrix with row as the same order of mz or formula and column as high freqency pmd group
+#' @return logical matrix with row as the same order of mz or formula and column as high frequency pmd group
 #' @examples
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
@@ -186,13 +186,13 @@ getrda <-
                 }
 
                 df <- cbind.data.frame(
-                        ms1 = mz[which(lower.tri(dis), arr.ind = T)[, 1]],
-                        ms2 = mz[which(lower.tri(dis), arr.ind = T)[, 2]],
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]],
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]],
                         diff = as.numeric(dis),
                         diff2 = round(as.numeric(dis), digits = digits)
                 )
                 freq <-
-                        sort(table(df$diff2),decreasing = T)
+                        sort(table(df$diff2),decreasing = TRUE)
                 message(paste(length(freq), 'pmd found.'))
                 if (!is.null(top)) {
                         freq <- utils::head(freq, top)
@@ -245,20 +245,20 @@ getcda <- function(list,
         disrtg <- stats::dist(rtg, method = "manhattan")
         df <-
                 data.frame(
-                        ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                     1]],
-                        ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                     2]],
                         diff = as.numeric(dis),
                         rt1 = rt[which(lower.tri(disrt),
-                                       arr.ind = T)[, 1]],
+                                       arr.ind = TRUE)[, 1]],
                         rt2 = rt[which(lower.tri(disrt),
-                                       arr.ind = T)[, 2]],
+                                       arr.ind = TRUE)[, 2]],
                         diffrt = as.numeric(disrt),
                         rtg1 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = T)[, 1]],
+                                         arr.ind = TRUE)[, 1]],
                         rtg2 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = T)[, 2]],
+                                         arr.ind = TRUE)[, 2]],
                         rtgdiff = as.numeric(disrtg),
                         cor = cor[lower.tri(cor)]
                 )
@@ -301,20 +301,20 @@ getpmd <-
                 cor <- stats::cor(t(data))
 
                 df <- data.frame(
-                        ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                     1]],
-                        ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                                     2]],
                         diff = as.numeric(dis),
                         rt1 = rt[which(lower.tri(disrt),
-                                       arr.ind = T)[, 1]],
+                                       arr.ind = TRUE)[, 1]],
                         rt2 = rt[which(lower.tri(disrt),
-                                       arr.ind = T)[, 2]],
+                                       arr.ind = TRUE)[, 2]],
                         diffrt = as.numeric(disrt),
                         rtg1 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = T)[, 1]],
+                                         arr.ind = TRUE)[, 1]],
                         rtg2 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = T)[, 2]],
+                                         arr.ind = TRUE)[, 2]],
                         rtgdiff = as.numeric(disrtg),
                         cor = cor[lower.tri(cor)]
                 )
@@ -367,9 +367,9 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
         }
         massup <- mass+mass*ppm/10e6
         massdown <- mass-mass*ppm/10e6
-        updown <- sapply(Map(function(x)
+        updown <- vapply(Map(function(x)
                 x < massup & x > massdown, list$mz), function(x)
-                        sum(x&T)>0)
+                        sum(x&TRUE)>0,TRUE)
         mass <- list$mz[updown]
         mass <- unique(round(mass,accuracy))
 
@@ -387,20 +387,20 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
         cor <- stats::cor(t(data))
 
         df <- data.frame(
-                ms1 = mz[which(lower.tri(dis), arr.ind = T)[,
+                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                             1]],
-                ms2 = mz[which(lower.tri(dis), arr.ind = T)[,
+                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
                                                             2]],
                 diff = as.numeric(dis),
                 rt1 = rt[which(lower.tri(disrt),
-                               arr.ind = T)[, 1]],
+                               arr.ind = TRUE)[, 1]],
                 rt2 = rt[which(lower.tri(disrt),
-                               arr.ind = T)[, 2]],
+                               arr.ind = TRUE)[, 2]],
                 diffrt = as.numeric(disrt),
                 rtg1 = rtg[which(lower.tri(disrtg),
-                                 arr.ind = T)[, 1]],
+                                 arr.ind = TRUE)[, 1]],
                 rtg2 = rtg[which(lower.tri(disrtg),
-                                 arr.ind = T)[, 2]],
+                                 arr.ind = TRUE)[, 2]],
                 rtgdiff = as.numeric(disrtg),
                 cor = cor[lower.tri(cor)]
         )
@@ -438,7 +438,7 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
                 )
                 sdac <- NULL
                 mass <- round(list$mz, accuracy)
-                for (i in 1:length(mass)) {
+                for (i in seq_along(mass)) {
                         sdat <-
                                 unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
                         if (length(sdat) != 1) {
@@ -458,7 +458,7 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
         } else{
                 sdac <- NULL
                 mass <- round(mass, accuracy)
-                for (i in 1:length(mass)) {
+                for (i in seq_along(mass)) {
                         sdat <-
                                 unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
                         if (length(sdat) != 1) {
@@ -485,7 +485,7 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
-#' @param outlier logical, if true, outliar of ratio will be removed, default False.
+#' @param outlier logical, if true, outlier of ratio will be removed, default False.
 #' @param ... other parameters for getpmd
 #' @return list with quantitative paired peaks.
 #' @examples
@@ -500,7 +500,7 @@ getreact <-
                  digits = 2,
                  accuracy = 4,
                  ratiocv = 30,
-                 outlier = F,
+                 outlier = FALSE,
                  ...) {
                 p <-
                         pmd::getpmd(
@@ -523,7 +523,7 @@ getreact <-
                                 ratio <- ratio[!ratio%in%outlier_values]
                         }
                         rsd <-
-                                stats::sd(ratio, na.rm = T) / mean(ratio, na.rm = T) * 100
+                                stats::sd(ratio, na.rm = TRUE) / mean(ratio, na.rm = TRUE) * 100
                         return(rsd)
                 }
                 if(sum(p$pmdindex)>0){

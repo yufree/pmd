@@ -16,7 +16,7 @@ getposneg(pos, neg, pmd = 2.02, digits = 2)
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 }
 \value{
-dataframe with filtered postive and negative peak list
+dataframe with filtered positive and negative peak list
 }
 \description{
 Link pos mode peak list with neg mode peak list by pmd.

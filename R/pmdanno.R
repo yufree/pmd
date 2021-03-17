@@ -11,7 +11,7 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
         msp <- msp[msp != '']
         ncomp <- grep('^NAME:', msp, ignore.case = TRUE)
         splitFactorTmp <-
-                rep(1:length(ncomp), diff(c(ncomp, length(msp) + 1)))
+                rep(seq_along(ncomp), diff(c(ncomp, length(msp) + 1)))
 
         li <- split(msp, f = splitFactorTmp)
         getmsp <- function(x) {
@@ -77,10 +77,10 @@ getms2pmd <- function(file, digits = 2, icf = 10) {
 
         }
         li <- lapply(li, getmsp)
-        name <- sapply(li, function(x)
-                x$name)
-        mz <- sapply(li, function(x)
-                x$prec)
+        name <- vapply(li, function(x)
+                x$name,'c')
+        mz <- vapply(li, function(x)
+                x$prec,1)
         msms <- lapply(li, function(x)
                 x$pmd)
         msmsraw <- lapply(li, function(x)
@@ -106,7 +106,7 @@ getmspmd <- function(file, digits = 2, icf = 10) {
         msp <- msp[msp != '']
         ncomp <- grep('^NAME:', msp, ignore.case = TRUE)
         splitFactorTmp <-
-                rep(1:length(ncomp), diff(c(ncomp, length(msp) + 1)))
+                rep(seq_along(ncomp), diff(c(ncomp, length(msp) + 1)))
 
         li <- split(msp, f = splitFactorTmp)
         getmsp <- function(x) {
@@ -154,8 +154,8 @@ getmspmd <- function(file, digits = 2, icf = 10) {
                 }
         }
         li <- lapply(li, getmsp)
-        name <- sapply(li, function(x)
-                x$name)
+        name <- vapply(li, function(x)
+                x$name,'v')
         msms <- lapply(li, function(x)
                 x$pmd)
         msmsraw <- lapply(li, function(x)
@@ -171,7 +171,7 @@ getmspmd <- function(file, digits = 2, icf = 10) {
 #' @param file mgf file generated from MS/MS data
 #' @param db database could be list object from `getms2pmd`
 #' @param ppm mass accuracy, default 10
-#' @param prems precersor mass range, default 1.1 to include M+H or M-H
+#' @param prems precursor mass range, default 1.1 to include M+H or M-H
 #' @param pmdc pmd length percentage cutoff for annotation. 0.6(default) means 60 percentage of the pmds in your sample could be found in certain compound pmd database
 #' @param scutoff relative intensity cutoff for input spectra for pmd analysis, default 0.1
 #' @return list with MSMS annotation results
@@ -191,7 +191,7 @@ pmdanno <- function(file,
         if (sum(idx) > 0) {
                 mz <- unlist(mz)[idx]
                 ins <- unlist(ins)[idx]
-                ins = ins / max(ins) * 100
+                ins <- ins / max(ins) * 100
                 pmdt <- stats::dist(mz, method = "manhattan")
 
                 if (class(db) == "list") {
@@ -211,15 +211,15 @@ pmdanno <- function(file,
                                 mz2 <- db$mz[re$xid]
                                 msmsraw <- db$msmsraw[re$xid]
 
-                                result <- sapply(msmsd, function(x)
-                                        sum(pmdt %in% unique(x)))
+                                result <- vapply(msmsd, function(x)
+                                        sum(pmdt %in% unique(x)),1)
                                 result <- c(result)
 
                                 if (sum(result > length(pmdt) * pmdc) == 0) {
                                         return(NULL)
                                 } else{
                                         re0 <- result[result > length(pmdt) * pmdc]
-                                        order <- order(re0,decreasing = T)
+                                        order <- order(re0,decreasing = TRUE)
                                         t <-
                                                 list(
                                                         name = name[result > length(pmdt) * pmdc][order],

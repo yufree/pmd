@@ -1,3 +1,10 @@
+# pmd 0.2.3
+
+# pmd 0.2.2
+
+- spell check
+- goodpractice package check
+
 # pmd 0.2.1
 
 - CRAN
@@ -13,7 +20,7 @@
 - fix the issue for getchain with multiple masses
 - fix the correlation issue in pos/neg linkage function
 - Output within RT clusters high frequencies PMD(s) as message for user to check
-- Change default ng to NULL in getpared function for automately generate parameter based on data
+- Change default ng to NULL in getpared function for automated generate parameter based on data
 - update with citation of cc paper
 - fix the bug in pmd ms/ms annotation due to the change of enviGCMS package
 - fix the order issue from CRAN
@@ -25,7 +32,7 @@
 # pmd 0.1.8
 
 - update kegg/hmdb database
-- update getsda to use largest average distance to find pmd freqency cutoff, more robust to large dataset
+- update getsda to use largest average distance to find pmd frequency cutoff, more robust to large dataset
 
 # pmd 0.1.7
 
@@ -40,9 +47,9 @@
 - add shiny application pmdnet to perform PMD network analysis
 - add support for formula in getchain to find compounds ions
 - remove frequency cutoff in getsda and use PMD network clusters analysis to determine the cutoff
-- add merge feature for getcluster and such methods could be used to furthor reduce the GlobalStd peaks
+- add merge feature for getcluster and such methods could be used to further reduce the GlobalStd peaks
 - remove hmdbp data since pmd network analysis could cover this topic
-- remove the dependance of group for quantitative paired peaks
+- remove the dependence of group for quantitative paired peaks
 - improve shiny application for sda analysis
 
 # pmd 0.1.5
@@ -63,7 +70,7 @@
 - add hmdb pmd analysis results as dataset
 - add digits for mass accuracy
 - fix the ms1 larger issue in getpmd
-- add correlationship in getpmd
+- add correlations in getpmd
 - add support for quantitative paired peaks list selection for specific reaction
 - add support for target pmd and compound analysis for reaction chain
 
@@ -72,8 +79,8 @@
 - update vignettes
 - change default ng value into auto-detection
 - add top option to limit sda output
-- add suport for GlobalStd based targeted analysis
-- add suport to extract specific pmd across different retention time groups
+- add support for GlobalStd based targeted analysis
+- add support to extract specific pmd across different retention time groups
 - add PCA similarity factor function from EvolQG package
 - add support to export std peaks based on correlation within retention time group
 - add support to export index for peaks with highest intensity in peaks cluster

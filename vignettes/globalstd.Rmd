@@ -69,7 +69,7 @@ plotrtg(pmd)
 
 This plot would show the distribution of RT groups. The `rtcutoff` in function `getpaired` could be used to set the cutoff of the distances in retention time hierarchical clustering analysis. Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.
 
-Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD's retention time group numbers. If you don't specificlly assign a value to `ng`, the algorithm will select such recommendation by default setting.
+Global PMD's retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD's retention time group numbers. If you don't specifically assign a value to `ng`, the algorithm will select such recommendation by default setting.
 
 Take care of the retention time cluster with lots of peaks. In this case, such cluster could be co-eluted compounds on certain column. It would be wise to trim the retention time window for high quality peaks. Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.
 
@@ -141,7 +141,7 @@ plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_g
 plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(std2$stdmassindex),"reduced independent peaks"))
 ```
 
-You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quanlity peaks for following analysis. Otherwise, original GlobalStd will keep the most information for explorer purpose.
+You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quality peaks for following analysis. Otherwise, original GlobalStd will keep the most information for explorer purpose.
 
 ## Comparison with other pseudo spectra extraction method
 
@@ -271,7 +271,7 @@ result <- globalstd(spmeinvivo, sda=FALSE)
 
 ## Use independent peaks for MS/MS validation (PMDDA)
 
-Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions' fragmental ions in one injection with good sensitivity. You could use `gettarget` to generate the index for the injections and output the peaks for each run.
+Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions' fragment ions in one injection with good sensitivity. You could use `gettarget` to generate the index for the injections and output the peaks for each run.
 
 ```{r gettarget}
 # you need retention time for independent peaks

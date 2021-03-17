@@ -20,7 +20,7 @@ gettarget <- function(rt, drt = 10, n = 6) {
         inj <- ceiling(maxd / n)
         message(paste('You need', inj, 'injections!'))
         for (i in c(1:m)) {
-                z = 1:inj
+                z <- 1:inj
                 x <- rt[rtcluster == i]
                 while (length(x) > inj & length(x) > n) {
                         t <- sample(x, n)
@@ -32,7 +32,7 @@ gettarget <- function(rt, drt = 10, n = 6) {
                 inji[rtcluster == i &
                              rt %in% x] <-
                         sample(z, sum(rtcluster == i &
-                                              rt %in% x), replace = T)
+                                              rt %in% x), replace = TRUE)
         }
         return(inji)
 }
@@ -42,12 +42,12 @@ gettarget <- function(rt, drt = 10, n = 6) {
 #' @param neg a list with mzrt profile collected from negative mode.
 #' @param pmd numeric or numeric vector
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
-#' @return dataframe with filtered postive and negative peak list
+#' @return dataframe with filtered positive and negative peak list
 #' @export
 getposneg <- function(pos,neg, pmd = 2.02, digits = 2){
         df <- NULL
         x <- rep(NA,length(pos$mz))
-        for(i in 1:length(pos$mz)){
+        for(i in seq_along(pos$mz)){
                 if(sum(round((pos$mz[i]-neg$mz),digits) %in% pmd) != 0){
                         index <- round((pos$mz[i]-neg$mz),digits) %in% pmd
                         if(sum(index)>1){
