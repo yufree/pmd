@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Reactomics</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2021-01-21</h4>
+            <h4 class="date">2021-03-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/reactomics.Rmd"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
@@ -111,7 +111,7 @@
 <h2 class="hasAnchor">
 <a href="#pmd-network-analysis" class="anchor"></a>PMD network analysis</h2>
 <p>In untargeted metabolites profiles from HRMS, two ions or peaks could be treated together as long as they could be connected by relationship. Regular untargeted workflow prefers intensity correlation between compounds. However, PMD could also be the chemical bridge between two compounds or ions. For example, oxidation would add oxygen atom to the parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or compound could be involved in multiple reactions. In this case, we could build PMD network for certain ion or compound.</p>
-<p>However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exdogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.</p>
+<p>However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.</p>
 <p>PMD network analysis is the analysis to check or explorer the PMD relationship among co-existed ions from one sample or multiple samples. The edge between ions in the network means certain PMD relationship are valid in this data set. Meanwhile, the intensity correlation between paired ions could also be considered to connect the vertices. Such network is build based on local recursive search for all possible connections.</p>
 <p>PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites’ MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get the overview of metabolites networks. Identification could follow the discovery from MS1 data.</p>
 <p>If you have a specific compound and want to check the metabolites of certain PMD, you could use <code>getchain</code> to extract the network of that compounds</p>
@@ -224,7 +224,7 @@
 <div id="source-appointment" class="section level2">
 <h2 class="hasAnchor">
 <a href="#source-appointment" class="anchor"></a>Source appointment</h2>
-<p>Peaks from samples could be from endogenous compounds or exogenous compounds. However, it’s hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenbiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.</p>
+<p>Peaks from samples could be from endogenous compounds or exogenous compounds. However, it’s hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenobiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/degree.html">degree</a></span><span class="op">(</span><span class="va">net</span>, mode <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span>
@@ -232,7 +232,7 @@
 <span class="va">endogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&gt;</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span>
 <span class="va">exogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&lt;=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <p>In this case, we will have 31 endogenous compounds while 51 exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.</p>
-<p>Another parameter would be the average network distances. Endogenous compounds could form a larger network with long average network distances while exdogeous compounds will connected to network with small average network distances. Such parameter could be used to determine the source of unknown compound by checking the average network distances of the compounds PMD network.</p>
+<p>Another parameter would be the average network distances. Endogenous compounds could form a larger network with long average network distances while exogenous compounds will connected to network with small average network distances. Such parameter could be used to determine the source of unknown compound by checking the average network distances of the compounds PMD network.</p>
 <p>Be careful, one compound could be endogenous for one sample while exogenous for another sample. In this case, PMD network would give hints on the sources based on the context of the samples.</p>
 </div>
 <div id="biomarker-reaction" class="section level2">

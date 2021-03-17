@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 class="author">Miao Yu</h4>
             
-            <h4 class="date">2021-01-21</h4>
+            <h4 class="date">2021-03-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/globalstd.Rmd"><code>vignettes/globalstd.Rmd</code></a></small>
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -168,7 +168,7 @@
 <span class="fu"><a href="../reference/plotrtg.html">plotrtg</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></code></pre></div>
 <p><img src="globalstd_files/figure-html/rtg-1.png" width="700"></p>
 <p>This plot would show the distribution of RT groups. The <code>rtcutoff</code> in function <code>getpaired</code> could be used to set the cutoff of the distances in retention time hierarchical clustering analysis. Retention time cluster cutoff should fit the peak picking algorithm. For HPLC, 10 is suggested and 5 could be used for UPLC.</p>
-<p>Global PMD’s retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD’s retention time group numbers. If you don’t specificlly assign a value to <code>ng</code>, the algorithm will select such recommendation by default setting.</p>
+<p>Global PMD’s retention time group numbers should be around 20 percent of the retention time cluster numbers. For example, if you find 100 retention time clusters, I suggested you use 20 as the cutoff of empirical global PMD’s retention time group numbers. If you don’t specifically assign a value to <code>ng</code>, the algorithm will select such recommendation by default setting.</p>
 <p>Take care of the retention time cluster with lots of peaks. In this case, such cluster could be co-eluted compounds on certain column. It would be wise to trim the retention time window for high quality peaks. Another important hint is that pre-filter your peak list by black samples or other quality control samples. Otherwise the running time would be long and lots of pmd relationship would be just from noise.</p>
 </div>
 <div id="step2-relationship-among-adducts-neutral-loss-isotopologues-and-common-fragments-ions" class="section level3">
@@ -241,7 +241,7 @@
 <span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/plotpca.html">plotpca</a></span><span class="op">(</span><span class="va">std</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span>,<span class="op">]</span>,lv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">std</span><span class="op">$</span><span class="va">group</span><span class="op">$</span><span class="va">sample_group</span><span class="op">)</span><span class="op">)</span>,main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span>,<span class="st">"independent peaks"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/plotpca.html">plotpca</a></span><span class="op">(</span><span class="va">std2</span><span class="op">$</span><span class="va">data</span><span class="op">[</span><span class="va">std2</span><span class="op">$</span><span class="va">stdmassindex</span>,<span class="op">]</span>,lv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="va">std</span><span class="op">$</span><span class="va">group</span><span class="op">$</span><span class="va">sample_group</span><span class="op">)</span><span class="op">)</span>,main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">std2</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span>,<span class="st">"reduced independent peaks"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="globalstd_files/figure-html/pca-1.png" width="700"></p>
-<p>You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quanlity peaks for following analysis. Otherwise, original GlobalStd will keep the most information for explorer purpose.</p>
+<p>You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quality peaks for following analysis. Otherwise, original GlobalStd will keep the most information for explorer purpose.</p>
 </div>
 <div id="comparison-with-other-pseudo-spectra-extraction-method" class="section level2">
 <h2 class="hasAnchor">
@@ -497,7 +497,7 @@
 <div id="use-independent-peaks-for-msms-validation-pmdda" class="section level2">
 <h2 class="hasAnchor">
 <a href="#use-independent-peaks-for-msms-validation-pmdda" class="anchor"></a>Use independent peaks for MS/MS validation (PMDDA)</h2>
-<p>Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions’ fragmental ions in one injection with good sensitivity. You could use <code>gettarget</code> to generate the index for the injections and output the peaks for each run.</p>
+<p>Independent peaks are supposing generated from different compounds. We could use those peaks for MS/MS analysis instead of DIA or DDA. Here we need multiple injections for one sample since it might be impossible to get all ions’ fragment ions in one injection with good sensitivity. You could use <code>gettarget</code> to generate the index for the injections and output the peaks for each run.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># you need retention time for independent peaks</span>
 <span class="va">index</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gettarget.html">gettarget</a></span><span class="op">(</span><span class="va">std</span><span class="op">$</span><span class="va">rt</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span>
@@ -506,62 +506,52 @@
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span>
 <span class="co">#&gt; index</span>
 <span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span>
-<span class="co">#&gt; 38 39 26 38 20 24 18 41 26 21</span>
+<span class="co">#&gt; 33 25 30 39 30 12 19 35 26 42</span>
 <span class="co"># show the ions for the first injection</span>
 <span class="va">std</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span>
-<span class="co">#&gt;   [1] 100.0763 115.9640 136.4826 141.9594 145.9553 147.1174 155.1294 160.1338</span>
-<span class="co">#&gt;   [9] 162.0552 163.1487 166.4658 167.0901 169.0976 172.9774 174.9383 177.0914</span>
-<span class="co">#&gt;  [17] 184.9858 190.9130 191.1435 195.1138 198.1853 200.2005 221.0851 223.2068</span>
-<span class="co">#&gt;  [25] 226.1823 226.2185 226.9523 233.2268 240.1967 242.2863 244.0288 249.1869</span>
-<span class="co">#&gt;  [33] 251.0008 251.2385 255.2511 257.9694 259.1148 261.1317 261.2214 267.1772</span>
-<span class="co">#&gt;  [41] 270.3185 271.3216 272.0665 272.3234 279.1610 283.2249 285.3002 285.3002</span>
-<span class="co">#&gt;  [49] 286.3101 286.3101 286.9218 294.9076 296.9066 301.9077 307.1107 308.2953</span>
-<span class="co">#&gt;  [57] 308.2954 311.2560 314.9159 315.1957 331.2101 332.5619 334.3101 335.2953</span>
-<span class="co">#&gt;  [65] 336.1296 339.6388 342.0183 350.3426 352.3214 355.3391 357.0503 358.2640</span>
-<span class="co">#&gt;  [73] 363.3114 365.1361 366.3006 367.3375 367.3784 375.2147 385.2753 391.2835</span>
-<span class="co">#&gt;  [81] 392.3135 393.2990 400.2536 404.3619 407.3384 409.2673 411.2067 413.2687</span>
-<span class="co">#&gt;  [89] 415.2132 417.3364 420.3193 425.3120 430.8888 431.9177 432.0690 440.8696</span>
-<span class="co">#&gt;  [97] 445.1198 445.3268 469.1008 470.1010 471.3317 473.3445 478.2940 494.8112</span>
-<span class="co">#&gt; [105] 500.2777 505.3342 507.3409 516.3893 519.1401 521.1371 527.2976 532.8946</span>
-<span class="co">#&gt; [113] 534.9708 537.1654 537.5353 543.1198 559.3841 564.1885 565.1922 565.5679</span>
-<span class="co">#&gt; [121] 570.3554 580.3612 582.8633 584.8611 590.4266 593.5980 595.1563 600.8824</span>
-<span class="co">#&gt; [129] 605.2231 611.1844 621.4195 626.3960 628.1949 638.3081 642.8627 644.4936</span>
-<span class="co">#&gt; [137] 673.8481 675.2109 675.5084 676.2120 676.8604 686.2013 696.5070 703.6382</span>
-<span class="co">#&gt; [145] 704.6384 708.8218 709.5932 711.3532 720.8364 729.6484 731.7391 733.8482</span>
-<span class="co">#&gt; [153] 735.4900 750.7856 767.8423 773.6523 775.8295 776.6031 787.9269 795.5448</span>
-<span class="co">#&gt; [161] 800.6217 802.5006 805.8473 809.8222 812.8331 820.8196 826.6806 836.3301</span>
-<span class="co">#&gt; [169] 841.8196 848.6295 848.7955 864.3202 869.8223 871.3033 894.7234 897.2942</span>
-<span class="co">#&gt; [177] 900.3092 901.8120 904.8150 920.4687 932.4055 943.7976 946.7398 952.7628</span>
-<span class="co">#&gt; [185] 964.7811 970.7962 979.7901 983.7978 985.7859 992.7899 997.4754</span>
+<span class="co">#&gt;   [1] 110.0093 118.0652 132.0779 137.9879 147.1175 155.1293 155.1748 156.0776</span>
+<span class="co">#&gt;   [9] 172.1705 175.1481 180.1751 181.9871 190.0124 195.1745 198.1854 203.0532</span>
+<span class="co">#&gt;  [17] 205.1276 208.0978 209.9806 212.1655 213.2050 214.9181 228.1973 236.1626</span>
+<span class="co">#&gt;  [25] 236.1730 239.1490 241.2366 245.1944 247.2421 252.0721 255.2077 258.1107</span>
+<span class="co">#&gt;  [33] 258.8998 263.2382 267.9535 270.3185 270.3184 272.9318 277.1815 279.1604</span>
+<span class="co">#&gt;  [41] 280.1630 294.2054 300.1148 304.3081 305.1578 308.0919 311.3144 315.1781</span>
+<span class="co">#&gt;  [49] 317.9344 319.3002 320.3041 323.3221 326.3425 327.2022 328.0132 337.3298</span>
+<span class="co">#&gt;  [57] 340.3593 340.7613 341.3512 342.3637 353.3603 354.3365 359.0292 362.9280</span>
+<span class="co">#&gt;  [65] 365.3023 365.3196 371.3173 376.3179 383.2052 386.3523 394.2617 399.1231</span>
+<span class="co">#&gt;  [73] 400.3301 400.9174 417.2462 422.2952 429.0892 429.3733 431.3847 441.2976</span>
+<span class="co">#&gt;  [81] 445.2767 445.3874 447.1173 447.4055 449.1148 453.3436 456.8437 460.3112</span>
+<span class="co">#&gt;  [89] 485.2901 494.8112 494.8113 498.9017 500.9073 514.8764 515.8357 522.1371</span>
+<span class="co">#&gt;  [97] 527.1586 533.3888 533.9698 540.1628 543.4015 556.4416 560.3877 566.1776</span>
+<span class="co">#&gt; [105] 568.8923 574.8768 576.4110 600.4401 608.4054 614.5358 616.8569 625.3928</span>
+<span class="co">#&gt; [113] 639.2005 643.4632 646.4585 650.6644 651.9510 655.8704 663.4529 664.4627</span>
+<span class="co">#&gt; [121] 665.4664 680.4633 691.4631 691.6443 695.5039 697.8511 707.8415 708.4889</span>
+<span class="co">#&gt; [129] 712.8208 719.9400 730.3384 730.6517 739.5078 752.5158 764.5237 771.8544</span>
+<span class="co">#&gt; [137] 777.3853 786.8255 788.5237 790.5377 816.5102 832.3212 838.8393 839.8413</span>
+<span class="co">#&gt; [145] 847.8263 866.3142 870.7857 872.3052 873.3057 873.8334 878.3781 881.8224</span>
+<span class="co">#&gt; [153] 884.4968 884.7221 911.7489 924.7338 924.7999 929.8218 934.8077 949.8072</span>
+<span class="co">#&gt; [161] 952.1496 973.4945 978.4752 984.4307 984.7703</span>
 <span class="va">std</span><span class="op">$</span><span class="va">rt</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span>
-<span class="co">#&gt;   [1]  170.1810   85.0640  144.8960 1079.4300   85.3855  688.6020  732.5740</span>
-<span class="co">#&gt;   [8]  328.4180  511.2940  612.9110  144.0560  511.2940  169.7530  163.3250</span>
-<span class="co">#&gt;  [15]  216.1500  574.3390   85.4930  218.0975  611.4120  169.9680  639.3130</span>
-<span class="co">#&gt;  [22]  521.5800  565.7700  639.1000  611.4120  639.1000 1029.1800  639.1000</span>
-<span class="co">#&gt;  [29]  463.6500  573.8035  212.6665  645.4960  509.7940  639.1010  639.1000</span>
-<span class="co">#&gt;  [36]  146.3970  144.0380  169.7590  556.7660  416.1050  767.5050  781.0040</span>
-<span class="co">#&gt;  [43]  141.0400  742.6450  583.7690  552.2670  614.1970  670.6010  672.5290</span>
-<span class="co">#&gt;  [50]  878.5520  146.5170  144.6820  145.1090  144.1250  212.7520  601.1260</span>
-<span class="co">#&gt;  [57]  569.4105  585.6975  145.8840  522.6500  359.9200  141.6810  608.1990</span>
-<span class="co">#&gt;  [64]  582.6960  617.6270  639.0990  717.1025  625.9840  582.4820  594.4820</span>
-<span class="co">#&gt;  [71]  717.1015  480.8010  561.2685  578.1970  561.9110  644.2420  659.4400</span>
-<span class="co">#&gt;  [78]  218.8600  493.0800  665.0280  551.6260  659.6730  551.4100  645.9560</span>
-<span class="co">#&gt;  [85]  556.9840  493.0790  504.6540  512.7510  507.8650  603.4845  687.8085</span>
-<span class="co">#&gt;  [92]  404.7480  549.6980  213.7720  762.3610  214.8080  717.1010  513.2230</span>
-<span class="co">#&gt;  [99]  717.3170  717.1020  540.8660  553.4470  494.3650  817.9060  477.6500</span>
-<span class="co">#&gt; [106]  422.9630  422.9630  540.8620  762.3620  762.5770  493.5080  213.5300</span>
-<span class="co">#&gt; [113]  639.0995  762.5740  705.5300  762.7890  534.0090  762.5770  762.5760</span>
-<span class="co">#&gt; [120]  735.1450  524.2585  552.6965  215.8650  215.7865  548.6240  772.2180</span>
-<span class="co">#&gt; [127]  819.4050  213.5090  762.5750  818.7650  454.9350  530.5830  642.7435</span>
-<span class="co">#&gt; [134]  630.7000  214.5700  454.9370  214.3560  819.5135  468.2215  819.4080</span>
-<span class="co">#&gt; [141]  214.3560  883.0525  698.6730  638.8855  639.0980  214.8000  619.9850</span>
-<span class="co">#&gt; [148]  215.2290  215.1360  594.5905  659.2430  213.3140  522.2240  217.4155</span>
-<span class="co">#&gt; [155]  213.3840  613.5550  214.1480  639.1010  212.7600  492.8580  642.9965</span>
-<span class="co">#&gt; [162]  519.6610  213.5090  214.1480  214.4150  215.2830  628.4480  213.3740</span>
-<span class="co">#&gt; [169]  213.8945  503.2585  214.6500  639.2070  213.5020  639.2070  650.6715</span>
-<span class="co">#&gt; [176]  215.8710  213.5480  214.3740  213.3595  497.7940  380.5340  214.0705</span>
-<span class="co">#&gt; [183]  800.2900  654.3150  215.6320  213.9110  213.9410  214.6300  215.0680</span>
-<span class="co">#&gt; [190]  214.7840  213.4215</span></code></pre></div>
+<span class="co">#&gt;   [1]  76.4920 639.2070 212.6550 165.4680 611.4110 775.8610 405.6060 227.6550</span>
+<span class="co">#&gt;   [9] 478.9360 614.4130 416.3190 147.8970 218.5220 594.4850 415.9985 144.8840</span>
+<span class="co">#&gt;  [17] 370.7850 430.4650 147.8780 397.4615 594.9115  76.9220 453.1570 430.6770</span>
+<span class="co">#&gt;  [25] 576.9100 170.2755 639.0980 615.0550 639.0995 678.3130 439.2490 144.0390</span>
+<span class="co">#&gt;  [33] 217.2010 602.1970 146.3950 895.9095 465.0070 145.7540 588.6960 664.9220</span>
+<span class="co">#&gt;  [41] 583.7700 452.0005 447.6060 639.1000 169.8415 175.3150 618.4830 401.2135</span>
+<span class="co">#&gt;  [49] 145.5170 594.9110 595.1260 639.3130 647.5035 170.3860 509.1510 595.1260</span>
+<span class="co">#&gt;  [57] 658.6000 172.7590 639.3140 658.6000 648.9580 594.4820 717.0520 213.9270</span>
+<span class="co">#&gt;  [65] 639.0990 656.2235 659.6710 594.6970 574.3400 644.4580 639.1000 527.9020</span>
+<span class="co">#&gt;  [73] 582.3750 145.1090 444.6075 639.5290 717.1020 704.6740 612.4840 688.1715</span>
+<span class="co">#&gt;  [81] 421.8915 582.4825 716.8890 639.3150 717.1020 170.5045 217.2465 169.9670</span>
+<span class="co">#&gt;  [89] 582.6970 890.7680 862.5875 213.7270 213.9570 215.7020 144.8960 762.5750</span>
+<span class="co">#&gt;  [97] 142.3240 537.2230 639.2075 762.3620 439.2500 546.9100 533.3660 762.5770</span>
+<span class="co">#&gt; [105] 213.7270 214.5700 534.0090 455.1500 434.7490 639.0990 215.4160 530.7950</span>
+<span class="co">#&gt; [113] 819.2990 449.3200 605.8410 637.1710 212.6570 213.3340 800.2900 527.7950</span>
+<span class="co">#&gt; [121] 528.0080 468.4360 525.0090 594.0560 698.3510 214.3710 214.2010 525.0090</span>
+<span class="co">#&gt; [129] 214.7985 212.6510 213.3840 594.6980 480.6530 522.4370 773.9350 213.7720</span>
+<span class="co">#&gt; [137] 474.2205 215.4870 730.6470 780.5760 213.3340 213.5140 213.7270 213.7720</span>
+<span class="co">#&gt; [145] 214.7070 213.3840 216.5120 639.0990 639.2070 213.5090 381.9255 214.4090</span>
+<span class="co">#&gt; [153] 213.3590 632.0920 650.4570 636.9560 214.9990 213.3340 213.8030 214.6300</span>
+<span class="co">#&gt; [161] 213.3340 500.9015 480.2610 386.1965 215.0690</span></code></pre></div>
 </div>
 <div id="shiny-application" class="section level2">
 <h2 class="hasAnchor">
