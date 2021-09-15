@@ -48,7 +48,7 @@ inputPanel(
               min = 1, max = 200, value = 10, step = 1),
   checkboxInput("cor", label = 'Use intensity',value = F),
   sliderInput("corcutoff", label = "Cutoff for the correlation coefficient",
-              min = 0, max = 1, value = NULL, step = 0.1),
+              min = 0, max = 1, value = 0.6, step = 0.1),
   sliderInput("digits", label = "Digits of mass to charge ratio",
               min = 1, max = 10, value = 2, step = 1),
   sliderInput("accuracy", label = "Measured mass or mass to charge ratio in digits",
