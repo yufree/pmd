@@ -1,6 +1,12 @@
+# pmd 0.2.4
+
+- add support for mass only data
+- add more methods to quantitative the pmd
+
 # pmd 0.2.3
 
 - add MaConDa database
+- fix NULL default value issue in shiny apps
 
 # pmd 0.2.2
 

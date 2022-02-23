@@ -30,12 +30,12 @@ getsda <-
                 } else if (is.null(list$stdmass)) {
                         mz <- list$mz[list$pairedindex]
                         rt <- list$rt[list$pairedindex]
-                        data <- list$data[list$pairedindex,]
+                        data <- list$data[list$pairedindex, ]
                         rtg <- list$rtcluster[list$pairedindex]
                 } else {
                         mz <- list$mz[list$stdmassindex]
                         rt <- list$rt[list$stdmassindex]
-                        data <- list$data[list$stdmassindex,]
+                        data <- list$data[list$stdmassindex, ]
                         rtg <- list$rtcluster[list$stdmassindex]
                 }
                 # PMD analysis
@@ -48,9 +48,9 @@ getsda <-
                         df <-
                                 data.frame(
                                         ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                                    1]],
+                                                                                       1]],
                                         ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                                    2]],
+                                                                                       2]],
                                         diff = as.numeric(dis),
                                         rt1 = rt[which(lower.tri(disrt),
                                                        arr.ind = TRUE)[, 1]],
@@ -64,12 +64,12 @@ getsda <-
                                         rtgdiff = as.numeric(disrtg),
                                         cor = cor[lower.tri(cor)]
                                 )
-                }else{
+                } else{
                         df <- data.frame(
                                 ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                            1]],
+                                                                               1]],
                                 ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                            2]],
+                                                                               2]],
                                 diff = as.numeric(dis),
                                 rt1 = rt[which(lower.tri(disrt),
                                                arr.ind = TRUE)[, 1]],
@@ -83,36 +83,47 @@ getsda <-
                                 rtgdiff = as.numeric(disrtg)
                         )
                 }
-                df <- df[df$rtgdiff > 0,]
+                df <- df[df$rtgdiff > 0, ]
                 df$diff2 <- round(df$diff, digits)
                 # use unique isomers
                 index <-
-                        !duplicated(paste0(
-                                round(df$ms1, accuracy),
-                                round(df$ms2, accuracy)
-                        ))
+                        !duplicated(paste0(round(df$ms1, accuracy),
+                                           round(df$ms2, accuracy)))
                 diff <- df$diff2[index]
                 freq <-
-                        sort(table(diff),decreasing = TRUE)
+                        sort(table(diff), decreasing = TRUE)
                 if (is.null(freqcutoff)) {
                         dis <- c()
-                        for (i in c(1:ifelse(length(freq)>100,100,length(freq)))){
+                        for (i in c(1:ifelse(length(freq) > 100, 100, length(freq)))) {
                                 pmd <- as.numeric(names(freq))[1:i]
-                                dfx <- df[df$diff2 %in% pmd,c(1,2)]
-                                net <- igraph::graph_from_data_frame(dfx,directed = FALSE)
+                                dfx <- df[df$diff2 %in% pmd, c(1, 2)]
+                                net <-
+                                        igraph::graph_from_data_frame(dfx, directed = FALSE)
                                 dis[i] <- igraph::mean_distance(net)
                         }
                         n <- which.max(dis)
-                        freqt <- freq[n-1]
-                        if(n==100){
-                                warning("Average distance is still increasing, you need to check manually for frequency cutoff.")
+                        freqt <- freq[n - 1]
+                        if (n == 100) {
+                                warning(
+                                        "Average distance is still increasing, you need to check manually for frequency cutoff."
+                                )
                         }
-                        if(sum(df$diff2 == 0)>freqt & 0 %in% as.numeric(names(freq))){
-                                list$sda <- df[df$diff2 %in% c(0,as.numeric(names(freq[freq>freqt]))),]
-                        }else{
-                                list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq>freqt])),]
+                        if (sum(df$diff2 == 0) > freqt &
+                            0 %in% as.numeric(names(freq))) {
+                                list$sda <-
+                                        df[df$diff2 %in% c(0, as.numeric(names(freq[freq > freqt]))), ]
+                        } else{
+                                list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq > freqt])), ]
                         }
-                        message(paste("PMD frequency cutoff is", freqt, 'by PMD network analysis with largest network average distance',round(max(dis),2),'.'))
+                        message(
+                                paste(
+                                        "PMD frequency cutoff is",
+                                        freqt,
+                                        'by PMD network analysis with largest network average distance',
+                                        round(max(dis), 2),
+                                        '.'
+                                )
+                        )
                         # i <- dis <- t <- 1
                         # while(n>=t){
                         #         pmd <- as.numeric(names(freq[freq>i]))
@@ -128,23 +139,23 @@ getsda <-
                         # }else{
                         #         list$sda <- df[df$diff2 %in% as.numeric(names(freq[freq>(i-1)])),]
                         # }
-                }else{
+                } else{
                         if (sum(df$diff2 == 0) > freqcutoff &
                             0 %in% as.numeric(names(freq))) {
                                 list$sda <- df[(df$diff2 %in% c(0, as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         } else{
                                 list$sda <- df[(df$diff2 %in% c(as.numeric(names(
                                         freq[freq >=
                                                      freqcutoff]
-                                )))),]
+                                )))), ]
                         }
                 }
 
-                if (!is.null(corcutoff)&!is.null(data)) {
-                        list$sda <- list$sda[abs(list$sda$cor) >= corcutoff, ]
+                if (!is.null(corcutoff) & !is.null(data)) {
+                        list$sda <- list$sda[abs(list$sda$cor) >= corcutoff,]
                 }
                 # show message about std mass
                 sub <- names(table(list$sda$diff2))
@@ -174,7 +185,6 @@ getrda <-
                  digits = 3,
                  top = 20,
                  formula = NULL) {
-
                 if (is.null(formula)) {
                         mz <- unique(mz)
                         dis <- stats::dist(mz, method = "manhattan")
@@ -192,13 +202,13 @@ getrda <-
                         diff2 = round(as.numeric(dis), digits = digits)
                 )
                 freq <-
-                        sort(table(df$diff2),decreasing = TRUE)
+                        sort(table(df$diff2), decreasing = TRUE)
                 message(paste(length(freq), 'pmd found.'))
                 if (!is.null(top)) {
                         freq <- utils::head(freq, top)
                 }
                 sda <-
-                        df[(df$diff2 %in% c(as.numeric(names(freq[freq >= freqcutoff])))),]
+                        df[(df$diff2 %in% c(as.numeric(names(freq[freq >= freqcutoff])))), ]
                 # mz <- unique(c(sda$ms1,sda$ms2))
                 pmd <- unique(sda$diff2)[order(unique(sda$diff2))]
                 message(paste(length(pmd), 'pmd used.'))
@@ -232,8 +242,7 @@ getrda <-
 getcda <- function(list,
                    corcutoff = 0.9,
                    rtcutoff = 10,
-                   accuracy = 4){
-
+                   accuracy = 4) {
         mz <- list$mz
         rt <- list$rt
         data <- list$data
@@ -246,9 +255,9 @@ getcda <- function(list,
         df <-
                 data.frame(
                         ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                    1]],
+                                                                       1]],
                         ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                    2]],
+                                                                       2]],
                         diff = as.numeric(dis),
                         rt1 = rt[which(lower.tri(disrt),
                                        arr.ind = TRUE)[, 1]],
@@ -262,7 +271,7 @@ getcda <- function(list,
                         rtgdiff = as.numeric(disrtg),
                         cor = cor[lower.tri(cor)]
                 )
-        list$cda <- df[abs(df$cor) >= corcutoff, ]
+        list$cda <- df[abs(df$cor) >= corcutoff,]
         return(list)
 }
 
@@ -287,63 +296,93 @@ getpmd <-
                  digits = 2,
                  accuracy = 4) {
                 mz <- list$mz
-                rt <- list$rt
                 data <- list$data
-                dis <- stats::dist(rt, method = "manhattan")
-                fit <- stats::hclust(dis)
-                rtg <- stats::cutree(fit, h = rtcutoff)
                 # PMD analysis
                 # remove isomers
-                dis <- stats::dist(mz, method = "manhattan")
-                disrt <- stats::dist(rt, method = "manhattan")
-                disrtg <- stats::dist(rtg, method = "manhattan")
+                if(!is.null(list$rt)){
+                        rt <- list$rt
+                        dis <- stats::dist(rt, method = "manhattan")
+                        fit <- stats::hclust(dis)
+                        rtg <- stats::cutree(fit, h = rtcutoff)
+                        disrt <- stats::dist(rt, method = "manhattan")
+                        disrtg <- stats::dist(rtg, method = "manhattan")
+                        dis <- stats::dist(mz, method = "manhattan")
+                        cor <- stats::cor(t(data))
+                        df <- data.frame(
+                                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                               1]],
+                                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                               2]],
+                                diff = as.numeric(dis),
+                                rt1 = rt[which(lower.tri(disrt),
+                                               arr.ind = TRUE)[, 1]],
+                                rt2 = rt[which(lower.tri(disrt),
+                                               arr.ind = TRUE)[, 2]],
+                                diffrt = as.numeric(disrt),
+                                rtg1 = rtg[which(lower.tri(disrtg),
+                                                 arr.ind = TRUE)[, 1]],
+                                rtg2 = rtg[which(lower.tri(disrtg),
+                                                 arr.ind = TRUE)[, 2]],
+                                rtgdiff = as.numeric(disrtg),
+                                cor = cor[lower.tri(cor)]
+                        )
+                        if (!is.null(corcutoff)) {
+                                df <- df[abs(df$cor) >= corcutoff,]
+                        }
 
-                cor <- stats::cor(t(data))
+                        df$diff2 <- round(df$diff, digits)
 
-                df <- data.frame(
-                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                    1]],
-                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                    2]],
-                        diff = as.numeric(dis),
-                        rt1 = rt[which(lower.tri(disrt),
-                                       arr.ind = TRUE)[, 1]],
-                        rt2 = rt[which(lower.tri(disrt),
-                                       arr.ind = TRUE)[, 2]],
-                        diffrt = as.numeric(disrt),
-                        rtg1 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = TRUE)[, 1]],
-                        rtg2 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = TRUE)[, 2]],
-                        rtgdiff = as.numeric(disrtg),
-                        cor = cor[lower.tri(cor)]
-                )
+                        df <- df[df$rtgdiff > 0 & df$diff2 == pmd, ]
+                        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+                        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
+                        rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
+                        rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
+                        list$pmd <- df
 
-                if (!is.null(corcutoff)) {
-                        df <- df[abs(df$cor) >= corcutoff, ]
+                        index <-
+                                c(paste(round(ms1, accuracy), rtg1), paste(round(ms2, accuracy), rtg2))
+                        index <- unique(index)
+                        indexh <- paste(round(ms1, accuracy), rtg1)
+                        indexh <- unique(indexh)
+                        indexl <- paste(round(ms2, accuracy), rtg2)
+                        indexl <- unique(indexl)
+
+                        index0 <- paste(round(list$mz, accuracy), rtg)
+                        list$pmdindex <- index0 %in% index
+                        list$pmdindexh <- index0 %in% indexh
+                        list$pmdindexl <- index0 %in% indexl
+                }else{
+                        dis <- stats::dist(mz, method = "manhattan")
+                        cor <- stats::cor(t(data))
+                        df <- data.frame(
+                                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                               1]],
+                                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                               2]],
+                                diff = as.numeric(dis),
+                                cor = cor[lower.tri(cor)]
+                        )
+                        if (!is.null(corcutoff)) {
+                                df <- df[abs(df$cor) >= corcutoff,]
+                        }
+
+                        df$diff2 <- round(df$diff, digits)
+
+                        df <- df[df$diff2 == pmd, ]
+                        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+                        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
+                        list$pmd <- df
+                        index <-
+                                c(round(ms1, accuracy), round(ms2, accuracy))
+                        index <- unique(index)
+                        indexh <- unique(round(ms1, accuracy))
+                        indexl <- unique(round(ms2, accuracy))
+
+                        index0 <- round(list$mz, accuracy)
+                        list$pmdindex <- index0 %in% index
+                        list$pmdindexh <- index0 %in% indexh
+                        list$pmdindexl <- index0 %in% indexl
                 }
-
-                df$diff2 <- round(df$diff, digits)
-
-                df <- df[df$rtgdiff > 0 & df$diff2 == pmd,]
-                ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
-                ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
-                rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
-                rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
-                list$pmd <- df
-
-                index <-
-                        c(paste(round(ms1, accuracy), rtg1), paste(round(ms2, accuracy), rtg2))
-                index <- unique(index)
-                indexh <- paste(round(ms1, accuracy), rtg1)
-                indexh <- unique(indexh)
-                indexl <- paste(round(ms2, accuracy), rtg2)
-                indexl <- unique(indexl)
-
-                index0 <- paste(round(list$mz, accuracy), rtg)
-                list$pmdindex <- index0 %in% index
-                list$pmdindexh <- index0 %in% indexh
-                list$pmdindexl <- index0 %in% indexl
                 return(list)
         }
 #' Get reaction chain for specific mass to charge ratio
@@ -361,122 +400,134 @@ getpmd <-
 #' # check metabolites of C18H39NO
 #' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 #' @export
-getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, corcutoff=0.6,ppm=25) {
-        if (is.character(mass)) {
-                mass <- unlist(Map(enviGCMS::getmass, mass))
-        }
-        massup <- mass+mass*ppm/10e6
-        massdown <- mass-mass*ppm/10e6
-        updown <- vapply(Map(function(x)
-                x < massup & x > massdown, list$mz), function(x)
-                        sum(x&TRUE)>0,TRUE)
-        mass <- list$mz[updown]
-        mass <- unique(round(mass,accuracy))
-
-        mz <- list$mz
-        rt <- list$rt
-        data <- list$data
-        dis <- stats::dist(rt, method = "manhattan")
-        fit <- stats::hclust(dis)
-        rtg <- stats::cutree(fit, h = rtcutoff)
-        # PMD analysis
-        # remove isomers
-        dis <- stats::dist(mz, method = "manhattan")
-        disrt <- stats::dist(rt, method = "manhattan")
-        disrtg <- stats::dist(rtg, method = "manhattan")
-        cor <- stats::cor(t(data))
-
-        df <- data.frame(
-                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                            1]],
-                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                            2]],
-                diff = as.numeric(dis),
-                rt1 = rt[which(lower.tri(disrt),
-                               arr.ind = TRUE)[, 1]],
-                rt2 = rt[which(lower.tri(disrt),
-                               arr.ind = TRUE)[, 2]],
-                diffrt = as.numeric(disrt),
-                rtg1 = rtg[which(lower.tri(disrtg),
-                                 arr.ind = TRUE)[, 1]],
-                rtg2 = rtg[which(lower.tri(disrtg),
-                                 arr.ind = TRUE)[, 2]],
-                rtgdiff = as.numeric(disrtg),
-                cor = cor[lower.tri(cor)]
-        )
-
-        if (!is.null(corcutoff)) {
-                df <- df[abs(df$cor) >= corcutoff, ]
-        }
-
-        df$diff2 <- round(df$diff, digits)
-
-        df <- df[df$rtgdiff > 0,]
-        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
-        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
-        rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
-        rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
-
-        sda <- df[df$diff2 %in% diff,]
-        seed <- NULL
-        ms1 <- round(sda$ms1, digits = accuracy)
-        ms2 <- round(sda$ms2, digits = accuracy)
-        if (length(mass) == 1) {
-                mass <- round(mass, accuracy)
-                sdat <-
-                        unique(c(mass, ms2[ms1 %in% mass], ms1[ms2 %in% mass]))
-                while (!identical(sdat, seed)) {
-                        seed <- sdat
-                        sdat <-
-                                unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
+getchain <-
+        function(list,
+                 diff,
+                 mass,
+                 digits = 2,
+                 accuracy = 4,
+                 rtcutoff = 10,
+                 corcutoff = 0.6,
+                 ppm = 25) {
+                if (is.character(mass)) {
+                        mass <- unlist(Map(enviGCMS::getmass, mass))
                 }
-                list$sdac <- sda[ms1 %in% sdat | ms2 %in% sdat ,]
-                return(list)
-        } else if (length(mass) == 0) {
-                warning(
-                        'No mass input and all mass in the list will be used for reaction chain construction!'
+                massup <- mass + mass * ppm / 10e6
+                massdown <- mass - mass * ppm / 10e6
+                updown <- vapply(Map(function(x)
+                        x < massup & x > massdown, list$mz), function(x)
+                                sum(x & TRUE) > 0, TRUE)
+                mass <- list$mz[updown]
+                mass <- unique(round(mass, accuracy))
+
+                mz <- list$mz
+                rt <- list$rt
+                data <- list$data
+                dis <- stats::dist(rt, method = "manhattan")
+                fit <- stats::hclust(dis)
+                rtg <- stats::cutree(fit, h = rtcutoff)
+                # PMD analysis
+                # remove isomers
+                dis <- stats::dist(mz, method = "manhattan")
+                disrt <- stats::dist(rt, method = "manhattan")
+                disrtg <- stats::dist(rtg, method = "manhattan")
+                cor <- stats::cor(t(data))
+
+                df <- data.frame(
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                       1]],
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
+                                                                       2]],
+                        diff = as.numeric(dis),
+                        rt1 = rt[which(lower.tri(disrt),
+                                       arr.ind = TRUE)[, 1]],
+                        rt2 = rt[which(lower.tri(disrt),
+                                       arr.ind = TRUE)[, 2]],
+                        diffrt = as.numeric(disrt),
+                        rtg1 = rtg[which(lower.tri(disrtg),
+                                         arr.ind = TRUE)[, 1]],
+                        rtg2 = rtg[which(lower.tri(disrtg),
+                                         arr.ind = TRUE)[, 2]],
+                        rtgdiff = as.numeric(disrtg),
+                        cor = cor[lower.tri(cor)]
                 )
-                sdac <- NULL
-                mass <- round(list$mz, accuracy)
-                for (i in seq_along(mass)) {
-                        sdat <-
-                                unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
-                        if (length(sdat) != 1) {
-                                while (!identical(sdat, seed)) {
-                                        seed <- sdat
-                                        sdat <-
-                                                unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
-                                }
-                                sdact <-
-                                        sda[ms1 %in% sdat | ms2 %in% sdat ,]
-                                sdact$mass <- mass[i]
-                                sdac <- rbind.data.frame(sdac, sdact)
-                        }
-                }
-                list$sdac <- sdac[!duplicated(sdac), ]
-                return(list)
-        } else{
-                sdac <- NULL
-                mass <- round(mass, accuracy)
-                for (i in seq_along(mass)) {
-                        sdat <-
-                                unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
-                        if (length(sdat) != 1) {
-                                while (!identical(sdat, seed)) {
-                                        seed <- sdat
-                                        sdat <-
-                                                unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
-                                }
-                                sdact <- sda[ms1 %in% sdat | ms2 %in% sdat,]
-                                sdact$mass <- mass[i]
-                                sdac <- rbind.data.frame(sdac, sdact)
-                        }
-                }
-                list$sdac <- sdac[!duplicated(sdac), ]
-                return(list)
-        }
 
-}
+                if (!is.null(corcutoff)) {
+                        df <- df[abs(df$cor) >= corcutoff,]
+                }
+
+                df$diff2 <- round(df$diff, digits)
+
+                df <- df[df$rtgdiff > 0, ]
+                ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+                ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
+                rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
+                rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
+
+                sda <- df[df$diff2 %in% diff, ]
+                seed <- NULL
+                ms1 <- round(sda$ms1, digits = accuracy)
+                ms2 <- round(sda$ms2, digits = accuracy)
+                if (length(mass) == 1) {
+                        mass <- round(mass, accuracy)
+                        sdat <-
+                                unique(c(mass, ms2[ms1 %in% mass], ms1[ms2 %in% mass]))
+                        while (!identical(sdat, seed)) {
+                                seed <- sdat
+                                sdat <-
+                                        unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
+                        }
+                        list$sdac <- sda[ms1 %in% sdat | ms2 %in% sdat , ]
+                        return(list)
+                } else if (length(mass) == 0) {
+                        warning(
+                                'No mass input and all mass in the list will be used for reaction chain construction!'
+                        )
+                        sdac <- NULL
+                        mass <- round(list$mz, accuracy)
+                        for (i in seq_along(mass)) {
+                                sdat <-
+                                        unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
+                                if (length(sdat) != 1) {
+                                        while (!identical(sdat, seed)) {
+                                                seed <- sdat
+                                                sdat <-
+                                                        unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
+                                        }
+                                        sdact <-
+                                                sda[ms1 %in% sdat |
+                                                            ms2 %in% sdat , ]
+                                        sdact$mass <- mass[i]
+                                        sdac <-
+                                                rbind.data.frame(sdac, sdact)
+                                }
+                        }
+                        list$sdac <- sdac[!duplicated(sdac),]
+                        return(list)
+                } else{
+                        sdac <- NULL
+                        mass <- round(mass, accuracy)
+                        for (i in seq_along(mass)) {
+                                sdat <-
+                                        unique(c(mass[i], ms2[ms1 %in% mass[i]], ms1[ms2 %in% mass[i]]))
+                                if (length(sdat) != 1) {
+                                        while (!identical(sdat, seed)) {
+                                                seed <- sdat
+                                                sdat <-
+                                                        unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
+                                        }
+                                        sdact <-
+                                                sda[ms1 %in% sdat | ms2 %in% sdat, ]
+                                        sdact$mass <- mass[i]
+                                        sdac <-
+                                                rbind.data.frame(sdac, sdact)
+                                }
+                        }
+                        list$sdac <- sdac[!duplicated(sdac),]
+                        return(list)
+                }
+
+        }
 
 #' Get quantitative paired peaks list for specific reaction/pmd
 #' @param list a list with mzrt profile and data
@@ -484,9 +535,11 @@ getchain <- function(list, diff, mass, digits = 2, accuracy = 4, rtcutoff= 10, c
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
-#' @param ratiocv ratio cv cutoff for quantitative paired peaks, default 30
+#' @param cvcutoff ratio or intensity cv cutoff for quantitative paired peaks, default 30
+#' @param method quantification method can be 'static','dynamic1','dynamic2','all'. See details.
 #' @param outlier logical, if true, outlier of ratio will be removed, default False.
 #' @param ... other parameters for getpmd
+#' @details PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic1' will only consider the paired masses with one of peaks stable across samples; 'dynamic2' will only consider the paired masses with none peaks stable across samples and normalization will be performed; 'all' will combine all of the available PMDs together by normalization for reaction quantification.
 #' @return list with quantitative paired peaks.
 #' @examples
 #' data(spmeinvivo)
@@ -499,8 +552,9 @@ getreact <-
                  rtcutoff = 10,
                  digits = 2,
                  accuracy = 4,
-                 ratiocv = 30,
+                 cvcutoff = 30,
                  outlier = FALSE,
+                 method = 'static',
                  ...) {
                 p <-
                         pmd::getpmd(
@@ -511,43 +565,365 @@ getreact <-
                                 accuracy = accuracy,
                                 ...
                         )
+                # with retention time
                 getr <- function(v) {
                         ratio <- NULL
                         ratio1 <-
-                                data[list$mz %in% v[1] & list$rt %in% v[4], ]
+                                data[list$mz %in% v[1] &
+                                             list$rt %in% v[4],]
                         ratio2 <-
-                                data[list$mz %in% v[2] & list$rt %in% v[5], ]
-                        ratio <- as.numeric(ratio1) / as.numeric(ratio2)
-                        if(outlier){
+                                data[list$mz %in% v[2] &
+                                             list$rt %in% v[5],]
+                        ratio <-
+                                as.numeric(ratio1) / as.numeric(ratio2)
+                        if (outlier) {
                                 outlier_values <- grDevices::boxplot.stats(ratio)$out
-                                ratio <- ratio[!ratio%in%outlier_values]
+                                ratio <-
+                                        ratio[!ratio %in% outlier_values]
                         }
                         rsd <-
                                 stats::sd(ratio, na.rm = TRUE) / mean(ratio, na.rm = TRUE) * 100
-                        return(rsd)
+                        rsdh <-
+                                stats::sd(as.numeric(ratio1), na.rm = TRUE) / mean(as.numeric(ratio1), na.rm = TRUE) * 100
+                        rsdl <-
+                                stats::sd(as.numeric(ratio2), na.rm = TRUE) / mean(as.numeric(ratio2), na.rm = TRUE) * 100
+                        return(list(
+                                rsd = unlist(rsd),
+                                rsdh = unlist(rsdh),
+                                rsdl = unlist(rsdl)
+                        ))
                 }
-                if(sum(p$pmdindex)>0){
+                # without retention time
+                getr2 <- function(v) {
+                        ratio <- NULL
+                        ratio1 <-
+                                data[list$mz %in% v[1],]
+                        ratio2 <-
+                                data[list$mz %in% v[2],]
+                        ratio <-
+                                as.numeric(ratio1) / as.numeric(ratio2)
+                        if (outlier) {
+                                outlier_values <- grDevices::boxplot.stats(ratio)$out
+                                ratio <-
+                                        ratio[!ratio %in% outlier_values]
+                        }
+                        rsd <-
+                                stats::sd(ratio, na.rm = TRUE) / mean(ratio, na.rm = TRUE) * 100
+                        rsdh <-
+                                stats::sd(as.numeric(ratio1), na.rm = TRUE) / mean(as.numeric(ratio1), na.rm = TRUE) * 100
+                        rsdl <-
+                                stats::sd(as.numeric(ratio2), na.rm = TRUE) / mean(as.numeric(ratio2), na.rm = TRUE) * 100
+                        return(list(
+                                rsd = unlist(rsd),
+                                rsdh = unlist(rsdh),
+                                rsdl = unlist(rsdl)
+                        ))
+                }
+                if (sum(p$pmdindex) > 0) {
                         list <- enviGCMS::getfilter(p, p$pmdindex)
                         data <- list$data
                         pmd <- list$pmd
-                        list$pmd$r <- apply(pmd, 1, getr)
-                        list$pmd <- list$pmd[list$pmd$r < ratiocv , ]
-                        list$pmd <- list$pmd[stats::complete.cases(list$pmd),]
-                        if(nrow(list$pmd)>0){
-                                idx <- paste(list$mz, list$rt)
-                                idx2 <-
-                                        unique(c(
+                        if(!is.null(list$rt)){
+                                ratio <- apply(pmd, 1, getr)
+                        }else{
+                                ratio <- apply(pmd, 1, getr2)
+                        }
+
+                        list$pmd$r <-
+                                sapply(ratio, function(x)
+                                        x$rsd)
+                        list$pmd$rh <-
+                                sapply(ratio, function(x)
+                                        x$rsdh)
+                        list$pmd$rl <-
+                                sapply(ratio, function(x)
+                                        x$rsdl)
+                        if (method == 'static') {
+                                list$pmd <- list$pmd[list$pmd$r < cvcutoff ,]
+                                list$pmd <-
+                                        list$pmd[stats::complete.cases(list$pmd), ]
+                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
+                                        idx <- paste(list$mz, list$rt)
+                                        idx2 <- unique(c(
                                                 paste(list$pmd$ms1, list$pmd$rt1),
                                                 paste(list$pmd$ms2, list$pmd$rt2)
                                         ))
-                                list <- enviGCMS::getfilter(list, idx %in% idx2)
-                                return(list)
-                        }else{
-                                message('No quantitative peaks could be used.')
-                        }
+                                        list <-
+                                                enviGCMS::getfilter(list, idx %in% idx2)
+                                        idx <-
+                                                paste(list$mz, list$rt)
+                                        pmdh <-
+                                                list$data[match(paste(list$pmd$ms1, list$pmd$rt1),
+                                                                idx), ]
+                                        pmdl <-
+                                                list$data[match(paste(list$pmd$ms2, list$pmd$rt2),
+                                                                idx), ]
+                                        list$pmddata <- pmdh + pmdl
+                                        return(list)
+                                } else if (nrow(list$pmd) > 0&is.null(list$rt)){
+                                        idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
+                                        list <-
+                                                enviGCMS::getfilter(list, list$mz %in% idx)
+                                        pmdh <-
+                                                list$data[match(list$pmd$ms1,list$mz), ]
+                                        pmdl <-
+                                                list$data[match(list$pmd$ms2,list$mz), ]
+                                        list$pmddata <- pmdh + pmdl
+                                        return(list)
+                                } else {
+                                        message('No static quantitative peaks could be used.')
+                                }
+                        } else if (method == 'dynamic1') {
+                                list$pmd <-
+                                        list$pmd[list$pmd$rh < cvcutoff | list$pmd$rl < cvcutoff,]
+                                list$pmd <-
+                                        list$pmd[stats::complete.cases(list$pmd), ]
+                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
+                                        idx <- paste(list$mz, list$rt)
+                                        idx2 <- unique(c(
+                                                paste(list$pmd$ms1, list$pmd$rt1),
+                                                paste(list$pmd$ms2, list$pmd$rt2)
+                                        ))
+                                        list <-
+                                                enviGCMS::getfilter(list, idx %in% idx2)
+                                        idx <-
+                                                paste(list$mz, list$rt)
+                                        idh <-
+                                                list$pmd$rh < cvcutoff
+                                        idl <-
+                                                list$pmd$rl < cvcutoff
+                                        pmddatal <-
+                                                pmddatah <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddatah[idh, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms2[idh],
+                                                        list$pmd$rt2[idh]
+                                                ),
+                                                idx), ]
+                                        pmddatal[idl, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms1[idl],
+                                                        list$pmd$rt1[idl]
+                                                ),
+                                                idx), ]
+                                        pmddatah[is.na(pmddatah)] <-
+                                                pmddatal[is.na(pmddatal)] <- 0
+                                        list$pmddata <-
+                                                pmddatah + pmddatal
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                        return(list)
+                                } else if (nrow(list$pmd) > 0&is.null(list$rt)){
+                                        idx <- unique(c(list$pmd$ms1,list$pmd$ms2)
+                                        )
+                                        list <-
+                                                enviGCMS::getfilter(list, list$mz %in% idx)
+                                        idh <-
+                                                list$pmd$rh < cvcutoff
+                                        idl <-
+                                                list$pmd$rl < cvcutoff
+                                        pmddatal <-
+                                                pmddatah <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddatah[idh, ] <-
+                                                list$data[match(
+                                                        list$pmd$ms2[idh],
+                                                list$mz), ]
+                                        pmddatal[idl, ] <-
+                                                list$data[match(
+                                                        list$pmd$ms1[idl],
+                                                list$mz), ]
+                                        pmddatah[is.na(pmddatah)] <-
+                                                pmddatal[is.na(pmddatal)] <- 0
+                                        list$pmddata <-
+                                                pmddatah + pmddatal
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                }else{
+                                        message(
+                                                'No dynamic quantitative peak could be used with one of peaks stable across samples.'
+                                        )
+                                }
+                        } else if (method == 'dynamic2') {
+                                list$pmd <-
+                                        list$pmd[!(list$pmd$rh < cvcutoff | list$pmd$rl < cvcutoff),]
+                                list$pmd <-
+                                        list$pmd[stats::complete.cases(list$pmd), ]
+                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
+                                        idx <- paste(list$mz, list$rt)
+                                        idx2 <- unique(c(
+                                                paste(list$pmd$ms1, list$pmd$rt1),
+                                                paste(list$pmd$ms2, list$pmd$rt2)
+                                        ))
+                                        list <-
+                                                enviGCMS::getfilter(list, idx %in% idx2)
+                                        idx <-
+                                                paste(list$mz, list$rt)
+                                        pmddatah <-
+                                                list$data[match(paste(list$pmd$ms2, list$pmd$rt2),
+                                                                idx), ]
+                                        pmddatah2 <-
+                                                apply(pmddatah, 1, min)
+                                        pmddatal <-
+                                                list$data[match(paste(list$pmd$ms1, list$pmd$rt1),
+                                                                idx), ]
+                                        pmddatal2 <-
+                                                apply(pmddatal, 1, min)
 
-                }else{
+                                        idy <- pmddatah2 > pmddatal2
+                                        norm <-
+                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        pmddata <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddata[idy, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms1[idy],
+                                                        list$pmd$rt1[idy]
+                                                ),
+                                                idx), ]
+                                        pmddata[!idy, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms2[!idy],
+                                                        list$pmd$rt2[!idy]
+                                                ),
+                                                idx), ]
+                                        list$pmddata <- pmddata / norm
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                        return(list)
+                                } else if (nrow(list$pmd) > 0&is.null(list$rt)){
+                                        idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
+                                        list <-
+                                                enviGCMS::getfilter(list, list$mz %in% idx)
+                                        pmddatah <-
+                                                list$data[match(list$pmd$ms2,list$mz), ]
+                                        pmddatah2 <-
+                                                apply(pmddatah, 1, min)
+                                        pmddatal <-
+                                                list$data[match(list$pmd$ms1,list$mz), ]
+                                        pmddatal2 <-
+                                                apply(pmddatal, 1, min)
+
+                                        idy <- pmddatah2 > pmddatal2
+                                        norm <-
+                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        pmddata <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddata[idy, ] <-
+                                                list$data[match(
+                                                        list$pmd$ms1[idy],
+                                                list$mz), ]
+                                        pmddata[!idy, ] <-
+                                                list$data[match(list$pmd$ms2[!idy],
+                                                list$mz), ]
+                                        list$pmddata <- pmddata / norm
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                        return(list)
+
+                                        }
+                                else{
+                                        message(
+                                                'No dynamic quantitative peak could be used with none of peaks stable across samples.'
+                                        )
+                                }
+
+                        } else if (method == 'all') {
+                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
+                                        idx <- paste(list$mz, list$rt)
+                                        idx2 <- unique(c(
+                                                paste(list$pmd$ms1, list$pmd$rt1),
+                                                paste(list$pmd$ms2, list$pmd$rt2)
+                                        ))
+                                        list <-
+                                                enviGCMS::getfilter(list, idx %in% idx2)
+                                        idx <-
+                                                paste(list$mz, list$rt)
+                                        pmddatah <-
+                                                list$data[match(paste(list$pmd$ms2, list$pmd$rt2),
+                                                                idx), ]
+                                        pmddatah2 <-
+                                                apply(pmddatah, 1, min)
+                                        pmddatal <-
+                                                list$data[match(paste(list$pmd$ms1, list$pmd$rt1),
+                                                                idx), ]
+                                        pmddatal2 <-
+                                                apply(pmddatal, 1, min)
+
+                                        idy <- pmddatah2 > pmddatal2
+                                        norm <-
+                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        pmddata <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddata[idy, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms1[idy],
+                                                        list$pmd$rt1[idy]
+                                                ),
+                                                idx), ]
+                                        pmddata[!idy, ] <-
+                                                list$data[match(paste(
+                                                        list$pmd$ms2[!idy],
+                                                        list$pmd$rt2[!idy]
+                                                ),
+                                                idx), ]
+                                        list$pmddata <- pmddata / norm
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                        return(list)
+                                }else if (nrow(list$pmd) > 0&is.null(list$rt)) {
+                                        idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
+                                        list <-
+                                                enviGCMS::getfilter(list, list$mz %in% idx)
+                                        pmddatah <-
+                                                list$data[match(list$pmd$ms2, list$mz), ]
+                                        pmddatah2 <-
+                                                apply(pmddatah, 1, min)
+                                        pmddatal <-
+                                                list$data[match(list$pmd$ms1, list$mz), ]
+                                        pmddatal2 <-
+                                                apply(pmddatal, 1, min)
+
+                                        idy <- pmddatah2 > pmddatal2
+                                        norm <-
+                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        pmddata <-
+                                                as.data.frame(matrix(
+                                                        nrow = nrow(list$pmd),
+                                                        ncol = ncol(list$data)
+                                                ))
+                                        pmddata[idy, ] <-
+                                                list$data[match(
+                                                        list$pmd$ms1[idy],list$mz), ]
+                                        pmddata[!idy, ] <-
+                                                list$data[match(
+                                                        list$pmd$ms2[!idy],list$mz), ]
+                                        list$pmddata <- pmddata / norm
+                                        colnames(list$pmddata) <-
+                                                colnames(list$data)
+                                }else{
+                                        message(
+                                                'No pmd peaks could be found.'
+                                        )
+                                }
+                        }
+                } else{
                         message('No pmd peaks could be found.')
                 }
         }
-

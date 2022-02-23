@@ -124,11 +124,45 @@ Be careful, one compound could be endogenous for one sample while exogenous for 
 Biomarker always means biomarker compounds. However, if we could quantify the reaction relationship, we could use biomarker reaction to trace certain biological process. You could use `getreact` to extract the ion pairs shared the same PMD and intensity ratio RSD% lower than certain cutoff. Then the sum of the intensity of all PMD pairs' ions could be used to compare the reaction level changes among samples.
 
 ```{r}
-pmd <- getreact(spmeinvivo,pmd=15.99,ratiocv = 30)
-data15.99Da <- apply(pmd$data,2,sum)
-# show the quantative reaction level across samples
-data15.99Da
+pmd <- getreact(spmeinvivo,pmd=15.99)
+# show the ions with the same PMD
+head(pmd$pmd)
+# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
+head(pmd$pmddata)
 ```
+
+If your data don't have retention time, reaction level change can also be checked.
+
+```{r}
+spmeinvivo$rt <- NULL
+pmd <- getreact(spmeinvivo,pmd=15.99)
+# show the ions with the same PMD
+head(pmd$pmd)
+# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
+head(pmd$pmddata)
+```
+
+Now we have four methods to compute the quantitative PMD responses and user should select method depending on research purposes. 'static' will only consider the stable mass pairs across samples; 'dynamic1' will only consider the paired masses with one of peaks stable across samples; 'dynamic2' will only consider the paired masses with none peaks stable across samples and normalization will be performed; 'all' will combine all of the available PMDs together by normalization for reaction quantification. The last two methods will normalize the intensity data.
+
+```{r}
+data("spmeinvivo")
+pmd <- getreact(spmeinvivo,pmd=15.99,method = 'dynamic1')
+# show the ions with the same PMD
+head(pmd$pmd)
+# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
+head(pmd$pmddata)
+pmd <- getreact(spmeinvivo,pmd=15.99,method = 'dynamic2')
+# show the ions with the same PMD
+head(pmd$pmd)
+# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
+head(pmd$pmddata)
+pmd <- getreact(spmeinvivo,pmd=15.99,method = 'all')
+# show the ions with the same PMD
+head(pmd$pmd)
+# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
+head(pmd$pmddata)
+```
+
 
 ## PMD Reaction Database
 
