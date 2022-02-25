@@ -1,7 +1,9 @@
 # pmd 0.2.4
 
 - add support for mass only data
-- add more methods to quantitative the pmd
+- add more quantitative methods for the pmd
+- add support for multiple pmds in getpmd function
+- update reactomics vignette to add more details for quantitative analysis of PMD
 
 # pmd 0.2.3
 

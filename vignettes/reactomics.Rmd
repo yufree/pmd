@@ -163,6 +163,47 @@ head(pmd$pmd)
 head(pmd$pmddata)
 ```
 
+You can also output the quantitative results of all high frequency PMDs existing in the data.
+
+```{r}
+data("spmeinvivo")
+# remove redundant peaks
+list <- globalstd(spmeinvivo,sda = T)
+newlist <- enviGCMS::getfilter(list,rowindex = list$stdmassindex)
+# get high frequency pmd
+hfpmd <- unique(newlist$sda$diff2)
+# generate quantitative results
+pmd <- getreact(newlist,pmd=hfpmd)
+# output the kegg pmd in the data
+table(pmd$pmd$diff2)
+# output quantitative result for each PMD
+head(pmd$pmddata)
+# output quantitative result for unique PMD
+upmd <- aggregate(pmd$pmddata, by=list(pmd$pmd$diff2),sum)
+# column for samples and row for unique PMD
+head(upmd)
+```
+
+You can also output the quantitative results of all PMDs existing in current KEGG database.
+
+```{r}
+# output all existing PMD in KEGG
+keggpmd <- unique(round(keggrall$pmd,2))
+data("spmeinvivo")
+# remove redundant peaks
+list <- globalstd(spmeinvivo)
+newlist <- enviGCMS::getfilter(list,rowindex = list$stdmassindex)
+# generate quantitative results
+pmd <- getreact(newlist,pmd=keggpmd)
+# output the kegg pmd in the data
+table(pmd$pmd$diff2)
+# output quantitative result for each PMD
+head(pmd$pmddata)
+# output quantitative result for unique PMD
+upmd <- aggregate(pmd$pmddata, by=list(pmd$pmd$diff2),sum)
+# column for samples and row for unique PMD
+head(upmd)
+```
 
 ## PMD Reaction Database
 

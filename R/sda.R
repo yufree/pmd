@@ -277,12 +277,12 @@ getcda <- function(list,
 
 #' Get pmd for specific reaction
 #' @param list a list with mzrt profile
-#' @param pmd a specific paired mass distance
+#' @param pmd a specific paired mass distance or a vector of pmds
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
 #' @param corcutoff cutoff of the correlation coefficient, default NULL
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
-#' @return list with paired peaks for specific pmd.
+#' @return list with paired peaks for specific pmd or pmds.
 #' @examples
 #' data(spmeinvivo)
 #' pmd <- getpmd(spmeinvivo,pmd=15.99)
@@ -332,7 +332,7 @@ getpmd <-
 
                         df$diff2 <- round(df$diff, digits)
 
-                        df <- df[df$rtgdiff > 0 & df$diff2 == pmd, ]
+                        df <- df[df$rtgdiff > 0 & df$diff2 %in% pmd, ]
                         ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
                         ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
                         rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
@@ -368,7 +368,7 @@ getpmd <-
 
                         df$diff2 <- round(df$diff, digits)
 
-                        df <- df[df$diff2 == pmd, ]
+                        df <- df[df$diff2 %in% pmd, ]
                         ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
                         ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
                         list$pmd <- df
@@ -623,12 +623,12 @@ getreact <-
                         list <- enviGCMS::getfilter(p, p$pmdindex)
                         data <- list$data
                         pmd <- list$pmd
+
                         if(!is.null(list$rt)){
                                 ratio <- apply(pmd, 1, getr)
                         }else{
                                 ratio <- apply(pmd, 1, getr2)
                         }
-
                         list$pmd$r <-
                                 sapply(ratio, function(x)
                                         x$rsd)
@@ -638,6 +638,7 @@ getreact <-
                         list$pmd$rl <-
                                 sapply(ratio, function(x)
                                         x$rsdl)
+
                         if (method == 'static') {
                                 list$pmd <- list$pmd[list$pmd$r < cvcutoff ,]
                                 list$pmd <-
