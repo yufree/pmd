@@ -25,6 +25,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,18 +39,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -73,7 +69,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/yufree/pmd/">
+  <a href="https://github.com/yufree/pmd/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -92,11 +88,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reactomics</h1>
-                        <h4 class="author">Miao Yu</h4>
+                        <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 class="date">2021-09-15</h4>
+            <h4 data-toc-skip class="date">2022-02-23</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/reactomics.Rmd"><code>vignettes/reactomics.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/vignettes/reactomics.Rmd" class="external-link"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
 
     </div>
@@ -104,19 +100,19 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/">pmd</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/" class="external-link">pmd</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></code></pre></div>
 <p>PMD based Reactomics tried to evaluate untargeted HRMS profiles at reaction level. Reactomics is the extension of structure/reaction directed analysis for HRMS data and PMDs are treated as relationship unit for further discussion as compounds for metabolomics. Reaction level evaluation could be found in PMD network analysis, Source appointment and biomarker reaction discovery.</p>
-<div id="pmd-network-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pmd-network-analysis" class="anchor"></a>PMD network analysis</h2>
+<div class="section level2">
+<h2 id="pmd-network-analysis">PMD network analysis<a class="anchor" aria-label="anchor" href="#pmd-network-analysis"></a>
+</h2>
 <p>In untargeted metabolites profiles from HRMS, two ions or peaks could be treated together as long as they could be connected by relationship. Regular untargeted workflow prefers intensity correlation between compounds. However, PMD could also be the chemical bridge between two compounds or ions. For example, oxidation would add oxygen atom to the parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or compound could be involved in multiple reactions. In this case, we could build PMD network for certain ion or compound.</p>
 <p>However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.</p>
 <p>PMD network analysis is the analysis to check or explorer the PMD relationship among co-existed ions from one sample or multiple samples. The edge between ions in the network means certain PMD relationship are valid in this data set. Meanwhile, the intensity correlation between paired ions could also be considered to connect the vertices. Such network is build based on local recursive search for all possible connections.</p>
 <p>PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites’ MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get the overview of metabolites networks. Identification could follow the discovery from MS1 data.</p>
 <p>If you have a specific compound and want to check the metabolites of certain PMD, you could use <code>getchain</code> to extract the network of that compounds</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://igraph.org">igraph</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://igraph.org" class="external-link">igraph</a></span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Attaching package: 'igraph'</span>
 <span class="co">#&gt; The following objects are masked from 'package:stats':</span>
@@ -127,25 +123,25 @@
 <span class="co">#&gt;     union</span>
 <span class="co"># check metabolites of C18H39NO</span>
 <span class="co"># Use common PMDs for biological reactions</span>
-<span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getchain.html">getchain</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span>,<span class="fl">58.04</span>,<span class="fl">13.98</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span>,digits <span class="op">=</span> <span class="fl">2</span>,corcutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getchain.html">getchain</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span>,<span class="fl">58.04</span>,<span class="fl">13.98</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span>,digits <span class="op">=</span> <span class="fl">2</span>,corcutoff <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="co"># show as network</span>
-<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span><span class="op">(</span><span class="va">chain</span><span class="op">$</span><span class="va">sdac</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
-<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,vertex.size <span class="op">=</span><span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,vertex.label.dist<span class="op">=</span><span class="fl">1</span>,vertex.color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span> <span class="op">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
-       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
-       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">chain</span><span class="op">$</span><span class="va">sdac</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,vertex.size <span class="op">=</span><span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,vertex.label.dist<span class="op">=</span><span class="fl">1</span>,vertex.color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
+       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
+       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="reactomics_files/figure-html/tarnet-1.png" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Consider the correlation coefficient cutoff</span>
-<span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getchain.html">getchain</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span>,<span class="fl">58.04</span>,<span class="fl">13.98</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span>,digits <span class="op">=</span> <span class="fl">2</span>,corcutoff <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<span class="va">chain</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getchain.html">getchain</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span>,<span class="fl">58.04</span>,<span class="fl">13.98</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span>,digits <span class="op">=</span> <span class="fl">2</span>,corcutoff <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="co"># show as network</span>
-<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span><span class="op">(</span><span class="va">chain</span><span class="op">$</span><span class="va">sdac</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
-<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,vertex.size <span class="op">=</span><span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,vertex.label.dist<span class="op">=</span><span class="fl">1</span>,vertex.color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span> <span class="op">%in%</span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
-       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
-       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">chain</span><span class="op">$</span><span class="va">sdac</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span>,vertex.size <span class="op">=</span><span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,vertex.label.dist<span class="op">=</span><span class="fl">1</span>,vertex.color<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/V.html" class="external-link">V</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">name</span><span class="op">)</span>,<span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fl">286.3101</span>,<span class="st">'red'</span>,<span class="st">'black'</span><span class="op">)</span>, main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
+       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
+       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="reactomics_files/figure-html/tarnet-2.png" width="700"></p>
 <p>Here only three PMD relationship could be found for C18H39NO. The duplicate edges between two vertices or self-loop edges mean isomer related PMD reactions. If we consider the correlation, the network would be trimmed. Since reaction might not always involve correlation, PMD network analysis could found more potential metabolites.</p>
 <p>If you want to see all the independent peaks’ high frequency PMDs as networks for certain sample, the following code will help. This part will use the high frequency PMDs cutoff 12 from the data to build the networks for all the independent peaks.</p>
@@ -174,29 +170,29 @@
 <span class="co">#&gt; 30.05 was found as high frequency PMD. </span>
 <span class="co">#&gt; 126.14 was found as high frequency PMD.</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">sda</span><span class="op">$</span><span class="va">sda</span>
-<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
-<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
-       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
-       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+<span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,
+       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,
+       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 <p><img src="reactomics_files/figure-html/net-1.png" width="700"></p>
 <p>Here we could find clusters of metabolites. We could detect such network community structure.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># network community structure detection</span>
-<span class="va">ceb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/cluster_edge_betweenness.html">cluster_edge_betweenness</a></span><span class="op">(</span><span class="va">net</span>,weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">cor</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> 
+<span class="va">ceb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/cluster_edge_betweenness.html" class="external-link">cluster_edge_betweenness</a></span><span class="op">(</span><span class="va">net</span>,weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">cor</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> 
 <span class="co">#&gt; Warning in cluster_edge_betweenness(net, weights = abs(E(net)$cor), directed =</span>
-<span class="co">#&gt; F): At community.c:460 :Membership vector will be selected based on the lowest</span>
+<span class="co">#&gt; F): At community.c:461 :Membership vector will be selected based on the lowest</span>
 <span class="co">#&gt; modularity score.</span>
 <span class="co">#&gt; Warning in cluster_edge_betweenness(net, weights = abs(E(net)$cor), directed =</span>
-<span class="co">#&gt; F): At community.c:467 :Modularity calculation with weighted edge betweenness</span>
+<span class="co">#&gt; F): At community.c:468 :Modularity calculation with weighted edge betweenness</span>
 <span class="co">#&gt; community detection might not make sense -- modularity treats edge weights as</span>
 <span class="co">#&gt; similarities while edge betwenness treats them as distances</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">ceb</span>, <span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,<span class="op">)</span> </code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ceb</span>, <span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,<span class="op">)</span> </code></pre></div>
 <p><img src="reactomics_files/figure-html/nwa-1.png" width="700"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># output membership</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span><span class="op">(</span><span class="va">ceb</span><span class="op">$</span><span class="va">membership</span>,<span class="va">ceb</span><span class="op">$</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">ceb</span><span class="op">$</span><span class="va">membership</span>,<span class="va">ceb</span><span class="op">$</span><span class="va">names</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;      [,1] [,2]              </span>
 <span class="co">#&gt; [1,] "1"  "146.118268664153"</span>
 <span class="co">#&gt; [2,] "1"  "162.112813715075"</span>
@@ -206,57 +202,500 @@
 <span class="co">#&gt; [6,] "3"  "326.342517752117"</span></code></pre></div>
 <p>Such network could also be build on correlation directed analysis which use correlation between paired peaks to build network.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html">getfilter</a></span><span class="op">(</span><span class="va">std</span>,rowindex <span class="op">=</span> <span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">std</span>,rowindex <span class="op">=</span> <span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span>
 <span class="va">cda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getcda.html">getcda</a></span><span class="op">(</span><span class="va">cbp</span><span class="op">)</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">cda</span><span class="op">$</span><span class="va">cda</span>
 <span class="co"># filter based on retention time differences larger than 2 mins</span>
 <span class="va">df</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span><span class="va">df</span><span class="op">$</span><span class="va">diffrt</span><span class="op">&gt;</span><span class="fl">120</span>,<span class="op">]</span>
-<span class="va">netc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">netc</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,main <span class="op">=</span> <span class="st">'Correlation network'</span><span class="op">)</span></code></pre></div>
+<span class="va">netc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netc</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,main <span class="op">=</span> <span class="st">'Correlation network'</span><span class="op">)</span></code></pre></div>
 <p><img src="reactomics_files/figure-html/cda-1.png" width="700"></p>
 <p>As shown above, correlation network without PMD might merge into one big network, which lose the details of chemical reactions.</p>
-<div id="shiny-application" class="section level3">
-<h3 class="hasAnchor">
-<a href="#shiny-application" class="anchor"></a>Shiny application</h3>
+<div class="section level3">
+<h3 id="shiny-application">Shiny application<a class="anchor" aria-label="anchor" href="#shiny-application"></a>
+</h3>
 <p>The PMD network for certain compound could be generated by run <code><a href="../reference/runPMDnet.html">runPMDnet()</a></code>.</p>
 </div>
 </div>
-<div id="source-appointment" class="section level2">
-<h2 class="hasAnchor">
-<a href="#source-appointment" class="anchor"></a>Source appointment</h2>
+<div class="section level2">
+<h2 id="source-appointment">Source appointment<a class="anchor" aria-label="anchor" href="#source-appointment"></a>
+</h2>
 <p>Peaks from samples could be from endogenous compounds or exogenous compounds. However, it’s hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenobiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/degree.html">degree</a></span><span class="op">(</span><span class="va">net</span>, mode <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/degree.html" class="external-link">degree</a></span><span class="op">(</span><span class="va">net</span>, mode <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span>
 <span class="co">#&gt; [1] 2</span>
-<span class="va">endogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&gt;</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span>
-<span class="va">exogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&lt;=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<span class="va">endogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&gt;</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span>
+<span class="va">exogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&lt;=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></code></pre></div>
 <p>In this case, we will have 31 endogenous compounds while 51 exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.</p>
 <p>Another parameter would be the average network distances. Endogenous compounds could form a larger network with long average network distances while exogenous compounds will connected to network with small average network distances. Such parameter could be used to determine the source of unknown compound by checking the average network distances of the compounds PMD network.</p>
 <p>Be careful, one compound could be endogenous for one sample while exogenous for another sample. In this case, PMD network would give hints on the sources based on the context of the samples.</p>
 </div>
-<div id="biomarker-reaction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#biomarker-reaction" class="anchor"></a>Biomarker reaction</h2>
+<div class="section level2">
+<h2 id="biomarker-reaction">Biomarker reaction<a class="anchor" aria-label="anchor" href="#biomarker-reaction"></a>
+</h2>
 <p>Biomarker always means biomarker compounds. However, if we could quantify the reaction relationship, we could use biomarker reaction to trace certain biological process. You could use <code>getreact</code> to extract the ion pairs shared the same PMD and intensity ratio RSD% lower than certain cutoff. Then the sum of the intensity of all PMD pairs’ ions could be used to compare the reaction level changes among samples.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,ratiocv <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
-<span class="va">data15.99Da</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">data</span>,<span class="fl">2</span>,<span class="va">sum</span><span class="op">)</span>
-<span class="co"># show the quantative reaction level across samples</span>
-<span class="va">data15.99Da</span>
-<span class="co">#&gt; 1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2 </span>
-<span class="co">#&gt;      770551.1      424028.4      801798.5      281980.4      817329.3 </span>
-<span class="co">#&gt; 1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3 </span>
-<span class="co">#&gt;      376884.0      726321.1      883329.8      887317.4</span></code></pre></div>
-</div>
-<div id="pmd-reaction-database" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pmd-reaction-database" class="anchor"></a>PMD Reaction Database</h2>
-<p>To check the pmd reaction database:</p>
+<code class="sourceCode R"><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span>
+<span class="co"># show the ions with the same PMD</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span>
+<span class="co">#&gt;             ms1      ms2     diff     rt1     rt2  diffrt rtg1 rtg2 rtgdiff</span>
+<span class="co">#&gt; 105227 172.9566 156.9622 15.99439 129.489 145.538  16.049   41   20      21</span>
+<span class="co">#&gt; 109378 174.1489 158.1546 15.99434 337.418 470.364 132.946   44   31      13</span>
+<span class="co">#&gt; 114898 175.1481 159.1575 15.99055 614.413 470.364 144.049   17   31      14</span>
+<span class="co">#&gt; 114899 175.1482 159.1575 15.99066 453.178 470.364  17.186   45   31      14</span>
+<span class="co">#&gt; 120400 177.0914 161.0967 15.99471 574.339 645.528  71.189   39   36       3</span>
+<span class="co">#&gt; 212776 209.1552 193.1632 15.99202 611.412 337.633 273.779   17   44      27</span>
+<span class="co">#&gt;              cor diff2         r        rh        rl</span>
+<span class="co">#&gt; 105227 0.7904701 15.99 21.920900 28.868002 23.782923</span>
+<span class="co">#&gt; 109378 0.9247231 15.99 25.019464 48.539636 28.034990</span>
+<span class="co">#&gt; 114898 0.9164059 15.99 18.129262 35.131350 25.488220</span>
+<span class="co">#&gt; 114899 0.8453475 15.99 18.159283 28.822229 25.488220</span>
+<span class="co">#&gt; 120400 0.5986343 15.99  6.467732  8.080905  6.466189</span>
+<span class="co">#&gt; 212776 0.7567381 15.99 29.094335 38.955310 41.616740</span>
+<span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span>
+<span class="co">#&gt;           1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span>
+<span class="co">#&gt; 173/129        8762.005      5618.074      7667.391      3938.225      8318.036</span>
+<span class="co">#&gt; 174.1/337     18327.863     11388.643     15368.711      9068.557     19759.098</span>
+<span class="co">#&gt; 175.1/614      6746.288      4237.569      6581.992      3085.251      6108.837</span>
+<span class="co">#&gt; 175.1/453      4713.597      3128.662      4452.102      1823.368      4870.860</span>
+<span class="co">#&gt; 177.1/574      7831.463      7461.891      7633.422      7299.548      7564.390</span>
+<span class="co">#&gt; 209.2/611     30644.459     19496.458     33519.253     11647.966     31169.817</span>
+<span class="co">#&gt;           1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span>
+<span class="co">#&gt; 173/129        5967.602      8823.186      8582.666      8709.071</span>
+<span class="co">#&gt; 174.1/337     12995.786     16878.397     18647.770     25557.292</span>
+<span class="co">#&gt; 175.1/614      3420.075      6435.200      7535.579      8806.608</span>
+<span class="co">#&gt; 175.1/453      3424.378      4709.224      4901.987      5200.675</span>
+<span class="co">#&gt; 177.1/574      7001.615      7411.809      7635.264      8762.723</span>
+<span class="co">#&gt; 209.2/611     14064.021     29421.515     38893.482     43313.165</span></code></pre></div>
+<p>If your data don’t have retention time, reaction level change can also be checked.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">rt</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+<span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span>
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+
+<span class="co">#&gt; Warning in as.numeric(ratio1)/as.numeric(ratio2): longer object length is not a</span>
+<span class="co">#&gt; multiple of shorter object length</span>
+<span class="co"># show the ions with the same PMD</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span>
+<span class="co">#&gt;             ms1      ms2     diff       cor diff2         r        rh        rl</span>
+<span class="co">#&gt; 105227 172.9566 156.9622 15.99439 0.7904701 15.99 21.920900 28.868002 23.782923</span>
+<span class="co">#&gt; 109378 174.1489 158.1546 15.99434 0.9247231 15.99 25.019464 48.539636 28.034990</span>
+<span class="co">#&gt; 114898 175.1481 159.1575 15.99055 0.9164059 15.99 18.129262 35.131350 25.488220</span>
+<span class="co">#&gt; 114899 175.1482 159.1575 15.99066 0.8453475 15.99 18.159283 28.822229 25.488220</span>
+<span class="co">#&gt; 120400 177.0914 161.0967 15.99471 0.5986343 15.99  6.467732  8.080905  6.466189</span>
+<span class="co">#&gt; 212776 209.1552 193.1632 15.99202 0.7567381 15.99 29.094335 38.955310 41.616740</span>
+<span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span>
+<span class="co">#&gt;           1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span>
+<span class="co">#&gt; 173/129        8762.005      5618.074      7667.391      3938.225      8318.036</span>
+<span class="co">#&gt; 174.1/337     18327.863     11388.643     15368.711      9068.557     19759.098</span>
+<span class="co">#&gt; 175.1/614      6746.288      4237.569      6581.992      3085.251      6108.837</span>
+<span class="co">#&gt; 175.1/453      4713.597      3128.662      4452.102      1823.368      4870.860</span>
+<span class="co">#&gt; 177.1/574      7831.463      7461.891      7633.422      7299.548      7564.390</span>
+<span class="co">#&gt; 209.2/611     30644.459     19496.458     33519.253     11647.966     31169.817</span>
+<span class="co">#&gt;           1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span>
+<span class="co">#&gt; 173/129        5967.602      8823.186      8582.666      8709.071</span>
+<span class="co">#&gt; 174.1/337     12995.786     16878.397     18647.770     25557.292</span>
+<span class="co">#&gt; 175.1/614      3420.075      6435.200      7535.579      8806.608</span>
+<span class="co">#&gt; 175.1/453      3424.378      4709.224      4901.987      5200.675</span>
+<span class="co">#&gt; 177.1/574      7001.615      7411.809      7635.264      8762.723</span>
+<span class="co">#&gt; 209.2/611     14064.021     29421.515     38893.482     43313.165</span></code></pre></div>
+<p>Now we have four methods to compute the quantitative PMD responses and user should select method depending on research purposes. ‘static’ will only consider the stable mass pairs across samples; ‘dynamic1’ will only consider the paired masses with one of peaks stable across samples; ‘dynamic2’ will only consider the paired masses with none peaks stable across samples and normalization will be performed; ‘all’ will combine all of the available PMDs together by normalization for reaction quantification. The last two methods will normalize the intensity data.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span>
+<span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'dynamic1'</span><span class="op">)</span>
+<span class="co"># show the ions with the same PMD</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span>
+<span class="co">#&gt;             ms1      ms2     diff     rt1     rt2  diffrt rtg1 rtg2 rtgdiff</span>
+<span class="co">#&gt; 43332  147.9900 132.0050 15.98503 145.088  49.491  95.597   20    4      16</span>
+<span class="co">#&gt; 105227 172.9566 156.9622 15.99439 129.489 145.538  16.049   41   20      21</span>
+<span class="co">#&gt; 109378 174.1489 158.1546 15.99434 337.418 470.364 132.946   44   31      13</span>
+<span class="co">#&gt; 114898 175.1481 159.1575 15.99055 614.413 470.364 144.049   17   31      14</span>
+<span class="co">#&gt; 114899 175.1482 159.1575 15.99066 453.178 470.364  17.186   45   31      14</span>
+<span class="co">#&gt; 120400 177.0914 161.0967 15.99471 574.339 645.528  71.189   39   36       3</span>
+<span class="co">#&gt;              cor diff2         r        rh        rl</span>
+<span class="co">#&gt; 43332  0.4123139 15.99 34.869719 27.176089 39.845530</span>
+<span class="co">#&gt; 105227 0.7904701 15.99 21.920900 28.868002 23.782923</span>
+<span class="co">#&gt; 109378 0.9247231 15.99 25.019464 48.539636 28.034990</span>
+<span class="co">#&gt; 114898 0.9164059 15.99 18.129262 35.131350 25.488220</span>
+<span class="co">#&gt; 114899 0.8453475 15.99 18.159283 28.822229 25.488220</span>
+<span class="co">#&gt; 120400 0.5986343 15.99  6.467732  8.080905  6.466189</span>
+<span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span>
+<span class="co">#&gt;   1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span>
+<span class="co">#&gt; 1     56145.859     60982.371     64368.124   119898.2123     47554.977</span>
+<span class="co">#&gt; 2      8762.005      5618.074      7667.391     3938.2247      8318.036</span>
+<span class="co">#&gt; 3      2015.290      1421.357      1665.488      679.9354      2898.580</span>
+<span class="co">#&gt; 4      5226.574      3199.783      5406.594     2338.0461      4686.280</span>
+<span class="co">#&gt; 5      4713.597      3128.662      4452.102     1823.3679      4870.860</span>
+<span class="co">#&gt; 6      7831.463      7461.891      7633.422     7299.5480      7564.390</span>
+<span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span>
+<span class="co">#&gt; 1     61868.367    122871.747    136611.623     96580.512</span>
+<span class="co">#&gt; 2      5967.602      8823.186      8582.666      8709.071</span>
+<span class="co">#&gt; 3      1136.143      1554.027      2119.481      3736.604</span>
+<span class="co">#&gt; 4      2398.761      5095.427      5957.247      6994.992</span>
+<span class="co">#&gt; 5      3424.378      4709.224      4901.987      5200.675</span>
+<span class="co">#&gt; 6      7001.615      7411.809      7635.264      8762.723</span>
+<span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'dynamic2'</span><span class="op">)</span>
+<span class="co"># show the ions with the same PMD</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span>
+<span class="co">#&gt;             ms1      ms2     diff      rt1     rt2   diffrt rtg1 rtg2 rtgdiff</span>
+<span class="co">#&gt; 77336  162.1128 146.1183 15.99455 256.1585 288.130  31.9715    5   23      18</span>
+<span class="co">#&gt; 103842 172.1705 156.1777 15.99279 478.9360 405.389  73.5470   43   30      13</span>
+<span class="co">#&gt; 212776 209.1552 193.1632 15.99202 611.4120 337.633 273.7790   17   44      27</span>
+<span class="co">#&gt; 219286 211.1695 195.1745 15.99491 614.6250 594.485  20.1400   17   46      29</span>
+<span class="co">#&gt; 233523 220.1184 204.1239 15.99458 170.8240 370.890 200.0660    1   52      51</span>
+<span class="co">#&gt; 256552 228.1969 212.2026 15.99439 614.4140 594.485  19.9290   17   46      29</span>
+<span class="co">#&gt;              cor diff2        r       rh       rl</span>
+<span class="co">#&gt; 77336  0.9518523 15.99 30.42748 89.27216 84.24422</span>
+<span class="co">#&gt; 103842 0.6460984 15.99 56.74081 50.38531 42.86262</span>
+<span class="co">#&gt; 212776 0.7567381 15.99 29.09434 38.95531 41.61674</span>
+<span class="co">#&gt; 219286 0.7378409 15.99 26.62548 33.46165 61.56227</span>
+<span class="co">#&gt; 233523 0.8598547 15.99 98.58327 64.91465 86.19156</span>
+<span class="co">#&gt; 256552 0.7503812 15.99 55.99524 50.42642 73.56362</span>
+<span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span>
+<span class="co">#&gt;   1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span>
+<span class="co">#&gt; 1     20.063467     10.882518     23.040947      4.215033      7.982755</span>
+<span class="co">#&gt; 2      4.201252      2.298149      4.815063      1.000000      4.993659</span>
+<span class="co">#&gt; 3      2.003645      1.534153      1.558155      1.000000      2.511063</span>
+<span class="co">#&gt; 4      2.091159      1.730543      1.578244      1.000000      2.288548</span>
+<span class="co">#&gt; 5      4.222497      1.412448      5.941670      1.291393      2.729035</span>
+<span class="co">#&gt; 6      2.190031      1.000000      2.069349      1.360048      3.094687</span>
+<span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span>
+<span class="co">#&gt; 1      6.407426      1.000000      2.931340      2.695624</span>
+<span class="co">#&gt; 2      2.270572      2.170994      4.475513      4.295889</span>
+<span class="co">#&gt; 3      1.344790      1.484285      2.008388      3.649481</span>
+<span class="co">#&gt; 4      1.007600      1.821784      5.466248      3.090187</span>
+<span class="co">#&gt; 5      1.195413      1.000000      2.367662      2.555556</span>
+<span class="co">#&gt; 6      1.308258      4.738469      7.970956      6.112974</span>
+<span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span>
+<span class="co"># show the ions with the same PMD</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span>
+<span class="co">#&gt;             ms1      ms2     diff      rt1     rt2   diffrt rtg1 rtg2 rtgdiff</span>
+<span class="co">#&gt; 43332  147.9900 132.0050 15.98503 145.0880  49.491  95.5970   20    4      16</span>
+<span class="co">#&gt; 77336  162.1128 146.1183 15.99455 256.1585 288.130  31.9715    5   23      18</span>
+<span class="co">#&gt; 103842 172.1705 156.1777 15.99279 478.9360 405.389  73.5470   43   30      13</span>
+<span class="co">#&gt; 105227 172.9566 156.9622 15.99439 129.4890 145.538  16.0490   41   20      21</span>
+<span class="co">#&gt; 109378 174.1489 158.1546 15.99434 337.4180 470.364 132.9460   44   31      13</span>
+<span class="co">#&gt; 114898 175.1481 159.1575 15.99055 614.4130 470.364 144.0490   17   31      14</span>
+<span class="co">#&gt;              cor diff2        r       rh       rl</span>
+<span class="co">#&gt; 43332  0.4123139 15.99 34.86972 27.17609 39.84553</span>
+<span class="co">#&gt; 77336  0.9518523 15.99 30.42748 89.27216 84.24422</span>
+<span class="co">#&gt; 103842 0.6460984 15.99 56.74081 50.38531 42.86262</span>
+<span class="co">#&gt; 105227 0.7904701 15.99 21.92090 28.86800 23.78292</span>
+<span class="co">#&gt; 109378 0.9247231 15.99 25.01946 48.53964 28.03499</span>
+<span class="co">#&gt; 114898 0.9164059 15.99 18.12926 35.13135 25.48822</span>
+<span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span>
+<span class="co">#&gt;   1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span>
+<span class="co">#&gt; 1      1.469437      1.296544      1.584394      1.000000      1.512898</span>
+<span class="co">#&gt; 2     20.063467     10.882518     23.040947      4.215033      7.982755</span>
+<span class="co">#&gt; 3      4.201252      2.298149      4.815063      1.000000      4.993659</span>
+<span class="co">#&gt; 4      3.866919      2.694805      3.097214      1.000000      3.671954</span>
+<span class="co">#&gt; 5      2.963943      2.090430      2.449479      1.000000      4.263022</span>
+<span class="co">#&gt; 6      2.033866      1.388890      1.573059      1.000000      1.903838</span>
+<span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span>
+<span class="co">#&gt; 1      1.060561      1.853392      2.073749      2.233596</span>
+<span class="co">#&gt; 2      6.407426      1.000000      2.931340      2.695624</span>
+<span class="co">#&gt; 3      2.270572      2.170994      4.475513      4.295889</span>
+<span class="co">#&gt; 4      2.608089      2.963631      3.312398      3.604842</span>
+<span class="co">#&gt; 5      1.670957      2.285551      3.117180      5.495527</span>
+<span class="co">#&gt; 6      1.366846      1.793046      2.112314      2.424523</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="pmd-reaction-database">PMD Reaction Database<a class="anchor" aria-label="anchor" href="#pmd-reaction-database"></a>
+</h2>
+<p>To check the pmd reaction database:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># all reaction</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"omics"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">omics</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"omics"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">omics</span><span class="op">)</span>
 <span class="co">#&gt;   X   KEGG RHEA_ID DIRECTION MASTER_ID   ec ecocyc macie</span>
 <span class="co">#&gt; 1 1 R00001   22455        BI     22452 &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;</span>
 <span class="co">#&gt; 2 2 R00004   24579        BI     24576 &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;</span>
@@ -279,8 +718,8 @@
 <span class="co">#&gt; 5                                  2 H2O2 &lt;=&gt; 2 H2O + O2      NA</span>
 <span class="co">#&gt; 6            alpha,alpha-trehalose + H2O &lt;=&gt; 2 D-glucose 162.053</span>
 <span class="co"># kegg reaction</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span>
 <span class="co">#&gt;          ID      ms1      formula1      ms2       formula2     pmd  C  H O N P</span>
 <span class="co">#&gt; 2    R00002 506.9957 C10H16N5O13P3 427.0294  C10H15N5O10P2  79.966  0  1 3 0 1</span>
 <span class="co">#&gt; 8    R00010 342.1162     C12H22O11 180.0634        C6H12O6 162.053  6 10 5 0 0</span>
@@ -296,8 +735,8 @@
 <span class="co">#&gt; 13.1 0</span>
 <span class="co">#&gt; 13.2 0</span>
 <span class="co"># literature reaction for mass spectrometry</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span>
 <span class="co">#&gt;         PMD                                                          origin</span>
 <span class="co">#&gt; 1  0.984016                    OH ↔ NH2, e.g. de-amidiation, CHNO compounds</span>
 <span class="co">#&gt; 2  1.995663 F ↔ OH, halogen exchange with hydroxy group (typically -F + OH)</span>
@@ -313,9 +752,9 @@
 <span class="co">#&gt; 5 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span>
 <span class="co">#&gt; 6 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></code></pre></div>
 <p>To check the HMDB pmd database:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"hmdb"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">hmdb</span><span class="op">)</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"hmdb"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hmdb</span><span class="op">)</span>
 <span class="co">#&gt;    C  H  O N P S   pmd pmd2 percentage</span>
 <span class="co">#&gt; 1 -3  4  2 0 0 0 0.021 0.02  0.9623060</span>
 <span class="co">#&gt; 2  1  4 -1 0 0 0 0.036 0.04  0.9503645</span>
@@ -324,11 +763,11 @@
 <span class="co">#&gt; 5  6  8 -5 0 0 0 0.088 0.09  0.9247730</span>
 <span class="co">#&gt; 6 -1 12  0 0 0 0 0.094 0.09  0.9648936</span></code></pre></div>
 <p>To extract any compound KEGG compound’s pmd network with known PMD:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plotcn.html">plotcn</a></span><span class="op">(</span><span class="st">'C6H12O6'</span>,<span class="st">'Glucose'</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">14.016</span>,<span class="fl">15.995</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/plotcn.html">plotcn</a></span><span class="op">(</span><span class="st">'C6H12O6'</span>,<span class="st">'Glucose'</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">14.016</span>,<span class="fl">15.995</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; Average distance of PMD network is 9.42710759198882</span>
 <span class="co">#&gt; Average degree 2.84210526315789</span></code></pre></div>
-<p><img src="reactomics_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="reactomics_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
   </div>
 
@@ -343,11 +782,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Miao YU.</p>
+  <p></p>
+<p>Developed by Miao YU.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -355,6 +796,8 @@
 
   
 
+
+  
 
   </body>
 </html>
