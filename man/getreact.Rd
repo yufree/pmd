@@ -31,7 +31,7 @@ getreact(
 
 \item{outlier}{logical, if true, outlier of ratio will be removed, default False.}
 
-\item{method}{quantification method can be 'static','dynamic1','dynamic2','all'. See details.}
+\item{method}{quantification method can be 'static','dynamic','all'. See details.}
 
 \item{...}{other parameters for getpmd}
 }
@@ -42,7 +42,7 @@ list with quantitative paired peaks.
 Get quantitative paired peaks list for specific reaction/pmd
 }
 \details{
-PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic1' will only consider the paired masses with one of peaks stable across samples; 'dynamic2' will only consider the paired masses with none peaks stable across samples and normalization will be performed; 'all' will combine all of the available PMDs together by normalization for reaction quantification.
+PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; 'all' will use 'dynamic' normalization methods for both static and dynamic reaction quantification.
 }
 \examples{
 data(spmeinvivo)

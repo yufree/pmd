@@ -9,7 +9,7 @@ getpmd(list, pmd, rtcutoff = 10, corcutoff = NULL, digits = 2, accuracy = 4)
 \arguments{
 \item{list}{a list with mzrt profile}
 
-\item{pmd}{a specific paired mass distance}
+\item{pmd}{a specific paired mass distance or a vector of pmds}
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
@@ -20,7 +20,7 @@ getpmd(list, pmd, rtcutoff = 10, corcutoff = NULL, digits = 2, accuracy = 4)
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 }
 \value{
-list with paired peaks for specific pmd.
+list with paired peaks for specific pmd or pmds.
 }
 \description{
 Get pmd for specific reaction

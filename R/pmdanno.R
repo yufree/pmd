@@ -194,7 +194,7 @@ pmdanno <- function(file,
                 ins <- ins / max(ins) * 100
                 pmdt <- stats::dist(mz, method = "manhattan")
 
-                if (class(db) == "list") {
+                if (is.list(db)) {
                         pmdt <-
                                 unique(round(as.numeric(pmdt), digits = 2))
                         range <- cbind(db$mz - prems, db$mz + prems)

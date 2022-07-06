@@ -536,10 +536,10 @@ getchain <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param cvcutoff ratio or intensity cv cutoff for quantitative paired peaks, default 30
-#' @param method quantification method can be 'static','dynamic1','dynamic2','all'. See details.
+#' @param method quantification method can be 'static','dynamic','all'. See details.
 #' @param outlier logical, if true, outlier of ratio will be removed, default False.
 #' @param ... other parameters for getpmd
-#' @details PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic1' will only consider the paired masses with one of peaks stable across samples; 'dynamic2' will only consider the paired masses with none peaks stable across samples and normalization will be performed; 'all' will combine all of the available PMDs together by normalization for reaction quantification.
+#' @details PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; 'all' will use 'dynamic' normalization methods for both static and dynamic reaction quantification.
 #' @return list with quantitative paired peaks.
 #' @examples
 #' data(spmeinvivo)
@@ -638,12 +638,13 @@ getreact <-
                         list$pmd$rl <-
                                 sapply(ratio, function(x)
                                         x$rsdl)
-
+                        list$pmdindex <- list$pmdindexh <- list$pmdindexl <- NULL
                         if (method == 'static') {
-                                list$pmd <- list$pmd[list$pmd$r < cvcutoff ,]
+                                list$pmd <- list$pmd[list$pmd$r < cvcutoff & (list$pmd$rh>cvcutoff | list$pmd$rl>cvcutoff),]
                                 list$pmd <-
                                         list$pmd[stats::complete.cases(list$pmd), ]
                                 if (nrow(list$pmd) > 0&!is.null(list$rt)) {
+
                                         idx <- paste(list$mz, list$rt)
                                         idx2 <- unique(c(
                                                 paste(list$pmd$ms1, list$pmd$rt1),
@@ -662,6 +663,7 @@ getreact <-
                                         list$pmddata <- pmdh + pmdl
                                         return(list)
                                 } else if (nrow(list$pmd) > 0&is.null(list$rt)){
+                                        mzl <- list$pmd$rh<cvcutoff & list$pmd$rl<cvcutoff
                                         idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
                                         list <-
                                                 enviGCMS::getfilter(list, list$mz %in% idx)
@@ -674,87 +676,9 @@ getreact <-
                                 } else {
                                         message('No static quantitative peaks could be used.')
                                 }
-                        } else if (method == 'dynamic1') {
+                        } else if (method == 'dynamic') {
                                 list$pmd <-
-                                        list$pmd[list$pmd$rh < cvcutoff | list$pmd$rl < cvcutoff,]
-                                list$pmd <-
-                                        list$pmd[stats::complete.cases(list$pmd), ]
-                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
-                                        idx <- paste(list$mz, list$rt)
-                                        idx2 <- unique(c(
-                                                paste(list$pmd$ms1, list$pmd$rt1),
-                                                paste(list$pmd$ms2, list$pmd$rt2)
-                                        ))
-                                        list <-
-                                                enviGCMS::getfilter(list, idx %in% idx2)
-                                        idx <-
-                                                paste(list$mz, list$rt)
-                                        idh <-
-                                                list$pmd$rh < cvcutoff
-                                        idl <-
-                                                list$pmd$rl < cvcutoff
-                                        pmddatal <-
-                                                pmddatah <-
-                                                as.data.frame(matrix(
-                                                        nrow = nrow(list$pmd),
-                                                        ncol = ncol(list$data)
-                                                ))
-                                        pmddatah[idh, ] <-
-                                                list$data[match(paste(
-                                                        list$pmd$ms2[idh],
-                                                        list$pmd$rt2[idh]
-                                                ),
-                                                idx), ]
-                                        pmddatal[idl, ] <-
-                                                list$data[match(paste(
-                                                        list$pmd$ms1[idl],
-                                                        list$pmd$rt1[idl]
-                                                ),
-                                                idx), ]
-                                        pmddatah[is.na(pmddatah)] <-
-                                                pmddatal[is.na(pmddatal)] <- 0
-                                        list$pmddata <-
-                                                pmddatah + pmddatal
-                                        colnames(list$pmddata) <-
-                                                colnames(list$data)
-                                        return(list)
-                                } else if (nrow(list$pmd) > 0&is.null(list$rt)){
-                                        idx <- unique(c(list$pmd$ms1,list$pmd$ms2)
-                                        )
-                                        list <-
-                                                enviGCMS::getfilter(list, list$mz %in% idx)
-                                        idh <-
-                                                list$pmd$rh < cvcutoff
-                                        idl <-
-                                                list$pmd$rl < cvcutoff
-                                        pmddatal <-
-                                                pmddatah <-
-                                                as.data.frame(matrix(
-                                                        nrow = nrow(list$pmd),
-                                                        ncol = ncol(list$data)
-                                                ))
-                                        pmddatah[idh, ] <-
-                                                list$data[match(
-                                                        list$pmd$ms2[idh],
-                                                list$mz), ]
-                                        pmddatal[idl, ] <-
-                                                list$data[match(
-                                                        list$pmd$ms1[idl],
-                                                list$mz), ]
-                                        pmddatah[is.na(pmddatah)] <-
-                                                pmddatal[is.na(pmddatal)] <- 0
-                                        list$pmddata <-
-                                                pmddatah + pmddatal
-                                        colnames(list$pmddata) <-
-                                                colnames(list$data)
-                                }else{
-                                        message(
-                                                'No dynamic quantitative peak could be used with one of peaks stable across samples.'
-                                        )
-                                }
-                        } else if (method == 'dynamic2') {
-                                list$pmd <-
-                                        list$pmd[!(list$pmd$rh < cvcutoff | list$pmd$rl < cvcutoff),]
+                                        list$pmd[!(list$pmd$r < cvcutoff)& (list$pmd$rh>cvcutoff | list$pmd$rl>cvcutoff),]
                                 list$pmd <-
                                         list$pmd[stats::complete.cases(list$pmd), ]
                                 if (nrow(list$pmd) > 0&!is.null(list$rt)) {
@@ -767,20 +691,7 @@ getreact <-
                                                 enviGCMS::getfilter(list, idx %in% idx2)
                                         idx <-
                                                 paste(list$mz, list$rt)
-                                        pmddatah <-
-                                                list$data[match(paste(list$pmd$ms2, list$pmd$rt2),
-                                                                idx), ]
-                                        pmddatah2 <-
-                                                apply(pmddatah, 1, min)
-                                        pmddatal <-
-                                                list$data[match(paste(list$pmd$ms1, list$pmd$rt1),
-                                                                idx), ]
-                                        pmddatal2 <-
-                                                apply(pmddatal, 1, min)
-
-                                        idy <- pmddatah2 > pmddatal2
-                                        norm <-
-                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        idy <- list$pmd$rh > list$pmd$rl
                                         pmddata <-
                                                 as.data.frame(matrix(
                                                         nrow = nrow(list$pmd),
@@ -788,17 +699,26 @@ getreact <-
                                                 ))
                                         pmddata[idy, ] <-
                                                 list$data[match(paste(
+                                                        list$pmd$ms2[idy],
+                                                        list$pmd$rt2[idy]
+                                                ),
+                                                idx), ]/list$data[match(paste(
                                                         list$pmd$ms1[idy],
                                                         list$pmd$rt1[idy]
                                                 ),
                                                 idx), ]
+
                                         pmddata[!idy, ] <-
                                                 list$data[match(paste(
+                                                        list$pmd$ms1[!idy],
+                                                        list$pmd$rt1[!idy]
+                                                ),
+                                                idx), ]/list$data[match(paste(
                                                         list$pmd$ms2[!idy],
                                                         list$pmd$rt2[!idy]
                                                 ),
                                                 idx), ]
-                                        list$pmddata <- pmddata / norm
+                                        list$pmddata <- pmddata
                                         colnames(list$pmddata) <-
                                                 colnames(list$data)
                                         return(list)
@@ -806,18 +726,7 @@ getreact <-
                                         idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
                                         list <-
                                                 enviGCMS::getfilter(list, list$mz %in% idx)
-                                        pmddatah <-
-                                                list$data[match(list$pmd$ms2,list$mz), ]
-                                        pmddatah2 <-
-                                                apply(pmddatah, 1, min)
-                                        pmddatal <-
-                                                list$data[match(list$pmd$ms1,list$mz), ]
-                                        pmddatal2 <-
-                                                apply(pmddatal, 1, min)
-
-                                        idy <- pmddatah2 > pmddatal2
-                                        norm <-
-                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        idy <- list$pmd$rh > list$pmd$rl
                                         pmddata <-
                                                 as.data.frame(matrix(
                                                         nrow = nrow(list$pmd),
@@ -825,12 +734,15 @@ getreact <-
                                                 ))
                                         pmddata[idy, ] <-
                                                 list$data[match(
+                                                        list$pmd$ms2[idy],
+                                                list$mz), ]/list$data[match(
                                                         list$pmd$ms1[idy],
-                                                list$mz), ]
+                                                        list$mz), ]
                                         pmddata[!idy, ] <-
-                                                list$data[match(list$pmd$ms2[!idy],
-                                                list$mz), ]
-                                        list$pmddata <- pmddata / norm
+                                                list$data[match(list$pmd$ms1[!idy],
+                                                list$mz), ]/list$data[match(list$pmd$ms2[!idy],
+                                                                            list$mz), ]
+                                        list$pmddata <- pmddata
                                         colnames(list$pmddata) <-
                                                 colnames(list$data)
                                         return(list)
@@ -838,11 +750,15 @@ getreact <-
                                         }
                                 else{
                                         message(
-                                                'No dynamic quantitative peak could be used with none of peaks stable across samples.'
+                                                'No dynamic quantitative peak could be used.'
                                         )
                                 }
 
                         } else if (method == 'all') {
+                                list$pmd <-
+                                        list$pmd[(list$pmd$rh>cvcutoff | list$pmd$rl>cvcutoff),]
+                                list$pmd <-
+                                        list$pmd[stats::complete.cases(list$pmd), ]
                                 if (nrow(list$pmd) > 0&!is.null(list$rt)) {
                                         idx <- paste(list$mz, list$rt)
                                         idx2 <- unique(c(
@@ -853,20 +769,8 @@ getreact <-
                                                 enviGCMS::getfilter(list, idx %in% idx2)
                                         idx <-
                                                 paste(list$mz, list$rt)
-                                        pmddatah <-
-                                                list$data[match(paste(list$pmd$ms2, list$pmd$rt2),
-                                                                idx), ]
-                                        pmddatah2 <-
-                                                apply(pmddatah, 1, min)
-                                        pmddatal <-
-                                                list$data[match(paste(list$pmd$ms1, list$pmd$rt1),
-                                                                idx), ]
-                                        pmddatal2 <-
-                                                apply(pmddatal, 1, min)
+                                        idy <- list$pmd$rh > list$pmd$rl
 
-                                        idy <- pmddatah2 > pmddatal2
-                                        norm <-
-                                                ifelse(idy, pmddatal2, pmddatah2)
                                         pmddata <-
                                                 as.data.frame(matrix(
                                                         nrow = nrow(list$pmd),
@@ -874,17 +778,25 @@ getreact <-
                                                 ))
                                         pmddata[idy, ] <-
                                                 list$data[match(paste(
+                                                        list$pmd$ms2[idy],
+                                                        list$pmd$rt2[idy]
+                                                ),
+                                                idx), ]/list$data[match(paste(
                                                         list$pmd$ms1[idy],
                                                         list$pmd$rt1[idy]
                                                 ),
                                                 idx), ]
                                         pmddata[!idy, ] <-
                                                 list$data[match(paste(
+                                                        list$pmd$ms1[!idy],
+                                                        list$pmd$rt1[!idy]
+                                                ),
+                                                idx), ]/list$data[match(paste(
                                                         list$pmd$ms2[!idy],
                                                         list$pmd$rt2[!idy]
                                                 ),
                                                 idx), ]
-                                        list$pmddata <- pmddata / norm
+                                        list$pmddata <- pmddata
                                         colnames(list$pmddata) <-
                                                 colnames(list$data)
                                         return(list)
@@ -892,18 +804,7 @@ getreact <-
                                         idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
                                         list <-
                                                 enviGCMS::getfilter(list, list$mz %in% idx)
-                                        pmddatah <-
-                                                list$data[match(list$pmd$ms2, list$mz), ]
-                                        pmddatah2 <-
-                                                apply(pmddatah, 1, min)
-                                        pmddatal <-
-                                                list$data[match(list$pmd$ms1, list$mz), ]
-                                        pmddatal2 <-
-                                                apply(pmddatal, 1, min)
-
-                                        idy <- pmddatah2 > pmddatal2
-                                        norm <-
-                                                ifelse(idy, pmddatal2, pmddatah2)
+                                        idy <- list$pmd$rh > list$pmd$rl
                                         pmddata <-
                                                 as.data.frame(matrix(
                                                         nrow = nrow(list$pmd),
@@ -911,11 +812,13 @@ getreact <-
                                                 ))
                                         pmddata[idy, ] <-
                                                 list$data[match(
-                                                        list$pmd$ms1[idy],list$mz), ]
+                                                        list$pmd$ms2[idy],list$mz), ]/list$data[match(
+                                                                list$pmd$ms1[idy],list$mz), ]
                                         pmddata[!idy, ] <-
                                                 list$data[match(
-                                                        list$pmd$ms2[!idy],list$mz), ]
-                                        list$pmddata <- pmddata / norm
+                                                        list$pmd$ms1[!idy],list$mz), ]/list$data[match(
+                                                                list$pmd$ms2[!idy],list$mz), ]
+                                        list$pmddata <- pmddata
                                         colnames(list$pmddata) <-
                                                 colnames(list$data)
                                 }else{
