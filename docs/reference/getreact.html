@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,47 +72,66 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getreact</span><span class="op">(</span>
-  <span class="va">list</span>,
-  <span class="va">pmd</span>,
-  rtcutoff <span class="op">=</span> <span class="fl">10</span>,
-  digits <span class="op">=</span> <span class="fl">2</span>,
-  accuracy <span class="op">=</span> <span class="fl">4</span>,
-  cvcutoff <span class="op">=</span> <span class="fl">30</span>,
-  outlier <span class="op">=</span> <span class="cn">FALSE</span>,
-  method <span class="op">=</span> <span class="st">"static"</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getreact</span><span class="op">(</span></span>
+<span>  <span class="va">list</span>,</span>
+<span>  <span class="va">pmd</span>,</span>
+<span>  rtcutoff <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  digits <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  accuracy <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  cvcutoff <span class="op">=</span> <span class="fl">30</span>,</span>
+<span>  outlier <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"static"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>list</dt>
 <dd><p>a list with mzrt profile and data</p></dd>
+
+
 <dt>pmd</dt>
 <dd><p>a specific paired mass distances</p></dd>
+
+
 <dt>rtcutoff</dt>
 <dd><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></dd>
+
+
 <dt>digits</dt>
 <dd><p>mass or mass to charge ratio accuracy for pmd, default 2</p></dd>
+
+
 <dt>accuracy</dt>
 <dd><p>measured mass or mass to charge ratio in digits, default 4</p></dd>
+
+
 <dt>cvcutoff</dt>
 <dd><p>ratio or intensity cv cutoff for quantitative paired peaks, default 30</p></dd>
+
+
 <dt>outlier</dt>
 <dd><p>logical, if true, outlier of ratio will be removed, default False.</p></dd>
+
+
 <dt>method</dt>
-<dd><p>quantification method can be 'static','dynamic1','dynamic2','all'. See details.</p></dd>
+<dd><p>quantification method can be 'static','dynamic','all'. See details.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other parameters for getpmd</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list with quantitative paired peaks.</p>
+    
+
+<p>list with quantitative paired peaks.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic1' will only consider the paired masses with one of peaks stable across samples; 'dynamic2' will only consider the paired masses with none peaks stable across samples and normalization will be performed; 'all' will combine all of the available PMDs together by normalization for reaction quantification.</p>
+    <p>PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; 'all' will use 'dynamic' normalization methods for both static and dynamic reaction quantification.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -121,8 +140,8 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu">getreact</span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu">getreact</span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -137,7 +156,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>
