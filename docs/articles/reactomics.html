@@ -586,7 +586,7 @@
 <span><span class="co">#&gt; 211.2/615      3041.366      5809.946      8795.206      8089.021</span></span>
 <span><span class="co">#&gt; 228.2/453     19484.297     32281.370     36797.052     39304.713</span></span>
 <span><span class="co">#&gt; 244.2/615     24315.314     45535.922     59156.064     61720.089</span></span></code></pre></div>
-<p>Now we have three methods to compute the quantitative PMD responses and user should select method depending on research purposes. ‘static’ will only consider the stable mass pairs across samples; ‘dynamic’ will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; ‘all’ will use ‘dynamic’ normalization methods for both static and dynamic reaction quantification. The last two methods will normalize the intensity data.</p>
+<p>Now we have two methods to compute the quantitative PMD responses and user should select method depending on research purposes. ‘static’ will only consider the stable mass pairs across samples and such reactions will be limited by the enzyme or other factors than substrates. ‘dynamic’ will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses and such reactions will be limited by one or both peaks in the paired masses.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
 <span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'dynamic'</span><span class="op">)</span></span>
@@ -621,40 +621,7 @@
 <span><span class="co">#&gt; 3    1.01508469   0.406659176   0.874861257   0.621074214</span></span>
 <span><span class="co">#&gt; 4    2.05169832   7.765315730   0.832736564   2.117740805</span></span>
 <span><span class="co">#&gt; 5    0.01549754   0.007511291   0.005490916   0.005883117</span></span>
-<span><span class="co">#&gt; 6    9.12757512   7.779539564   7.970752923   4.004298286</span></span>
-<span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span></span>
-<span><span class="co"># show the ions with the same PMD</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             ms1      ms2     diff      rt1      rt2   diffrt rtg1 rtg2 rtgdiff</span></span>
-<span><span class="co">#&gt; 43332  147.9900 132.0050 15.98503 145.0880  49.4910  95.5970   20    4      16</span></span>
-<span><span class="co">#&gt; 77336  162.1128 146.1183 15.99455 256.1585 288.1300  31.9715    5   23      18</span></span>
-<span><span class="co">#&gt; 103842 172.1705 156.1777 15.99279 478.9360 405.3890  73.5470   43   30      13</span></span>
-<span><span class="co">#&gt; 109378 174.1489 158.1546 15.99434 337.4180 470.3640 132.9460   44   31      13</span></span>
-<span><span class="co">#&gt; 114898 175.1481 159.1575 15.99055 614.4130 470.3640 144.0490   17   31      14</span></span>
-<span><span class="co">#&gt; 121772 177.0914 161.0967 15.99477 574.3390 490.7225  83.6165   39   37       2</span></span>
-<span><span class="co">#&gt;                cor diff2         r        rh       rl</span></span>
-<span><span class="co">#&gt; 43332   0.41231393 15.99  34.86972 27.176089 39.84553</span></span>
-<span><span class="co">#&gt; 77336   0.95185232 15.99  30.42748 89.272157 84.24422</span></span>
-<span><span class="co">#&gt; 103842  0.64609844 15.99  56.74081 50.385313 42.86262</span></span>
-<span><span class="co">#&gt; 109378  0.92472306 15.99  25.01946 48.539636 28.03499</span></span>
-<span><span class="co">#&gt; 114898  0.91640594 15.99  18.12926 35.131350 25.48822</span></span>
-<span><span class="co">#&gt; 121772 -0.07743575 15.99 100.61906  8.080905 43.90465</span></span>
-<span><span class="co"># show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span></span>
-<span><span class="co">#&gt; 1    0.01999437    0.01624267    0.01880472   0.006371798    0.02430459</span></span>
-<span><span class="co">#&gt; 2    1.53528194    0.96229564    1.10219074   0.982190726    1.60436353</span></span>
-<span><span class="co">#&gt; 3    0.46404167    1.19438757    1.06934597   0.250054581    0.50967660</span></span>
-<span><span class="co">#&gt; 4    8.09440461    7.01251323    8.22775383  12.337379179    5.81682117</span></span>
-<span><span class="co">#&gt; 5    0.29076683    0.32433002    0.21740076   0.319585187    0.30355788</span></span>
-<span><span class="co">#&gt; 6    1.20386141    1.66973653    1.32468366   1.213218611    1.08305720</span></span>
-<span><span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span></span>
-<span><span class="co">#&gt; 1    0.01309609    0.01152365    0.01159694     0.0176681</span></span>
-<span><span class="co">#&gt; 2    1.43917818    1.06482233    1.84623677     2.6097873</span></span>
-<span><span class="co">#&gt; 3    1.01508469    0.40665918    0.87486126     0.6210742</span></span>
-<span><span class="co">#&gt; 4   10.43851377    9.86106865    7.79827237     5.8397115</span></span>
-<span><span class="co">#&gt; 5    0.42576740    0.26293631    0.26494303     0.2589875</span></span>
-<span><span class="co">#&gt; 6    2.05169832    7.76531573    0.83273656     2.1177408</span></span></code></pre></div>
+<span><span class="co">#&gt; 6    9.12757512   7.779539564   7.970752923   4.004298286</span></span></code></pre></div>
 <p>You can also output the quantitative results of all high frequency PMDs existing in the data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
