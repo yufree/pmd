@@ -4,6 +4,7 @@
 - add more quantitative methods for the pmd
 - add support for multiple pmds in getpmd function
 - update reactomics vignette to add more details for quantitative analysis of PMD
+- update getchain to handle large data
 
 # pmd 0.2.3
 

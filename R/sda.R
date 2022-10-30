@@ -392,7 +392,7 @@ getpmd <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
-#' @param corcutoff cutoff of the correlation coefficient, default NULL
+#' @param corcutoff cutoff of the correlation coefficient, default 0.6
 #' @param ppm all the peaks within this mass accuracy as seed mass or formula
 #' @return a list with mzrt profile and reaction chain dataframe
 #' @examples
@@ -431,43 +431,53 @@ getchain <-
                 dis <- stats::dist(mz, method = "manhattan")
                 disrt <- stats::dist(rt, method = "manhattan")
                 disrtg <- stats::dist(rtg, method = "manhattan")
+                diffx <- as.numeric(dis)
+                diff2 <- round(diffx, digits)
+                diffrt <- as.numeric(disrt)
+                rtgdiff <- as.numeric(disrtg)
                 cor <- stats::cor(t(data))
 
+                idx <- diff2 %in% diff
+                idx2 <- rtgdiff > 0
+                idx3 <- idx&idx2
+
+                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]][idx3]
+                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]][idx3]
+                rt1 = rt[which(lower.tri(disrt), arr.ind = TRUE)[, 1]][idx3]
+                rt2 = rt[which(lower.tri(disrt),arr.ind = TRUE)[, 2]][idx3]
+                rtg1 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 1]][idx3]
+                rtg2 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 2]][idx3]
+                diffx = diffx[idx3]
+                diff2 = diff2[idx3]
+                diffrt = diffrt[idx3]
+                rtgdiff = rtgdiff[idx3]
+                cor = cor[lower.tri(cor)][idx3]
+
                 df <- data.frame(
-                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                       1]],
-                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[,
-                                                                       2]],
-                        diff = as.numeric(dis),
-                        rt1 = rt[which(lower.tri(disrt),
-                                       arr.ind = TRUE)[, 1]],
-                        rt2 = rt[which(lower.tri(disrt),
-                                       arr.ind = TRUE)[, 2]],
-                        diffrt = as.numeric(disrt),
-                        rtg1 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = TRUE)[, 1]],
-                        rtg2 = rtg[which(lower.tri(disrtg),
-                                         arr.ind = TRUE)[, 2]],
-                        rtgdiff = as.numeric(disrtg),
-                        cor = cor[lower.tri(cor)]
+                        ms1 = ms1,
+                        ms2 = ms2,
+                        diff = diffx,
+                        rt1 = rt1,
+                        rt2 = rt2,
+                        diffrt = diffrt,
+                        rtg1 = rtg1,
+                        rtg2 = rtg2,
+                        rtgdiff = rtgdiff,
+                        cor = cor,
+                        diff2 = diff2
                 )
 
                 if (!is.null(corcutoff)) {
                         df <- df[abs(df$cor) >= corcutoff,]
                 }
-
-                df$diff2 <- round(df$diff, digits)
-
-                df <- df[df$rtgdiff > 0, ]
                 ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
                 ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
                 rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
                 rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
 
-                sda <- df[df$diff2 %in% diff, ]
                 seed <- NULL
-                ms1 <- round(sda$ms1, digits = accuracy)
-                ms2 <- round(sda$ms2, digits = accuracy)
+                ms1 <- round(df$ms1, digits = accuracy)
+                ms2 <- round(df$ms2, digits = accuracy)
                 if (length(mass) == 1) {
                         mass <- round(mass, accuracy)
                         sdat <-
@@ -477,7 +487,7 @@ getchain <-
                                 sdat <-
                                         unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
                         }
-                        list$sdac <- sda[ms1 %in% sdat | ms2 %in% sdat , ]
+                        list$sdac <- df[ms1 %in% sdat | ms2 %in% sdat , ]
                         return(list)
                 } else if (length(mass) == 0) {
                         warning(
@@ -495,8 +505,8 @@ getchain <-
                                                         unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
                                         }
                                         sdact <-
-                                                sda[ms1 %in% sdat |
-                                                            ms2 %in% sdat , ]
+                                                df[ms1 %in% sdat |
+                                                           ms2 %in% sdat , ]
                                         sdact$mass <- mass[i]
                                         sdac <-
                                                 rbind.data.frame(sdac, sdact)
@@ -517,7 +527,7 @@ getchain <-
                                                         unique(c(sdat, ms2[ms1 %in% sdat], ms1[ms2 %in% sdat]))
                                         }
                                         sdact <-
-                                                sda[ms1 %in% sdat | ms2 %in% sdat, ]
+                                                df[ms1 %in% sdat | ms2 %in% sdat, ]
                                         sdact$mass <- mass[i]
                                         sdac <-
                                                 rbind.data.frame(sdac, sdact)
@@ -735,19 +745,19 @@ getreact <-
                                         pmddata[idy, ] <-
                                                 list$data[match(
                                                         list$pmd$ms2[idy],
-                                                list$mz), ]/list$data[match(
-                                                        list$pmd$ms1[idy],
-                                                        list$mz), ]
+                                                        list$mz), ]/list$data[match(
+                                                                list$pmd$ms1[idy],
+                                                                list$mz), ]
                                         pmddata[!idy, ] <-
                                                 list$data[match(list$pmd$ms1[!idy],
-                                                list$mz), ]/list$data[match(list$pmd$ms2[!idy],
-                                                                            list$mz), ]
+                                                                list$mz), ]/list$data[match(list$pmd$ms2[!idy],
+                                                                                            list$mz), ]
                                         list$pmddata <- pmddata
                                         colnames(list$pmddata) <-
                                                 colnames(list$data)
                                         return(list)
 
-                                        }
+                                }
                                 else{
                                         message(
                                                 'No dynamic quantitative peak could be used.'
