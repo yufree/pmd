@@ -90,7 +90,7 @@
       <h1 data-toc-skip>Reactomics</h1>
                         <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 data-toc-skip class="date">2022-07-06</h4>
+            <h4 data-toc-skip class="date">2022-10-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/vignettes/reactomics.Rmd" class="external-link"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
@@ -182,10 +182,10 @@
 <code class="sourceCode R"><span><span class="co"># network community structure detection</span></span>
 <span><span class="va">ceb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/igraph/man/cluster_edge_betweenness.html" class="external-link">cluster_edge_betweenness</a></span><span class="op">(</span><span class="va">net</span>,weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">cor</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Warning in cluster_edge_betweenness(net, weights = abs(E(net)$cor), directed</span></span>
-<span><span class="co">#&gt; = F): At core/community/edge_betweenness.c:486 : Membership vector will be</span></span>
+<span><span class="co">#&gt; = F): At core/community/edge_betweenness.c:493 : Membership vector will be</span></span>
 <span><span class="co">#&gt; selected based on the highest modularity score.</span></span>
 <span><span class="co">#&gt; Warning in cluster_edge_betweenness(net, weights = abs(E(net)$cor), directed</span></span>
-<span><span class="co">#&gt; = F): At core/community/edge_betweenness.c:493 : Modularity calculation with</span></span>
+<span><span class="co">#&gt; = F): At core/community/edge_betweenness.c:500 : Modularity calculation with</span></span>
 <span><span class="co">#&gt; weighted edge betweenness community detection might not make sense -- modularity</span></span>
 <span><span class="co">#&gt; treats edge weights as similarities while edge betwenness treats them as</span></span>
 <span><span class="co">#&gt; distances.</span></span>
@@ -970,7 +970,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
