@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,25 +72,36 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getrda</span><span class="op">(</span><span class="va">mz</span>, freqcutoff <span class="op">=</span> <span class="fl">10</span>, digits <span class="op">=</span> <span class="fl">3</span>, top <span class="op">=</span> <span class="fl">20</span>, formula <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getrda</span><span class="op">(</span><span class="va">mz</span>, freqcutoff <span class="op">=</span> <span class="fl">10</span>, digits <span class="op">=</span> <span class="fl">3</span>, top <span class="op">=</span> <span class="fl">20</span>, formula <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>mz</dt>
 <dd><p>numeric vector for independent mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automated</p></dd>
+
+
 <dt>freqcutoff</dt>
 <dd><p>pmd frequency cutoff for structures or reactions, default 10</p></dd>
+
+
 <dt>digits</dt>
 <dd><p>mass or mass to charge ratio accuracy for pmd, default 3</p></dd>
+
+
 <dt>top</dt>
 <dd><p>top n pmd frequency cutoff when the freqcutoff is too small for large data set</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>vector for formula when you don't have mass or mass to charge ratio data</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>logical matrix with row as the same order of mz or formula and column as high frequency pmd group</p>
+    
+
+<p>logical matrix with row as the same order of mz or formula and column as high frequency pmd group</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -99,22 +110,22 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 369 paired masses found </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 719 isotopologue(s) related paired mass found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 492 multi-charger(s) related paired mass found.</span>
-<span class="r-in"><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="getstd.html">getstd</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="getstd.html">getstd</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired relationship without isotope 1 10 15 18</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 291 std mass found.</span>
-<span class="r-in"><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 36668 pmd found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 3 pmd used.</span>
 </code></pre></div>
@@ -131,7 +142,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

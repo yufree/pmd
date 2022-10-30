@@ -142,16 +142,11 @@ head(pmd$pmd)
 head(pmd$pmddata)
 ```
 
-Now we have three methods to compute the quantitative PMD responses and user should select method depending on research purposes. 'static' will only consider the stable mass pairs across samples; 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; 'all' will use 'dynamic' normalization methods for both static and dynamic reaction quantification. The last two methods will normalize the intensity data.
+Now we have two methods to compute the quantitative PMD responses and user should select method depending on research purposes. 'static' will only consider the stable mass pairs across samples and such reactions will be limited by the enzyme or other factors than substrates. 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses and such reactions will be limited by one or both peaks in the paired masses.
 
 ```{r}
 data("spmeinvivo")
 pmd <- getreact(spmeinvivo,pmd=15.99,method = 'dynamic')
-# show the ions with the same PMD
-head(pmd$pmd)
-# show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
-head(pmd$pmddata)
-pmd <- getreact(spmeinvivo,pmd=15.99,method = 'all')
 # show the ions with the same PMD
 head(pmd$pmd)
 # show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs

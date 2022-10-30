@@ -49,7 +49,7 @@
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -95,9 +95,9 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install package from this GitHub repository:</p>
-<pre class="{r}"><code><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yufree/pmd"</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"yufree/pmd"</span><span class="op">)</span></span></code></pre>
 <p>Or find a stable version from CRAN:</p>
-<pre class="{r}"><code><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'pmd'</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'pmd'</span><span class="op">)</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
@@ -110,31 +110,31 @@
 <li><p><a href="http://yufree.github.io/presentation/reactomics/pres-asms.html" class="external-link">Slides</a>. This is the slides for ASMS 2020 Reboot and here is the <a href="https://youtu.be/-mT3HcVygHE" class="external-link">video</a> of presentation. Press “P” and you will see the notes for each slide with details. Another full version of reactomics presentation for one hour presentation could be found <a href="http://yufree.github.io/presentation/reactomics/pres" class="external-link">here</a>. I will not update the conference presentation while I will add new contents for the full version of reactomics presentation whenever I have new results.</p></li>
 </ul>
 <p>To perform GlobalStd algorithm, use the following code:</p>
-<pre class="{r}"><code><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/" class="external-link">pmd</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span>
-<span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span>
-<span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getstd.html">getstd</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/" class="external-link">pmd</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
+<span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
+<span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getstd.html">getstd</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></span></code></pre>
 <p>To perform structure/reaction directed analysis, use the following code:</p>
-<pre class="{r}"><code><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getsda.html">getsda</a></span><span class="op">(</span><span class="va">std</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/getsda.html">getsda</a></span><span class="op">(</span><span class="va">std</span><span class="op">)</span></span></code></pre>
 <p>To perform GlobalStd algorithem along with structure/reaction directed analysis, use the following code:</p>
-<pre class="{r}"><code><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></code></pre>
 <p>To use the shiny application within the package, use the following code:</p>
-<pre class="{r}"><code><span class="fu"><a href="reference/runPMD.html">runPMD</a></span><span class="op">(</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="fu"><a href="reference/runPMD.html">runPMD</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <p>To check the pmd reaction database:</p>
-<pre class="{r}"><code><span class="co"># all reaction</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"omics"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">omics</span><span class="op">)</span>
-<span class="co"># kegg reaction</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span>
-<span class="co"># literature reaction for mass spectrometry</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="co"># all reaction</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"omics"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">omics</span><span class="op">)</span></span>
+<span><span class="co"># kegg reaction</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span></span>
+<span><span class="co"># literature reaction for mass spectrometry</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span></span></code></pre>
 <p>To check the HMDB pmd database:</p>
-<pre class="{r}"><code><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"hmdb"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">hmdb</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"hmdb"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/View.html" class="external-link">View</a></span><span class="op">(</span><span class="va">hmdb</span><span class="op">)</span></span></code></pre>
 <p>To cite related papers:</p>
-<pre class="{r}"><code><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">'pmd'</span><span class="op">)</span></code></pre>
+<pre class="{r}"><code><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">'pmd'</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
   </div>
@@ -193,7 +193,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

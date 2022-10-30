@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -72,23 +72,32 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getcda</span><span class="op">(</span><span class="va">list</span>, corcutoff <span class="op">=</span> <span class="fl">0.9</span>, rtcutoff <span class="op">=</span> <span class="fl">10</span>, accuracy <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getcda</span><span class="op">(</span><span class="va">list</span>, corcutoff <span class="op">=</span> <span class="fl">0.9</span>, rtcutoff <span class="op">=</span> <span class="fl">10</span>, accuracy <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>list</dt>
 <dd><p>a list with mzrt profile</p></dd>
+
+
 <dt>corcutoff</dt>
 <dd><p>cutoff of the correlation coefficient, default NULL</p></dd>
+
+
 <dt>rtcutoff</dt>
 <dd><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></dd>
+
+
 <dt>accuracy</dt>
 <dd><p>measured mass or mass to charge ratio in digits, default 4</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>list with correlation directed analysis results</p>
+    
+
+<p>list with correlation directed analysis results</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -97,11 +106,11 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="getcorcluster.html">getcorcluster</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="getcorcluster.html">getcorcluster</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
-<span class="r-in"><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">cluster</span>,rowindex <span class="op">=</span> <span class="va">cluster</span><span class="op">$</span><span class="va">stdmassindex2</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cda</span> <span class="op">&lt;-</span> <span class="fu">getcda</span><span class="op">(</span><span class="va">cbp</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">cluster</span>,rowindex <span class="op">=</span> <span class="va">cluster</span><span class="op">$</span><span class="va">stdmassindex2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cda</span> <span class="op">&lt;-</span> <span class="fu">getcda</span><span class="op">(</span><span class="va">cbp</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -116,7 +125,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

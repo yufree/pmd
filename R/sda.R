@@ -546,10 +546,10 @@ getchain <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param cvcutoff ratio or intensity cv cutoff for quantitative paired peaks, default 30
-#' @param method quantification method can be 'static','dynamic','all'. See details.
+#' @param method quantification method can be 'static' or 'dynamic'. See details.
 #' @param outlier logical, if true, outlier of ratio will be removed, default False.
 #' @param ... other parameters for getpmd
-#' @details PMD based reaction quantification methods have four options: 'static' will only consider the stable mass pairs across samples; 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses; 'all' will use 'dynamic' normalization methods for both static and dynamic reaction quantification.
+#' @details PMD based reaction quantification methods have two options: 'static' will only consider the stable mass pairs across samples and such reactions will be limited by the enzyme or other factors than substrates. 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses and such reactions will be limited by one or both peaks in the paired masses.
 #' @return list with quantitative paired peaks.
 #' @examples
 #' data(spmeinvivo)
@@ -763,81 +763,10 @@ getreact <-
                                                 'No dynamic quantitative peak could be used.'
                                         )
                                 }
-
-                        } else if (method == 'all') {
-                                list$pmd <-
-                                        list$pmd[(list$pmd$rh>cvcutoff | list$pmd$rl>cvcutoff),]
-                                list$pmd <-
-                                        list$pmd[stats::complete.cases(list$pmd), ]
-                                if (nrow(list$pmd) > 0&!is.null(list$rt)) {
-                                        idx <- paste(list$mz, list$rt)
-                                        idx2 <- unique(c(
-                                                paste(list$pmd$ms1, list$pmd$rt1),
-                                                paste(list$pmd$ms2, list$pmd$rt2)
-                                        ))
-                                        list <-
-                                                enviGCMS::getfilter(list, idx %in% idx2)
-                                        idx <-
-                                                paste(list$mz, list$rt)
-                                        idy <- list$pmd$rh > list$pmd$rl
-
-                                        pmddata <-
-                                                as.data.frame(matrix(
-                                                        nrow = nrow(list$pmd),
-                                                        ncol = ncol(list$data)
-                                                ))
-                                        pmddata[idy, ] <-
-                                                list$data[match(paste(
-                                                        list$pmd$ms2[idy],
-                                                        list$pmd$rt2[idy]
-                                                ),
-                                                idx), ]/list$data[match(paste(
-                                                        list$pmd$ms1[idy],
-                                                        list$pmd$rt1[idy]
-                                                ),
-                                                idx), ]
-                                        pmddata[!idy, ] <-
-                                                list$data[match(paste(
-                                                        list$pmd$ms1[!idy],
-                                                        list$pmd$rt1[!idy]
-                                                ),
-                                                idx), ]/list$data[match(paste(
-                                                        list$pmd$ms2[!idy],
-                                                        list$pmd$rt2[!idy]
-                                                ),
-                                                idx), ]
-                                        list$pmddata <- pmddata
-                                        colnames(list$pmddata) <-
-                                                colnames(list$data)
-                                        return(list)
-                                }else if (nrow(list$pmd) > 0&is.null(list$rt)) {
-                                        idx <- unique(c(list$pmd$ms1, list$pmd$ms2))
-                                        list <-
-                                                enviGCMS::getfilter(list, list$mz %in% idx)
-                                        idy <- list$pmd$rh > list$pmd$rl
-                                        pmddata <-
-                                                as.data.frame(matrix(
-                                                        nrow = nrow(list$pmd),
-                                                        ncol = ncol(list$data)
-                                                ))
-                                        pmddata[idy, ] <-
-                                                list$data[match(
-                                                        list$pmd$ms2[idy],list$mz), ]/list$data[match(
-                                                                list$pmd$ms1[idy],list$mz), ]
-                                        pmddata[!idy, ] <-
-                                                list$data[match(
-                                                        list$pmd$ms1[!idy],list$mz), ]/list$data[match(
-                                                                list$pmd$ms2[!idy],list$mz), ]
-                                        list$pmddata <- pmddata
-                                        colnames(list$pmddata) <-
-                                                colnames(list$data)
-                                }else{
-                                        message(
-                                                'No pmd peaks could be found.'
-                                        )
-                                }
                         }
-                } else{
-                        message('No pmd peaks could be found.')
+                }else{
+                        message(
+                                'No pmd peaks could be found for quantitative analysis.'
+                        )
                 }
         }
