@@ -4,7 +4,14 @@
 \alias{getpaired}
 \title{Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.}
 \usage{
-getpaired(list, rtcutoff = 10, ng = NULL, digits = 2, accuracy = 4)
+getpaired(
+  list,
+  rtcutoff = 10,
+  ng = NULL,
+  digits = 2,
+  accuracy = 4,
+  mdrange = NULL
+)
 }
 \arguments{
 \item{list}{a list with mzrt profile}
@@ -16,6 +23,8 @@ getpaired(list, rtcutoff = 10, ng = NULL, digits = 2, accuracy = 4)
 \item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
+
+\item{mdrange}{mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass}
 }
 \value{
 list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.

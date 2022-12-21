@@ -4,7 +4,14 @@
 \alias{getrda}
 \title{Perform structure/reaction directed analysis for mass only.}
 \usage{
-getrda(mz, freqcutoff = 10, digits = 3, top = 20, formula = NULL)
+getrda(
+  mz,
+  freqcutoff = 10,
+  digits = 3,
+  top = 20,
+  formula = NULL,
+  mdrange = c(0.25, 0.9)
+)
 }
 \arguments{
 \item{mz}{numeric vector for independent mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automated}
@@ -16,6 +23,8 @@ getrda(mz, freqcutoff = 10, digits = 3, top = 20, formula = NULL)
 \item{top}{top n pmd frequency cutoff when the freqcutoff is too small for large data set}
 
 \item{formula}{vector for formula when you don't have mass or mass to charge ratio data}
+
+\item{mdrange}{mass defect range to ignore. Default c(0.25,0.9) to retain the possible reaction related paired mass}
 }
 \value{
 logical matrix with row as the same order of mz or formula and column as high frequency pmd group
