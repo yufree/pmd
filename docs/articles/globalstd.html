@@ -90,7 +90,7 @@
       <h1 data-toc-skip>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 data-toc-skip class="date">2022-10-30</h4>
+            <h4 data-toc-skip class="date">2022-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/vignettes/globalstd.Rmd" class="external-link"><code>vignettes/globalstd.Rmd</code></a></small>
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -467,7 +467,7 @@
 <p>When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by <code>getrda</code> function.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getrda.html">getrda</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 36668 pmd found.</span></span>
+<span><span class="co">#&gt; 15209 pmd found.</span></span>
 <span><span class="co">#&gt; 3 pmd used.</span></span></code></pre></div>
 </div>
 </div>
@@ -502,47 +502,44 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span>
 <span><span class="co">#&gt; index</span></span>
 <span><span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span></span>
-<span><span class="co">#&gt; 27 34 27 18 23 24 18 24 54 42</span></span>
+<span><span class="co">#&gt; 27 35 30 25 21 31 29 43 20 30</span></span>
 <span><span class="co"># show the ions for the first injection</span></span>
 <span><span class="va">std</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   [1] 100.9572 120.0812 121.0851 138.1031 140.0600 149.9530 159.1575 163.0758</span></span>
-<span><span class="co">#&gt;   [9] 166.0867 170.0330 174.1363 175.1200 181.9872 191.1435 192.1604 195.1027</span></span>
-<span><span class="co">#&gt;  [17] 196.4492 205.1276 210.1577 233.2268 239.1628 244.0288 245.0787 254.2122</span></span>
-<span><span class="co">#&gt;  [25] 255.1591 255.9443 259.1148 262.1453 269.0888 269.9189 271.3217 271.3217</span></span>
-<span><span class="co">#&gt;  [33] 273.8902 283.1760 285.3002 285.9630 288.2546 295.9069 299.9249 305.2480</span></span>
-<span><span class="co">#&gt;  [41] 308.2954 309.3159 311.1865 312.3261 319.3002 324.3266 339.6388 341.3615</span></span>
-<span><span class="co">#&gt;  [49] 352.3214 353.3244 361.2353 362.3032 364.3575 366.3006 368.3169 377.8991</span></span>
-<span><span class="co">#&gt;  [57] 379.2844 387.2851 389.2529 394.8754 404.2889 409.1624 410.8485 416.0377</span></span>
-<span><span class="co">#&gt;  [65] 419.3165 422.2366 429.3692 432.0690 435.3471 438.2669 442.3376 447.1173</span></span>
-<span><span class="co">#&gt;  [73] 449.2989 494.8112 499.9050 507.3409 512.4158 525.9831 526.4841 528.4989</span></span>
-<span><span class="co">#&gt;  [81] 534.9708 538.3150 546.3560 547.5201 560.8717 562.1811 567.1783 580.2907</span></span>
-<span><span class="co">#&gt;  [89] 584.4734 587.8828 596.1559 603.4105 607.4262 617.4657 628.1949 634.8774</span></span>
-<span><span class="co">#&gt;  [97] 637.3048 639.8539 650.6644 658.4832 686.2013 695.6533 704.6384 707.6675</span></span>
-<span><span class="co">#&gt; [105] 716.5241 719.2988 723.4865 731.7391 736.8574 757.8509 758.3546 772.5904</span></span>
-<span><span class="co">#&gt; [113] 773.3274 779.5153 794.8123 801.8376 804.5530 813.3338 825.6769 831.6352</span></span>
-<span><span class="co">#&gt; [121] 840.3407 848.7955 858.6636 863.3158 867.4427 873.3057 879.3804 920.4687</span></span>
-<span><span class="co">#&gt; [129] 930.1575 946.7398 949.3083 975.8147 976.8122 982.7763 985.7859 998.1412</span></span>
+<span><span class="co">#&gt;   [1] 110.0717 120.0812 121.0851 137.9884 140.9956 143.9602 155.1294 155.1748</span></span>
+<span><span class="co">#&gt;   [9] 158.9617 159.1575 161.0600 163.1487 177.1640 184.1695 188.6484 193.1597</span></span>
+<span><span class="co">#&gt;  [17] 206.0898 211.1695 217.6492 223.2068 227.1853 236.9406 239.1490 239.1628</span></span>
+<span><span class="co">#&gt;  [25] 242.2863 245.0787 250.1781 264.1944 269.0888 269.9189 270.3185 271.3217</span></span>
+<span><span class="co">#&gt;  [33] 271.3217 279.1610 279.1604 282.2811 283.1760 283.2838 285.3002 302.1454</span></span>
+<span><span class="co">#&gt;  [41] 307.0973 308.0887 310.0883 320.3040 325.3294 329.0052 332.5619 336.3260</span></span>
+<span><span class="co">#&gt;  [49] 341.0180 341.3512 341.3615 349.3476 353.3244 356.3423 371.3345 377.8991</span></span>
+<span><span class="co">#&gt;  [57] 379.2844 385.3480 390.2553 392.2873 400.2536 400.3301 403.3586 404.2889</span></span>
+<span><span class="co">#&gt;  [65] 405.2616 409.2673 426.2189 430.3765 431.2614 437.1936 447.3469 451.3633</span></span>
+<span><span class="co">#&gt;  [73] 463.1472 470.1010 479.2613 494.8114 498.9017 499.9050 505.1055 512.4158</span></span>
+<span><span class="co">#&gt;  [81] 517.8314 540.8890 546.3560 547.5201 560.2193 563.3761 564.3304 570.3554</span></span>
+<span><span class="co">#&gt;  [89] 574.8768 579.2935 580.2907 581.1925 584.8611 612.1849 620.6167 624.8488</span></span>
+<span><span class="co">#&gt;  [97] 635.8787 651.8520 659.4835 668.5595 675.2109 677.8593 692.4941 695.5039</span></span>
+<span><span class="co">#&gt; [105] 695.6533 703.3651 707.6675 709.3670 739.6479 757.8509 758.3546 771.3530</span></span>
+<span><span class="co">#&gt; [113] 773.5940 774.5655 787.9269 788.5237 793.6270 794.8123 795.6669 802.5006</span></span>
+<span><span class="co">#&gt; [121] 836.5243 841.5715 847.3272 860.3354 873.4237 880.8217 888.8064 897.2942</span></span>
+<span><span class="co">#&gt; [129] 907.1589 925.4477 929.8218 930.1575 942.7638 949.3083 956.7945</span></span>
 <span><span class="va">std</span><span class="op">$</span><span class="va">rt</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   [1]   84.8510  348.1340  348.3470  874.6950  511.0515 1079.6400  470.3640</span></span>
-<span><span class="co">#&gt;   [8]  576.9100  511.2940  215.0585  611.4135  260.8720   48.8480  611.4120</span></span>
-<span><span class="co">#&gt;  [15]  337.3920  538.0810  145.1850  370.7850  611.4130  639.1000  506.7940</span></span>
-<span><span class="co">#&gt;  [22]  212.6665  511.0800  451.6785  482.5790   76.7060  144.0380  588.9100</span></span>
-<span><span class="co">#&gt;  [29]  161.3960  144.6810  669.4930  744.1460  145.9680  170.3910  504.4370</span></span>
-<span><span class="co">#&gt;  [36]  147.4990  486.4080  145.0030  146.2780  599.8400  569.4105  594.0550</span></span>
-<span><span class="co">#&gt;  [43]  495.2220  636.9570  594.9110  628.9860  639.0990  658.5980  582.4820</span></span>
-<span><span class="co">#&gt;  [50]  582.4830  550.5530  613.1270  616.7710  561.9110  570.0560  145.1090</span></span>
-<span><span class="co">#&gt;  [57]  573.0530  492.8650  383.1060  217.1550  570.2670  482.4185  218.3130</span></span>
-<span><span class="co">#&gt;  [64]  762.5750  687.9570  551.4100  613.1270  762.3610  581.9475  639.3140</span></span>
-<span><span class="co">#&gt;  [71]  656.2430  716.8890  403.8915  817.9060  213.9270  422.9630  550.3385</span></span>
-<span><span class="co">#&gt;  [78]  639.0980  638.9925  643.4925  639.0995  520.8340  529.0810  627.8060</span></span>
-<span><span class="co">#&gt;  [85]  213.7270  762.3630  762.3630  508.5080  576.8045  213.5090  819.5150</span></span>
-<span><span class="co">#&gt;  [92]  530.7950  613.5560  455.1500  642.7435  213.7270  630.7000  214.1780</span></span>
-<span><span class="co">#&gt;  [99]  637.1710  468.4850  883.0525  639.3120  639.0980  594.4830  481.0790</span></span>
-<span><span class="co">#&gt; [106]  365.5325  463.1855  659.2430  213.5090  213.2940  213.5120  624.2700</span></span>
-<span><span class="co">#&gt; [113]  370.5620  519.6690  215.7855  213.5020  631.5555  214.9295  628.5550</span></span>
-<span><span class="co">#&gt; [120]  628.3420  213.3340  214.6500  646.7630  639.1010  494.3650  639.2070</span></span>
-<span><span class="co">#&gt; [127]  373.7835  497.7940  213.5310  800.2900  214.8495  213.7270  213.8565</span></span>
-<span><span class="co">#&gt; [134]  640.2780  215.0680  213.1700</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1] 228.0840 348.1340 348.3470 817.6920  86.3490  85.4930 732.5740 405.6060</span></span>
+<span><span class="co">#&gt;   [9] 166.6990 470.3640 620.6270 612.9110 639.3140 639.1000 639.2075 614.2000</span></span>
+<span><span class="co">#&gt;  [17] 583.3410 614.6250 639.3130 639.1000 611.1980 147.8960 170.2755 506.7940</span></span>
+<span><span class="co">#&gt;  [25] 780.5760 511.0800 612.8060 473.1445 161.3960 144.6810 681.3155 699.9580</span></span>
+<span><span class="co">#&gt;  [33] 858.8350 583.7690 664.9220 594.9100 170.3910 595.2325 670.6010 583.9810</span></span>
+<span><span class="co">#&gt;  [41] 475.5070 549.6960 567.9115 622.7700 629.1980 509.3650 141.6810 622.7680</span></span>
+<span><span class="co">#&gt;  [49] 717.1835 639.3140 658.5980 659.2440 582.4830 594.4830 551.7325 145.1090</span></span>
+<span><span class="co">#&gt;  [57] 573.0530 585.4825 383.3190 665.0280 551.4100 582.3750 585.8040 570.2670</span></span>
+<span><span class="co">#&gt;  [65] 547.3380 493.0790 601.1275 704.8880 446.3230 507.4370 711.4240 553.5540</span></span>
+<span><span class="co">#&gt;  [73] 717.0775 717.1020 557.4110 870.6220 213.7270 213.9270 762.4675 550.3385</span></span>
+<span><span class="co">#&gt;  [81] 144.7890 213.7260 529.0810 627.8060 340.9965 439.4630 531.3305 524.2585</span></span>
+<span><span class="co">#&gt;  [89] 214.5700 583.7680 508.5080 762.4690 215.7865 818.7650 618.4850 215.9880</span></span>
+<span><span class="co">#&gt;  [97] 213.7720 215.7110 468.0100 551.4110 819.5135 214.8145 528.2230 698.3510</span></span>
+<span><span class="co">#&gt; [105] 639.3120 213.5480 594.4830 481.2940 639.1005 213.2940 213.5120 213.7130</span></span>
+<span><span class="co">#&gt; [113] 624.2695 492.5440 212.7600 730.6470 613.5555 215.7855 643.3860 519.6610</span></span>
+<span><span class="co">#&gt; [121] 698.2460 517.2940 214.9660 213.5055 471.3075 214.2320 215.0690 215.8710</span></span>
+<span><span class="co">#&gt; [129] 213.3590 476.5790 213.3340 213.5310 636.9060 214.8495 215.0405</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="shiny-application">Shiny application<a class="anchor" aria-label="anchor" href="#shiny-application"></a>
@@ -574,7 +571,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
