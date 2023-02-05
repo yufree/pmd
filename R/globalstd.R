@@ -4,6 +4,7 @@
 #' @param ng cutoff of global PMD's retention time group numbers, If ng = NULL, 20 percent of RT cluster will be used as ng, default NULL.
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
+#' @param mdrange mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass
 #' @return list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
 #' @examples
 #' data(spmeinvivo)
@@ -15,27 +16,9 @@ getpaired <-
                  rtcutoff = 10,
                  ng = NULL,
                  digits = 2,
-                 accuracy = 4) {
-                # paired mass diff analysis
-                dis <- stats::dist(list$rt, method = "manhattan")
-                fit <- stats::hclust(dis)
-                rtcluster <- stats::cutree(fit, h = rtcutoff)
-                n <- length(unique(rtcluster))
-                message(paste(n, "retention time cluster found."))
-                # automate ng selection when ng is NULL
-                ng <- ifelse(is.null(ng), round(n * 0.2), ng)
-                if (!is.null(list$data)) {
-                        groups <- cbind.data.frame(mz = list$mz,
-                                                   rt = list$rt,
-                                                   list$data)
-                } else {
-                        groups <- cbind.data.frame(mz = list$mz,
-                                                   rt = list$rt)
-                        message('No intensity data!')
-                }
-
-                split <- split.data.frame(groups, rtcluster)
-
+                 accuracy = 4,
+                 mdrange = NULL) {
+                # Convert a pmd data.frame to isotope, multi, and diff pmd data.frame list.
                 rtpmd <- function(bin, i) {
                         medianrtxi <- stats::median(bin$rt)
                         if (ncol(bin) > 2) {
@@ -96,17 +79,17 @@ getpaired <-
                                         }
                                         # remove multi chargers
                                         multiindex <-
-                                         (round(df$diff %% 1, 1) == 0.5)
+                                                (round(df$diff %% 1, 1) == 0.5)
                                         dfmulti <- df[multiindex, ]
                                         mass <-
-                                         unique(df[multiindex, 1], df[multiindex, 2])
+                                                unique(df[multiindex, 1], df[multiindex, 2])
                                         # From HMDB lowest mass with 0.5 is 394.4539, remove those ions related pmd
                                         multimass <-
-                                         mass[round(mass %% 1, 1) == 0.5 & mass<350]
+                                                mass[round(mass %% 1, 1) == 0.5 & mass<350]
 
                                         if (nrow(dfmulti) > 0) {
-                                                 df <-
-                                                         df[!(df[, 1] %in% multimass) & !(df[, 2] %in% multimass),]
+                                                df <-
+                                                        df[!(df[, 1] %in% multimass) & !(df[, 2] %in% multimass),]
                                         }
 
                                         dfdiff <- df
@@ -199,6 +182,26 @@ getpaired <-
                         }
                 }
 
+                # paired mass diff analysis
+                dis <- stats::dist(list$rt, method = "manhattan")
+                fit <- stats::hclust(dis)
+                rtcluster <- stats::cutree(fit, h = rtcutoff)
+                n <- length(unique(rtcluster))
+                message(paste(n, "retention time cluster found."))
+                # automate ng selection when ng is NULL
+                ng <- ifelse(is.null(ng), round(n * 0.2), ng)
+                if (!is.null(list$data)) {
+                        groups <- cbind.data.frame(mz = list$mz,
+                                                   rt = list$rt,
+                                                   list$data)
+                } else {
+                        groups <- cbind.data.frame(mz = list$mz,
+                                                   rt = list$rt)
+                        message('No intensity data!')
+                }
+
+                split <- split.data.frame(groups, rtcluster)
+
                 rtpmdtemp <-
                         mapply(rtpmd,
                                split,
@@ -210,7 +213,14 @@ getpaired <-
                 list$rtcluster <- rtcluster
                 result$dfdiff$diff2 <-
                         round(result$dfdiff$diff, digits)
-                # speed up
+                result$dfdiff$md <- result$dfdiff$diff%%1
+                # speed up by mass defect
+                if(is.null(mdrange)){
+                        list$diff <- result$dfdiff
+                }else{
+                        list$diff <- result$dfdiff <- result$dfdiff[result$dfdiff$md<mdrange[1]|result$dfdiff$md>mdrange[2],]
+                }
+                # speed up by group
                 pmd <-
                         as.numeric(names(table(result$dfdiff$diff2)[table(result$dfdiff$diff2) > ng]))
                 # pmd <- unique(result$dfdiff$diff2)
@@ -245,7 +255,7 @@ getpaired <-
                                       accuracy)
                         ),
                         c(result$dfdiff$rtg, result$dfdiff$rtg))
-                list$diff <- result$dfdiff
+
                 # get the data index by rt groups with single ions
                 if (!is.null(result$solo)) {
                         list$soloindex <-
@@ -656,6 +666,7 @@ getstd <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param freqcutoff pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
+#' @param mdrange mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass
 #' @param sda logical, option to perform structure/reaction directed analysis, default FALSE.
 #' @return list with GlobalStd algorithm processed data.
 #' @examples
@@ -670,6 +681,7 @@ globalstd <- function(list,
                       digits = 2,
                       accuracy = 4,
                       freqcutoff = NULL,
+                      mdrange = NULL,
                       sda = FALSE) {
         list <-
                 getpaired(
@@ -677,7 +689,8 @@ globalstd <- function(list,
                         rtcutoff = rtcutoff,
                         ng = ng,
                         digits = digits,
-                        accuracy = accuracy
+                        accuracy = accuracy,
+                        mdrange = mdrange
                 )
         if (sum(list$pairedindex) > 0) {
                 list2 <-

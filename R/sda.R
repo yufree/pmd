@@ -62,6 +62,7 @@ getsda <-
                                         rtg2 = rtg[which(lower.tri(disrtg),
                                                          arr.ind = TRUE)[, 2]],
                                         rtgdiff = as.numeric(disrtg),
+                                        md = as.numeric(dis)%%1,
                                         cor = cor[lower.tri(cor)]
                                 )
                 } else{
@@ -80,7 +81,8 @@ getsda <-
                                                  arr.ind = TRUE)[, 1]],
                                 rtg2 = rtg[which(lower.tri(disrtg),
                                                  arr.ind = TRUE)[, 2]],
-                                rtgdiff = as.numeric(disrtg)
+                                rtgdiff = as.numeric(disrtg),
+                                md = as.numeric(dis)%%1
                         )
                 }
                 df <- df[df$rtgdiff > 0, ]
@@ -171,6 +173,7 @@ getsda <-
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 3
 #' @param top top n pmd frequency cutoff when the freqcutoff is too small for large data set
 #' @param formula vector for formula when you don't have mass or mass to charge ratio data
+#' @param mdrange mass defect range to ignore. Default c(0.25,0.9) to retain the possible reaction related paired mass
 #' @return logical matrix with row as the same order of mz or formula and column as high frequency pmd group
 #' @examples
 #' data(spmeinvivo)
@@ -184,7 +187,8 @@ getrda <-
                  freqcutoff = 10,
                  digits = 3,
                  top = 20,
-                 formula = NULL) {
+                 formula = NULL,
+                 mdrange = c(0.25,0.9)) {
                 if (is.null(formula)) {
                         mz <- unique(mz)
                         dis <- stats::dist(mz, method = "manhattan")
@@ -199,8 +203,12 @@ getrda <-
                         ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]],
                         ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]],
                         diff = as.numeric(dis),
-                        diff2 = round(as.numeric(dis), digits = digits)
+                        diff2 = round(as.numeric(dis), digits = digits),
+                        md = as.numeric(dis)%%1
                 )
+                if(!is.null(mdrange)){
+                       df <- df[df$md<mdrange[1]|df$md>mdrange[2],]
+                }
                 freq <-
                         sort(table(df$diff2), decreasing = TRUE)
                 message(paste(length(freq), 'pmd found.'))
@@ -269,6 +277,7 @@ getcda <- function(list,
                         rtg2 = rtg[which(lower.tri(disrtg),
                                          arr.ind = TRUE)[, 2]],
                         rtgdiff = as.numeric(disrtg),
+                        md = as.numeric(dis)%%1,
                         cor = cor[lower.tri(cor)]
                 )
         list$cda <- df[abs(df$cor) >= corcutoff,]
