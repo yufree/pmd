@@ -74,11 +74,13 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getrda</span><span class="op">(</span></span>
 <span>  <span class="va">mz</span>,</span>
+<span>  pmd <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  freqcutoff <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  digits <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  top <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  mdrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.9</span><span class="op">)</span></span>
+<span>  mdrange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">0.9</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -86,6 +88,10 @@
     <h2>Arguments</h2>
     <dl><dt>mz</dt>
 <dd><p>numeric vector for independent mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automated</p></dd>
+
+
+<dt>pmd</dt>
+<dd><p>a specific paired mass distance or a vector of pmds, default NULL</p></dd>
 
 
 <dt>freqcutoff</dt>
@@ -107,12 +113,16 @@
 <dt>mdrange</dt>
 <dd><p>mass defect range to ignore. Default c(0.25,0.9) to retain the possible reaction related paired mass</p></dd>
 
+
+<dt>verbose</dt>
+<dd><p>logic, if TURE, return will be llist with paired mass distances table. Default FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     
 
-<p>logical matrix with row as the same order of mz or formula and column as high frequency pmd group</p>
+<p>logical matrix with row as the same order of mz or formula and column as high  frequency pmd group when verbose is FALSE</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -139,6 +149,8 @@
 <span class="r-in"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 15209 pmd found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 3 pmd used.</span>
+<span class="r-in"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span>, pmd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">15.995</span>,<span class="fl">18.011</span>,<span class="fl">14.016</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 pmd used.</span>
 </code></pre></div>
     </div>
   </div>

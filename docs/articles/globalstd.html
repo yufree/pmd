@@ -90,7 +90,7 @@
       <h1 data-toc-skip>Paired Mass Distance(PMD) analysis for GC/LC-MS based non-targeted analysis</h1>
                         <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 data-toc-skip class="date">2023-02-05</h4>
+            <h4 data-toc-skip class="date">2023-04-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/vignettes/globalstd.Rmd" class="external-link"><code>vignettes/globalstd.Rmd</code></a></small>
       <div class="hidden name"><code>globalstd.Rmd</code></div>
@@ -358,7 +358,7 @@
 <span><span class="co">#&gt; 173.18 was found as high frequency PMD.</span></span></code></pre></div>
 <p>Such largest mean distance of all nodes is calculated for top 1 to 100 (if possible) high frequency PMDs. Here is a demo for the network generation process.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://igraph.org" class="external-link">igraph</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Attaching package: 'igraph'</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:stats':</span></span>
@@ -374,10 +374,10 @@
 <span><span class="co"># filter the frequency larger than 10 for demo</span></span>
 <span><span class="va">pmds</span> <span class="op">&lt;-</span> <span class="va">pmds</span><span class="op">[</span><span class="va">freq</span><span class="op">&gt;</span><span class="fl">10</span><span class="op">]</span></span>
 <span><span class="va">cdf</span> <span class="op">&lt;-</span> <span class="va">sda</span><span class="op">$</span><span class="va">sda</span><span class="op">[</span><span class="va">sda</span><span class="op">$</span><span class="va">sda</span><span class="op">$</span><span class="va">diff2</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">pmds</span>,<span class="op">]</span></span>
-<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">cdf</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
-<span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/layout_with_fr.html" class="external-link">layout_with_fr</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
+<span><span class="va">g</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">cdf</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/layout_with_fr.html" class="external-link">layout_with_fr</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pmds</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/delete_edges.html" class="external-link">delete_edges</a></span><span class="op">(</span><span class="va">g</span>,<span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/igraph/man/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="va">pmds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu">igraph</span><span class="fu">::</span><span class="fu"><a href="https://r.igraph.org/reference/delete_edges.html" class="external-link">delete_edges</a></span><span class="op">(</span><span class="va">g</span>,<span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span><span class="va">pmds</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">i</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">g2</span>,edge.width<span class="op">=</span><span class="fl">1</span>,vertex.label<span class="op">=</span><span class="st">""</span>,vertex.size<span class="op">=</span><span class="fl">1</span>,layout<span class="op">=</span><span class="va">l</span>,main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">'Top'</span>,<span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">pmds</span><span class="op">)</span><span class="op">-</span><span class="va">i</span>,<span class="st">'high frequency PMDs'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p><img src="globalstd_files/figure-html/unnamed-chunk-2-1.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-2.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-3.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-4.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-5.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-6.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-7.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-8.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-9.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-10.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-11.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-12.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-13.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-14.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-15.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-16.png" width="700"><img src="globalstd_files/figure-html/unnamed-chunk-2-17.png" width="700"></p>
@@ -502,40 +502,49 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">index</span><span class="op">)</span></span>
 <span><span class="co">#&gt; index</span></span>
 <span><span class="co">#&gt;  1  2  3  4  5  6  7  8  9 10 </span></span>
-<span><span class="co">#&gt; 22 27 34 44 32 40 29 17 29 17</span></span>
+<span><span class="co">#&gt; 28 33 31 33 35 23 15 40 30 23</span></span>
 <span><span class="co"># show the ions for the first injection</span></span>
 <span><span class="va">std</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   [1] 104.1082 110.0092 120.0812 132.0050 134.1185 155.1294 161.0713 169.0976</span></span>
-<span><span class="co">#&gt;   [9] 188.6484 192.0132 193.1597 193.1599 195.1745 197.9893 214.9181 221.0851</span></span>
-<span><span class="co">#&gt;  [17] 230.0794 241.2366 242.2863 250.1781 252.0721 252.1237 262.1791 263.2015</span></span>
-<span><span class="co">#&gt;  [25] 269.0888 270.3185 270.3185 279.1610 283.2841 286.9218 308.0887 309.1672</span></span>
-<span><span class="co">#&gt;  [33] 310.0883 310.3117 311.3144 313.2741 328.0132 331.2101 338.6338 342.3637</span></span>
-<span><span class="co">#&gt;  [41] 345.9293 356.3423 359.0292 359.2410 369.3534 370.3567 377.8991 383.1414</span></span>
-<span><span class="co">#&gt;  [49] 383.3313 400.2536 405.8957 415.2132 431.2614 432.8860 437.1936 437.2355</span></span>
-<span><span class="co">#&gt;  [57] 441.2976 442.8446 460.3112 469.1008 493.3138 500.9073 501.3829 517.8314</span></span>
-<span><span class="co">#&gt;  [65] 522.1371 522.3557 539.1646 539.5420 546.3560 555.2922 557.0950 570.3554</span></span>
-<span><span class="co">#&gt;  [73] 581.2431 595.1563 624.8488 629.8618 635.8787 636.1983 639.2005 641.1961</span></span>
-<span><span class="co">#&gt;  [81] 665.4664 673.8481 684.8449 697.8511 699.8553 709.3670 712.8208 713.4467</span></span>
-<span><span class="co">#&gt;  [89] 737.8603 738.5072 757.8509 762.3925 765.5253 787.9269 796.5418 812.8331</span></span>
-<span><span class="co">#&gt;  [97] 847.3272 854.8122 860.3354 861.5014 866.3142 867.8179 884.7221 894.7234</span></span>
-<span><span class="co">#&gt; [105] 915.8125 934.8077 938.7728 956.7945 973.4945 974.8148</span></span>
+<span><span class="co">#&gt;   [1] 103.0547 125.9874 132.0050 149.9530 152.0578 156.1777 156.9622 172.1705</span></span>
+<span><span class="co">#&gt;   [9] 175.0873 175.1481 175.1482 177.1636 181.1597 184.9858 186.1854 191.1801</span></span>
+<span><span class="co">#&gt;  [17] 192.1604 196.4492 208.1693 209.9806 219.0540 226.1823 228.1973 236.1626</span></span>
+<span><span class="co">#&gt;  [25] 242.2863 242.2863 252.1237 254.2122 262.1453 270.3185 270.3185 273.8902</span></span>
+<span><span class="co">#&gt;  [33] 274.8744 280.2641 281.0520 294.2054 299.1113 300.1148 300.2046 303.2325</span></span>
+<span><span class="co">#&gt;  [41] 304.9038 307.1107 307.9421 309.0913 309.3159 312.3261 320.3322 323.3221</span></span>
+<span><span class="co">#&gt;  [49] 329.0928 334.3101 337.3298 340.3593 349.3476 350.3426 359.2410 361.2353</span></span>
+<span><span class="co">#&gt;  [57] 368.3395 381.1324 383.1414 394.8754 395.2208 401.3420 401.3421 417.2462</span></span>
+<span><span class="co">#&gt;  [65] 421.2521 422.2952 424.0815 426.3146 429.3192 430.8888 431.0687 432.3878</span></span>
+<span><span class="co">#&gt;  [73] 435.3471 442.3376 447.9910 449.1148 463.3975 471.3317 485.2901 494.8112</span></span>
+<span><span class="co">#&gt;  [81] 505.1055 505.3342 522.3557 525.9831 538.3435 549.3617 555.2922 567.1783</span></span>
+<span><span class="co">#&gt;  [89] 567.3904 576.8454 577.1267 600.4401 607.4028 608.4054 608.4285 613.1827</span></span>
+<span><span class="co">#&gt;  [97] 616.4645 621.4195 622.4229 628.8597 634.8774 639.8539 652.8473 655.8704</span></span>
+<span><span class="co">#&gt; [105] 668.8690 675.5084 680.4633 691.4631 703.3651 703.6382 713.4467 716.5241</span></span>
+<span><span class="co">#&gt; [113] 737.3591 760.2210 762.3925 779.5153 780.8078 790.5883 791.1193 816.5102</span></span>
+<span><span class="co">#&gt; [121] 831.6037 832.3212 832.8212 836.6816 839.3409 841.8196 845.5232 853.7083</span></span>
+<span><span class="co">#&gt; [129] 858.6636 867.4427 874.3049 878.3781 889.4890 900.3092 911.7489 924.7338</span></span>
+<span><span class="co">#&gt; [137] 942.7638 943.7976 974.8148 975.8147 998.7737</span></span>
 <span><span class="va">std</span><span class="op">$</span><span class="va">rt</span><span class="op">[</span><span class="va">index</span><span class="op">==</span><span class="fl">1</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   [1]  254.2280 1079.6500  348.1340   49.4910  355.8470  732.5740  389.9630</span></span>
-<span><span class="co">#&gt;   [8]  169.7530  639.2075  217.1820  614.2000  453.1780  594.4850  145.5380</span></span>
-<span><span class="co">#&gt;  [15]   76.9220  565.7700  431.3200  639.0980  880.3730  612.8060  678.3130</span></span>
-<span><span class="co">#&gt;  [22]  591.4830  464.0430  592.9810  161.3960  447.3925  838.9070  583.7690</span></span>
-<span><span class="co">#&gt;  [29]  639.3120  146.5170  549.6960  237.5130  567.9115  618.4820  618.4830</span></span>
-<span><span class="co">#&gt;  [36]  587.3035  509.1510  359.9200  639.1000  658.6000  145.7520  594.4830</span></span>
-<span><span class="co">#&gt;  [43]  717.0520  213.7505  688.3880  688.3880  145.1090  605.5200  656.0300</span></span>
-<span><span class="co">#&gt;  [50]  551.4100  144.8700  507.8650  446.3230  549.9110  507.4370  170.9435</span></span>
-<span><span class="co">#&gt;  [57]  688.1715  643.3840  169.9670  717.3170  540.6520  213.9570  422.9630</span></span>
-<span><span class="co">#&gt;  [64]  144.7890  762.5750  546.4830  762.7890  705.4235  529.0810  512.7070</span></span>
-<span><span class="co">#&gt;  [71]  762.5765  524.2585  630.9130  819.4050  215.9880  214.6170  213.7720</span></span>
-<span><span class="co">#&gt;  [78]  818.9800  819.2990  818.9770  528.0080  214.3560  215.2430  214.3710</span></span>
-<span><span class="co">#&gt;  [85]  213.3340  481.2940  214.7985  525.0090  213.6305  752.9310  213.2940</span></span>
-<span><span class="co">#&gt;  [92]  485.8675  773.7190  212.7600  519.8660  214.4150  214.9660  215.4170</span></span>
-<span><span class="co">#&gt;  [99]  213.5055  213.3395  213.3840  214.4150  632.0920  650.6715  214.6300</span></span>
-<span><span class="co">#&gt; [106]  213.8030  216.4125  215.0405  500.9015  213.7130</span></span></code></pre></div>
+<span><span class="co">#&gt;   [1]  348.1340   76.4910   49.4910 1079.6400  219.5120  405.3890  145.5380</span></span>
+<span><span class="co">#&gt;   [8]  478.9360  511.2940  614.4130  453.1780  594.2680  615.0530   85.4930</span></span>
+<span><span class="co">#&gt;  [15]  501.3300  638.8870  337.3920  145.1850  611.4110  147.8780  169.5380</span></span>
+<span><span class="co">#&gt;  [22]  611.4120  453.1570  430.6770  780.5760  573.8035  591.4830  451.6785</span></span>
+<span><span class="co">#&gt;  [29]  491.1510  501.6500  447.3925  145.9680  218.5540  576.6950  617.4140</span></span>
+<span><span class="co">#&gt;  [36]  452.0005  447.6060  447.6060  172.2230  586.1240  145.4960  212.7520</span></span>
+<span><span class="co">#&gt;  [43]  146.3215  568.7680  594.0550  636.9570  639.0990  639.3130  212.3870</span></span>
+<span><span class="co">#&gt;  [50]  608.1990  595.1260  658.6000  659.2440  625.9840  213.7505  550.5530</span></span>
+<span><span class="co">#&gt;  [57]  644.2430  447.8210  605.5200  217.1550  613.7680  672.1020  632.8410</span></span>
+<span><span class="co">#&gt;  [64]  444.6075  634.3425  639.5290  583.9830  404.5330  557.1970  549.6980</span></span>
+<span><span class="co">#&gt;  [71]  762.3630  612.4845  581.9475  656.2430  212.6570  717.1020  582.3755</span></span>
+<span><span class="co">#&gt;  [78]  540.8660  582.6970  890.7680  762.4675  422.9630  546.4830  639.0980</span></span>
+<span><span class="co">#&gt;  [85]  537.2240  418.7850  512.7070  762.3630  213.3840  215.1975  819.6200</span></span>
+<span><span class="co">#&gt;  [92]  455.1500  434.9630  434.7490  613.3395  819.1920  454.9350  454.9350</span></span>
+<span><span class="co">#&gt;  [99]  455.1500  213.5990  213.7270  214.1780  215.5645  213.3340  213.5090</span></span>
+<span><span class="co">#&gt; [106]  468.2215  468.4360  525.0090  213.5480  638.8855  525.0090  481.0790</span></span>
+<span><span class="co">#&gt; [113]  213.5480  700.3870  485.8675  519.6690  214.7290  492.8650  639.9560</span></span>
+<span><span class="co">#&gt; [120]  213.3340  503.6870  213.5140  213.7130  646.6000  213.6370  213.8945</span></span>
+<span><span class="co">#&gt; [127]  517.5090  646.6610  646.7630  494.3650  638.7790  381.9255  213.6405</span></span>
+<span><span class="co">#&gt; [134]  213.5480  650.4570  636.9560  636.9060  214.0705  213.7130  213.7270</span></span>
+<span><span class="co">#&gt; [141]  215.6570</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="shiny-application">Shiny application<a class="anchor" aria-label="anchor" href="#shiny-application"></a>
