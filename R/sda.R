@@ -169,26 +169,31 @@ getsda <-
         }
 #' Perform structure/reaction directed analysis for mass only.
 #' @param mz numeric vector for independent mass or mass to charge ratio. Mass to charge ratio from GlobalStd algorithm is suggested. Isomers would be excluded automated
+#' @param pmd a specific paired mass distance or a vector of pmds, default NULL
 #' @param freqcutoff pmd frequency cutoff for structures or reactions, default 10
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 3
 #' @param top top n pmd frequency cutoff when the freqcutoff is too small for large data set
 #' @param formula vector for formula when you don't have mass or mass to charge ratio data
 #' @param mdrange mass defect range to ignore. Default c(0.25,0.9) to retain the possible reaction related paired mass
-#' @return logical matrix with row as the same order of mz or formula and column as high frequency pmd group
+#' @param verbose logic, if TURE, return will be llist with paired mass distances table. Default FALSE.
+#' @return logical matrix with row as the same order of mz or formula and column as high  frequency pmd group when verbose is FALSE
 #' @examples
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
 #' std <- getstd(pmd)
 #' sda <- getrda(spmeinvivo$mz[std$stdmassindex])
+#' sda <- getrda(spmeinvivo$mz, pmd = c(2.016,15.995,18.011,14.016))
 #' @seealso \code{\link{getsda}}
 #' @export
 getrda <-
         function(mz,
+                 pmd = NULL,
                  freqcutoff = 10,
                  digits = 3,
                  top = 20,
                  formula = NULL,
-                 mdrange = c(0.25,0.9)) {
+                 mdrange = c(0.25,0.9),
+                 verbose = FALSE) {
                 if (is.null(formula)) {
                         mz <- unique(mz)
                         dis <- stats::dist(mz, method = "manhattan")
@@ -206,21 +211,23 @@ getrda <-
                         diff2 = round(as.numeric(dis), digits = digits),
                         md = as.numeric(dis)%%1
                 )
-                if(!is.null(mdrange)){
-                       df <- df[df$md<mdrange[1]|df$md>mdrange[2],]
+                if(is.null(pmd[1])){
+                        if(!is.null(mdrange)){
+                                df <- df[df$md<mdrange[1]|df$md>mdrange[2],]
+                        }
+                        freq <-
+                                sort(table(df$diff2), decreasing = TRUE)
+                        message(paste(length(freq), 'pmd found.'))
+                        if (!is.null(top)) {
+                                freq <- utils::head(freq, top)
+                        }
+                        sda <-
+                                df[(df$diff2 %in% c(as.numeric(names(freq[freq >= freqcutoff])))), ]
+                } else{
+                        sda <- df[(df$diff2 %in% round(pmd,digits = digits)), ]
                 }
-                freq <-
-                        sort(table(df$diff2), decreasing = TRUE)
-                message(paste(length(freq), 'pmd found.'))
-                if (!is.null(top)) {
-                        freq <- utils::head(freq, top)
-                }
-                sda <-
-                        df[(df$diff2 %in% c(as.numeric(names(freq[freq >= freqcutoff])))), ]
-                # mz <- unique(c(sda$ms1,sda$ms2))
                 pmd <- unique(sda$diff2)[order(unique(sda$diff2))]
                 message(paste(length(pmd), 'pmd used.'))
-
                 df <- NULL
 
                 split <- split.data.frame(sda, sda$diff2)
@@ -232,7 +239,12 @@ getrda <-
                 result <-
                         mapply(rtpmd, split, as.numeric(names(split)))
                 rownames(result) <- mz
-                return(as.data.frame(result))
+
+                if(verbose){
+                        return(list(mdt = as.data.frame(sda),result=result))
+                }else{
+                        return(as.data.frame(result))
+                }
         }
 #' Perform correlation directed analysis for peaks list.
 #' @param list a list with mzrt profile

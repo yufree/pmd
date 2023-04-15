@@ -28,7 +28,7 @@ getchain(
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
-\item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+\item{corcutoff}{cutoff of the correlation coefficient, default 0.6}
 
 \item{ppm}{all the peaks within this mass accuracy as seed mass or formula}
 }
