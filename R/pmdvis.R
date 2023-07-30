@@ -342,7 +342,7 @@ plotsda <- function(list, ...) {
 #' plotcn('C6H12O6','Glucose',c(2.016,14.016,15.995))
 plotcn <- function(formula, name, pmd){
         keggrall <- get("keggrall")
-        all <- keggrall[,c(3,5,6)]
+        all <- keggrall[,c('formula1','formula2','pmd')]
         # limit the pmd
         all2 <- all[all$pmd %in% pmd,]
         ms1 <- as.character(all2$formula1)
