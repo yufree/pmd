@@ -1,3 +1,7 @@
+# pmd 0.2.5
+
+- Add KEGG reaction class and enzyme number to the keggrall database
+
 # pmd 0.2.4
 
 - add support for mass only data for quantitative reactomics analysis
