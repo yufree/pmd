@@ -258,7 +258,13 @@ plotstdsda(sda2)
 When you only have data of peaks without retention time or compounds list, structure/reaction directed analysis could also be done by `getrda` function.
 
 ```{r rda}
-sda <- getrda(spmeinvivo$mz[std$stdmassindex])
+sda <- getrda(spmeinvivo$mz)
+# check high frequency pmd
+colnames(sda)
+# get certain pmd related m/z
+idx <- sda[,'2.016']
+# show the m/z
+spmeinvivo$mz[idx]
 ```
 
 ## Wrap function for GlobalStd algorithm
