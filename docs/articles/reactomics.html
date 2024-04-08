@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.5</span>
       </span>
     </div>
 
@@ -84,13 +84,13 @@
 
       
 
-      </header><script src="reactomics_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reactomics</h1>
                         <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 data-toc-skip class="date">2023-04-15</h4>
+            <h4 data-toc-skip class="date">2024-04-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/vignettes/reactomics.Rmd" class="external-link"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
@@ -102,15 +102,50 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://yufree.github.io/pmd/" class="external-link">pmd</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span></code></pre></div>
-<p>PMD based Reactomics tried to evaluate untargeted HRMS profiles at reaction level. Reactomics is the extension of structure/reaction directed analysis for HRMS data and PMDs are treated as relationship unit for further discussion as compounds for metabolomics. Reaction level evaluation could be found in PMD network analysis, Source appointment and biomarker reaction discovery.</p>
+<p>PMD based Reactomics tried to evaluate untargeted HRMS profiles at
+reaction level. Reactomics is the extension of structure/reaction
+directed analysis for HRMS data and PMDs are treated as relationship
+unit for further discussion as compounds for metabolomics. Reaction
+level evaluation could be found in PMD network analysis, Source
+appointment and biomarker reaction discovery.</p>
 <div class="section level2">
 <h2 id="pmd-network-analysis">PMD network analysis<a class="anchor" aria-label="anchor" href="#pmd-network-analysis"></a>
 </h2>
-<p>In untargeted metabolites profiles from HRMS, two ions or peaks could be treated together as long as they could be connected by relationship. Regular untargeted workflow prefers intensity correlation between compounds. However, PMD could also be the chemical bridge between two compounds or ions. For example, oxidation would add oxygen atom to the parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or compound could be involved in multiple reactions. In this case, we could build PMD network for certain ion or compound.</p>
-<p>However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.</p>
-<p>PMD network analysis is the analysis to check or explorer the PMD relationship among co-existed ions from one sample or multiple samples. The edge between ions in the network means certain PMD relationship are valid in this data set. Meanwhile, the intensity correlation between paired ions could also be considered to connect the vertices. Such network is build based on local recursive search for all possible connections.</p>
-<p>PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites’ MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get the overview of metabolites networks. Identification could follow the discovery from MS1 data.</p>
-<p>If you have a specific compound and want to check the metabolites of certain PMD, you could use <code>getchain</code> to extract the network of that compounds</p>
+<p>In untargeted metabolites profiles from HRMS, two ions or peaks could
+be treated together as long as they could be connected by relationship.
+Regular untargeted workflow prefers intensity correlation between
+compounds. However, PMD could also be the chemical bridge between two
+compounds or ions. For example, oxidation would add oxygen atom to the
+parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or
+compound could be involved in multiple reactions. In this case, we could
+build PMD network for certain ion or compound.</p>
+<p>However, we need to the PMDs list to build such network for either
+one compound or one sample. One way is using the high frequency PMDs
+list from previous reported reactions and another way is using the high
+frequency PMDs within certain data set such as KEGG or HMDB. The former
+way try to focus on known reactions such as Phase I reactions for
+exogenous compounds while the latter way is useful to explorer new
+reactions or unknown reaction patterns within the data set. The latter
+way is actually the structure/reaction directed analysis.</p>
+<p>PMD network analysis is the analysis to check or explorer the PMD
+relationship among co-existed ions from one sample or multiple samples.
+The edge between ions in the network means certain PMD relationship are
+valid in this data set. Meanwhile, the intensity correlation between
+paired ions could also be considered to connect the vertices. Such
+network is build based on local recursive search for all possible
+connections.</p>
+<p>PMD network analysis is useful to screen metabolites. Regular
+metabolites discovery method try to predict metabolites’ MS2 spectra and
+then match the data. In PMD network analysis, metabolites are predicted
+by high frequency PMD or preferred PMD list within the MS1 data and such
+prediction could be extended to the metabolites of metabolites. Such PMD
+search will stop when no new metabolites could be connected to the
+network. Such searching method is much easier and quick to get the
+overview of metabolites networks. Identification could follow the
+discovery from MS1 data.</p>
+<p>If you have a specific compound and want to check the metabolites of
+certain PMD, you could use <code>getchain</code> to extract the network
+of that compounds</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -143,8 +178,15 @@
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,</span>
 <span>       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reactomics_files/figure-html/tarnet-2.png" width="700"></p>
-<p>Here only three PMD relationship could be found for C18H39NO. The duplicate edges between two vertices or self-loop edges mean isomer related PMD reactions. If we consider the correlation, the network would be trimmed. Since reaction might not always involve correlation, PMD network analysis could found more potential metabolites.</p>
-<p>If you want to see all the independent peaks’ high frequency PMDs as networks for certain sample, the following code will help. This part will use the high frequency PMDs cutoff 12 from the data to build the networks for all the independent peaks.</p>
+<p>Here only three PMD relationship could be found for C18H39NO. The
+duplicate edges between two vertices or self-loop edges mean isomer
+related PMD reactions. If we consider the correlation, the network would
+be trimmed. Since reaction might not always involve correlation, PMD
+network analysis could found more potential metabolites.</p>
+<p>If you want to see all the independent peaks’ high frequency PMDs as
+networks for certain sample, the following code will help. This part
+will use the high frequency PMDs cutoff 12 from the data to build the
+networks for all the independent peaks.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,sda <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span><span class="co">#&gt; 75 retention time cluster found.</span></span>
@@ -177,13 +219,14 @@
 <span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,</span>
 <span>       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reactomics_files/figure-html/net-1.png" width="700"></p>
-<p>Here we could find clusters of metabolites. We could detect such network community structure.</p>
+<p>Here we could find clusters of metabolites. We could detect such
+network community structure.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># network community structure detection</span></span>
 <span><span class="va">ceb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/cluster_edge_betweenness.html" class="external-link">cluster_edge_betweenness</a></span><span class="op">(</span><span class="va">net</span>,weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">cor</span><span class="op">)</span>, directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Warning in cluster_edge_betweenness(net, weights = abs(E(net)$cor), directed =</span></span>
-<span><span class="co">#&gt; F): At core/community/edge_betweenness.c:493 : Membership vector will be</span></span>
-<span><span class="co">#&gt; selected based on the highest modularity score.</span></span>
+<span><span class="co">#&gt; F): At vendor/cigraph/src/community/edge_betweenness.c:498 : Membership vector</span></span>
+<span><span class="co">#&gt; will be selected based on the highest modularity score.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ceb</span>, <span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,<span class="op">)</span> </span></code></pre></div>
 <p><img src="reactomics_files/figure-html/nwa-1.png" width="700"></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -196,7 +239,8 @@
 <span><span class="co">#&gt; [4,] "2"  "284.295597233849"</span></span>
 <span><span class="co">#&gt; [5,] "1"  "192.160430908203"</span></span>
 <span><span class="co">#&gt; [6,] "3"  "326.342517752117"</span></span></code></pre></div>
-<p>Such network could also be build on correlation directed analysis which use correlation between paired peaks to build network.</p>
+<p>Such network could also be build on correlation directed analysis
+which use correlation between paired peaks to build network.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">std</span>,rowindex <span class="op">=</span> <span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span></span>
 <span><span class="va">cda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getcda.html">getcda</a></span><span class="op">(</span><span class="va">cbp</span><span class="op">)</span></span>
@@ -206,31 +250,57 @@
 <span><span class="va">netc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">netc</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,main <span class="op">=</span> <span class="st">'Correlation network'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reactomics_files/figure-html/cda-1.png" width="700"></p>
-<p>As shown above, correlation network without PMD might merge into one big network, which lose the details of chemical reactions.</p>
+<p>As shown above, correlation network without PMD might merge into one
+big network, which lose the details of chemical reactions.</p>
 <div class="section level3">
 <h3 id="shiny-application">Shiny application<a class="anchor" aria-label="anchor" href="#shiny-application"></a>
 </h3>
-<p>The PMD network for certain compound could be generated by run <code><a href="../reference/runPMDnet.html">runPMDnet()</a></code>.</p>
+<p>The PMD network for certain compound could be generated by run
+<code><a href="../reference/runPMDnet.html">runPMDnet()</a></code>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="source-appointment">Source appointment<a class="anchor" aria-label="anchor" href="#source-appointment"></a>
 </h2>
-<p>Peaks from samples could be from endogenous compounds or exogenous compounds. However, it’s hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenobiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.</p>
+<p>Peaks from samples could be from endogenous compounds or exogenous
+compounds. However, it’s hard to tell for untargeted analysis. In terms
+of PMD, if one peak belongs to a high frequency PMD network, it means a
+relatively high activity. If such sample belongs to a biological
+specimen, it might be endogenous compound. If a peak show no PMD network
+with other peaks, the biological system might not have enzyme to make
+reaction happen. Exogenous compounds will show a lower degree since they
+are xenobiotics. Since most of the peaks will show a low degree, the
+median of the degree could be used as cutoff. Then we could make source
+appointment if the assumption is hold.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/degree.html" class="external-link">degree</a></span><span class="op">(</span><span class="va">net</span>, mode <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2</span></span>
 <span><span class="va">endogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&gt;</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">exogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&lt;=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p>In this case, we will have 31 endogenous compounds while 51 exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.</p>
-<p>Another parameter would be the average network distances. Endogenous compounds could form a larger network with long average network distances while exogenous compounds will connected to network with small average network distances. Such parameter could be used to determine the source of unknown compound by checking the average network distances of the compounds PMD network.</p>
-<p>Be careful, one compound could be endogenous for one sample while exogenous for another sample. In this case, PMD network would give hints on the sources based on the context of the samples.</p>
+<p>In this case, we will have 31 endogenous compounds while 51 exogenous
+compounds. When you find a peak show differences between groups, you
+could check the degree to infer its sources.</p>
+<p>Another parameter would be the average network distances. Endogenous
+compounds could form a larger network with long average network
+distances while exogenous compounds will connected to network with small
+average network distances. Such parameter could be used to determine the
+source of unknown compound by checking the average network distances of
+the compounds PMD network.</p>
+<p>Be careful, one compound could be endogenous for one sample while
+exogenous for another sample. In this case, PMD network would give hints
+on the sources based on the context of the samples.</p>
 </div>
 <div class="section level2">
 <h2 id="biomarker-reaction">Biomarker reaction<a class="anchor" aria-label="anchor" href="#biomarker-reaction"></a>
 </h2>
-<p>Biomarker always means biomarker compounds. However, if we could quantify the reaction relationship, we could use biomarker reaction to trace certain biological process. You could use <code>getreact</code> to extract the ion pairs shared the same PMD and intensity ratio RSD% lower than certain cutoff. Then the sum of the intensity of all PMD pairs’ ions could be used to compare the reaction level changes among samples.</p>
+<p>Biomarker always means biomarker compounds. However, if we could
+quantify the reaction relationship, we could use biomarker reaction to
+trace certain biological process. You could use <code>getreact</code> to
+extract the ion pairs shared the same PMD and intensity ratio RSD% lower
+than certain cutoff. Then the sum of the intensity of all PMD pairs’
+ions could be used to compare the reaction level changes among
+samples.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span></span>
 <span><span class="co"># show the ions with the same PMD</span></span>
@@ -265,7 +335,8 @@
 <span><span class="co">#&gt; 211.2/615      3041.366      5809.946      8795.206      8089.021</span></span>
 <span><span class="co">#&gt; 228.2/453     19484.297     32281.370     36797.052     39304.713</span></span>
 <span><span class="co">#&gt; 244.2/615     24315.314     45535.922     59156.064     61720.089</span></span></code></pre></div>
-<p>If your data don’t have retention time, reaction level change can also be checked.</p>
+<p>If your data don’t have retention time, reaction level change can
+also be checked.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">rt</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span><span class="op">)</span></span>
@@ -581,7 +652,13 @@
 <span><span class="co">#&gt; 211.2/615      3041.366      5809.946      8795.206      8089.021</span></span>
 <span><span class="co">#&gt; 228.2/453     19484.297     32281.370     36797.052     39304.713</span></span>
 <span><span class="co">#&gt; 244.2/615     24315.314     45535.922     59156.064     61720.089</span></span></code></pre></div>
-<p>Now we have two methods to compute the quantitative PMD responses and user should select method depending on research purposes. ‘static’ will only consider the stable mass pairs across samples and such reactions will be limited by the enzyme or other factors than substrates. ‘dynamic’ will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses and such reactions will be limited by one or both peaks in the paired masses.</p>
+<p>Now we have two methods to compute the quantitative PMD responses and
+user should select method depending on research purposes. ‘static’ will
+only consider the stable mass pairs across samples and such reactions
+will be limited by the enzyme or other factors than substrates.
+‘dynamic’ will consider the unstable paired masses by normalization the
+relatively unstable peak with stable peak between paired masses and such
+reactions will be limited by one or both peaks in the paired masses.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
 <span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,pmd<span class="op">=</span><span class="fl">15.99</span>,method <span class="op">=</span> <span class="st">'dynamic'</span><span class="op">)</span></span>
@@ -617,7 +694,8 @@
 <span><span class="co">#&gt; 4    2.05169832   7.765315730   0.832736564   2.117740805</span></span>
 <span><span class="co">#&gt; 5    0.01549754   0.007511291   0.005490916   0.005883117</span></span>
 <span><span class="co">#&gt; 6    9.12757512   7.779539564   7.970752923   4.004298286</span></span></code></pre></div>
-<p>You can also output the quantitative results of all high frequency PMDs existing in the data.</p>
+<p>You can also output the quantitative results of all high frequency
+PMDs existing in the data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
 <span><span class="co"># remove redundant peaks</span></span>
@@ -741,7 +819,8 @@
 <span><span class="co">#&gt; 4    6196265.89    8057717.46    8798917.44    9524655.11</span></span>
 <span><span class="co">#&gt; 5      19249.17      30033.02      33716.19      34905.22</span></span>
 <span><span class="co">#&gt; 6     104862.63     211044.91     265591.16     314792.74</span></span></code></pre></div>
-<p>You can also output the quantitative results of all PMDs existing in current KEGG database.</p>
+<p>You can also output the quantitative results of all PMDs existing in
+current KEGG database.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># output all existing PMD in KEGG</span></span>
 <span><span class="va">keggpmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">$</span><span class="va">pmd</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -897,20 +976,20 @@
 <span><span class="co"># kegg reaction</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span></span>
-<span><span class="co">#&gt;          ID      ms1      formula1      ms2       formula2     pmd  C  H O N P</span></span>
-<span><span class="co">#&gt; 2    R00002 506.9957 C10H16N5O13P3 427.0294  C10H15N5O10P2  79.966  0  1 3 0 1</span></span>
-<span><span class="co">#&gt; 8    R00010 342.1162     C12H22O11 180.0634        C6H12O6 162.053  6 10 5 0 0</span></span>
-<span><span class="co">#&gt; 10   R00012 522.9907 C10H16N5O14P3 868.0381 C20H28N10O21P4 345.047 10 12 7 5 1</span></span>
-<span><span class="co">#&gt; 12   R00014 425.0450 C12H19N4O7P2S 469.0712  C14H23N4O8P2S  44.026  2  4 1 0 0</span></span>
-<span><span class="co">#&gt; 13.1 R00015 342.1162     C12H22O11 180.0634        C6H12O6 162.053  6 10 5 0 0</span></span>
-<span><span class="co">#&gt; 13.2 R00015 342.1162     C12H22O11 504.1690      C18H32O16 162.053  6 10 5 0 0</span></span>
-<span><span class="co">#&gt;      S</span></span>
-<span><span class="co">#&gt; 2    0</span></span>
-<span><span class="co">#&gt; 8    0</span></span>
-<span><span class="co">#&gt; 10   0</span></span>
-<span><span class="co">#&gt; 12   0</span></span>
-<span><span class="co">#&gt; 13.1 0</span></span>
-<span><span class="co">#&gt; 13.2 0</span></span>
+<span><span class="co">#&gt;      rid              rc                      ez      ms1      formula1</span></span>
+<span><span class="co">#&gt; 1 R00002         RC00002                1.18.6.1 506.9957 C10H16N5O13P3</span></span>
+<span><span class="co">#&gt; 2 R00010         RC00049                3.2.1.28 342.1162     C12H22O11</span></span>
+<span><span class="co">#&gt; 3 R00012         RC00002                2.7.7.45 522.9907 C10H16N5O14P3</span></span>
+<span><span class="co">#&gt; 4 R00014 RC00027;RC02744 1.2.4.1;2.2.1.6;4.1.1.1 425.0450 C12H19N4O7P2S</span></span>
+<span><span class="co">#&gt; 5 R00015 RC00077;RC00247                2.4.1.99 342.1162     C12H22O11</span></span>
+<span><span class="co">#&gt; 6 R00015 RC00077;RC00247                2.4.1.99 342.1162     C12H22O11</span></span>
+<span><span class="co">#&gt;        ms2       formula2     pmd  C  H O N P S</span></span>
+<span><span class="co">#&gt; 1 427.0294  C10H15N5O10P2  79.966  0  1 3 0 1 0</span></span>
+<span><span class="co">#&gt; 2 180.0634        C6H12O6 162.053  6 10 5 0 0 0</span></span>
+<span><span class="co">#&gt; 3 868.0381 C20H28N10O21P4 345.047 10 12 7 5 1 0</span></span>
+<span><span class="co">#&gt; 4 469.0712  C14H23N4O8P2S  44.026  2  4 1 0 0 0</span></span>
+<span><span class="co">#&gt; 5 180.0634        C6H12O6 162.053  6 10 5 0 0 0</span></span>
+<span><span class="co">#&gt; 6 504.1690      C18H32O16 162.053  6 10 5 0 0 0</span></span>
 <span><span class="co"># literature reaction for mass spectrometry</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span></span>
@@ -939,7 +1018,8 @@
 <span><span class="co">#&gt; 4  2  8 -2 0 0 0 0.073 0.07  0.9617834</span></span>
 <span><span class="co">#&gt; 5  6  8 -5 0 0 0 0.088 0.09  0.9247730</span></span>
 <span><span class="co">#&gt; 6 -1 12  0 0 0 0 0.094 0.09  0.9648936</span></span></code></pre></div>
-<p>To extract any compound KEGG compound’s pmd network with known PMD:</p>
+<p>To extract any compound KEGG compound’s pmd network with known
+PMD:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotcn.html">plotcn</a></span><span class="op">(</span><span class="st">'C6H12O6'</span>,<span class="st">'Glucose'</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">14.016</span>,<span class="fl">15.995</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Average distance of PMD network is 9.42710759198882</span></span>
