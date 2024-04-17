@@ -1,6 +1,7 @@
 # pmd 0.2.5
 
 - Add KEGG reaction class and enzyme number to the keggrall database
+- Fix url of demo data
 
 # pmd 0.2.4
 

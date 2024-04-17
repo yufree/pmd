@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = F)
 knitr::include_graphics('https://yufree.github.io/presentation/figure/demomzrt.png')
 ```
 
-The uploaded file should be one csv file. The first column should be peak ID. The second column should be mass to charge ratio of peaks. The third column should be retention time in seconds. The other column should be peaks intensities in each samples. The header should be 'mz', 'rt', and sample names. The second row should include group information of each sample. Such file could be output by `getcsv` function for a 'mzrt' object from enviGCMS package. However, it's also easy to manually write one csv file as shown above. Here is the demo csv [file](https://raw.githubusercontent.com/yufree/rmwf/master/inst/demodata/demomzrt.csv).
+The uploaded file should be one csv file. The first column should be peak ID. The second column should be mass to charge ratio of peaks. The third column should be retention time in seconds. The other column should be peaks intensities in each samples. The header should be 'mz', 'rt', and sample names. The second row should include group information of each sample. Such file could be output by `getcsv` function for a 'mzrt' object from enviGCMS package. However, it's also easy to manually write one csv file as shown above. Here is the demo csv [file](https://raw.githubusercontent.com/yufree/rmwf/master/inst/demodata/pmd/demomzrt.csv).
 
 ### Parameters
 
