@@ -197,7 +197,7 @@ head(upmd)
 
 ## Reactomics analysis for MS only data
 
-When retention time is not provided, m/z vector can still be used to check reaction level changes. You might use `getrda` to find the high frequncy PMDs. 
+When retention time is not provided, m/z vector can still be used to check reaction level changes. You might use `getrda` to find the high frequency PMDs. 
 
 ```{r}
 data(spmeinvivo)
@@ -208,6 +208,7 @@ insms <- spmeinvivo$data
 # check high frequency pmd
 sda <- getrda(mz)
 colnames(sda)
+# save them as numeric vector
 hfpmd <- as.numeric(colnames(sda))
 ```
 
@@ -245,7 +246,7 @@ pmdinsstatic <- pmdins[rsdidx,]
 pmdinsstaticscale <- t(scale(t(pmdinsstatic)))
 # get the pmd static intensity across samples
 pmdinsstaticall <- apply(pmdinsstaticscale,2,sum)
-# show the PMD static intensity
+# show the PMD static intensity for each sample
 pmdinsstaticall
 
 # get index for dynamic PMD
@@ -261,7 +262,7 @@ pmdinsdynamic <- ratio[rsdidx,]
 pmdinsdynamic[idx,] <- 1/ratio[rsdidx,][idx,]
 # get the pmd dynamic intensity across samples
 pmdinsdynamicall <- apply(pmdinsdynamic,2,sum)
-# show the PMD dynamic intensity
+# show the PMD dynamic intensity for each sample
 pmdinsdynamicall
 ```
 

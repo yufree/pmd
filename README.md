@@ -12,7 +12,7 @@ Installation
 You can install package from this GitHub repository:
 
 ``` {r}
-devtools::install_github("yufree/pmd")
+remotes::install_github("yufree/pmd")
 ```
 
 Or find a stable version from CRAN:
@@ -27,6 +27,8 @@ Usage
 - [PMD Analysis Tutorial](https://yufree.github.io/pmd/articles/globalstd.html)
 
 - [Reactomics Analysis Tutorial](https://yufree.github.io/pmd/articles/reactomics.html)
+
+        - For MS only data such as FT-ICR or MS imaging data, check the section of "Reactomics analysis for MS only data" in this tutorial or this blog [post](https://yufree.cn/en/2024/05/29/reactomics-analysis-for-ms-only-data/).
 
 - [PMD analysis paper](https://www.sciencedirect.com/science/article/abs/pii/S0003267018313047). This paper proposed structure/reaction directed analysis with PMD.
 
