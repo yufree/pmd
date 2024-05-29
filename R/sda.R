@@ -406,6 +406,69 @@ getpmd <-
                 }
                 return(list)
         }
+
+#' Get pmd details for specific reaction after the removal of isotopouge.
+#' @param mz a vector of mass to charge ratio.
+#' @param group mass to charge ratio group from either retention time or mass spectrometry imaging segmentation.
+
+#' @param pmd a specific paired mass distance or a vector of pmds
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2.
+#' @param mdrange mass defect range to ignore. Default c(0.25,0.9) to retain the possible reaction related paired mass.
+#' @return dataframe with paired peaks for specific pmd or pmds. When group is provided, a column named net will be generated to show if certain pmd will be local(within the same group) or global(across the groups)
+#' @examples
+#' data(spmeinvivo)
+#' pmddf <- getpmddf(spmeinvivo$mz,pmd=15.99)
+#' @seealso \code{\link{getpaired}},\code{\link{getstd}},\code{\link{getsda}},\code{\link{getrda}}
+#' @export
+getpmddf <- function(mz,group=NULL,pmd=NULL,digits=2,mdrange=c(0.25,0.9)){
+        dis <- stats::dist(mz, method = "manhattan")
+        df <- cbind.data.frame(
+                ms1 = pmin(mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]],mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]]),
+                ms2 = pmax(mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]],mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]]),
+                diff = as.numeric(dis),
+                diff2 = round(as.numeric(dis), digits = digits),
+                md = as.numeric(dis)%%1
+        )
+        if(!is.null(group)){
+                df$group1 <- group[match(df$ms1,mz)]
+                df$group2 <- group[match(df$ms2,mz)]
+        }else{
+                df$group1 <- df$group2 <- rep(1,length(mz))
+        }
+
+        idx <- df$md<mdrange[1]|df$md>mdrange[2]
+        df <- df[idx,]
+        isoindex <- (round(df$diff, digits) != 0) & ((
+                df$diff %% 1 < 0.01 &
+                        df$diff >= 1 &
+                        df$diff < 2
+        ) | (
+                df$diff %% 2 < 0.01 &
+                        df$diff >= 2 &
+                        df$diff < 3
+        ) | (
+                df$diff %% 1 > 0.99 &
+                        df$diff >= 1 &
+                        df$diff < 2
+        ) | (
+                df$diff %% 1 > 0.99 &
+                        df$diff >= 0 &
+                        df$diff < 1
+        )
+        )
+        dfiso <- df[isoindex,]
+        dfdeiso <- df[!isoindex,]
+
+        if(!is.null(pmd)){
+                dfdeisopmd <- dfdeiso[dfdeiso$diff2 %in% pmd,]
+                dfdeisopmd$net <- ifelse(abs(dfdeisopmd$group1-dfdeisopmd$group2)==0,'local','global')
+                return(dfdeisopmd)
+        }else{
+                dfdeiso$net <- ifelse(abs(dfdeiso$group1-dfdeiso$group2)==0,'local','global')
+                return(dfdeiso)
+        }
+}
+
 #' Get reaction chain for specific mass to charge ratio
 #' @param list a list with mzrt profile
 #' @param diff paired mass distance(s) of interests
