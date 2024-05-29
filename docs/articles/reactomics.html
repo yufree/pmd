@@ -869,8 +869,7 @@ current KEGG database.</p>
 </h2>
 <p>When retention time is not provided, m/z vector can still be used to
 check reaction level changes. You might use <code>getrda</code> to find
-the high frequncy PMDs. Then <code>getpmddf</code> function can be used
-to extract all the paired ions for certain PMD.</p>
+the high frequncy PMDs.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
 <span><span class="co"># get the m/z</span></span>
@@ -887,6 +886,10 @@ to extract all the paired ions for certain PMD.</p>
 <span><span class="co">#&gt;  [8] "14.015"  "17.026"  "18.011"  "21.982"  "28.031"  "28.032"  "44.026" </span></span>
 <span><span class="co">#&gt; [15] "67.987"  "67.988"  "88.052"  "116.192" "135.974" "135.975"</span></span></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hfpmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Then <code>getpmddf</code> function can be used to extract all the
+paired ions for certain PMD.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get details for certain pmd</span></span>
 <span><span class="va">pmddf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getpmddf.html">getpmddf</a></span><span class="op">(</span><span class="va">mz</span>,pmd<span class="op">=</span><span class="fl">18.011</span>,digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co"># add intensity for all the paired ions</span></span>
@@ -904,7 +907,7 @@ to extract all the paired ions for certain PMD.</p>
 <span><span class="co">#&gt;       7021375      10584976      12989961      12559649</span></span></code></pre></div>
 <p>You can also calculate the static or dynamic PMD intensity for m/z
 only data.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get the ratio of larger m/z over smaller m/z</span></span>
 <span><span class="va">ratio</span> <span class="op">&lt;-</span> <span class="va">mz2ins</span><span class="op">/</span><span class="va">mz1ins</span></span>
 <span><span class="co"># filter PMD based on RSD% across samples</span></span>
@@ -926,7 +929,7 @@ only data.</p>
 <span><span class="co">#&gt;      1.027100    -16.703628      2.373645    -27.241358     12.433566 </span></span>
 <span><span class="co">#&gt; 1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3 </span></span>
 <span><span class="co">#&gt;    -17.757951      7.924290     19.802820     18.141514</span></span></code></pre></div>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># get index for dynamic PMD</span></span>
 <span><span class="va">rsdidx</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">ratio</span>,<span class="fl">1</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">&gt;=</span><span class="va">cutoff</span><span class="op">)</span></span>
@@ -947,12 +950,27 @@ only data.</p>
 <span><span class="co">#&gt;      374.1957      315.6090      388.0063      207.8236      233.4380 </span></span>
 <span><span class="co">#&gt; 1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3 </span></span>
 <span><span class="co">#&gt;      199.9064      283.4682      327.9651      256.2044</span></span></code></pre></div>
+<p>You can also use <code>getpmddf</code> function extract all the
+paired ions for multiple PMDs. Then you could generate the network based
+on the output.</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># get details for certain pmd</span></span>
+<span><span class="va">pmddf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getpmddf.html">getpmddf</a></span><span class="op">(</span><span class="va">mz</span>,pmd<span class="op">=</span><span class="va">hfpmd</span>,digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co"># viz by igraph package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r.igraph.org/" class="external-link">igraph</a></span><span class="op">)</span></span>
+<span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">pmddf</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">net</span>,vertex.label<span class="op">=</span><span class="cn">NA</span>,vertex.size <span class="op">=</span> <span class="fl">5</span>,edge.width <span class="op">=</span> <span class="fl">3</span>,edge.color <span class="op">=</span> <span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,main <span class="op">=</span> <span class="st">'PMD network'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>,bty <span class="op">=</span> <span class="st">"n"</span>,</span>
+<span>       legend<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,</span>
+<span>       fill<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">pal</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, border<span class="op">=</span><span class="cn">NA</span>,horiz <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reactomics_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="pmd-reaction-database">PMD Reaction Database<a class="anchor" aria-label="anchor" href="#pmd-reaction-database"></a>
 </h2>
 <p>To check the pmd reaction database:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># all reaction</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"omics"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">omics</span><span class="op">)</span></span>
@@ -977,7 +995,7 @@ only data.</p>
 <span><span class="co">#&gt; 4       4-hydroxy-4-methyl-2-oxoglutarate &lt;=&gt; 2 pyruvate      NA</span></span>
 <span><span class="co">#&gt; 5                                  2 H2O2 &lt;=&gt; 2 H2O + O2      NA</span></span>
 <span><span class="co">#&gt; 6            alpha,alpha-trehalose + H2O &lt;=&gt; 2 D-glucose 162.053</span></span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># kegg reaction</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"keggrall"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">keggrall</span><span class="op">)</span></span>
@@ -995,7 +1013,7 @@ only data.</p>
 <span><span class="co">#&gt; 4 469.0712  C14H23N4O8P2S  44.026  2  4 1 0 0 0</span></span>
 <span><span class="co">#&gt; 5 180.0634        C6H12O6 162.053  6 10 5 0 0 0</span></span>
 <span><span class="co">#&gt; 6 504.1690      C18H32O16 162.053  6 10 5 0 0 0</span></span></code></pre></div>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># literature reaction for mass spectrometry</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sda"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span></span>
@@ -1014,7 +1032,7 @@ only data.</p>
 <span><span class="co">#&gt; 5 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></span>
 <span><span class="co">#&gt; 6 https://doi.org/10.1016/S1044-0305(99)00090-2 both</span></span></code></pre></div>
 <p>To check the HMDB pmd database:</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"hmdb"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hmdb</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    C  H  O N P S   pmd pmd2 percentage</span></span>
@@ -1026,11 +1044,11 @@ only data.</p>
 <span><span class="co">#&gt; 6 -1 12  0 0 0 0 0.094 0.09  0.9648936</span></span></code></pre></div>
 <p>To extract any compound KEGG compound’s pmd network with known
 PMD:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plotcn.html">plotcn</a></span><span class="op">(</span><span class="st">'C6H12O6'</span>,<span class="st">'Glucose'</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">14.016</span>,<span class="fl">15.995</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Average distance of PMD network is 9.42710759198882</span></span>
 <span><span class="co">#&gt; Average degree 2.8421052631579</span></span></code></pre></div>
-<p><img src="reactomics_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<p><img src="reactomics_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
   </div>
 
