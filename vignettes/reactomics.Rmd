@@ -197,7 +197,7 @@ head(upmd)
 
 ## Reactomics analysis for MS only data
 
-When retention time is not provided, m/z vector can still be used to check reaction level changes. You might use `getrda` to find the high frequncy PMDs. Then `getpmddf` function can be used to extract all the paired ions for certain PMD.
+When retention time is not provided, m/z vector can still be used to check reaction level changes. You might use `getrda` to find the high frequncy PMDs. 
 
 ```{r}
 data(spmeinvivo)
@@ -208,6 +208,12 @@ insms <- spmeinvivo$data
 # check high frequency pmd
 sda <- getrda(mz)
 colnames(sda)
+hfpmd <- as.numeric(colnames(sda))
+```
+
+Then `getpmddf` function can be used to extract all the paired ions for certain PMD.
+
+```{r}
 # get details for certain pmd
 pmddf <- getpmddf(mz,pmd=18.011,digits = 3)
 # add intensity for all the paired ions
@@ -258,6 +264,22 @@ pmdinsdynamicall <- apply(pmdinsdynamic,2,sum)
 # show the PMD dynamic intensity
 pmdinsdynamicall
 ```
+
+You can also use `getpmddf` function extract all the paired ions for multiple PMDs. Then you could generate the network based on the output.
+
+```{r}
+# get details for certain pmd
+pmddf <- getpmddf(mz,pmd=hfpmd,digits = 3)
+# viz by igraph package
+library(igraph)
+net <- graph_from_data_frame(pmddf,directed = F)
+pal <- grDevices::rainbow(length(unique(E(net)$diff2)))
+plot(net,vertex.label=NA,vertex.size = 5,edge.width = 3,edge.color = pal[as.numeric(as.factor(E(net)$diff2))],main = 'PMD network')
+legend("topright",bty = "n",
+       legend=unique(E(net)$diff2),
+       fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
+```
+
 
 ## PMD Reaction Database
 
