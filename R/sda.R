@@ -483,6 +483,9 @@ getpmddf <- function(mz,group=NULL,pmd=NULL,digits=2,mdrange=c(0.25,0.9)){
 #' data(spmeinvivo)
 #' # check metabolites of C18H39NO
 #' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
+#' # remove the retention time for mass only data
+#' spmeinvivo$rt <- NULL
+#' pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 #' @export
 getchain <-
         function(list,
@@ -505,59 +508,85 @@ getchain <-
                 mass <- unique(round(mass, accuracy))
 
                 mz <- list$mz
-                rt <- list$rt
                 data <- list$data
-                dis <- stats::dist(rt, method = "manhattan")
-                fit <- stats::hclust(dis)
-                rtg <- stats::cutree(fit, h = rtcutoff)
-                # PMD analysis
-                # remove isomers
-                dis <- stats::dist(mz, method = "manhattan")
-                disrt <- stats::dist(rt, method = "manhattan")
-                disrtg <- stats::dist(rtg, method = "manhattan")
-                diffx <- as.numeric(dis)
-                diff2 <- round(diffx, digits)
-                diffrt <- as.numeric(disrt)
-                rtgdiff <- as.numeric(disrtg)
-                cor <- stats::cor(t(data))
+                # when retention time is missing
+                if(is.null(list$rt)){
+                        dis <- stats::dist(mz, method = "manhattan")
+                        diffx <- as.numeric(dis)
+                        diff2 <- round(diffx, digits)
+                        cor <- stats::cor(t(data))
+                        idx <- diff2 %in% diff
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]][idx]
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]][idx]
+                        diffx = diffx[idx]
+                        diff2 = diff2[idx]
+                        cor = cor[lower.tri(cor)][idx]
+                        df <- data.frame(
+                                ms1 = ms1,
+                                ms2 = ms2,
+                                diff = diffx,
+                                cor = cor,
+                                diff2 = diff2
+                        )
+                        if (!is.null(corcutoff)) {
+                                df <- df[abs(df$cor) >= corcutoff,]
+                        }
+                        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+                        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
 
-                idx <- diff2 %in% diff
-                idx2 <- rtgdiff > 0
-                idx3 <- idx&idx2
+                }else{
+                        rt <- list$rt
+                        dis <- stats::dist(rt, method = "manhattan")
+                        fit <- stats::hclust(dis)
+                        rtg <- stats::cutree(fit, h = rtcutoff)
+                        # PMD analysis
+                        # remove isomers
+                        dis <- stats::dist(mz, method = "manhattan")
+                        disrt <- stats::dist(rt, method = "manhattan")
+                        disrtg <- stats::dist(rtg, method = "manhattan")
+                        diffx <- as.numeric(dis)
+                        diff2 <- round(diffx, digits)
+                        diffrt <- as.numeric(disrt)
+                        rtgdiff <- as.numeric(disrtg)
+                        cor <- stats::cor(t(data))
 
-                ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]][idx3]
-                ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]][idx3]
-                rt1 = rt[which(lower.tri(disrt), arr.ind = TRUE)[, 1]][idx3]
-                rt2 = rt[which(lower.tri(disrt),arr.ind = TRUE)[, 2]][idx3]
-                rtg1 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 1]][idx3]
-                rtg2 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 2]][idx3]
-                diffx = diffx[idx3]
-                diff2 = diff2[idx3]
-                diffrt = diffrt[idx3]
-                rtgdiff = rtgdiff[idx3]
-                cor = cor[lower.tri(cor)][idx3]
+                        idx <- diff2 %in% diff
+                        idx2 <- rtgdiff > 0
+                        idx3 <- idx&idx2
 
-                df <- data.frame(
-                        ms1 = ms1,
-                        ms2 = ms2,
-                        diff = diffx,
-                        rt1 = rt1,
-                        rt2 = rt2,
-                        diffrt = diffrt,
-                        rtg1 = rtg1,
-                        rtg2 = rtg2,
-                        rtgdiff = rtgdiff,
-                        cor = cor,
-                        diff2 = diff2
-                )
+                        ms1 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 1]][idx3]
+                        ms2 = mz[which(lower.tri(dis), arr.ind = TRUE)[, 2]][idx3]
+                        rt1 = rt[which(lower.tri(disrt), arr.ind = TRUE)[, 1]][idx3]
+                        rt2 = rt[which(lower.tri(disrt),arr.ind = TRUE)[, 2]][idx3]
+                        rtg1 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 1]][idx3]
+                        rtg2 = rtg[which(lower.tri(disrtg),arr.ind = TRUE)[, 2]][idx3]
+                        diffx = diffx[idx3]
+                        diff2 = diff2[idx3]
+                        diffrt = diffrt[idx3]
+                        rtgdiff = rtgdiff[idx3]
+                        cor = cor[lower.tri(cor)][idx3]
 
-                if (!is.null(corcutoff)) {
-                        df <- df[abs(df$cor) >= corcutoff,]
+                        df <- data.frame(
+                                ms1 = ms1,
+                                ms2 = ms2,
+                                diff = diffx,
+                                rt1 = rt1,
+                                rt2 = rt2,
+                                diffrt = diffrt,
+                                rtg1 = rtg1,
+                                rtg2 = rtg2,
+                                rtgdiff = rtgdiff,
+                                cor = cor,
+                                diff2 = diff2
+                        )
+                        if (!is.null(corcutoff)) {
+                                df <- df[abs(df$cor) >= corcutoff,]
+                        }
+                        ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
+                        ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
+                        rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
+                        rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
                 }
-                ms1 <- ifelse(df$ms1 > df$ms2, df$ms1, df$ms2)
-                ms2 <- ifelse(df$ms1 > df$ms2, df$ms2, df$ms1)
-                rtg1 <- ifelse(df$ms1 > df$ms2, df$rtg1, df$rtg2)
-                rtg2 <- ifelse(df$ms1 > df$ms2, df$rtg2, df$rtg1)
 
                 seed <- NULL
                 ms1 <- round(df$ms1, digits = accuracy)

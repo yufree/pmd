@@ -2,6 +2,7 @@
 
 - Add `getpmddf` to show pmd details with given m/z only data and m/z group information(optional, segmentation m/z group for spatial reactomics analysis)
 - Update reactomics vignette with section "Reactomics analysis for MS only data" and showcase the quantitative analysis for certain PMD
+- add support for mass only data for `getchain`
 
 # pmd 0.2.5
 
