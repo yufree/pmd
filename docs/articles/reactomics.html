@@ -869,7 +869,7 @@ current KEGG database.</p>
 </h2>
 <p>When retention time is not provided, m/z vector can still be used to
 check reaction level changes. You might use <code>getrda</code> to find
-the high frequncy PMDs.</p>
+the high frequency PMDs.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
 <span><span class="co"># get the m/z</span></span>
@@ -886,7 +886,8 @@ the high frequncy PMDs.</p>
 <span><span class="co">#&gt;  [8] "14.015"  "17.026"  "18.011"  "21.982"  "28.031"  "28.032"  "44.026" </span></span>
 <span><span class="co">#&gt; [15] "67.987"  "67.988"  "88.052"  "116.192" "135.974" "135.975"</span></span></code></pre></div>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">hfpmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># save them as numeric vector</span></span>
+<span><span class="va">hfpmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sda</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Then <code>getpmddf</code> function can be used to extract all the
 paired ions for certain PMD.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
@@ -923,7 +924,7 @@ only data.</p>
 <span><span class="va">pmdinsstaticscale</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">pmdinsstatic</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># get the pmd static intensity across samples</span></span>
 <span><span class="va">pmdinsstaticall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">pmdinsstaticscale</span>,<span class="fl">2</span>,<span class="va">sum</span><span class="op">)</span></span>
-<span><span class="co"># show the PMD static intensity</span></span>
+<span><span class="co"># show the PMD static intensity for each sample</span></span>
 <span><span class="va">pmdinsstaticall</span></span>
 <span><span class="co">#&gt; 1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2 </span></span>
 <span><span class="co">#&gt;      1.027100    -16.703628      2.373645    -27.241358     12.433566 </span></span>
@@ -944,7 +945,7 @@ only data.</p>
 <span><span class="va">pmdinsdynamic</span><span class="op">[</span><span class="va">idx</span>,<span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">/</span><span class="va">ratio</span><span class="op">[</span><span class="va">rsdidx</span>,<span class="op">]</span><span class="op">[</span><span class="va">idx</span>,<span class="op">]</span></span>
 <span><span class="co"># get the pmd dynamic intensity across samples</span></span>
 <span><span class="va">pmdinsdynamicall</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">pmdinsdynamic</span>,<span class="fl">2</span>,<span class="va">sum</span><span class="op">)</span></span>
-<span><span class="co"># show the PMD dynamic intensity</span></span>
+<span><span class="co"># show the PMD dynamic intensity for each sample</span></span>
 <span><span class="va">pmdinsdynamicall</span></span>
 <span><span class="co">#&gt; 1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2 </span></span>
 <span><span class="co">#&gt;      374.1957      315.6090      388.0063      207.8236      233.4380 </span></span>
