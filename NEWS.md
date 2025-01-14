@@ -1,3 +1,7 @@
+# pmd 0.2.7
+
+- CRAN
+
 # pmd 0.2.6
 
 - Add `getpmddf` to show pmd details with given m/z only data and m/z group information(optional, segmentation m/z group for spatial reactomics analysis)
