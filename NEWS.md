@@ -1,6 +1,7 @@
 # pmd 0.2.7
 
 - CRAN
+- Change URL to doi for citation
 
 # pmd 0.2.6
 

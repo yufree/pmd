@@ -9,7 +9,7 @@ citEntry(
 	year = "2019",
 	issn = "0003-2670",
 	doi = "10.1016/j.aca.2018.10.062",
-	url = "https://www.sciencedirect.com/science/article/pii/S0003267018313047",
+	url = "https://doi.org/10.1016/j.aca.2018.10.062",
         author = "Miao Yu and Mariola Olkowicz and Janusz Pawliszyn",
         textVersion = paste("Miao Yu, Mariola Olkowicz, Janusz Pawliszyn",
 	"2019",
@@ -31,6 +31,6 @@ citEntry(
 	"Untargeted high-resolution paired mass distance data mining for retrieving general chemical relationships,",
 	"Communications Chemistry, 3, 157."))
 
-citFooter(paste("Some functions (e.g. getmd use xcms",
+citFooter(paste("Some functions",
                  "party algorithms, see manpages and related packages",
 	         "for respective citations."))

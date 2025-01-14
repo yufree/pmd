@@ -30,9 +30,9 @@ Usage
 
 - For MS only data such as FT-ICR or MS imaging data, check the section of "Reactomics analysis for MS only data" in Reactomics Analysis Tutorial or this blog [post](https://yufree.cn/en/2024/05/29/reactomics-analysis-for-ms-only-data/).
 
-- [PMD analysis paper](https://www.sciencedirect.com/science/article/abs/pii/S0003267018313047). This paper proposed structure/reaction directed analysis with PMD.
+- [PMD analysis paper](https://doi.org/10.1016/j.aca.2018.10.062). This paper proposed structure/reaction directed analysis with PMD. 
 
-- [Reactomics paper](https://www.nature.com/articles/s42004-020-00403-z). This paper contained the concepts of PMD based reactomics, applications and data mining of reaction database and compounds database.
+- [Reactomics paper](https://doi.org/10.1038/s42004-020-00403-z). This paper contained the concepts of PMD based reactomics, applications and data mining of reaction database and compounds database.
 
 - [Slides](http://yufree.github.io/presentation/reactomics/pres-asms.html). This is the slides for ASMS 2020 Reboot and here is the [video](https://youtu.be/-mT3HcVygHE) of presentation. Press "P" and you will see the notes for each slide with details. Another full version of reactomics presentation for one hour presentation could be found [here](http://yufree.github.io/presentation/reactomics/pres). I will not update the conference presentation while I will add new contents for the full version of reactomics presentation whenever I have new results.
 

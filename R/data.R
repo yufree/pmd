@@ -21,7 +21,7 @@
 #'   \item{exact_mass}{exact mass of contaminants}
 #'   \item{type_of_contaminant}{type of contaminant}
 #'   }
-#' @source \url{https://academic.oup.com/bioinformatics/article/28/21/2856/236679}
+#' @source \url{https://doi.org/10.1093/bioinformatics/bts527}
 "MaConDa"
 
 #' A peaks list dataset containing 9 samples from 3 fish with triplicates samples for each fish from LC-MS.
