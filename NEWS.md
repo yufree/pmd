@@ -2,6 +2,7 @@
 
 - CRAN
 - Change URL to doi for citation
+- remove dependance of msnbase
 
 # pmd 0.2.6
 
