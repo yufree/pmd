@@ -9,7 +9,7 @@
 
   gtag('config', 'UA-58201304-1');
 </script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.7</span>
       </span>
     </div>
 
@@ -34,7 +34,7 @@
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
-     
+
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
@@ -50,20 +50,20 @@
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="https://github.com/yufree/pmd/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul></div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get reaction chain for specific mass to charge ratio</h1>
-    <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/HEAD/R/sda.R" class="external-link"><code>R/sda.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/R/sda.R" class="external-link"><code>R/sda.R</code></a></small>
     <div class="hidden name"><code>getchain.Rd</code></div>
     </div>
 
@@ -86,49 +86,52 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>list</dt>
+
+
+<dl><dt id="arg-list">list<a class="anchor" aria-label="anchor" href="#arg-list"></a></dt>
 <dd><p>a list with mzrt profile</p></dd>
 
 
-<dt>diff</dt>
+<dt id="arg-diff">diff<a class="anchor" aria-label="anchor" href="#arg-diff"></a></dt>
 <dd><p>paired mass distance(s) of interests</p></dd>
 
 
-<dt>mass</dt>
+<dt id="arg-mass">mass<a class="anchor" aria-label="anchor" href="#arg-mass"></a></dt>
 <dd><p>a specific mass for known compound or a vector of masses. You could also input formula for certain compounds</p></dd>
 
 
-<dt>digits</dt>
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
 <dd><p>mass or mass to charge ratio accuracy for pmd, default 2</p></dd>
 
 
-<dt>accuracy</dt>
+<dt id="arg-accuracy">accuracy<a class="anchor" aria-label="anchor" href="#arg-accuracy"></a></dt>
 <dd><p>measured mass or mass to charge ratio in digits, default 4</p></dd>
 
 
-<dt>rtcutoff</dt>
+<dt id="arg-rtcutoff">rtcutoff<a class="anchor" aria-label="anchor" href="#arg-rtcutoff"></a></dt>
 <dd><p>cutoff of the distances in retention time hierarchical clustering analysis, default 10</p></dd>
 
 
-<dt>corcutoff</dt>
+<dt id="arg-corcutoff">corcutoff<a class="anchor" aria-label="anchor" href="#arg-corcutoff"></a></dt>
 <dd><p>cutoff of the correlation coefficient, default 0.6</p></dd>
 
 
-<dt>ppm</dt>
+<dt id="arg-ppm">ppm<a class="anchor" aria-label="anchor" href="#arg-ppm"></a></dt>
 <dd><p>all the peaks within this mass accuracy as seed mass or formula</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>a list with mzrt profile and reaction chain dataframe</p>
+    <p>a list with mzrt profile and reaction chain dataframe</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># check metabolites of C18H39NO</span></span></span>
+<span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu">getchain</span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># remove the retention time for mass only data</span></span></span>
+<span class="r-in"><span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">rt</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu">getchain</span><span class="op">(</span><span class="va">spmeinvivo</span>,diff <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.02</span>,<span class="fl">14.02</span>,<span class="fl">15.99</span><span class="op">)</span>,mass <span class="op">=</span> <span class="fl">286.3101</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
@@ -144,15 +147,15 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer></div>
 
-  
 
 
-  
+
+
 
   </body></html>
 
