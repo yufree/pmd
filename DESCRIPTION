@@ -22,7 +22,6 @@ Imports: RColorBrewer,
         stats,
         graphics,
         utils,
-        data.table,
         igraph,
         enviGCMS
 RoxygenNote: 7.3.2

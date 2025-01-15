@@ -12,8 +12,8 @@
 
 #' mass spectrometry contaminants database for PMD check
 #' @docType data
-#' @usage data(sda)
-#' @format A data frame with 308 rows and 5 variables:
+#' @usage data(MaConDa)
+#' @format A data frame from \doi{doi:10.1093/bioinformatics/bts527} with 308 rows and 5 variables:
 #' \describe{
 #'   \item{id}{MaConDa ID}
 #'   \item{name}{contaminants}
@@ -21,7 +21,6 @@
 #'   \item{exact_mass}{exact mass of contaminants}
 #'   \item{type_of_contaminant}{type of contaminant}
 #'   }
-#' @source \url{https://doi.org/10.1093/bioinformatics/bts527}
 "MaConDa"
 
 #' A peaks list dataset containing 9 samples from 3 fish with triplicates samples for each fish from LC-MS.

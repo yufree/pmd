@@ -5,7 +5,7 @@
 \alias{MaConDa}
 \title{mass spectrometry contaminants database for PMD check}
 \format{
-A data frame with 308 rows and 5 variables:
+A data frame from \doi{doi:10.1093/bioinformatics/bts527} with 308 rows and 5 variables:
 \describe{
   \item{id}{MaConDa ID}
   \item{name}{contaminants}
@@ -14,11 +14,8 @@ A data frame with 308 rows and 5 variables:
   \item{type_of_contaminant}{type of contaminant}
   }
 }
-\source{
-\url{https://doi.org/10.1093/bioinformatics/bts527}
-}
 \usage{
-data(sda)
+data(MaConDa)
 }
 \description{
 mass spectrometry contaminants database for PMD check
