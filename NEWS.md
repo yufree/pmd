@@ -2,7 +2,7 @@
 
 - CRAN
 - Change URL to doi for citation
-- remove dependance of msnbase
+- remove dependance of msnbase, function pmdanno has been moved to rmwf package
 
 # pmd 0.2.6
 
