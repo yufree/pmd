@@ -15,7 +15,7 @@ A data frame with 308 rows and 5 variables:
   }
 }
 \source{
-\url{https://academic.oup.com/bioinformatics/article/28/21/2856/236679}
+\url{https://doi.org/10.1093/bioinformatics/bts527}
 }
 \usage{
 data(sda)

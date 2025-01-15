@@ -1,36 +1,20 @@
-citHeader("To cite the pmd package in publications use:")
-
-citEntry(
-        entry="article",
-	title = "Structure/reaction directed analysis for LC-MS based untargeted analysis",
-	journal = "Analytica Chimica Acta",
-	volume = "1050",
-	pages = "16 - 24",
-	year = "2019",
-	issn = "0003-2670",
-	doi = "10.1016/j.aca.2018.10.062",
-	url = "https://doi.org/10.1016/j.aca.2018.10.062",
-        author = "Miao Yu and Mariola Olkowicz and Janusz Pawliszyn",
-        textVersion = paste("Miao Yu, Mariola Olkowicz, Janusz Pawliszyn",
-	"2019",
-	"Structure/reaction directed analysis for LC-MS based untargeted analysis,",
-	"Analytica Chimica Acta, 1050, 16-24."))
-citEntry(
-        entry="article",
-	title = "Untargeted high-resolution paired mass distance data mining for retrieving general chemical relationships",
-	journal = "Communications Chemistry",
-	volume = "3",
-	pages = "157",
-	year = "2020",
-	issn = "2399-3669",
-	doi = "10.1038/s42004-020-00403-z",
-	url = "https://doi.org/10.1038/s42004-020-00403-z",
-        author = "Miao Yu and Lauren Petrick",
-        textVersion = paste("Miao Yu, Lauren Petrick",
-	"2020",
-	"Untargeted high-resolution paired mass distance data mining for retrieving general chemical relationships,",
-	"Communications Chemistry, 3, 157."))
-
-citFooter(paste("Some functions",
-                 "party algorithms, see manpages and related packages",
-	         "for respective citations."))
+bibentry(
+  "Article",
+  title    = "Structure/reaction directed analysis for LC-MS based untargeted analysis",
+  author   = as.person("Miao Yu, Mariola Olkowicz, Janusz Pawliszyn"),
+  journal  = "Analytica Chimica Acta",
+  year     = "2019",
+  volume   = "1050",
+  pages    = "16-24",
+  doi      = "10.1016/j.aca.2018.10.062"
+  )
+bibentry(
+  "Article",
+  title    = "Untargeted high-resolution paired mass distance data mining for retrieving general chemical relationships",
+  author   = as.person("Miao Yu, Lauren Petrick"),
+  journal  = "Communications Chemistry",
+  year     = "2020",
+  volume   = "3",
+  pages    = "157",
+  doi      = "10.1038/s42004-020-00403-z"
+  )
