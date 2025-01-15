@@ -42,4 +42,7 @@ Get reaction chain for specific mass to charge ratio
 data(spmeinvivo)
 # check metabolites of C18H39NO
 pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
+# remove the retention time for mass only data
+spmeinvivo$rt <- NULL
+pmd <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99),mass = 286.3101)
 }
