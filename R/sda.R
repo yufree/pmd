@@ -499,8 +499,8 @@ getchain <-
                 if (is.character(mass)) {
                         mass <- unlist(Map(enviGCMS::getmass, mass))
                 }
-                massup <- mass + mass * ppm / 10e6
-                massdown <- mass - mass * ppm / 10e6
+                massup <- mass + mass * ppm / 1e6
+                massdown <- mass - mass * ppm / 1e6
                 updown <- vapply(Map(function(x)
                         x < massup & x > massdown, list$mz), function(x)
                                 sum(x & TRUE) > 0, TRUE)

@@ -1,3 +1,7 @@
+# pmd 0.2.8
+
+- fix ppm issue in getchain 
+
 # pmd 0.2.7
 
 - CRAN

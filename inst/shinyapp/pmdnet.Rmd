@@ -100,8 +100,8 @@ p <- eventReactive(input$go, {
         }else{
           y <- unlist(strsplit(input$formula,","))
           mass <- unlist(Map(enviGCMS::getmass, y))
-                massup <- mass+mass*input$ppm/10e6
-                massdown <- mass-mass*input$ppm/10e6
+                massup <- mass+mass*input$ppm/1e6
+                massdown <- mass-mass*input$ppm/1e6
                 up <- sapply(Map(function(x)
                         x < massup, list$mz), function(x)
                                 x || x)
