@@ -433,7 +433,7 @@ getpmddf <- function(mz,group=NULL,pmd=NULL,digits=2,mdrange=c(0.25,0.9)){
                 df$group1 <- group[match(df$ms1,mz)]
                 df$group2 <- group[match(df$ms2,mz)]
         }else{
-                df$group1 <- df$group2 <- rep(1,length(mz))
+                df$group1 <- df$group2 <- rep(1,length(df$md))
         }
 
         idx <- df$md<mdrange[1]|df$md>mdrange[2]
