@@ -1,6 +1,9 @@
 # pmd 0.2.8
 
 - fix ppm issue in getchain 
+- update sda reaction origin from 10.1101/2024.10.07.617109
+- change sda mode to biolocial/environmental reaction
+- fix bug in getpmddf for none group data
 
 # pmd 0.2.7
 

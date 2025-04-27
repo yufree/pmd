@@ -6,7 +6,7 @@
 #'   \item{PMD}{Paired mass distances}
 #'   \item{origin}{potential sources}
 #'   \item{Ref.}{references}
-#'   \item{mode}{positive, negative or both mode to find corresponding PMDs}
+#'   \item{mode}{b for biological reaction and e for environmental reaction}
 #'   }
 "sda"
 
