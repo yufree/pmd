@@ -1,7 +1,7 @@
 #' A dataset containing common Paired mass distances of substructure, ions replacements, and reaction
 #' @docType data
 #' @usage data(sda)
-#' @format A data frame with 94 rows and 4 variables:
+#' @format A data frame with 146 rows and 4 variables:
 #' \describe{
 #'   \item{PMD}{Paired mass distances}
 #'   \item{origin}{potential sources}
