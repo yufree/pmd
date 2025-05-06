@@ -1,3 +1,10 @@
+# pmd 0.2.9
+
+- rewrite globalstd algorithm to include multiple charged ions
+- use igraph to track ions cluster in globalstd algorithm
+- change `getcorcluster` and `getcluster` to `getpseudospectrum` and `getcorpseudospectrum` for pseudo spectrum extraction
+- update globalstd vignettes and related documents
+
 # pmd 0.2.8
 
 - fix ppm issue in getchain 

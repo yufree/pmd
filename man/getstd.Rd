@@ -2,24 +2,22 @@
 % Please edit documentation in R/globalstd.R
 \name{getstd}
 \alias{getstd}
-\title{Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.}
+\title{Identify standard ions through retention time clustering and PMD relationships}
 \usage{
-getstd(list, corcutoff = NULL, digits = 2, accuracy = 4)
+getstd(list, digits = 2, accuracy = 4)
 }
 \arguments{
-\item{list}{a list from getpaired function}
+\item{list}{A list object from getpaired() containing paired features}
 
-\item{corcutoff}{cutoff of the correlation coefficient, default NULL}
+\item{digits}{Rounding digits for mass differences}
 
-\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
-
-\item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
+\item{accuracy}{Mass accuracy for standard ion identification}
 }
 \value{
-list with std mass index
+List with added standard ion indices and metadata
 }
 \description{
-Find the independent ions for each retention time hierarchical clustering based on PMD relationship within each retention time cluster and isotope and return the index of the std data for each retention time cluster.
+Identify standard ions through retention time clustering and PMD relationships
 }
 \examples{
 data(spmeinvivo)

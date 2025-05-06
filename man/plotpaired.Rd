@@ -4,12 +4,14 @@
 \alias{plotpaired}
 \title{Plot the mass pairs and high frequency mass distances}
 \usage{
-plotpaired(list, index = NULL, ...)
+plotpaired(list, index = NULL, digits = 2, ...)
 }
 \arguments{
 \item{list}{a list from getpaired function}
 
 \item{index}{index for PMD value}
+
+\item{digits}{mass or mass to charge ratio accuracy for pmd, default 2}
 
 \item{...}{other parameters for plot function}
 }

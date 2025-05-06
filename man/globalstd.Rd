@@ -12,7 +12,6 @@ globalstd(
   digits = 2,
   accuracy = 4,
   freqcutoff = NULL,
-  mdrange = NULL,
   sda = FALSE
 )
 }
@@ -30,8 +29,6 @@ globalstd(
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
 \item{freqcutoff}{pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.}
-
-\item{mdrange}{mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass}
 
 \item{sda}{logical, option to perform structure/reaction directed analysis, default FALSE.}
 }

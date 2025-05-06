@@ -254,7 +254,7 @@ getrda <-
 #' @return list with correlation directed analysis results
 #' @examples
 #' data(spmeinvivo)
-#' cluster <- getcorcluster(spmeinvivo)
+#' cluster <- getpseudospectrum(spmeinvivo)
 #' cbp <- enviGCMS::getfilter(cluster,rowindex = cluster$stdmassindex2)
 #' cda <- getcda(cbp)
 #' @seealso \code{\link{getsda}},\code{\link{getrda}}

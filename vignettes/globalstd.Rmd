@@ -85,9 +85,9 @@ You could also show the distribution of PMD relationship by index:
 
 ```{r pmdindex}
 # show the unique PMD found by getpaired function
-for(i in 1:length(unique(pmd$paired$diff2))){
-        diff <- unique(pmd$paired$diff2)[i]
-        index <- pmd$paired$diff2 == diff
+for(i in 1:length(unique(round(pmd$paired$diff,2)))){
+        diff <- unique(round(pmd$paired$diff,2))[i]
+        index <- round(pmd$paired$diff,2)== diff
         plotpaired(pmd,index)
 }
 ```
@@ -125,7 +125,7 @@ plotstdrt(std,rtcluster = 6,main = 'Retention time group 6')
 Original GlobalStd algorithm only use mass to charge ratio and retention time of peaks to select independent peaks. However, if intensity data across samples are available, correlation coefficient of paired ions could be used to further filter the random noise in high frequency PMDs. You could set up cutoff of Pearson Correlation Coefficient between peaks to refine the peaks selected by GlobalStd within same retention time groups. In this case, the numbers of selected independent peaks will be further reduced. When you use this parameter, make sure the intensity data are from real samples instead of blank samples, which will affect the calculation of correlation coefficient.
 
 ```{r globalcor}
-std2 <- getstd(pmd,corcutoff = 0.9)
+std2 <- globalstd(pmd,corcutoff = 0.9)
 ```
 
 
@@ -141,54 +141,48 @@ plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_g
 plotpca(std2$data[std2$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(std2$stdmassindex),"reduced independent peaks"))
 ```
 
-You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quality peaks for following analysis. Otherwise, original GlobalStd will keep the most information for explorer purpose.
+You might find original GlobalStd algorithm show a similar PCA score plot with original data while GlobalStd algorithm considering intensity data seems change the profile. The major reason is that correlation coefficient option in the algorithm will remove the paired ions without strong correlation. It will be aggressive to remove low intensity peaks, which are vulnerable by baseline noise. However, such options would be helpful if you only concern high quality peaks for following analysis. Otherwise, original GlobalStd will keep the most information for discover purpose.
 
 ## Comparison with other pseudo spectra extraction method
 
-GlobalStd algorithm in `pmd` package could be treated as a method to extract pseudo spectra. You could use `getcluster` to get peaks groups information for all GlobalStd peaks. This function would consider the merge of GlobalStd peaks when certain peak is involved in multiple clusters. Then you could choose export peaks with the highest intensities or base peaks in each GlobalStd merged peaks groups. Meanwhile, you could also include the correlation coefficient cutoff to further improve the data quality.
+GlobalStd algorithm in `pmd` package could be treated as a method to extract pseudo spectra. You could use `getpseudospectrum` to get peaks groups information for all GlobalStd peaks. This function would consider the merge of GlobalStd peaks when certain peak is involved in multiple clusters. Then you could choose export peaks with the highest intensities or base peaks in each GlobalStd merged peaks groups. Meanwhile, you could also include the correlation coefficient cutoff to further improve the data quality.
 
 ```{r comp}
-stdcluster <- getcluster(std)
-# extract pseudospectra for std peak 71
-idx <- unique(stdcluster$cluster$largei[stdcluster$cluster$i==71])
-plot(stdcluster$cluster$mz[stdcluster$cluster$largei==idx],stdcluster$cluster$ins[stdcluster$cluster$largei==idx],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for GlobalStd peak 71')
-# export peaks with the highest intensities in each GlobalStd peaks groups.
-data <- stdcluster$data[stdcluster$stdmassindex2,]
+stdcluster <- getpseudospectrum(std)
+# extract the first pseudospectra for retention time cluster 37
+idx <- stdcluster$pseudo$sid=='37@1'
+plot(stdcluster$pseudo$mz[idx],stdcluster$pseudo$ins[idx],type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for retention time cluster 37')
 # considering the correlation coefficient cutoff
-stdcluster2 <- getcluster(std, corcutoff = 0.9)
-# considering the correlation coefficient cutoff for both psedospectra extraction and GlobalStd algorithm
-stdcluster3 <- getcluster(std2, corcutoff = 0.9)
+stdcluster2 <- getpseudospectrum(std, corcutoff = 0.9)
 ```
 
-We supplied `getcorcluster` to find peaks groups by correlation analysis only. The base peaks of correlation cluster were selected to stand for the compounds. 
+We supplied `getcorpseudospectrum` to find peaks groups by correlation analysis only. The base peaks of correlation cluster were selected to stand for the compounds. 
 
 ```{r corpeak}
-corcluster <- getcorcluster(spmeinvivo)
-# extract pseudospectra 1@46
-peak <- corcluster$cluster[corcluster$cluster$largei == '1@46',]
+corcluster <- getcorpseudospectrum(spmeinvivo)
+# extract pseudospectra 37@1
+peak <- corcluster$pseudo[corcluster$pseudo$sid == '37@1',]
 plot(peak$ins~peak$mz,type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for correlation cluster')
 ```
 
 Then we could compare the compare reduced result using PCA similarity factor. A good peak selection algorithm could show a high PCA similarity factor compared with original data set while retain the minimized number of peaks.
 
 ```{r corcomp}
-par(mfrow = c(3,3),mar = c(4,4,2,1)+0.1)
+par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
 plotpca(std$data[std$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(std$stdmassindex),"independent peaks"))
 plotpca(std$data[stdcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(stdcluster$stdmassindex2),"independent base peaks"))
 plotpca(std$data[stdcluster2$stdmassindex2,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(stdcluster2$stdmassindex2),"independent reduced base peaks"))
 plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(corcluster$stdmassindex),"peaks without correlationship"))
 plotpca(std$data[corcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(corcluster$stdmassindex2),"base peaks without correlationship"))
 plotpca(std$data,lv = as.numeric(as.factor(std$group$sample_group)),main = paste(nrow(std$data),"all peaks"))
-plotpca(std$data[stdcluster3$stdmassindex2,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(stdcluster3$stdmassindex2),"reduced independent base peaks"))
 pcasf(std$data, std$data[std$stdmassindex,])
 pcasf(std$data, std$data[stdcluster$stdmassindex2,])
 pcasf(std$data, std$data[stdcluster2$stdmassindex2,])
 pcasf(std$data, std$data[corcluster$stdmassindex,])
 pcasf(std$data, std$data[corcluster$stdmassindex2,])
-pcasf(std$data, std$data[stdcluster3$stdmassindex2,])
 ```
 
-In this case, five peaks selection algorithms are fine to stand for the original peaks with PCA similarity score larger than 0.9. However, the independent base peaks retain the most information with relative low numbers of peaks.
+In this case, four peaks selection algorithms are fine to stand for the original peaks with PCA similarity score larger than 0.9.
 
 ## Structure/Reaction directed analysis
 

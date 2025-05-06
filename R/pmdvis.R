@@ -36,6 +36,7 @@ plotrtg <- function(list, ...) {
 #' Plot the mass pairs and high frequency mass distances
 #' @param list a list from getpaired function
 #' @param index index for PMD value
+#' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param ... other parameters for plot function
 #' @return NULL
 #' @seealso \code{\link{getpaired}}, \code{\link{globalstd}}
@@ -44,15 +45,16 @@ plotrtg <- function(list, ...) {
 #' pmd <- getpaired(spmeinvivo)
 #' plotpaired(pmd)
 #' @export
-plotpaired <- function(list, index = NULL, ...) {
+plotpaired <- function(list, index = NULL, digits = 2, ...) {
         paired <- list$paired
+        diff <- round(paired$diff,digits)
         if (is.null(index)) {
-                diffgroup <- as.numeric(as.factor(paired$diff2))
+                diffgroup <- as.numeric(as.factor(diff))
                 col <-
                         (grDevices::colorRampPalette(rev(
                                 RColorBrewer::brewer.pal(11,
                                                          "RdYlBu")
-                        )))(length(unique(paired$diff2)))
+                        )))(length(unique(diff)))
                 graphics::par(mfrow = c(2, 1),
                               mar = c(4, 4, 2,
                                       1) + 0.1)
@@ -74,7 +76,7 @@ plotpaired <- function(list, index = NULL, ...) {
                         lwd = 1.5
                 )
                 graphics::barplot(
-                        table(list$paired$diff2),
+                        table(diff),
                         col = col,
                         ylab = "Frequency",
                         las = 2,
@@ -83,6 +85,7 @@ plotpaired <- function(list, index = NULL, ...) {
                 )
         } else {
                 paired <- paired[index,]
+                diff <- round(paired$diff,digits)
                 graphics::plot(
                         range(list$paired$rt),
                         range(list$paired$ms1,
@@ -90,7 +93,7 @@ plotpaired <- function(list, index = NULL, ...) {
                         type = "n",
                         xlab = "retention time(s)",
                         ylab = "m/z",
-                        main = paste(paired$diff2[1],
+                        main = paste(diff[1],
                                      "group"),
                         ...
                 )

@@ -10,11 +10,11 @@ getpaired(
   ng = NULL,
   digits = 2,
   accuracy = 4,
-  mdrange = NULL
+  corcutoff = NULL
 )
 }
 \arguments{
-\item{list}{a list with mzrt profile}
+\item{list}{a peaks list with mass to charge, retention time and intensity data}
 
 \item{rtcutoff}{cutoff of the distances in retention time hierarchical clustering analysis, default 10}
 
@@ -24,7 +24,7 @@ getpaired(
 
 \item{accuracy}{measured mass or mass to charge ratio in digits, default 4}
 
-\item{mdrange}{mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass}
+\item{corcutoff}{cutoff of the correlation coefficient, 0.6 is suggested, default NULL}
 }
 \value{
 list with tentative isotope, multi-chargers, adducts, and neutral loss peaks' index, retention time clusters.
