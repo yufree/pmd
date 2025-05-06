@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -107,8 +107,17 @@
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="getcorcluster.html">getcorcluster</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
+<span class="r-in"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu"><a href="getpseudospectrum.html">getpseudospectrum</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time clusters found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using ng = 15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique PMDs retained.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 409 isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 109 multiple charged isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 251 multiple charged peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 346 paired peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 245 pseudo spectrum found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 0.84 peaks covered by PMD relationship.</span>
 <span class="r-in"><span><span class="va">cbp</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">cluster</span>,rowindex <span class="op">=</span> <span class="va">cluster</span><span class="op">$</span><span class="va">stdmassindex2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cda</span> <span class="op">&lt;-</span> <span class="fu">getcda</span><span class="op">(</span><span class="va">cbp</span><span class="op">)</span></span></span>
 </code></pre></div>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -133,21 +133,23 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 369 paired masses found </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time clusters found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using ng = 15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique PMDs retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 719 isotopologue(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 492 multi-charger(s) related paired mass found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 409 isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 109 multiple charged isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 251 multiple charged peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 346 paired peaks found.</span>
 <span class="r-in"><span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="getstd.html">getstd</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired relationship without isotope 1 10 15 18</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 291 std mass found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired without isotope relationship 1 10 15 18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 292 standard masses identified.</span>
 <span class="r-in"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span><span class="op">[</span><span class="va">std</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 15209 pmd found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 14728 pmd found.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 3 pmd used.</span>
 <span class="r-in"><span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu">getrda</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">$</span><span class="va">mz</span>, pmd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.016</span>,<span class="fl">15.995</span>,<span class="fl">18.011</span>,<span class="fl">14.016</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 4 pmd used.</span>

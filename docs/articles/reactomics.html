@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
       <h1 data-toc-skip>Reactomics</h1>
                         <h4 data-toc-skip class="author">Miao Yu</h4>
             
-            <h4 data-toc-skip class="date">2025-05-02</h4>
+            <h4 data-toc-skip class="date">2025-05-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yufree/pmd/blob/master/vignettes/reactomics.Rmd" class="external-link"><code>vignettes/reactomics.Rmd</code></a></small>
       <div class="hidden name"><code>reactomics.Rmd</code></div>
@@ -188,28 +188,27 @@ will use the high frequency PMDs cutoff 12 from the data to build the
 networks for all the independent peaks.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">std</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,sda <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 75 retention time cluster found.</span></span>
-<span><span class="co">#&gt; 369 paired masses found</span></span>
-<span><span class="co">#&gt; 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></span>
+<span><span class="co">#&gt; 75 retention time clusters found.</span></span>
+<span><span class="co">#&gt; Using ng = 15</span></span>
+<span><span class="co">#&gt; 5 unique PMDs retained.</span></span>
 <span><span class="co">#&gt; The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span></span>
-<span><span class="co">#&gt; 719 isotopologue(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 492 multi-charger(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></span>
-<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></span>
-<span><span class="co">#&gt; 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
-<span><span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span></span>
-<span><span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></span>
-<span><span class="co">#&gt; 291 std mass found.</span></span>
+<span><span class="co">#&gt; 409 isotope peaks found.</span></span>
+<span><span class="co">#&gt; 109 multiple charged isotope peaks found.</span></span>
+<span><span class="co">#&gt; 251 multiple charged peaks found.</span></span>
+<span><span class="co">#&gt; 346 paired peaks found.</span></span>
+<span><span class="co">#&gt; 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span></span>
+<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span></span>
+<span><span class="co">#&gt; 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
+<span><span class="co">#&gt; 4 group(s) with paired without isotope relationship 1 10 15 18</span></span>
+<span><span class="co">#&gt; 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span></span>
+<span><span class="co">#&gt; 292 standard masses identified.</span></span>
 <span><span class="va">sda</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getsda.html">getsda</a></span><span class="op">(</span><span class="va">std</span>,freqcutoff <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 8 groups were found as high frequency PMD group.</span></span>
+<span><span class="co">#&gt; 5 groups were found as high frequency PMD group.</span></span>
 <span><span class="co">#&gt; 0 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 2.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 13.98 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 14.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 15.99 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 28.03 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 30.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 126.14 was found as high frequency PMD.</span></span>
+<span><span class="co">#&gt; 58.04 was found as high frequency PMD.</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">sda</span><span class="op">$</span><span class="va">sda</span></span>
 <span><span class="va">net</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/graph_from_data_frame.html" class="external-link">graph_from_data_frame</a></span><span class="op">(</span><span class="va">df</span>,directed <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span><span class="va">pal</span> <span class="op">&lt;-</span> <span class="fu">grDevices</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html" class="external-link">rainbow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://r.igraph.org/reference/E.html" class="external-link">E</a></span><span class="op">(</span><span class="va">net</span><span class="op">)</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -233,11 +232,11 @@ network community structure.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">ceb</span><span class="op">$</span><span class="va">membership</span>,<span class="va">ceb</span><span class="op">$</span><span class="va">names</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;      [,1] [,2]              </span></span>
 <span><span class="co">#&gt; [1,] "1"  "146.118268664153"</span></span>
-<span><span class="co">#&gt; [2,] "1"  "162.112813715075"</span></span>
-<span><span class="co">#&gt; [3,] "2"  "284.295501708984"</span></span>
-<span><span class="co">#&gt; [4,] "2"  "284.295597233849"</span></span>
-<span><span class="co">#&gt; [5,] "1"  "192.160430908203"</span></span>
-<span><span class="co">#&gt; [6,] "3"  "326.342517752117"</span></span></code></pre></div>
+<span><span class="co">#&gt; [2,] "1"  "174.148913040161"</span></span>
+<span><span class="co">#&gt; [3,] "2"  "175.148206702548"</span></span>
+<span><span class="co">#&gt; [4,] "2"  "177.164038300588"</span></span>
+<span><span class="co">#&gt; [5,] "2"  "177.163608624184"</span></span>
+<span><span class="co">#&gt; [6,] "3"  "200.200536606252"</span></span></code></pre></div>
 <p>Such network could also be build on correlation directed analysis
 which use correlation between paired peaks to build network.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -274,10 +273,10 @@ appointment if the assumption is hold.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">deg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r.igraph.org/reference/degree.html" class="external-link">degree</a></span><span class="op">(</span><span class="va">net</span>, mode <span class="op">=</span> <span class="st">'all'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
 <span><span class="va">endogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&gt;</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">exogenous</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">[</span><span class="va">deg</span><span class="op">&lt;=</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">deg</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<p>In this case, we will have 31 endogenous compounds while 51 exogenous
+<p>In this case, we will have 43 endogenous compounds while 44 exogenous
 compounds. When you find a peak show differences between groups, you
 could check the degree to infer its sources.</p>
 <p>Another parameter would be the average network distances. Endogenous
@@ -604,73 +603,30 @@ PMDs existing in the data.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
 <span><span class="co"># remove redundant peaks</span></span>
 <span><span class="va">list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span>,sda <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 75 retention time cluster found.</span></span>
-<span><span class="co">#&gt; 369 paired masses found</span></span>
-<span><span class="co">#&gt; 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></span>
+<span><span class="co">#&gt; 75 retention time clusters found.</span></span>
+<span><span class="co">#&gt; Using ng = 15</span></span>
+<span><span class="co">#&gt; 5 unique PMDs retained.</span></span>
 <span><span class="co">#&gt; The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span></span>
-<span><span class="co">#&gt; 719 isotopologue(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 492 multi-charger(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></span>
-<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></span>
-<span><span class="co">#&gt; 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
-<span><span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span></span>
-<span><span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></span>
-<span><span class="co">#&gt; 291 std mass found.</span></span>
-<span><span class="co">#&gt; PMD frequency cutoff is 6 by PMD network analysis with largest network average distance 6.67 .</span></span>
-<span><span class="co">#&gt; 53 groups were found as high frequency PMD group.</span></span>
+<span><span class="co">#&gt; 409 isotope peaks found.</span></span>
+<span><span class="co">#&gt; 109 multiple charged isotope peaks found.</span></span>
+<span><span class="co">#&gt; 251 multiple charged peaks found.</span></span>
+<span><span class="co">#&gt; 346 paired peaks found.</span></span>
+<span><span class="co">#&gt; 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span></span>
+<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span></span>
+<span><span class="co">#&gt; 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
+<span><span class="co">#&gt; 4 group(s) with paired without isotope relationship 1 10 15 18</span></span>
+<span><span class="co">#&gt; 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span></span>
+<span><span class="co">#&gt; 292 standard masses identified.</span></span>
+<span><span class="co">#&gt; PMD frequency cutoff is 9 by PMD network analysis with largest network average distance 7.26 .</span></span>
+<span><span class="co">#&gt; 8 groups were found as high frequency PMD group.</span></span>
 <span><span class="co">#&gt; 0 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 1.98 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 2.01 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 2.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 6.97 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 11.96 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 12 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 13.98 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 14.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 14.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 15.99 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 16.03 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 19.04 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 28.03 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 30.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 31.99 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 33.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 37.02 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 42.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 48.04 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 48.98 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 49.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 54.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 56.06 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 56.1 was found as high frequency PMD. </span></span>
 <span><span class="co">#&gt; 58.04 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 58.08 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 58.11 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 63.96 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 66.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 68.06 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 70.04 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 70.08 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 74.02 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 80.03 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 82.08 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 88.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 91.1 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 93.12 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 94.1 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 96.09 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 101.05 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 108.13 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 110.11 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 112.16 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 116.08 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 122.15 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 124.16 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 126.14 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 144.18 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 148.04 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 150.2 was found as high frequency PMD. </span></span>
-<span><span class="co">#&gt; 173.18 was found as high frequency PMD.</span></span>
+<span><span class="co">#&gt; 116.08 was found as high frequency PMD.</span></span>
 <span><span class="va">newlist</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">list</span>,rowindex <span class="op">=</span> <span class="va">list</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span></span>
 <span><span class="co"># get high frequency pmd</span></span>
 <span><span class="va">hfpmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">newlist</span><span class="op">$</span><span class="va">sda</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span></span>
@@ -679,50 +635,42 @@ PMDs existing in the data.</p>
 <span><span class="co"># output the kegg pmd in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      0   1.98   2.01   2.02   6.97  11.96     12  13.98  14.02  14.05  15.99 </span></span>
-<span><span class="co">#&gt;      1      3      2      6      1      1      3      4      3      6      3 </span></span>
-<span><span class="co">#&gt;  16.03  19.04  28.03  30.05  31.99  33.02  42.05  48.04  48.98  49.02  54.05 </span></span>
-<span><span class="co">#&gt;      3      2      5      1      2      1      2      1      1      3      1 </span></span>
-<span><span class="co">#&gt;  56.06  58.04  58.08  63.96  66.05  68.06  70.04  70.08  74.02  80.03  82.08 </span></span>
-<span><span class="co">#&gt;      1      6      1      2      2      1      1      2      7      3      2 </span></span>
-<span><span class="co">#&gt;  88.05   91.1  93.12   94.1  96.09 101.05 108.13 110.11 112.16 116.08 122.15 </span></span>
-<span><span class="co">#&gt;      3      2      3      2      1      1      2      3      4      6      2 </span></span>
-<span><span class="co">#&gt; 124.16 126.14 148.04 </span></span>
-<span><span class="co">#&gt;      3      6      2</span></span>
+<span><span class="co">#&gt;      0   2.02     12  28.03  30.05  42.05  58.04 116.08 </span></span>
+<span><span class="co">#&gt;      1      5      7      2      3      1      7      6</span></span>
 <span><span class="co"># output quantitative result for each PMD</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span></span>
-<span><span class="co">#&gt; 200.2/522      76781.54      40625.84      77922.53     28510.920      79221.24</span></span>
-<span><span class="co">#&gt; 228.2/453      38231.65      26164.21      44139.68     21243.456      45048.10</span></span>
-<span><span class="co">#&gt; 240.2/639      31881.67      19485.44      31170.56     13105.650      33620.20</span></span>
-<span><span class="co">#&gt; 268.3/639      39620.62      22678.74      40315.71     19270.755      39626.76</span></span>
-<span><span class="co">#&gt; 254.2/639      27475.32      16563.06      26416.10     12568.091      26500.43</span></span>
-<span><span class="co">#&gt; 261.2/557      24604.42      14415.48      21970.93      9424.969      25368.75</span></span>
+<span><span class="co">#&gt; 170.2/639     17657.002     10935.830     15380.652      9027.136     18341.408</span></span>
+<span><span class="co">#&gt; 200.2/522     76781.538     40625.840     77922.531     28510.920     79221.245</span></span>
+<span><span class="co">#&gt; 175.1/453     12187.331      7656.765      9018.779      4548.020     11727.140</span></span>
+<span><span class="co">#&gt; 200.2/522     61813.393     31627.099     65896.736     20760.813     63841.615</span></span>
+<span><span class="co">#&gt; 177.2/639      4686.268      2755.558      4957.270      1745.660      5051.758</span></span>
+<span><span class="co">#&gt; 326.3/648     13541.352      6479.068     15770.972      4922.571     13168.677</span></span>
 <span><span class="co">#&gt;           1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span></span>
-<span><span class="co">#&gt; 200.2/522      40736.98      68844.35      83690.73      91978.11</span></span>
-<span><span class="co">#&gt; 228.2/453      26938.08      40441.85      45445.05      52223.88</span></span>
-<span><span class="co">#&gt; 240.2/639      20422.46      29060.96      32886.11      39062.02</span></span>
-<span><span class="co">#&gt; 268.3/639      24927.91      36500.59      41108.70      48308.70</span></span>
-<span><span class="co">#&gt; 254.2/639      15106.66      27064.28      30026.87      32384.46</span></span>
-<span><span class="co">#&gt; 261.2/557      11698.38      21809.08      37162.69      37774.73</span></span>
+<span><span class="co">#&gt; 170.2/639     12706.833      16722.20     17964.151     23711.077</span></span>
+<span><span class="co">#&gt; 200.2/522     40736.977      68844.35     83690.730     91978.112</span></span>
+<span><span class="co">#&gt; 175.1/453      6574.599      13444.25     13759.136     14974.739</span></span>
+<span><span class="co">#&gt; 200.2/522     29724.524      54917.81     68598.302     72047.813</span></span>
+<span><span class="co">#&gt; 177.2/639      3041.635       4707.46      4765.946      5272.995</span></span>
+<span><span class="co">#&gt; 326.3/648      6065.289      11440.63     14695.065     16218.608</span></span>
 <span><span class="co"># output quantitative result for unique PMD</span></span>
 <span><span class="va">upmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,<span class="va">sum</span><span class="op">)</span></span>
 <span><span class="co"># column for samples and row for unique PMD</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">upmd</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Group.1 1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span></span>
-<span><span class="co">#&gt; 1    0.00      72539.75      46921.79      83489.08      28793.02      80299.40</span></span>
-<span><span class="co">#&gt; 2    1.98     112810.76      66245.18     146623.69      47083.72     139250.82</span></span>
-<span><span class="co">#&gt; 3    2.01     221243.45      93950.41     271935.00      52129.93     225979.34</span></span>
-<span><span class="co">#&gt; 4    2.02    8315494.48    6518031.80    8671833.02    5135730.18    8679495.21</span></span>
-<span><span class="co">#&gt; 5    6.97      26432.13      20929.65      35015.28      16707.43      33324.33</span></span>
-<span><span class="co">#&gt; 6   11.96     214066.24     112212.13     270152.44      79751.55     240539.00</span></span>
+<span><span class="co">#&gt; 1    0.00      53022.83      23456.56      20941.85      14903.71      63222.37</span></span>
+<span><span class="co">#&gt; 2    2.02    7636291.25    6153071.05    7977403.59    4868105.03    7982139.69</span></span>
+<span><span class="co">#&gt; 3   12.00   15486878.05   12519952.24   16356055.31    9935017.30   16237029.99</span></span>
+<span><span class="co">#&gt; 4   28.03      37091.72      31173.62      56537.52      21134.78      53606.36</span></span>
+<span><span class="co">#&gt; 5   30.05      77903.78      50845.03      94997.88      33333.63      93912.86</span></span>
+<span><span class="co">#&gt; 6   42.05      76781.54      40625.84      77922.53      28510.92      79221.24</span></span>
 <span><span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span></span>
-<span><span class="co">#&gt; 1      35190.01      73796.58     101046.21     105464.49</span></span>
-<span><span class="co">#&gt; 2      63606.69     127173.02     148943.11     149585.77</span></span>
-<span><span class="co">#&gt; 3      89406.65     141388.51     155992.98     166769.47</span></span>
-<span><span class="co">#&gt; 4    6196265.89    8057717.46    8798917.44    9524655.11</span></span>
-<span><span class="co">#&gt; 5      19249.17      30033.02      33716.19      34905.22</span></span>
-<span><span class="co">#&gt; 6     104862.63     211044.91     265591.16     314792.74</span></span></code></pre></div>
+<span><span class="co">#&gt; 1      26320.58      65507.97      59418.19      44340.68</span></span>
+<span><span class="co">#&gt; 2    5841264.15    7414502.27    8077803.96    8736106.60</span></span>
+<span><span class="co">#&gt; 3   11909674.43   15053630.97   16433254.95   17779902.00</span></span>
+<span><span class="co">#&gt; 4      26536.18      35353.86      54167.11      60799.07</span></span>
+<span><span class="co">#&gt; 5      45257.00      72396.51      99610.92     104228.58</span></span>
+<span><span class="co">#&gt; 6      40736.98      68844.35      83690.73      91978.11</span></span></code></pre></div>
 <p>You can also output the quantitative results of all PMDs existing in
 current KEGG database.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -731,122 +679,104 @@ current KEGG database.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"spmeinvivo"</span><span class="op">)</span></span>
 <span><span class="co"># remove redundant peaks</span></span>
 <span><span class="va">list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 75 retention time cluster found.</span></span>
-<span><span class="co">#&gt; 369 paired masses found</span></span>
-<span><span class="co">#&gt; 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span></span>
+<span><span class="co">#&gt; 75 retention time clusters found.</span></span>
+<span><span class="co">#&gt; Using ng = 15</span></span>
+<span><span class="co">#&gt; 5 unique PMDs retained.</span></span>
 <span><span class="co">#&gt; The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span></span>
-<span><span class="co">#&gt; 719 isotopologue(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 492 multi-charger(s) related paired mass found.</span></span>
-<span><span class="co">#&gt; 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span></span>
-<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span></span>
-<span><span class="co">#&gt; 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
-<span><span class="co">#&gt; 4 group(s) with paired relationship without isotope 1 10 15 18</span></span>
-<span><span class="co">#&gt; 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span></span>
-<span><span class="co">#&gt; 291 std mass found.</span></span>
+<span><span class="co">#&gt; 409 isotope peaks found.</span></span>
+<span><span class="co">#&gt; 109 multiple charged isotope peaks found.</span></span>
+<span><span class="co">#&gt; 251 multiple charged peaks found.</span></span>
+<span><span class="co">#&gt; 346 paired peaks found.</span></span>
+<span><span class="co">#&gt; 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span></span>
+<span><span class="co">#&gt; 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span></span>
+<span><span class="co">#&gt; 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span></span>
+<span><span class="co">#&gt; 4 group(s) with paired without isotope relationship 1 10 15 18</span></span>
+<span><span class="co">#&gt; 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span></span>
+<span><span class="co">#&gt; 292 standard masses identified.</span></span>
 <span><span class="va">newlist</span> <span class="op">&lt;-</span> <span class="fu">enviGCMS</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/enviGCMS/man/getfilter.html" class="external-link">getfilter</a></span><span class="op">(</span><span class="va">list</span>,rowindex <span class="op">=</span> <span class="va">list</span><span class="op">$</span><span class="va">stdmassindex</span><span class="op">)</span></span>
 <span><span class="co"># generate quantitative results</span></span>
 <span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getreact.html">getreact</a></span><span class="op">(</span><span class="va">newlist</span>,pmd<span class="op">=</span><span class="va">keggpmd</span><span class="op">)</span></span>
 <span><span class="co"># output the kegg pmd in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      0   0.04   1.98   2.02   2.04   2.98   3.05   3.98   4.03      6   6.05 </span></span>
-<span><span class="co">#&gt;      1      3      3      6      1      1      2      1      1      1      2 </span></span>
-<span><span class="co">#&gt;   7.03   7.06    7.2   9.95   9.98  10.02  11.96     12  12.04  12.07  12.95 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      2      1      1      3      2      1      1 </span></span>
-<span><span class="co">#&gt;  12.99  13.03  13.98  14.02  14.05     15  15.01  15.02  15.05  15.79  15.94 </span></span>
-<span><span class="co">#&gt;      2      1      4      3      6      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt;  15.99     16  16.01  16.03  16.09  16.93     17  17.03  17.99  18.01  18.06 </span></span>
-<span><span class="co">#&gt;      3      2      1      3      1      1      3      1      2      1      1 </span></span>
-<span><span class="co">#&gt;     19  19.04  19.87  20.06     21  21.98  22.05  22.76   22.8     24  25.02 </span></span>
-<span><span class="co">#&gt;      1      2      1      1      1      1      1      1      2      3      1 </span></span>
-<span><span class="co">#&gt;  25.98  26.02  26.06     28  28.03  28.07   28.1  28.99  29.03  29.96     31 </span></span>
-<span><span class="co">#&gt;      3      5      1      2      5      2      1      1      1      1      3 </span></span>
-<span><span class="co">#&gt;  31.01  31.04  31.95  31.99  33.93  34.01  34.02  34.31  35.02  35.03  38.06 </span></span>
-<span><span class="co">#&gt;      1      2      1      2      1      2      2      1      1      1      1 </span></span>
-<span><span class="co">#&gt;  39.99  40.03  40.07  40.96  42.01  42.05  42.08  43.01  43.17  45.03  45.06 </span></span>
-<span><span class="co">#&gt;      1      3      1      1      1      2      2      1      1      1      2 </span></span>
-<span><span class="co">#&gt;  45.96  46.04  47.94     48  50.02  51.05  52.01  52.07  53.05  55.06  56.03 </span></span>
-<span><span class="co">#&gt;      1      1      2      2      1      1      1      2      3      1      1 </span></span>
-<span><span class="co">#&gt;  56.04  56.06  56.27  56.94  57.02  57.06  57.97  58.04  58.08  58.75  59.04 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      2      1      6      1      1      2 </span></span>
-<span><span class="co">#&gt;  60.08  61.02  61.22  63.03  63.96  64.02  64.03  66.05  67.03  67.07  68.03 </span></span>
-<span><span class="co">#&gt;      1      3      1      1      2      1      1      2      4      1      2 </span></span>
-<span><span class="co">#&gt;  68.06  70.01  70.04  71.04  71.98     74  75.03  75.05  75.34  77.03  77.05 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      2      1      1      2      1      1 </span></span>
-<span><span class="co">#&gt;  78.09  78.96  79.04  80.03  80.06  80.83  81.95  81.97  82.04  82.09  83.07 </span></span>
-<span><span class="co">#&gt;      2      2      1      3      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt;  84.02  84.06  86.11  88.02  88.05  90.05  90.14  90.55  93.02  93.04  94.02 </span></span>
-<span><span class="co">#&gt;      1      1      2      1      3      3      1      1      1      1      2 </span></span>
-<span><span class="co">#&gt;  94.12  94.31  95.04  95.97     98  98.07  98.08  98.14 100.08 100.95 101.05 </span></span>
-<span><span class="co">#&gt;      1      2      1      1      2      2      1      2      1      1      1 </span></span>
-<span><span class="co">#&gt; 101.96 102.01 102.14 102.25 102.97 103.03 103.27 103.83 103.91 103.99 104.06 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      2 </span></span>
-<span><span class="co">#&gt; 106.03 108.02 108.06 108.09 108.13 109.03 109.05 110.04 110.83 112.12 113.07 </span></span>
+<span><span class="co">#&gt;      0   0.04      1   1.98   2.02   2.04   2.05   2.98   3.02   3.05      6 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      5      1      1      1      1      2      1 </span></span>
+<span><span class="co">#&gt;   6.05   7.06   7.08    7.2   9.98     12  12.07  12.95  14.02  14.05     15 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      2      7      1      1      4      4      1 </span></span>
+<span><span class="co">#&gt;  15.05  15.22  15.99  16.03  16.93     17  17.03  17.99  18.06  19.04  19.87 </span></span>
+<span><span class="co">#&gt;      1      1      3      2      1      2      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  19.91  20.06  21.98  22.02  22.76   22.8  23.95  23.98     24  26.02     28 </span></span>
+<span><span class="co">#&gt;      1      1      3      1      1      1      1      1      2      4      1 </span></span>
+<span><span class="co">#&gt;  28.01  28.03  28.07   28.1  28.26  28.99  29.96  29.97  31.01  31.06  31.99 </span></span>
+<span><span class="co">#&gt;      1      2      1      1      1      1      1      1      1      1      2 </span></span>
+<span><span class="co">#&gt;  33.93  33.99  34.01  34.02  34.93  35.02     36  38.02  39.99  42.05  43.01 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  44.21  45.02  45.03  45.96  46.16  47.94  47.98     48  50.02  50.12  51.05 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      2      2      2      1      1 </span></span>
+<span><span class="co">#&gt;  51.89  52.01  52.07   53.9  55.92  56.27  57.97  58.04  58.08  58.85  59.04 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      2      1      1      7      1      1      1 </span></span>
+<span><span class="co">#&gt;  60.08  61.02  63.96  64.02  66.05  67.03  67.25  69.94  70.99  71.98  72.07 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  72.97  75.05  75.34  77.05  78.96  80.03  80.06  81.06  81.95  81.97  82.04 </span></span>
+<span><span class="co">#&gt;      1      1      2      2      2      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  84.02  84.08  85.05  86.11  90.05  90.55  92.03  92.06  93.02  94.02  97.05 </span></span>
+<span><span class="co">#&gt;      2      2      1      1      2      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  98.07 100.95 102.03 102.25 102.97 103.83 103.91 103.99 104.06 109.03 110.83 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt; 112.12 113.07 115.83 117.06 117.92 118.03 119.04 119.06 120.02 121.87 122.01 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt; 122.94 123.01 123.99 125.88 126.03 126.08 126.96 128.01 131.05 132.94 135.96 </span></span>
+<span><span class="co">#&gt;      1      2      1      2      1      1      1      1      1      1      2 </span></span>
+<span><span class="co">#&gt; 142.75 143.94 144.04 144.05 145.01 146.06 147.16 149.94 150.07 151.04 152.05 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt; 153.07 156.19 157.01 158.13 160.16 161.15 161.95 165.06 169.12    170 172.06 </span></span>
+<span><span class="co">#&gt;      1      1      1      2      1      2      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt; 173.01 178.18 183.06 185.76 195.02 195.03 196.06 199.06 201.04 204.19 207.02 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      2      1 </span></span>
+<span><span class="co">#&gt; 215.05 217.03 217.07 218.17 226.19 236.93 241.05 249.09 252.92 260.93 265.03 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      2      1      1      1 </span></span>
+<span><span class="co">#&gt; 268.87 272.12 275.12 278.02 278.16 291.84    297 300.08 301.91 311.87 315.18 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
+<span><span class="co">#&gt;  339.1 343.71    344 344.95 345.86 346.74 360.75  369.8 405.02 409.03 431.06 </span></span>
 <span><span class="co">#&gt;      1      1      1      1      2      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 115.83 116.95 117.06 118.03 119.04 119.06 120.06 121.87 122.01 122.02 123.01 </span></span>
-<span><span class="co">#&gt;      1      1      3      1      1      1      2      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 123.99 125.02 125.88 126.03  126.1 126.18 126.96 127.12 128.01 128.12 129.08 </span></span>
-<span><span class="co">#&gt;      1      1      2      1      2      2      1      3      1      1      1 </span></span>
-<span><span class="co">#&gt; 130.85 131.09 131.86 132.94    135 135.96 137.06 139.96 142.04 142.75 142.97 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      2      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt;  143.1 143.94 144.04 144.06 145.04 146.06    147 149.94 150.07 152.12    154 </span></span>
-<span><span class="co">#&gt;      2      1      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 157.01 157.05 157.11 158.02 158.13 158.17 158.95 159.09 159.14 160.16 161.15 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      2      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 161.95 162.03 162.05 163.09 165.06 168.02 168.07    170 172.05 177.06 178.18 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      2      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 182.17 183.13 186.03 191.99 193.01 194.04 194.24 195.02 195.03 197.05 198.01 </span></span>
-<span><span class="co">#&gt;      1      2      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 199.96 200.18 201.04 204.19 206.06 206.08 207.02  210.2 215.05 215.97 217.07 </span></span>
-<span><span class="co">#&gt;      1      1      1      2      1      1      2      3      1      1      1 </span></span>
-<span><span class="co">#&gt; 218.17  222.2 229.04 230.09 236.93 241.05 243.02 249.09 250.09 252.22 252.92 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 265.03 268.22  269.1 275.12 278.02 278.16 289.17  291.1    297 300.08  300.9 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      2      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 301.91 302.95 304.08 306.17 311.87 315.18  316.9  339.1 343.71 344.95 345.86 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      2      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 346.74 348.01 349.89  369.8 375.91 381.02 390.28 405.02 409.03 409.42 409.98 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 431.06 437.11 439.02 440.89 447.07 454.17  454.3 455.05 456.23 463.06  466.1 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 472.97 473.05 475.05 476.07 478.04 488.07 501.07 501.08 505.13 516.12 517.06 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1      1 </span></span>
-<span><span class="co">#&gt; 518.06 526.05 537.08 546.13 546.98 552.06 554.09 586.06 599.18 612.56 </span></span>
-<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      1</span></span>
+<span><span class="co">#&gt; 437.11 440.89 441.41 447.07 450.27 455.01  466.1 467.04 474.07 476.07 488.07 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1      1      2      1 </span></span>
+<span><span class="co">#&gt; 501.08 505.13 517.06 526.05 535.07 540.06 546.98 552.06 </span></span>
+<span><span class="co">#&gt;      1      1      1      1      1      1      1      1</span></span>
 <span><span class="co"># output quantitative result for each PMD</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span></span>
+<span><span class="co">#&gt; 175.1/261      6811.033      5313.499     11989.849      6239.471     12202.445</span></span>
+<span><span class="co">#&gt; 205.1/584      8190.765      7581.643     12945.959      5684.228     13445.629</span></span>
+<span><span class="co">#&gt; 299.1/448     21559.233     15267.362     21692.940     14084.394     26372.907</span></span>
+<span><span class="co">#&gt; 577.1/820      5329.327      3406.066      7295.058      3550.973      7588.165</span></span>
 <span><span class="co">#&gt; 159/155       35181.202     38958.595     32009.376     51346.078     28559.260</span></span>
-<span><span class="co">#&gt; 636.2/819     45321.672     33160.944     70592.139     26804.485     70922.188</span></span>
-<span><span class="co">#&gt; 173.1/611     21060.045     12412.283     21212.641      8046.332     19278.585</span></span>
-<span><span class="co">#&gt; 577.1/820      2860.706      1645.137      3285.761      1937.062      3347.514</span></span>
-<span><span class="co">#&gt; 593.2/819      6353.084      4155.004      8805.660      3774.374      8029.871</span></span>
 <span><span class="co">#&gt; 159/155       25512.422     38824.191     33660.574     48794.630     20651.311</span></span>
 <span><span class="co">#&gt;           1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span></span>
+<span><span class="co">#&gt; 175.1/261      7860.593      4272.374      8637.834     14184.899</span></span>
+<span><span class="co">#&gt; 205.1/584      7120.687      8085.563     12970.200     14168.461</span></span>
+<span><span class="co">#&gt; 299.1/448     15676.912     16914.835     22297.457     26320.967</span></span>
+<span><span class="co">#&gt; 577.1/820      3965.134      4078.607      6897.387      8676.138</span></span>
 <span><span class="co">#&gt; 159/155       41888.784     29068.087     25006.374     33043.005</span></span>
-<span><span class="co">#&gt; 636.2/819     33615.276     29465.045     65983.634     82993.419</span></span>
-<span><span class="co">#&gt; 173.1/611      8715.165     19432.080     24901.629     26559.379</span></span>
-<span><span class="co">#&gt; 577.1/820      2016.036      2521.557      3219.349      4223.686</span></span>
-<span><span class="co">#&gt; 593.2/819      4331.519      5995.990      7702.984     11416.088</span></span>
 <span><span class="co">#&gt; 159/155       40127.066     35015.350     29515.079     30543.740</span></span>
 <span><span class="co"># output quantitative result for unique PMD</span></span>
 <span><span class="va">upmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmddata</span>, by<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">pmd</span><span class="op">$</span><span class="va">pmd</span><span class="op">$</span><span class="va">diff2</span><span class="op">)</span>,<span class="va">sum</span><span class="op">)</span></span>
 <span><span class="co"># column for samples and row for unique PMD</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">upmd</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Group.1 1405_Fish1_F1 1405_Fish1_F2 1405_Fish1_F3 1405_Fish2_F1 1405_Fish2_F2</span></span>
-<span><span class="co">#&gt; 1    0.00     72539.754     46921.790     83489.076     28793.020     80299.395</span></span>
-<span><span class="co">#&gt; 2    0.04    172890.767    102824.406    209381.165     67517.693    200256.694</span></span>
-<span><span class="co">#&gt; 3    1.98    112810.762     66245.180    146623.690     47083.719    139250.821</span></span>
-<span><span class="co">#&gt; 4    2.02   8315494.479   6518031.801   8671833.018   5135730.184   8679495.213</span></span>
-<span><span class="co">#&gt; 5    2.04      5588.112      2835.595      6882.802      1988.072      4584.455</span></span>
-<span><span class="co">#&gt; 6    2.98     70741.800     36761.679     71959.565     29974.327     78883.528</span></span>
+<span><span class="co">#&gt; 1    0.00     53022.833     23456.563     20941.848     14903.714     63222.368</span></span>
+<span><span class="co">#&gt; 2    0.04     12058.283      5683.830     14155.755      4274.170     12110.012</span></span>
+<span><span class="co">#&gt; 3    1.00      5209.173      3512.233      4942.192      1756.098      6346.882</span></span>
+<span><span class="co">#&gt; 4    1.98      5971.194      3458.283      8176.808      2771.773      7712.713</span></span>
+<span><span class="co">#&gt; 5    2.02   7636291.255   6153071.046   7977403.589   4868105.031   7982139.691</span></span>
+<span><span class="co">#&gt; 6    2.04      5588.112      2835.595      6882.802      1988.072      4584.455</span></span>
 <span><span class="co">#&gt;   1405_Fish2_F3 1405_Fish3_F1 1405_Fish3_F2 1405_Fish3_F3</span></span>
-<span><span class="co">#&gt; 1     35190.011     73796.583    101046.212    105464.491</span></span>
-<span><span class="co">#&gt; 2     87815.305    184631.030    232005.956    239070.075</span></span>
-<span><span class="co">#&gt; 3     63606.694    127173.025    148943.105    149585.769</span></span>
-<span><span class="co">#&gt; 4   6196265.889   8057717.463   8798917.442   9524655.115</span></span>
-<span><span class="co">#&gt; 5      2931.107      4411.049      5688.054      5438.388</span></span>
-<span><span class="co">#&gt; 6     40546.116     62671.685     79751.686     82474.088</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     26320.581     65507.970     59418.194     44340.680</span></span>
+<span><span class="co">#&gt; 2      5375.740     10158.037     12830.564     14487.791</span></span>
+<span><span class="co">#&gt; 3      3539.207      4923.479      5443.136      7125.664</span></span>
+<span><span class="co">#&gt; 4      4512.221      5893.853      5002.987      5038.237</span></span>
+<span><span class="co">#&gt; 5   5841264.153   7414502.267   8077803.958   8736106.602</span></span>
+<span><span class="co">#&gt; 6      2931.107      4411.049      5688.054      5438.388</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="reactomics-analysis-for-ms-only-data">Reactomics analysis for MS only data<a class="anchor" aria-label="anchor" href="#reactomics-analysis-for-ms-only-data"></a>

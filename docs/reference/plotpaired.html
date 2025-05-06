@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -72,7 +72,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotpaired</span><span class="op">(</span><span class="va">list</span>, index <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plotpaired</span><span class="op">(</span><span class="va">list</span>, index <span class="op">=</span> <span class="cn">NULL</span>, digits <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -85,6 +85,10 @@
 
 <dt id="arg-index">index<a class="anchor" aria-label="anchor" href="#arg-index"></a></dt>
 <dd><p>index for PMD value</p></dd>
+
+
+<dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
+<dd><p>mass or mass to charge ratio accuracy for pmd, default 2</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -100,12 +104,14 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pmd</span> <span class="op">&lt;-</span> <span class="fu"><a href="getpaired.html">getpaired</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 369 paired masses found </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time clusters found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using ng = 15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique PMDs retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 719 isotopologue(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 492 multi-charger(s) related paired mass found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 409 isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 109 multiple charged isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 251 multiple charged peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 346 paired peaks found.</span>
 <span class="r-in"><span><span class="fu">plotpaired</span><span class="op">(</span><span class="va">pmd</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotpaired-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

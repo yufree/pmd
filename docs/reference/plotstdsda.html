@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -100,73 +100,30 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">re</span> <span class="op">&lt;-</span> <span class="fu"><a href="globalstd.html">globalstd</a></span><span class="op">(</span><span class="va">spmeinvivo</span>, sda<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 369 paired masses found </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time clusters found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using ng = 15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique PMDs retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 719 isotopologue(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 492 multi-charger(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired relationship without isotope 1 10 15 18</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 291 std mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> PMD frequency cutoff is 6 by PMD network analysis with largest network average distance 6.67 .</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 53 groups were found as high frequency PMD group.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 409 isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 109 multiple charged isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 251 multiple charged peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 346 paired peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired without isotope relationship 1 10 15 18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 292 standard masses identified.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> PMD frequency cutoff is 9 by PMD network analysis with largest network average distance 7.26 .</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 groups were found as high frequency PMD group.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 0 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1.98 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2.01 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2.02 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 6.97 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 11.96 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 12 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 13.98 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 14.02 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 14.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 15.99 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 16.03 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 19.04 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 28.03 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 30.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 31.99 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 33.02 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 37.02 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 42.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 48.04 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 48.98 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 49.02 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 54.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 56.06 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 56.1 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 58.04 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 58.08 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 58.11 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 63.96 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 66.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 68.06 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 70.04 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 70.08 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 74.02 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 80.03 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 82.08 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 88.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 91.1 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 93.12 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 94.1 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 96.09 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 101.05 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 108.13 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 110.11 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 112.16 was found as high frequency PMD. </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 116.08 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 122.15 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 124.16 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 126.14 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 144.18 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 148.04 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 150.2 was found as high frequency PMD. </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 173.18 was found as high frequency PMD. </span>
 <span class="r-in"><span><span class="fu">plotstdsda</span><span class="op">(</span><span class="va">re</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plotstdsda-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

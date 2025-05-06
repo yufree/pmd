@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
       </span>
     </div>
 
@@ -80,7 +80,6 @@
 <span>  digits <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>  accuracy <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  freqcutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  mdrange <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sda <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -117,10 +116,6 @@
 <dd><p>pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.</p></dd>
 
 
-<dt id="arg-mdrange">mdrange<a class="anchor" aria-label="anchor" href="#arg-mdrange"></a></dt>
-<dd><p>mass defect range to ignore. Default NULL and c(0.25,0.9) to retain the possible reaction related paired mass</p></dd>
-
-
 <dt id="arg-sda">sda<a class="anchor" aria-label="anchor" href="#arg-sda"></a></dt>
 <dd><p>logical, option to perform structure/reaction directed analysis, default FALSE.</p></dd>
 
@@ -138,18 +133,20 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">re</span> <span class="op">&lt;-</span> <span class="fu">globalstd</span><span class="op">(</span><span class="va">spmeinvivo</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time cluster found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 369 paired masses found </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique within RT clusters high frequency PMD(s) used for further investigation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 75 retention time clusters found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Using ng = 15</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 5 unique PMDs retained.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The unique within RT clusters high frequency PMD(s) is(are)  28.03 21.98 44.03 17.03 18.01.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 719 isotopologue(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 492 multi-charger(s) related paired mass found.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 retention group(s) have single peaks. 14 23 32 33 54 55 56 75</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 41 42 49 68 72 73</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with multiple peaks with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired relationship without isotope 1 10 15 18</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with paired relationship and isotope 3 6 12 13 16 17 19 20 21 24 25 27 28 29 30 31 34 35 36 37 38 39 40 43 44 45 46 47 48 50 51 53 57 58 59 60 61 63 65 67 69 71 74</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 291 std mass found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 409 isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 109 multiple charged isotope peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 251 multiple charged peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 346 paired peaks found.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 8 group(s) have single peaks 14 23 32 33 54 55 56 75</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 11 group(s) with multiple peaks while no isotope/paired relationship 4 5 7 8 11 ... 42 49 68 72 73</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 9 group(s) with isotope without paired relationship 2 9 22 26 52 62 64 66 70</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 4 group(s) with paired without isotope relationship 1 10 15 18</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 43 group(s) with both paired and isotope relationship 3 6 12 13 16 ... 65 67 69 71 74</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 292 standard masses identified.</span>
 </code></pre></div>
     </div>
   </div>
