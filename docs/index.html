@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pmd</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.0</span>
       </span>
     </div>
 
@@ -86,6 +86,7 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
+
 <div class="section level1">
 <div class="page-header"><h1 id="pmd-paired-mass-distance-analysis-for-gclc-ms-based-non-targeted-analysis-and-reactomics-analysis">pmd: Paired Mass Distance Analysis for GC/LC-MS Based Non-Targeted Analysis and Reactomics Analysis<a class="anchor" aria-label="anchor" href="#pmd-paired-mass-distance-analysis-for-gclc-ms-based-non-targeted-analysis-and-reactomics-analysis"></a>
 </h1></div>
@@ -117,14 +118,33 @@
 <p><code>{r} result &lt;- globalstd(spmeinvivo)</code></p>
 <p>To use the shiny application within the package, use the following code:</p>
 <p><code>{r} runPMD()</code></p>
-<p>To check the pmd reaction database:</p>
-<p><code>{r} # all reaction data("omics") View(omics) # kegg reaction data("keggrall") View(keggrall) # literature reaction for mass spectrometry data("sda") View(sda)</code></p>
+<p>To find homologous series (e.g., repeated addition of CH2) or specific reaction sequences:</p>
+<p>```{r} # Find homologous series of CH2 (14.0157) with at least 3 nodes homolog_series &lt;- gethomolog(spmeinvivo, unit = 14.0157, min_len = 3)</p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="find-specific-sequences-eg-glycosylation-followed-by-dehydration">Find specific sequences (e.g., glycosylation followed by dehydration)<a class="anchor" aria-label="anchor" href="#find-specific-sequences-eg-glycosylation-followed-by-dehydration"></a>
+</h1>
+<p>seqs &lt;- getchainseq(spmeinvivo, c(162.0528, -18.0106))</p>
+<pre><code>
+To check the pmd reaction database:
+
+```{r}
+# all reaction
+data("omics")
+View(omics)
+# kegg reaction
+data("keggrall")
+View(keggrall)
+# literature reaction for mass spectrometry
+data("sda")
+View(sda)</code></pre>
 <p>To check the HMDB pmd database:</p>
 <p><code>{r} data("hmdb") View(hmdb)</code></p>
 <p>To cite related papers:</p>
 <p><code>{r} citation('pmd')</code></p>
 </div>
-</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -172,7 +192,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
