@@ -683,7 +683,13 @@ getpseudospectrum <- function(list,
         resultiso <- list$iso
         resultmultiiso <- list$multiiso
         resultmulti <- list$multi
-        resultdf <- rbind.data.frame(resultdiff,resultiso,resultmultiiso,resultmulti)
+        common_cols <- c("ms1", "ms2", "diff", "rt", "rtg")
+        resultdf <- rbind.data.frame(
+                resultdiff[, common_cols, drop = FALSE],
+                resultiso[, common_cols, drop = FALSE],
+                resultmultiiso[, common_cols, drop = FALSE],
+                resultmulti[, common_cols, drop = FALSE]
+        )
         mz <- round(list$mz,accuracy)
         data <- list$data
         # enable corcutoff filtering
