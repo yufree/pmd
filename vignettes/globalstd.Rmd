@@ -165,7 +165,7 @@ peak <- corcluster$pseudo[corcluster$pseudo$sid == '37@1',]
 plot(peak$ins~peak$mz,type = 'h',xlab = 'm/z',ylab = 'intensity',main = 'pseudo spectra for correlation cluster')
 ```
 
-Then we could compare the compare reduced result using PCA similarity factor. A good peak selection algorithm could show a high PCA similarity factor compared with original data set while retain the minimized number of peaks.
+Then we could compare the reduced result using multiple similarity factors. A good peak selection algorithm should maintain the structural consistency (e.g. Normalized Spectral Entropy, RV Coefficient, and Mantel test). We supplied `getsim` function to output PCASF, RV, Mantel correlation, and Spectral Entropy ratio between the original and reduced datasets.
 
 ```{r corcomp}
 par(mfrow = c(2,3),mar = c(4,4,2,1)+0.1)
@@ -175,14 +175,25 @@ plotpca(std$data[stdcluster2$stdmassindex2,],lv = as.numeric(as.factor(std$group
 plotpca(std$data[corcluster$stdmassindex,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(corcluster$stdmassindex),"peaks without correlationship"))
 plotpca(std$data[corcluster$stdmassindex2,],lv = as.numeric(as.factor(std$group$sample_group)),main = paste(sum(corcluster$stdmassindex2),"base peaks without correlationship"))
 plotpca(std$data,lv = as.numeric(as.factor(std$group$sample_group)),main = paste(nrow(std$data),"all peaks"))
-pcasf(std$data, std$data[std$stdmassindex,])
-pcasf(std$data, std$data[stdcluster$stdmassindex2,])
-pcasf(std$data, std$data[stdcluster2$stdmassindex2,])
-pcasf(std$data, std$data[corcluster$stdmassindex,])
-pcasf(std$data, std$data[corcluster$stdmassindex2,])
+
+# Evaluate multiple algorithms against original data
+getsim(std$data, std$data[std$stdmassindex,])
+getsim(std$data, std$data[stdcluster$stdmassindex2,])
+getsim(std$data, std$data[corcluster$stdmassindex2,])
 ```
 
-In this case, four peaks selection algorithms are fine to stand for the original peaks with PCA similarity score larger than 0.9.
+In this case, the selected peaks algorithms correctly retain the biological variance and structural distances shown by high RV coefficient and Entropy Ratio.
+
+### Benchmark different datasets by Normalized Spectral Entropy (Sample Consistency Metric)
+
+If you need to evaluate the internal dimensionality and information purity of non-aligned peak tables (e.g., outputs spanning different platforms or algorithms without same variables), use `getnse()` to measure the Normalized Spectral Entropy. 
+
+```{r nse}
+# Calculate SCM/NSE for the full data and the reduced standard masses
+getnse(std$data)
+getnse(std$data[std$stdmassindex,])
+```
+Higher values indicate greater intrinsic independence and lower redundancy clustering (noise padding) within the sample dimensions.
 
 ## Structure/Reaction directed analysis
 

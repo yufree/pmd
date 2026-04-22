@@ -1,3 +1,9 @@
+# pmd 0.3.0
+
+- Refactored underlying PMD generation, correlation calculations, and clustering into optimized, vectorized methods using `data.table` yielding significant performance gains.
+- Introduced `getchainseq()` to parse structural/reaction-directed MS sequences combining both defined PMDs and wildcards/regex-style quantifiers.
+- Introduced `gethomolog()` specifically designed to extract homologous series in mass spectrometry data based on repeating PMD units.
+
 # pmd 0.2.9
 
 - rewrite globalstd algorithm to include multiple charged ions

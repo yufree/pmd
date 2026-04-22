@@ -1,8 +1,11 @@
 #' Shiny application for PMD analysis
 #' @export
 runPMD <- function() {
-    file <- system.file("shinyapp", "PMD.Rmd",
-        package = "pmd")
+    if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+        stop("Package 'rmarkdown' is required. Install with install.packages('rmarkdown').",
+             call. = FALSE)
+    }
+    file <- system.file("shinyapp", "PMD.Rmd", package = "pmd")
     if (file == "") {
         stop("Could not find directory. Try re-installing `pmd`.",
             call. = FALSE)
@@ -12,8 +15,11 @@ runPMD <- function() {
 #' Shiny application for PMD network analysis
 #' @export
 runPMDnet <- function() {
-    file <- system.file("shinyapp", "pmdnet.Rmd",
-                        package = "pmd")
+    if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+        stop("Package 'rmarkdown' is required. Install with install.packages('rmarkdown').",
+             call. = FALSE)
+    }
+    file <- system.file("shinyapp", "pmdnet.Rmd", package = "pmd")
     if (file == "") {
         stop("Could not find directory. Try re-installing `pmd`.",
              call. = FALSE)

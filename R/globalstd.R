@@ -1,3 +1,96 @@
+# Internal: validate a peak-list input used across the package.
+# `x` is expected to contain `mz`, `rt`, and optionally a `data` matrix; all
+# vector lengths / row counts must align. `required` adds field names that
+# must be present; `need_data` forces a non-NULL `data` slot. `caller` is used
+# in error messages.
+.check_mzrt <- function(x, caller,
+                        required = NULL, need_data = FALSE) {
+        if (!is.list(x))
+                stop(caller, ": `list` must be a list.", call. = FALSE)
+        missing <- setdiff(c("mz", "rt", required), names(x))
+        if (length(missing))
+                stop(caller, ": missing required field(s): ",
+                     paste(missing, collapse = ", "), ".", call. = FALSE)
+        n <- length(x$mz)
+        if (n == 0L)
+                stop(caller, ": `mz` has length 0.", call. = FALSE)
+        if (length(x$rt) != n)
+                stop(caller, ": `rt` length (", length(x$rt),
+                     ") does not match `mz` length (", n, ").",
+                     call. = FALSE)
+        if (need_data && is.null(x$data))
+                stop(caller, ": field `data` is required.", call. = FALSE)
+        if (!is.null(x$data)) {
+                d <- x$data
+                if (is.null(dim(d)) || length(dim(d)) != 2L)
+                        stop(caller, ": `data` must be a matrix or data.frame.",
+                             call. = FALSE)
+                if (nrow(d) != n)
+                        stop(caller, ": `data` has ", nrow(d),
+                             " rows but `mz` has length ", n, ".",
+                             call. = FALSE)
+        }
+        invisible(TRUE)
+}
+
+# 1-D complete-linkage clustering equivalent to
+# `cutree(hclust(dist(rt,'manhattan')), h = cutoff)` but O(n log n)-ish
+# via a linked list of adjacent blocks + single which.min sweep.
+# In sorted order, the minimum inter-cluster distance is always
+# between adjacent blocks, so only adjacent gaps need tracking.
+# Cluster IDs are relabelled by first-appearance order to match
+# `cutree`'s convention.
+.rt_clusters <- function(rt, cutoff) {
+        n <- length(rt)
+        if (n == 0L) return(integer(0))
+        if (n == 1L) return(1L)
+        ord  <- order(rt)
+        rt_s <- rt[ord]
+        # lp[i]/rp[i]: sorted-order left/right endpoints of block i.
+        # lnb/rnb: doubly-linked list of currently active blocks.
+        # md[i]: complete-linkage distance from block i to its right
+        # neighbour, or Inf if inactive / no right neighbour.
+        lp  <- seq_len(n)
+        rp  <- seq_len(n)
+        lnb <- c(NA_integer_, seq_len(n - 1L))
+        rnb <- c(seq.int(2L, n), NA_integer_)
+        md  <- c(rt_s[-1L] - rt_s[-n], Inf)
+        repeat {
+                i <- which.min(md)
+                if (md[i] > cutoff) break
+                j <- rnb[i]
+                # Absorb j into i (extend right edge).
+                rp[i]  <- rp[j]
+                r_j    <- rnb[j]
+                rnb[i] <- r_j
+                md[j]  <- Inf
+                if (!is.na(r_j)) {
+                        lnb[r_j] <- i
+                        md[i] <- rt_s[rp[r_j]] - rt_s[lp[i]]
+                } else {
+                        md[i] <- Inf
+                }
+                # i's right edge moved, so left neighbour's md is stale.
+                L <- lnb[i]
+                if (!is.na(L))
+                        md[L] <- rt_s[rp[i]] - rt_s[lp[L]]
+        }
+        # Walk the active linked list from the leftmost block and
+        # number blocks 1,2,... in sorted order.
+        lab_sorted <- integer(n)
+        leader <- 1L
+        k <- 0L
+        while (!is.na(leader)) {
+                k <- k + 1L
+                lab_sorted[lp[leader]:rp[leader]] <- k
+                leader <- rnb[leader]
+        }
+        lab_orig <- integer(n)
+        lab_orig[ord] <- lab_sorted
+        # Relabel by first appearance in the original order (cutree convention).
+        match(lab_orig, unique(lab_orig))
+}
+
 #' Filter ions/peaks based on retention time hierarchical clustering, paired mass distances(PMD) and PMD frequency analysis.
 #' @param list a peaks list with mass to charge, retention time and intensity data
 #' @param rtcutoff cutoff of the distances in retention time hierarchical clustering analysis, default 10
@@ -13,13 +106,7 @@
 #' @export
 getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
                       accuracy = 4, corcutoff = NULL) {
-        # Calculate retention time clusters
-        rt_clusters <- function(rt, cutoff) {
-                dis <- stats::dist(rt, method = "manhattan")
-                fit <- stats::hclust(dis)
-                stats::cutree(fit, h = cutoff)
-        }
-
+        .check_mzrt(list, "getpaired")
         # Core PMD analysis function
         analyze_pmd <- function(cluster_data, rt_group, didx, corcutoff) {
                 # Handle empty clusters
@@ -42,22 +129,31 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
                                               rtg = rt_group)
                         return(results)
                 } else {
-                        # Calculate pairwise differences
-                        mz_pairs <- t(utils::combn(cluster_data$mz, 2))
-                        diffs <- abs(mz_pairs[, 2] - mz_pairs[, 1])
+                        # Column-major lower-triangular pair indices (i > j).
+                        # Same pair set/order as `t(combn(mz, 2))` viewed as
+                        # unordered pairs (so cor values at the same row index
+                        # line up with ms1/ms2 after pmin/pmax), but avoids
+                        # `combn`'s recursion overhead.
+                        n_cl  <- nrow(cluster_data)
+                        j_idx <- rep.int(seq_len(n_cl - 1L), (n_cl - 1L):1L)
+                        i_idx <- sequence.default((n_cl - 1L):1L,
+                                                  from = seq.int(2L, n_cl))
+                        a <- cluster_data$mz[i_idx]
+                        b <- cluster_data$mz[j_idx]
 
-                        # Create base dataframe
                         df <- data.frame(
-                                ms1 = pmin(mz_pairs[, 1], mz_pairs[, 2]),
-                                ms2 = pmax(mz_pairs[, 1], mz_pairs[, 2]),
-                                diff = diffs,
-                                rt = median_rt,
-                                rtg = rt_group
+                                ms1  = pmin(a, b),
+                                ms2  = pmax(a, b),
+                                diff = abs(a - b),
+                                rt   = median_rt,
+                                rtg  = rt_group
                         )
-                        # Calculate correlations if intensity data exists
-                        if (!is.null(data)) {
+                        # Only compute correlations when they will actually be
+                        # consumed downstream (i.e. when corcutoff is set).
+                        # Otherwise the full cor matrix is wasted work.
+                        if (didx) {
                                 cormat <- stats::cor(t(cluster_data[, -(1:2)]))
-                                df$cor <- cormat[lower.tri(cormat)]
+                                df$cor <- cormat[cbind(i_idx, j_idx)]
                         }
                         # Identify isotopes
                         iso_mask <- find_isotopes(df, digits = digits,didx=didx, corcutoff=corcutoff)
@@ -140,7 +236,7 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
         mz <- round(list$mz,accuracy)
         rt <- list$rt
         data <- list$data
-        rt_cluster <- rt_clusters(list$rt, rtcutoff)
+        rt_cluster <- .rt_clusters(list$rt, rtcutoff)
         n_clusters <- length(unique(rt_cluster))
         message(n_clusters, " retention time clusters found.")
 
@@ -154,7 +250,7 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
                 processed_data <- cbind(processed_data, as.data.frame(data))
         }
         # enable corcutoff filtering
-        didx <- ifelse(!is.null(data)&!is.null(corcutoff),T,F)
+        didx <- !is.null(data) && !is.null(corcutoff)
 
         # Split data and process clusters
         split_list <- split(processed_data, rt_cluster)
@@ -480,16 +576,21 @@ getpseudospectrum <- function(list,
         process_groupA <- function(rtg,didx) {
                 if(didx){
                         # Pairwise ions
-                        mz_pairs <- t(utils::combn(mz[list$rtcluster == rtg], 2))
+                        mzs <- mz[list$rtcluster == rtg]
+                        n_c <- length(mzs)
+                        j_c <- rep.int(seq_len(n_c - 1L), (n_c - 1L):1L)
+                        i_c <- sequence.default((n_c - 1L):1L, from = seq.int(2L, n_c))
+                        a <- mzs[i_c]
+                        b <- mzs[j_c]
                         # Create base dataframe
                         df <- data.frame(
-                                ms1 = pmin(mz_pairs[, 1], mz_pairs[, 2]),
-                                ms2 = pmax(mz_pairs[, 1], mz_pairs[, 2]),
+                                ms1 = pmin(a, b),
+                                ms2 = pmax(a, b),
                                 rtg = rtg
                         )
-                        data <- list$data[list$rtcluster == rtg,]
+                        data <- list$data[list$rtcluster == rtg, , drop = FALSE]
                         cormat <- stats::cor(t(data))
-                        df$cor <- cormat[lower.tri(cormat)]
+                        df$cor <- cormat[cbind(i_c, j_c)]
                         dfcor <- df[df$cor>corcutoff,]
                         if(nrow(dfcor)>0){
                                 edges <- dfcor[,c("ms1", "ms2")]
@@ -567,18 +668,15 @@ getpseudospectrum <- function(list,
         mz <- round(list$mz,accuracy)
         data <- list$data
         # enable corcutoff filtering
-        didx <- ifelse(!is.null(data)&!is.null(corcutoff),T,F)
+        didx <- !is.null(data) && !is.null(corcutoff)
         # Generate spectrum
         if (is.null(list$data)) {
                 message('You need intensity data to use corcutoff and export pseudospectra')
                 msdata <- NULL
         } else{
-                data <- list$data
-                if (is.matrix(data)|is.data.frame(data)) {
-                        msdata <- apply(data, 1, sum)
-                } else {
-                        msdata <-sum(data)
-                }
+                msdata <- if (is.matrix(list$data) || is.data.frame(list$data))
+                        rowSums(list$data)
+                else sum(list$data)
         }
         pseudosolo <- cbind.data.frame(mz=mz[list$soloindex],ins=msdata[list$soloindex],rtg=list$rtcluster[list$soloindex],sid=paste0(list$rtcluster[list$soloindex],'@1'))
 
@@ -586,14 +684,8 @@ getpseudospectrum <- function(list,
         rt_groups <- unique(list$rtcluster[!list$soloindex])
         A = rt_groups[!rt_groups %in% c(unique(resultdiff$rtg), unique(resultiso$rtg), list$solo$rtg)]
         B = rt_groups[rt_groups %in% c(unique(resultdiff$rtg), unique(resultiso$rtg))]
-        resultA <- list()
-        for(i in 1:length(A)){
-                resultA[[i]] <- process_groupA(A[i],didx)
-        }
-        resultB <- list()
-        for(i in 1:length(B)){
-                resultB[[i]] <- process_groupB(B[i],didx)
-        }
+        resultA <- lapply(A, process_groupA, didx = didx)
+        resultB <- lapply(B, process_groupB, didx = didx)
         resultstdA <- do.call(rbind, resultA)
         resultstdB <- do.call(rbind, resultB)
 
@@ -637,33 +729,33 @@ getcorpseudospectrum <- function(list,
         mz <- round(list$mz,accuracy)
         rt <- list$rt
 
-        dis <- stats::dist(list$rt, method = "manhattan")
-        fit <- stats::hclust(dis)
-        list$rtcluster <- stats::cutree(fit, h = rtcutoff)
+        list$rtcluster <- .rt_clusters(list$rt, rtcutoff)
         n <- length(unique(list$rtcluster))
         message(paste(n, "retention time cluster found."))
         data <- list$data
         pseudo <- mzsall <- mzall <-list()
         for (i in seq_along(unique(list$rtcluster))) {
                 # find the mass within RT
-                if(sum(list$rtcluster==i)>1){
-                        data <- list$data[list$rtcluster == i,]
-                        if (is.matrix(data)) {
-                                msdata <- apply(data, 1, sum)
-                        } else {
-                                msdata <- sum(data)
-                        }
+                idx <- list$rtcluster == i
+                if(sum(idx)>1){
+                        data <- list$data[idx, , drop = FALSE]
+                        msdata <- rowSums(data)
                         # Pairwise ions
-                        mz_pairs <- t(utils::combn(mz[list$rtcluster == i], 2))
+                        mzs <- mz[list$rtcluster == i]
+                        n_c <- length(mzs)
+                        j_c <- rep.int(seq_len(n_c - 1L), (n_c - 1L):1L)
+                        i_c <- sequence.default((n_c - 1L):1L, from = seq.int(2L, n_c))
+                        a <- mzs[i_c]
+                        b <- mzs[j_c]
                         # Create base dataframe
                         df <- data.frame(
-                                ms1 = pmin(mz_pairs[, 1], mz_pairs[, 2]),
-                                ms2 = pmax(mz_pairs[, 1], mz_pairs[, 2]),
+                                ms1 = pmin(a, b),
+                                ms2 = pmax(a, b),
                                 rtg = i
                         )
 
                         cormat <- stats::cor(t(data))
-                        df$cor <- cormat[lower.tri(cormat)]
+                        df$cor <- cormat[cbind(i_c, j_c)]
                         dfcor <- df[df$cor>corcutoff,]
                         if(nrow(dfcor)>0){
                                 edges <- dfcor[,c("ms1", "ms2")]
@@ -692,13 +784,8 @@ getcorpseudospectrum <- function(list,
                                 mzall[[i]] <- sapply(split_df, process_group2)
                         }
                 }else{
-                        data <- list$data[list$rtcluster == i,]
-                        if (is.matrix(data)) {
-                                msdata <- apply(data, 1, sum)
-                        } else {
-                                msdata <- sum(data)
-                        }
-                        mzt <- mz[list$rtcluster == i]
+                        msdata <- sum(list$data[idx, ])
+                        mzt <- mz[idx]
                         mzall[[i]] <- mzsall[[i]] <- paste0(mzt,'@',i)
                         pseudo[[i]] <- cbind.data.frame(mz=mzt, ins=msdata, rtg=i, sid=paste0(i,'@1'))
                 }
@@ -748,4 +835,103 @@ pcasf <- function(x, y, dim = NULL) {
         total_var <- eg.x.values %*% eg.y.values
 
         return (c(pcasf = sum((eg.x.values %o% eg.y.values) * ((t(eg.x.vectors) %*% (eg.y.vectors))**2))/total_var))
+}
+
+#' Evaluate the similarity of two matrices or dataframes
+#' 
+#' @param x Matrix or dataframe with samples in column and features in row (Original data)
+#' @param y Matrix or dataframe with samples in column and features in row (Reduced data)
+#' @param dim number of retained dimensions for PCASF. Defaults to all.
+#' @return A numeric vector containing PCASF, RV coefficient, and Mantel test r (Pearson and Spearman).
+#' @export
+#' @examples
+#' data(spmeinvivo)
+#' re <- globalstd(spmeinvivo)
+#' x <- spmeinvivo$data
+#' y <- spmeinvivo$data[re$stdmassindex, ]
+#' getsim(x, y)
+getsim <- function(x, y, dim = NULL) {
+        # Transpose so samples are rows, features are columns
+        tx <- t(x)
+        ty <- t(y)
+        
+        # 1. PCASF
+        # PCASF requires the exact same features to compare eigenvector angles
+        if (ncol(tx) == ncol(ty)) {
+                # Handle differing dimensions safely for eigen
+                cov.x <- stats::cov(tx)
+                cov.y <- stats::cov(ty)
+                
+                # Safe dimension for eigenvectors
+                min_dim <- min(ncol(cov.x), ncol(cov.y))
+                dim <- if (is.null(dim)) min_dim else min(dim, min_dim)
+                
+                eg.x <- eigen(cov.x)
+                eg.y <- eigen(cov.y)
+                eg.x.values <- eg.x$values[1:dim]
+                eg.y.values <- eg.y$values[1:dim]
+                eg.x.vectors <- eg.x$vectors[, 1:dim, drop = FALSE]
+                eg.y.vectors <- eg.y$vectors[, 1:dim, drop = FALSE]
+                
+                total_var <- eg.x.values %*% eg.y.values
+                ps <- sum((eg.x.values %o% eg.y.values) * ((t(eg.x.vectors) %*% eg.y.vectors)**2)) / total_var
+        } else {
+                ps <- NA_real_
+        }
+        
+        # 2. RV Coefficient
+        # scale centers columns (by default center=TRUE, scale=FALSE)
+        S1 <- tcrossprod(scale(tx, scale = FALSE))
+        S2 <- tcrossprod(scale(ty, scale = FALSE))
+        tr <- function(m) sum(diag(m))
+        rv <- tr(S1 %*% S2) / sqrt(tr(S1 %*% S1) * tr(S2 %*% S2))
+        
+        # 3. Mantel Test
+        dist_x <- as.vector(stats::dist(tx))
+        dist_y <- as.vector(stats::dist(ty))
+        mantel_p <- stats::cor(dist_x, dist_y, method = "pearson")
+        mantel_s <- stats::cor(dist_x, dist_y, method = "spearman")
+        
+        # 4. Spectral Entropy (Von Neumann entropy of sample-sample correlation)
+        spectral_entropy <- function(mat) {
+                c_mat <- stats::cor(mat)
+                eig <- eigen(c_mat, symmetric = TRUE, only.values = TRUE)$values
+                eig <- eig[eig > 1e-10]
+                p <- eig / sum(eig)
+                se <- -sum(p * log(p))
+                nse <- if(length(eig) > 1) se / log(length(eig)) else 0
+                return(c(se = se, nse = nse))
+        }
+        se_x <- spectral_entropy(x)
+        se_y <- spectral_entropy(y)
+        se_ratio <- se_y["se"] / se_x["se"]
+        
+        c(PCASF = as.numeric(ps), 
+          RV = as.numeric(rv), 
+          Mantel_Pearson = as.numeric(mantel_p), 
+          Mantel_Spearman = as.numeric(mantel_s),
+          Spectral_Entropy_x = as.numeric(se_x["se"]),
+          Spectral_Entropy_y = as.numeric(se_y["se"]),
+          Entropy_Ratio = as.numeric(se_ratio),
+          NSE_x = as.numeric(se_x["nse"]),
+          NSE_y = as.numeric(se_y["nse"]))
+}
+
+#' Calculate Normalized Spectral Entropy (NSE)
+#' 
+#' @param x Matrix or dataframe with samples in column and features in row
+#' @return Normalized Spectral Entropy (NSE) between 0 and 1
+#' @export
+#' @examples
+#' data(spmeinvivo)
+#' getnse(spmeinvivo$data)
+getnse <- function(x) {
+        c_mat <- stats::cor(x)
+        eig <- eigen(c_mat, symmetric = TRUE, only.values = TRUE)$values
+        eig <- eig[eig > 1e-10]
+        p <- eig / sum(eig)
+        se <- -sum(p * log(p))
+        
+        if (length(eig) <= 1) return(0)
+        return(se / log(length(eig)))
 }

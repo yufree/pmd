@@ -170,14 +170,11 @@ plotstd <- function(list) {
 #' @export
 #'
 plotstdrt <- function(list, rtcluster, ...) {
-        data <- list$data[list$rtcluster == rtcluster,]
-        if (length(data) > ncol(list$data)) {
-                msdata <- apply(data, 1, mean)
-        } else {
-                msdata <- mean(data)
-        }
-        mz <- list$mz[list$rtcluster == rtcluster]
-        rt <- stats::median(list$rt[list$rtcluster == rtcluster])
+        idx <- list$rtcluster == rtcluster
+        data <- list$data[idx, , drop = FALSE]
+        msdata <- if (nrow(data) > 1L) rowMeans(data) else mean(data)
+        mz <- list$mz[idx]
+        rt <- stats::median(list$rt[idx])
         graphics::plot(
                 mz,
                 msdata,

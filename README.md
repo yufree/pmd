@@ -63,6 +63,16 @@ To use the shiny application within the package, use the following code:
 runPMD()
 ```
 
+To find homologous series (e.g., repeated addition of CH2) or specific reaction sequences:
+
+```{r}
+# Find homologous series of CH2 (14.0157) with at least 3 nodes
+homolog_series <- gethomolog(spmeinvivo, unit = 14.0157, min_len = 3)
+
+# Find specific sequences (e.g., glycosylation followed by dehydration)
+seqs <- getchainseq(spmeinvivo, c(162.0528, -18.0106))
+```
+
 To check the pmd reaction database:
 
 ```{r}

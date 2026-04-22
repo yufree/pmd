@@ -12,14 +12,13 @@
 #' table(index)
 #' @export
 gettarget <- function(rt, drt = 10, n = 6) {
-        dis <- stats::dist(rt, method = "manhattan")
-        fit <- stats::hclust(dis)
-        inji <- rtcluster <- stats::cutree(fit, h = drt)
+        rtcluster <- .rt_clusters(rt, drt)
+        inji <- rtcluster
         maxd <- max(table(rtcluster))
         m <- length(unique(rtcluster))
         inj <- ceiling(maxd / n)
         message(paste('You need', inj, 'injections!'))
-        for (i in c(1:m)) {
+        for (i in seq_len(m)) {
                 z <- 1:inj
                 x <- rt[rtcluster == i]
                 while (length(x) > inj & length(x) > n) {
@@ -44,22 +43,48 @@ gettarget <- function(rt, drt = 10, n = 6) {
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @return dataframe with filtered positive and negative peak list
 #' @export
-getposneg <- function(pos,neg, pmd = 2.02, digits = 2){
-        df <- NULL
-        x <- rep(NA,length(pos$mz))
-        for(i in seq_along(pos$mz)){
-                if(sum(round((pos$mz[i]-neg$mz),digits) %in% pmd) != 0){
-                        index <- round((pos$mz[i]-neg$mz),digits) %in% pmd
-                        if(sum(index)>1){
-                                cor <- apply(neg$data[index,],1,function(x) suppressWarnings(cor(as.numeric(x),as.numeric(pos$data[i,]))))
-                        }else{
-                                cor <- suppressWarnings(cor(as.numeric(pos$data[i,]),as.numeric(neg$data[index,])))
-                        }
+getposneg <- function(pos, neg, pmd = 2.02, digits = 2) {
+        np <- length(pos$mz)
+        nn <- length(neg$mz)
+        if (np == 0L || nn == 0L) return(NULL)
 
-                        t <- cbind.data.frame(pos=pos$mz[i],rt = pos$rt[i],neg=neg$mz[index],rt=neg$rt[index],diffmz=pos$mz[i]-neg$mz[index],diffrt=pos$rt[i]-neg$rt[index],cor=cor)
-                        df <- rbind.data.frame(df,t)
-                }
+        # All pairwise m/z differences, rounded; find pairs matching any pmd.
+        d  <- outer(pos$mz, neg$mz, `-`)
+        rd <- round(d, digits)
+        hits <- which(rd %in% pmd)                       # linear indices
+        if (length(hits) == 0L) return(NULL)
+
+        ip <- ((hits - 1L) %% np) + 1L                   # pos row index
+        in_ <- ((hits - 1L) %/% np) + 1L                 # neg row index
+
+        # Row-wise correlation between pos$data[ip,] and neg$data[in_,] via
+        # z-score trick: cor = (1/(k-1)) * sum(zA * zB).
+        zscore <- function(M) {
+                M  <- as.matrix(M)
+                mu <- rowMeans(M)
+                sdv <- sqrt(rowSums((M - mu)^2) / pmax(ncol(M) - 1L, 1L))
+                sdv[sdv == 0] <- NA_real_                # guard constant rows
+                (M - mu) / sdv
         }
-        return(df)
+        Zp <- suppressWarnings(zscore(pos$data))
+        Zn <- suppressWarnings(zscore(neg$data))
+        k  <- ncol(Zp)
+        if (ncol(Zn) != k)
+                stop("getposneg: pos$data and neg$data must have the same number of samples.",
+                     call. = FALSE)
+        cor_vec <- rowSums(Zp[ip, , drop = FALSE] *
+                                   Zn[in_, , drop = FALSE]) / max(k - 1L, 1L)
+
+        data.frame(
+                pos    = pos$mz[ip],
+                rt     = pos$rt[ip],
+                neg    = neg$mz[in_],
+                rt.1   = neg$rt[in_],
+                diffmz = d[hits],
+                diffrt = pos$rt[ip] - neg$rt[in_],
+                cor    = cor_vec,
+                check.names = FALSE,
+                stringsAsFactors = FALSE
+        )
 }
 

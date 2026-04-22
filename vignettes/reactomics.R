@@ -1,41 +1,16 @@
----
-title: "Reactomics"
-author: "Miao Yu"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Reactomics}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-```
 
-```{r setup}
+
+## ----setup--------------------------------------------------------------------
 library(pmd)
 data("spmeinvivo")
-```
 
-PMD based Reactomics tried to evaluate untargeted HRMS profiles at reaction level. Reactomics is the extension of structure/reaction directed analysis for HRMS data and PMDs are treated as relationship unit for further discussion as compounds for metabolomics. Reaction level evaluation could be found in PMD network analysis, Source appointment and biomarker reaction discovery.
 
-## PMD network analysis
-
-In untargeted metabolites profiles from HRMS, two ions or peaks could be treated together as long as they could be connected by relationship. Regular untargeted workflow prefers intensity correlation between compounds. However, PMD could also be the chemical bridge between two compounds or ions. For example, oxidation would add oxygen atom to the parent compound and introduce a PMD 15.995 Da. Meanwhile, One peak or compound could be involved in multiple reactions. In this case, we could build PMD network for certain ion or compound.
-
-However, we need to the PMDs list to build such network for either one compound or one sample. One way is using the high frequency PMDs list from previous reported reactions and another way is using the high frequency PMDs within certain data set such as KEGG or HMDB. The former way try to focus on known reactions such as Phase I reactions for exogenous compounds while the latter way is useful to explorer new reactions or unknown reaction patterns within the data set. The latter way is actually the structure/reaction directed analysis.
-
-PMD network analysis is the analysis to check or explorer the PMD relationship among co-existed ions from one sample or multiple samples. The edge between ions in the network means certain PMD relationship are valid in this data set. Meanwhile, the intensity correlation between paired ions could also be considered to connect the vertices. Such network is build based on local recursive search for all possible connections. 
-
-PMD network analysis is useful to screen metabolites. Regular metabolites discovery method try to predict metabolites' MS2 spectra and then match the data. In PMD network analysis, metabolites are predicted by high frequency PMD or preferred PMD list within the MS1 data and such prediction could be extended to the metabolites of metabolites. Such PMD search will stop when no new metabolites could be connected to the network. Such searching method is much easier and quick to get the overview of metabolites networks. Identification could follow the discovery from MS1 data.
-
-If you have a specific compound and want to check the metabolites of certain PMD, you could use `getchain` to extract the network of that compounds
-
-```{r tarnet}
+## ----tarnet-------------------------------------------------------------------
 library(igraph)
 # check metabolites of C18H39NO
 # Use common PMDs for biological reactions
@@ -56,13 +31,9 @@ plot(net,vertex.label=round(as.numeric(V(net)$name),2),vertex.size =5,edge.width
 legend("topright",bty = "n",
        legend=unique(E(net)$diff2),
        fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-```
 
-Here only three PMD relationship could be found for C18H39NO. The duplicate edges between two vertices or self-loop edges mean isomer related PMD reactions. If we consider the correlation, the network would be trimmed. Since reaction might not always involve correlation, PMD network analysis could found more potential metabolites.
 
-If you want to see all the independent peaks' high frequency PMDs as networks for certain sample, the following code will help. This part will use the high frequency PMDs cutoff 12 from the data to build the networks for all the independent peaks.
-
-```{r net}
+## ----net----------------------------------------------------------------------
 std <- globalstd(spmeinvivo,sda = F)
 sda <- getsda(std,freqcutoff = 12)
 df <- sda$sda
@@ -72,21 +43,17 @@ plot(net,vertex.label=NA,vertex.size = 5,edge.width = 3,edge.color = pal[as.nume
 legend("topright",bty = "n",
        legend=unique(E(net)$diff2),
        fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-```
 
-Here we could find clusters of metabolites. We could detect such network community structure.
 
-```{r nwa}
+## ----nwa----------------------------------------------------------------------
 # network community structure detection
 ceb <- cluster_edge_betweenness(net,weights = abs(E(net)$cor), directed = F) 
 plot(ceb, net,vertex.label=NA,vertex.size = 5,edge.width = 3,) 
 # output membership
 head(cbind(ceb$membership,ceb$names))
-```
 
-Such network could also be build on correlation directed analysis which use correlation between paired peaks to build network.
 
-```{r cda}
+## ----cda----------------------------------------------------------------------
 cbp <- enviGCMS::getfilter(std,rowindex = std$stdmassindex)
 cda <- getcda(cbp)
 df <- cda$cda
@@ -94,79 +61,50 @@ df <- cda$cda
 df <- df[df$diffrt>120,]
 netc <- graph_from_data_frame(df,directed = F)
 plot(netc,vertex.label=NA,vertex.size = 5,edge.width = 3,main = 'Correlation network')
-```
 
-As shown above, correlation network without PMD might merge into one big network, which lose the details of chemical reactions.
 
-### Shiny application
-The PMD network for certain compound could be generated by run `runPMDnet()`.
-
-### Tracing specific reaction paths and homologous series
-
-For sophisticated reactomics, `getchainseq` allows you to trace complex specific reaction sequences using a pattern DSL (Domain-Specific Language), similar to regex for mass spec. The `gethomolog` function provides a convenient wrapper to extract homologous series (e.g., repeated CH2 / 14.01 units).
-
-```{r chainseq}
+## ----chainseq-----------------------------------------------------------------
 # Trace homologous series with 14.01 PMD (+CH2)
 homo <- gethomolog(spmeinvivo, unit = 14.01)
 
 # Trace complex sequences e.g. oxidation (15.99) followed by multiple repeated methylation (14.01+)
 sequence <- getchainseq(spmeinvivo, "15.99; 14.01+")
-```
 
-## Source appointment
 
-Peaks from samples could be from endogenous compounds or exogenous compounds. However, it's hard to tell for untargeted analysis. In terms of PMD, if one peak belongs to a high frequency PMD network, it means a relatively high activity. If such sample belongs to a biological specimen, it might be endogenous compound. If a peak show no PMD network with other peaks, the biological system might not have enzyme to make reaction happen. Exogenous compounds will show a lower degree since they are xenobiotics. Since most of the peaks will show a low degree, the median of the degree could be used as cutoff. Then we could make source appointment if the assumption is hold.
-
-```{r source}
+## ----source-------------------------------------------------------------------
 deg <- degree(net, mode = 'all')
 median(deg)
 endogenous <- names(deg)[deg>median(deg)]
 exogenous <- names(deg)[deg<=median(deg)]
-```
 
-In this case, we will have `r length(endogenous)` endogenous compounds while `r length(exogenous)` exogenous compounds. When you find a peak show differences between groups, you could check the degree to infer its sources.
 
-Another parameter would be the average network distances. Endogenous compounds could form a larger network with long average network distances while exogenous compounds will connected to network with small average network distances. Such parameter could be used to determine the source of unknown compound by checking the average network distances of the compounds PMD network.
-
-Be careful, one compound could be endogenous for one sample while exogenous for another sample. In this case, PMD network would give hints on the sources based on the context of the samples.
-
-## Biomarker reaction
-
-Biomarker always means biomarker compounds. However, if we could quantify the reaction relationship, we could use biomarker reaction to trace certain biological process. You could use `getreact` to extract the ion pairs shared the same PMD and intensity ratio RSD% lower than certain cutoff. Then the sum of the intensity of all PMD pairs' ions could be used to compare the reaction level changes among samples.
-
-```{r}
+## -----------------------------------------------------------------------------
 pmd <- getreact(spmeinvivo,pmd=15.99)
 # show the ions with the same PMD
 head(pmd$pmd)
 # show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
 head(pmd$pmddata)
-```
 
-If your data don't have retention time, reaction level change can also be checked.
 
-```{r}
+## -----------------------------------------------------------------------------
 spmeinvivo$rt <- NULL
 pmd <- getreact(spmeinvivo,pmd=15.99)
 # show the ions with the same PMD
 head(pmd$pmd)
 # show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
 head(pmd$pmddata)
-```
 
-Now we have two methods to compute the quantitative PMD responses and user should select method depending on research purposes. 'static' will only consider the stable mass pairs across samples and such reactions will be limited by the enzyme or other factors than substrates. 'dynamic' will consider the unstable paired masses by normalization the relatively unstable peak with stable peak between paired masses and such reactions will be limited by one or both peaks in the paired masses.
 
-```{r}
+## -----------------------------------------------------------------------------
 data("spmeinvivo")
 pmd <- getreact(spmeinvivo,pmd=15.99,method = 'dynamic')
 # show the ions with the same PMD
 head(pmd$pmd)
 # show the corresponding quantitative PMD data across samples, each row show the sum of intensity of paired masses qualified for stable mass pairs
 head(pmd$pmddata)
-```
 
-You can also output the quantitative results of all high frequency PMDs existing in the data.
 
-```{r}
+## -----------------------------------------------------------------------------
 data("spmeinvivo")
 # remove redundant peaks
 list <- globalstd(spmeinvivo,sda = T)
@@ -183,11 +121,9 @@ head(pmd$pmddata)
 upmd <- aggregate(pmd$pmddata, by=list(pmd$pmd$diff2),sum)
 # column for samples and row for unique PMD
 head(upmd)
-```
 
-You can also output the quantitative results of all PMDs existing in current KEGG database.
 
-```{r}
+## -----------------------------------------------------------------------------
 # output all existing PMD in KEGG
 keggpmd <- unique(round(keggrall$pmd,2))
 data("spmeinvivo")
@@ -204,13 +140,9 @@ head(pmd$pmddata)
 upmd <- aggregate(pmd$pmddata, by=list(pmd$pmd$diff2),sum)
 # column for samples and row for unique PMD
 head(upmd)
-```
 
-## Reactomics analysis for MS only data
 
-When retention time is not provided, m/z vector can still be used to check reaction level changes. You might use `getrda` to find the high frequency PMDs. 
-
-```{r}
+## -----------------------------------------------------------------------------
 data(spmeinvivo)
 # get the m/z
 mz <- spmeinvivo$mz
@@ -221,11 +153,9 @@ sda <- getrda(mz)
 colnames(sda)
 # save them as numeric vector
 hfpmd <- as.numeric(colnames(sda))
-```
 
-Then `getpmddf` function can be used to extract all the paired ions for certain PMD.
 
-```{r}
+## -----------------------------------------------------------------------------
 # get details for certain pmd
 pmddf <- getpmddf(mz,pmd=18.011,digits = 3)
 # add intensity for all the paired ions
@@ -237,11 +167,9 @@ pmdins <- mz1ins+mz2ins
 pmdinsall <- apply(pmdins,2,sum)
 # show the PMD intensity
 pmdinsall
-```
 
-You can also calculate the static or dynamic PMD intensity for m/z only data.
 
-```{r}
+## -----------------------------------------------------------------------------
 # get the ratio of larger m/z over smaller m/z
 ratio <- mz2ins/mz1ins
 # filter PMD based on RSD% across samples
@@ -275,11 +203,9 @@ pmdinsdynamic[idx,] <- 1/ratio[rsdidx,][idx,]
 pmdinsdynamicall <- apply(pmdinsdynamic,2,sum)
 # show the PMD dynamic intensity for each sample
 pmdinsdynamicall
-```
 
-You can also use `getpmddf` function extract all the paired ions for multiple PMDs. Then you could generate the network based on the output.
 
-```{r}
+## -----------------------------------------------------------------------------
 # get details for certain pmd
 pmddf <- getpmddf(mz,pmd=hfpmd,digits = 3)
 # viz by igraph package
@@ -290,11 +216,9 @@ plot(net,vertex.label=NA,vertex.size = 5,edge.width = 3,edge.color = pal[as.nume
 legend("topright",bty = "n",
        legend=unique(E(net)$diff2),
        fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-```
 
-If you prefer to get a pmd network for a specific mass. You can still use `getchain` function.
 
-```{r}
+## -----------------------------------------------------------------------------
 data(spmeinvivo)
 spmeinvivo$rt <- NULL
 chain <- getchain(spmeinvivo,diff = c(2.02,14.02,15.99,58.04,13.98),mass = 286.3101,digits = 2,corcutoff = 0)
@@ -305,14 +229,9 @@ plot(net,vertex.label=round(as.numeric(V(net)$name),2),vertex.size =5,edge.width
 legend("topright",bty = "n",
        legend=unique(E(net)$diff2),
        fill=unique(pal[as.numeric(as.factor(E(net)$diff2))]), border=NA,horiz = F)
-```
 
 
-## PMD Reaction Database
-
-To check the pmd reaction database:
-
-```{r}
+## -----------------------------------------------------------------------------
 # all reaction
 data("omics")
 head(omics)
@@ -322,18 +241,13 @@ head(keggrall)
 # literature reaction for mass spectrometry
 data("sda")
 head(sda)
-```
 
-To check the HMDB pmd database:
 
-```{r}
+## -----------------------------------------------------------------------------
 data("hmdb")
 head(hmdb)
-```
 
-To extract any compound KEGG compound's pmd network with known PMD:
 
-```{r}
+## -----------------------------------------------------------------------------
 plotcn('C6H12O6','Glucose',c(2.016,14.016,15.995))
-```
 
