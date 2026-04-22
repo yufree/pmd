@@ -184,6 +184,9 @@ getsim(std$data, std$data[corcluster$stdmassindex2,])
 
 In this case, the selected peaks algorithms correctly retain the biological variance and structural distances shown by high RV coefficient and Entropy Ratio.
 
+**Note on Base Peaks vs. Standard Mass Index:**
+You might notice that `stdcluster$stdmassindex2` (Independent Base Peaks) generally yields slightly better similarity scores than `std$stdmassindex` (Independent Peaks). The original GlobalStd algorithm purely uses PMD topology to filter redundancy without prioritizing peak intensity. Consequently, it may select a minor isotope or adduct peak as the representative feature, which is more vulnerable to baseline noise. In contrast, `getpseudospectrum()` intentionally selects the *base peak* (the peak with the highest intensity) from each redundant PMD cluster. Because base peaks have higher signal-to-noise ratios, they capture the intrinsic biological variance of the underlying compound more robustly, leading to representations that align more closely with the uncompressed raw dataset.
+
 ### Benchmark different datasets by Normalized Spectral Entropy (Sample Consistency Metric)
 
 If you need to evaluate the internal dimensionality and information purity of non-aligned peak tables (e.g., outputs spanning different platforms or algorithms without same variables), use `getnse()` to measure the Normalized Spectral Entropy. 

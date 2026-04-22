@@ -178,8 +178,19 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
                         # Identify multi-charged ions
                         multi_mask <- find_multicharged(df_iso_multiiso, didx=didx, corcutoff=corcutoff)
                         results$multi <- df_iso_multiiso[multi_mask, ]
-                        df_iso_multiiso_multi <- df_iso_multiiso[!multi_mask,]
-                        results$multimz <- unique(c(results$multi$ms1,results$multi$ms2))
+                        # Only remove peaks with half-integer mz below 350 Da
+                        # (conservative filter matching original behavior)
+                        mass_multi <- unique(c(results$multi$ms1, results$multi$ms2))
+                        multimass <- mass_multi[round(mass_multi %% 1, 1) == 0.5 &
+                                                mass_multi < 350]
+                        results$multimz <- multimass
+                        if (length(multimass) > 0) {
+                                df_iso_multiiso_multi <- df_iso_multiiso[
+                                        !(df_iso_multiiso$ms1 %in% multimass |
+                                          df_iso_multiiso$ms2 %in% multimass), ]
+                        } else {
+                                df_iso_multiiso_multi <- df_iso_multiiso
+                        }
 
                         results$diff <- df_iso_multiiso_multi
                         results$iso_mz <- iso_mz
@@ -289,6 +300,8 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
         list$paired <- diff[
                 round(diff$diff, digits) %in% round(common_pmd,digits),
         ]
+        list$paired$diff2 <- round(list$paired$diff, digits)
+        list$paired$md <- list$paired$diff %% 1
 
         # Collect isotope and multicharged mz values
         iso_mz_all <- unlist(lapply(cluster_results, function(x) paste0(x$iso_mz,'@',x$rtg)))
@@ -371,59 +384,65 @@ getstd <- function(list, digits = 2, accuracy = 4) {
         # group 2B: RT groups with multiple peaks with isotope/paired relationship
         # group 2B1: RT groups with multiple peaks with isotope without paired relationship
         process_groupB1 <- function(rtg) {
-                df_iso <- resultiso[resultiso$rtg == rtg, ]
-                if (nrow(df_iso) == 0) return(NULL)
-
-                iso_mz <- if (nrow(df_iso) > 0) {
-                        g <- igraph::graph_from_data_frame(df_iso, directed = FALSE)
-                        clusters <- igraph::components(g)
-                        vertex_names <- names(clusters$membership)
-                        keep_masses <- tapply(vertex_names, clusters$membership, function(x) min(as.numeric(x)))
-                        as.numeric(keep_masses)
-                } else {
-                        numeric(0)
-                }
-
-                cbind(mz = unique(iso_mz), rt = df_iso$rt[1], rtg = df_iso$rtg[1])
+                dfiso <- resultiso[resultiso$rtg == rtg, ]
+                if (nrow(dfiso) == 0) return(NULL)
+                massstd <- pmin(dfiso$ms1, dfiso$ms2)
+                massstdmax <- pmax(dfiso$ms1, dfiso$ms2)
+                mass <- unique(massstd[!(massstd %in% massstdmax)])
+                if (length(mass) == 0) return(NULL)
+                cbind(mz = mass, rt = dfiso$rt[1], rtg = dfiso$rtg[1])
         }
         # group 2B2: RT groups with multiple peaks with paired relationship without isotope
         process_groupB2 <- function(rtg) {
                 df_paired <- resultdiff[resultdiff$rtg == rtg, ]
                 if (nrow(df_paired) == 0) return(NULL)
-
-                mass_std <- if (nrow(df_paired) > 0) {
-                        g <- igraph::graph_from_data_frame(df_paired, directed = FALSE)
-                        clusters <- igraph::components(g)
-                        vertex_names <- names(clusters$membership)
-                        keep_masses <- tapply(vertex_names, clusters$membership, function(x) min(as.numeric(x)))
-                        as.numeric(keep_masses)
-                } else {
-                        numeric(0)
-                }
-
-                cbind(mz = unique(mass_std), rt = df_paired$rt[1], rtg = df_paired$rtg[1])
+                mass <- unique(pmin(df_paired$ms1, df_paired$ms2))
+                if (length(mass) == 0) return(NULL)
+                cbind(mz = mass, rt = df_paired$rt[1], rtg = df_paired$rtg[1])
         }
         # group 2B3: RT groups with multiple peaks with paired relationship and isotope
         process_groupB3 <- function(rtg) {
-                df_iso <- resultiso[resultiso$rtg == rtg, ]
-                df_paired <- resultdiff[resultdiff$rtg == rtg, ]
-                df <- rbind.data.frame(df_iso,df_paired)
-
-                if (nrow(df) == 0) return(NULL)
-
-                mass_std <- if (nrow(df) > 0) {
-                        g <- igraph::graph_from_data_frame(df, directed = FALSE)
-                        clusters <- igraph::components(g)
-                        vertex_names <- names(clusters$membership)
-                        keep_masses <- tapply(vertex_names, clusters$membership, function(x) min(as.numeric(x)))
-                        as.numeric(keep_masses)
+                dfiso <- resultiso[resultiso$rtg == rtg, ]
+                dfpaired <- resultdiff[resultdiff$rtg == rtg, ]
+                if (nrow(dfiso) > 0 && nrow(dfpaired) > 0) {
+                        # Step 1: get monoisotopic roots from iso pairs
+                        massstd <- pmin(dfiso$ms1, dfiso$ms2)
+                        massstdmax <- pmax(dfiso$ms1, dfiso$ms2)
+                        massstd <- unique(massstd[!(massstd %in% massstdmax)])
+                        if (length(massstd) > 1) {
+                                # Step 2: check PMD among roots vs paired PMDs
+                                dpairs <- .pair_df(massstd, digits = digits)
+                                dp <- as.data.frame(dpairs)
+                                if (nrow(dp) > 0 && sum(dp$diff2 %in% dfpaired$diff2) > 0) {
+                                        matched <- dp[dp$diff2 %in% dfpaired$diff2, ]
+                                        massstd_final <- unique(pmin(matched$ms1, matched$ms2))
+                                        massused <- unique(c(dp$ms1, dp$ms2))
+                                        massadd <- unique(c(matched$ms1, matched$ms2))
+                                        massextra <- massused[!(massused %in% massadd)]
+                                        mass <- c(massextra, massstd_final)
+                                } else {
+                                        mass <- massstd
+                                }
+                        } else {
+                                mass <- massstd
+                        }
+                        if (length(mass) == 0) return(NULL)
+                        cbind(mz = unique(mass), rt = dfiso$rt[1], rtg = dfiso$rtg[1])
+                } else if (nrow(dfiso) > 0) {
+                        # Same as B1
+                        massstd <- pmin(dfiso$ms1, dfiso$ms2)
+                        massstdmax <- pmax(dfiso$ms1, dfiso$ms2)
+                        mass <- unique(massstd[!(massstd %in% massstdmax)])
+                        if (length(mass) == 0) return(NULL)
+                        cbind(mz = mass, rt = dfiso$rt[1], rtg = dfiso$rtg[1])
+                } else if (nrow(dfpaired) > 0) {
+                        # Same as B2
+                        mass <- unique(pmin(dfpaired$ms1, dfpaired$ms2))
+                        if (length(mass) == 0) return(NULL)
+                        cbind(mz = mass, rt = dfpaired$rt[1], rtg = dfpaired$rtg[1])
                 } else {
-                        numeric(0)
+                        return(NULL)
                 }
-
-                cbind(mz = unique(mass_std),
-                      rt = ifelse(nrow(df_iso) > 0, df_iso$rt[1], df_paired$rt[1]),
-                      rtg = ifelse(nrow(df_iso) > 0, df_iso$rtg[1], df_paired$rtg[1]))
         }
         # main function
         resultdiff <- list$paired
