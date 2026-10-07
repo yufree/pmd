@@ -68,7 +68,12 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="pmd-030">pmd 0.3.0<a class="anchor" aria-label="anchor" href="#pmd-030"></a></h2>
-<ul><li>Refactored underlying PMD generation, correlation calculations, and clustering into optimized, vectorized methods using <code>data.table</code> yielding significant performance gains.</li>
+<ul><li>Fixed <code><a href="../reference/getpaired.html">getpaired()</a></code>/<code><a href="../reference/getstd.html">getstd()</a></code>/<code><a href="../reference/globalstd.html">globalstd()</a></code> erroring with “$ operator is invalid for atomic vectors” on datasets where no retention-time cluster contains a single (solo) peak: an empty <code>solo</code> extraction dropped the list element and <code>list$solo$rtg</code> then partial-matched the <code>soloindex</code> logical vector. <code>solo</code> is now always kept as a (possibly empty) data frame.</li>
+<li>Added a <code>db</code> argument to <code><a href="../reference/getchainseq.html">getchainseq()</a></code> and <code>data(pmdchain)</code>, a built-in database of curated, named multi-step reaction chains (e.g. desaturation-elongation, hydroxylation-glucuronidation, sequential oxidation) for known-pathway screening. <code>getchainseq(list, db = pmdchain)</code> runs every database chain against a feature list and returns <code>chainsearch</code> (which chains are present, each with the best-correlated matched path) plus a <code>keggcount</code> specificity score – the number of compound-connected KEGG reaction paths sharing the chain’s paired-mass-distance signature (lower = rarer = more specific; xenobiotic phase-II conjugations are most specific, common edits like methylation/phosphorylation most degenerate). Each step PMD in <code>data(pmdchain)</code> is the exact monoisotopic mass of its CHNOPS element delta (built by <code>data-raw/pmdchain.R</code>). A match is a relational annotation (co-varying, chromatographically resolved features related by the chain’s mass differences), not compound identification or proof that the pathway occurred.</li>
+<li>The <code><a href="../reference/runPMDnet.html">runPMDnet()</a></code> Shiny app (between-compound / reaction networks) gained a sample-PCA panel for diagnosing whether the dominant variance is biology or a nuisance confound; a targeted reaction-chain search powered by the <code><a href="../reference/getchainseq.html">getchainseq()</a></code> multi-step PMD grammar (ordered PMDs with wildcards and quantifiers), with downloadable matched chains; and a no-expertise “Screen for known reaction chains” panel that runs <code>getchainseq(db = pmdchain)</code> at one click and returns the named chains present ranked by <code>keggcount</code> specificity (no grammar needed, downloadable).</li>
+<li>The <code><a href="../reference/runPMD.html">runPMD()</a></code> Shiny app gained the same no-expertise “Screen for known reaction chains” panel (<code>getchainseq(db = pmdchain)</code>, one click, ranked by <code>keggcount</code> specificity, downloadable).</li>
+<li>Fixed the Shiny app file lookup (<code>pmd.Rmd</code>) so <code><a href="../reference/runPMD.html">runPMD()</a></code> launches on case-sensitive filesystems.</li>
+<li>Refactored underlying PMD generation, correlation calculations, and clustering into optimized, vectorized methods using <code>data.table</code> yielding significant performance gains.</li>
 <li>Introduced <code><a href="../reference/getchainseq.html">getchainseq()</a></code> to parse structural/reaction-directed MS sequences combining both defined PMDs and wildcards/regex-style quantifiers.</li>
 <li>Introduced <code><a href="../reference/gethomolog.html">gethomolog()</a></code> specifically designed to extract homologous series in mass spectrometry data based on repeating PMD units.</li>
 </ul></div>
@@ -234,7 +239,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer></div>

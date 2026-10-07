@@ -127,18 +127,19 @@
 </h1>
 <p>seqs &lt;- getchainseq(spmeinvivo, c(162.0528, -18.0106))</p>
 <pre><code>
-To check the pmd reaction database:
+To screen the whole feature list against a curated database of known reaction chains (e.g. desaturation-elongation, hydroxylation-glucuronidation, sequential oxidation), use the built-in chain database:
 
 ```{r}
-# all reaction
-data("omics")
-View(omics)
-# kegg reaction
-data("keggrall")
-View(keggrall)
-# literature reaction for mass spectrometry
-data("sda")
-View(sda)</code></pre>
+data("pmdchain")
+r &lt;- getchainseq(spmeinvivo, db = pmdchain)
+# one row per database chain: which named chains are present in this sample,
+# how many matched paths were found, and the chain's `specificity` (the number
+# of KEGG reaction paths sharing the chain's PMD signature: lower = rarer =
+# more specific, so a rare-chain match carries more weight than a common edit)
+head(r$chainsearch)</code></pre>
+<p>A match here is a relational annotation (co-varying, chromatographically resolved features related by the chain’s mass differences), not compound identification. Both shiny applications (<code><a href="reference/runPMD.html">runPMD()</a></code> and <code><a href="reference/runPMDnet.html">runPMDnet()</a></code>) also include a one-click “Screen for known reaction chains” panel for this database screening.</p>
+<p>To check the pmd reaction database:</p>
+<p><code>{r} # all reaction data("omics") View(omics) # kegg reaction data("keggrall") View(keggrall) # literature reaction for mass spectrometry data("sda") View(sda) # curated known reaction-chain database for screening data("pmdchain") View(pmdchain)</code></p>
 <p>To check the HMDB pmd database:</p>
 <p><code>{r} data("hmdb") View(hmdb)</code></p>
 <p>To cite related papers:</p>
@@ -192,7 +193,7 @@ View(sda)</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer>
