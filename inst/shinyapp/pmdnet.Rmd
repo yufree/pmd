@@ -29,11 +29,36 @@ inputPanel(
   sliderInput("corcutoff", label = "Cutoff for the correlation coefficient",
               min = 0, max = 1, value = 0.6, step = 0.1),
   textInput('diff', label = 'PMD set', value='2.02,15.99,18.01,14.02,162.05'),
+  textInput('pattern', label = 'Reaction-chain pattern (DSL: ordered PMDs, wildcards, quantifiers)', value = '162.0528; -18.0106{0,3}; 14.0157+'),
   textInput('mass', label = 'Compound ion(s)', value= '542.7446'),
   textInput('formula', label = 'Compound Formula (alpha)', value= 'C15H11Br4O2'),
   sliderInput("ppm", label = "mass accuracy of formula or mass in ppm",
               min = 0, max = 100, value = 20, step = 1)
 )
+```
+
+## Sample structure (diagnose confounds first)
+
+A PCA of the samples shows what drives the dominant variance. If samples separate
+by your biological factor of interest, correlation-based analysis is meaningful.
+If they separate by a nuisance (dilution, batch, injection order), that factor
+confounds every correlation -- consider conditioning it out (partial correlation)
+or learning relationships on QC samples.
+
+```{r pca, echo=FALSE}
+library(pmd)
+renderPlot({
+  l <- datainput()
+  if (is.null(l)) { plot(1, 1, type = 'n', axes = FALSE, xlab = '', ylab = ''); return() }
+  X <- log2(as.matrix(l$data) + 1)
+  pc <- stats::prcomp(t(X), scale. = FALSE)
+  ve <- round(100 * pc$sdev^2 / sum(pc$sdev^2))
+  grp <- if (!is.null(l$group)) as.factor(l$group[, 1]) else factor(rep(1, ncol(X)))
+  plot(pc$x[, 1], pc$x[, 2], col = grp, pch = 19,
+       xlab = paste0('PC1 (', ve[1], '%)'), ylab = paste0('PC2 (', ve[2], '%)'),
+       main = 'Sample PCA -- is PC1 biology or a nuisance?')
+  legend('topright', legend = levels(grp), col = seq_along(levels(grp)), pch = 19, bty = 'n')
+})
 ```
 
 ## Data analysis
@@ -131,4 +156,80 @@ renderPlot({
   })
 ```
 
+## Targeted reaction-chain search
+
+`getchainseq()` finds paths whose successive mass differences follow an *ordered*
+pattern, unlike the PMD-set network above. The pattern grammar supports fixed
+PMDs, signs (`+` mass gain, `-` loss), wildcards, and regex-style quantifiers,
+e.g. `162.0528; -18.0106{0,3}; 14.0157+` = glycosylation, then up to three
+dehydrations, then one or more CH2 extensions. Leave the formula box blank to
+search the whole network, or fill it to anchor the start of each chain.
+
+```{r chainseq, echo=FALSE}
+datachainseq <- reactive({
+  l <- datainput()
+  if (is.null(l) || !nzchar(input$pattern)) return(NULL)
+  anchor <- if (nzchar(input$formula)) unlist(strsplit(input$formula, ",")) else NULL
+  re <- try(getchainseq(l, pattern = input$pattern, mass = anchor,
+                        rtcutoff = as.numeric(input$rtcutoff),
+                        corcutoff = as.numeric(input$corcutoff),
+                        digits = as.numeric(input$digits), ppm = input$ppm),
+            silent = TRUE)
+  if (inherits(re, "try-error")) return(NULL)
+  re
+})
+
+renderDataTable({
+  re <- datachainseq()
+  if (!is.null(re) && "sdacseq" %in% names(re)) as.data.frame(re$sdacseq)
+})
+
+downloadHandler('reactionchains.csv',
+  outputArgs = list(label = 'Matched reaction chains'),
+  content = function(file) {
+    re <- datachainseq()
+    if (!is.null(re) && "sdacseq" %in% names(re))
+      write.csv(as.data.frame(re$sdacseq), file, row.names = FALSE)
+  })
+```
+
+## Screen for known reaction chains (no pattern needed)
+
+Not sure which pattern to search? Screen your data against a built-in database of
+15 curated, named reaction chains -- fatty-acid editing, beta-oxidation,
+glycosylation, phase-I/II detoxification, and more. No grammar required: just
+click. Each chain found is ranked by a **specificity** score, the number of known
+KEGG reactions that share its mass signature -- a smaller number means a rarer,
+more trustworthy match. The co-elution correlation (slider above) is an optional
+filter here, not a requirement.
+
+```{r chaindb, echo=FALSE}
+actionButton('screendb', 'Screen for known reaction chains')
+
+datachaindb <- eventReactive(input$screendb, {
+  l <- datainput()
+  if (is.null(l)) return(NULL)
+  e <- new.env(); utils::data('pmdchain', package = 'pmd', envir = e)
+  re <- try(getchainseq(l, db = e$pmdchain,
+                        rtcutoff = as.numeric(input$rtcutoff),
+                        corcutoff = as.numeric(input$corcutoff),
+                        ppm = input$ppm), silent = TRUE)
+  if (inherits(re, 'try-error') || is.null(re$chainsearch)) return(NULL)
+  d <- re$chainsearch[re$chainsearch$n_found > 0,
+                      c('name', 'class', 'specificity', 'n_found', 'example')]
+  if (nrow(d) == 0) return(NULL)
+  colnames(d) <- c('reaction chain', 'type', 'specificity (fewer = rarer)',
+                   'chains found', 'example m/z path')
+  d
+})
+
+renderDataTable({ datachaindb() })
+
+downloadHandler('knownchains.csv',
+  outputArgs = list(label = 'Download known chains found'),
+  content = function(file) {
+    d <- datachaindb()
+    if (!is.null(d)) write.csv(d, file, row.names = FALSE)
+  })
+```
 

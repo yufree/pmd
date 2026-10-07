@@ -6,7 +6,8 @@
 \usage{
 getchainseq(
   list,
-  pattern,
+  pattern = NULL,
+  db = NULL,
   mass = NULL,
   digits = 4,
   rtcutoff = 10,
@@ -21,7 +22,15 @@ getchainseq(
 \item{list}{a pmd-style list with \code{mz}, \code{rt} (optional), \code{data}}
 
 \item{pattern}{numeric vector, list of step specs, or DSL string
-(see \code{\link{parse_pmd_pattern}})}
+(see \code{\link{parse_pmd_pattern}}); omit when \code{db} is supplied}
+
+\item{db}{optional chain database (e.g. \code{data(pmdchain)}) for
+known-pathway screening: instead of one pattern, every named chain in
+\code{db} is run as an ordered query and the matches are summarized with
+each chain's \code{keggcount} specificity (lower = rarer = more specific).
+A match is a relational annotation (co-varying, chromatographically
+resolved features related by the chain's mass differences), not compound
+identification or proof a pathway occurred. Default \code{NULL}}
 
 \item{mass}{optional seed mass(es) or formula(s); only paths starting within
 \code{ppm} of a seed are returned}
@@ -49,7 +58,12 @@ the input \code{list} with two new elements: \code{sdacseq}
   \code{sdacseq} columns: \code{n1..nK} (node indices; NA-padded for shorter
   paths in variable-length matches), \code{path_len}, \code{mz_1..mz_K},
   \code{rt_1..rt_K} (if RT present), \code{pmd_1..pmd_\{K-1\}} (observed
-  PMDs), and \code{cor_mean}.
+  PMDs), and \code{cor_mean}. In database mode (\code{db} supplied) it
+  instead returns \code{chainsearch} (a data frame, one row per database
+  chain: \code{chain_id}, \code{name}, \code{class}, \code{nstep},
+  \code{pattern}, \code{specificity}, \code{n_found}, \code{example}, ordered
+  by \code{n_found}) and \code{chainmatches} (per-chain matched-path tables
+  for chains with hits).
 }
 \description{
 Searches a feature network for directed paths whose successive mass differences
@@ -92,6 +106,11 @@ r3 <- getchainseq(spmeinvivo,
 
 # Anchor to a known compound
 r4 <- getchainseq(spmeinvivo, c(162.0528, -18.0106), mass = 286.3101)
+
+# Known-pathway screening against the built-in chain database
+data(pmdchain)
+r5 <- getchainseq(spmeinvivo, db = pmdchain)
+r5$chainsearch
 }
 }
 \seealso{

@@ -3,3 +3,8 @@
 .RData
 .Ruserdata
 .DS_Store
+.positai
+benchmark/cache_*.rds
+*.tar.gz
+*.Rcheck
+vignettes/*.html

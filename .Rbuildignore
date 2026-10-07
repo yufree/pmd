@@ -4,3 +4,10 @@
 ^.travis.yml
 _pkgdown.yaml
 ^.github
+^\.positai$
+^\.claude$
+^benchmark$
+^data-raw$
+^/tmp$
+^manuscript$
+^CLAUDE\.md$

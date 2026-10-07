@@ -289,3 +289,43 @@ downloadHandler('globalstd.csv', outputArgs = list(label='GlobalStd peaks'), con
         })
 
 ```
+
+## Screen for known reaction chains (no pattern needed)
+
+Beyond redundancy annotation, you can screen the same uploaded table for known
+*reaction* relationships -- multi-step biotransformations that link different
+compounds. Click below to match your data against a built-in database of 15
+curated, named reaction chains (fatty-acid editing, beta-oxidation, glycosylation,
+phase-I/II detoxification, and more). No grammar required. Each chain found is
+ranked by a **specificity** score: the number of known KEGG reactions that share
+its mass signature, where fewer means a rarer, more trustworthy match. For the
+full ordered-pattern grammar and reaction networks, use `runPMDnet()`.
+
+```{r chaindb, echo=FALSE}
+actionButton('screendb', 'Screen for known reaction chains')
+
+datachaindb <- eventReactive(input$screendb, {
+  l <- datainput()
+  if (is.null(l)) return(NULL)
+  e <- new.env(); utils::data('pmdchain', package = 'pmd', envir = e)
+  re <- try(getchainseq(l, db = e$pmdchain,
+                        rtcutoff = as.numeric(input$rtcutoff),
+                        corcutoff = as.numeric(input$corcutoff)), silent = TRUE)
+  if (inherits(re, 'try-error') || is.null(re$chainsearch)) return(NULL)
+  d <- re$chainsearch[re$chainsearch$n_found > 0,
+                      c('name', 'class', 'specificity', 'n_found', 'example')]
+  if (nrow(d) == 0) return(NULL)
+  colnames(d) <- c('reaction chain', 'type', 'specificity (fewer = rarer)',
+                   'chains found', 'example m/z path')
+  d
+})
+
+renderDataTable({ datachaindb() })
+
+downloadHandler('knownchains.csv',
+  outputArgs = list(label = 'Download known chains found'),
+  content = function(file) {
+    d <- datachaindb()
+    if (!is.null(d)) write.csv(d, file, row.names = FALSE)
+  })
+```

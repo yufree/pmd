@@ -279,6 +279,13 @@ getpaired <- function(list, rtcutoff = 10, ng = NULL, digits = 2,
         list$multiiso = safe_extract("multiiso")
         list$multi = safe_extract("multi")
         list$solo = safe_extract("solo")
+        # when no RT cluster has a single peak, safe_extract() returns NULL and
+        # `list$solo <- NULL` drops the element; downstream `list$solo$rtg` then
+        # partial-matches `soloindex` (a logical vector) and errors. Keep solo a
+        # proper empty data frame so all `list$solo$...` accesses stay valid.
+        if (is.null(list$solo))
+                list$solo <- data.frame(mz = numeric(0), rt = numeric(0),
+                                        rtg = numeric(0))
         diff = safe_extract("diff")
 
         # Post-processing

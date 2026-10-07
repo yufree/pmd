@@ -54,7 +54,7 @@ utils::globalVariables(c(
 #' @param digits mass or mass to charge ratio accuracy for pmd, default 2
 #' @param accuracy measured mass or mass to charge ratio in digits, default 4
 #' @param freqcutoff pmd frequency cutoff for structures or reactions, default NULL. This cutoff will be found by PMD network analysis when it is NULL.
-#' @return list with tentative isotope, adducts, and neutral loss peaks' index, retention time clusters.
+#' @return list with high-frequency PMD pairs in \code{sda}
 #' @examples
 #' data(spmeinvivo)
 #' pmd <- getpaired(spmeinvivo)
@@ -786,7 +786,14 @@ parse_pmd_pattern <- function(s) {
 #'
 #' @param list a pmd-style list with \code{mz}, \code{rt} (optional), \code{data}
 #' @param pattern numeric vector, list of step specs, or DSL string
-#'   (see \code{\link{parse_pmd_pattern}})
+#'   (see \code{\link{parse_pmd_pattern}}); omit when \code{db} is supplied
+#' @param db optional chain database (e.g. \code{data(pmdchain)}) for
+#'   known-pathway screening: instead of one pattern, every named chain in
+#'   \code{db} is run as an ordered query and the matches are summarized with
+#'   each chain's \code{keggcount} specificity (lower = rarer = more specific).
+#'   A match is a relational annotation (co-varying, chromatographically
+#'   resolved features related by the chain's mass differences), not compound
+#'   identification or proof a pathway occurred. Default \code{NULL}
 #' @param mass optional seed mass(es) or formula(s); only paths starting within
 #'   \code{ppm} of a seed are returned
 #' @param digits PMD matching precision, default 4
@@ -804,7 +811,12 @@ parse_pmd_pattern <- function(s) {
 #'   \code{sdacseq} columns: \code{n1..nK} (node indices; NA-padded for shorter
 #'   paths in variable-length matches), \code{path_len}, \code{mz_1..mz_K},
 #'   \code{rt_1..rt_K} (if RT present), \code{pmd_1..pmd_\{K-1\}} (observed
-#'   PMDs), and \code{cor_mean}.
+#'   PMDs), and \code{cor_mean}. In database mode (\code{db} supplied) it
+#'   instead returns \code{chainsearch} (a data frame, one row per database
+#'   chain: \code{chain_id}, \code{name}, \code{class}, \code{nstep},
+#'   \code{pattern}, \code{specificity}, \code{n_found}, \code{example}, ordered
+#'   by \code{n_found}) and \code{chainmatches} (per-chain matched-path tables
+#'   for chains with hits).
 #' @examples
 #' \dontrun{
 #' data(spmeinvivo)
@@ -822,12 +834,18 @@ parse_pmd_pattern <- function(s) {
 #'
 #' # Anchor to a known compound
 #' r4 <- getchainseq(spmeinvivo, c(162.0528, -18.0106), mass = 286.3101)
+#'
+#' # Known-pathway screening against the built-in chain database
+#' data(pmdchain)
+#' r5 <- getchainseq(spmeinvivo, db = pmdchain)
+#' r5$chainsearch
 #' }
 #' @seealso \code{\link{getchain}}, \code{\link{gethomolog}},
 #'   \code{\link{parse_pmd_pattern}}
 #' @export
 getchainseq <- function(list,
-                        pattern,
+                        pattern = NULL,
+                        db = NULL,
                         mass = NULL,
                         digits = 4,
                         rtcutoff = 10,
@@ -838,6 +856,55 @@ getchainseq <- function(list,
                         allow_cycles = FALSE) {
 
         DT <- data.table::data.table
+
+        # ---- Database screening mode -----------------------------------------
+        # When `db` is supplied (a chain database such as data(pmdchain)), screen
+        # the feature list against every named chain rather than a single
+        # pattern. Each chain is run as an ordered query; matches found in the
+        # sample are reported with the chain's `keggcount` specificity (lower =
+        # rarer = more specific). A match is a relational annotation (co-varying,
+        # chromatographically resolved features related by the chain's mass
+        # differences), not compound identification or proof a pathway occurred.
+        if (!is.null(db)) {
+                ids <- unique(db$chain_id)
+                matches <- vector("list", length(ids)); names(matches) <- ids
+                summ <- lapply(ids, function(id) {
+                        rw <- db[db$chain_id == id, , drop = FALSE]
+                        rw <- rw[order(rw$step), , drop = FALSE]
+                        pat <- paste(sprintf("%.4f", rw$pmd), collapse = "; ")
+                        re <- try(suppressMessages(getchainseq(
+                                list, pattern = pat, mass = mass, digits = digits,
+                                rtcutoff = rtcutoff, corcutoff = corcutoff, ppm = ppm,
+                                rtdir = rtdir, max_paths = max_paths,
+                                allow_cycles = allow_cycles)), silent = TRUE)
+                        s <- if (inherits(re, "try-error")) NULL else re$sdacseq
+                        n <- if (is.null(s)) 0L else nrow(s)
+                        ex <- NA_character_
+                        if (n > 0) {
+                                s <- s[order(-s$cor_mean), , drop = FALSE]
+                                mzc <- grep("^mz_", names(s), value = TRUE)
+                                m <- unlist(s[1, mzc, with = FALSE]); m <- m[!is.na(m)]
+                                ex <- sprintf("%s (cor %.2f)",
+                                              paste(sprintf("%.4f", m), collapse = " -> "),
+                                              s$cor_mean[1])
+                                matches[[id]] <<- s
+                        }
+                        spec <- if (!is.null(rw$keggcount)) rw$keggcount[1] else NA_integer_
+                        data.frame(chain_id = id, name = rw$name[1],
+                                   class = if (!is.null(rw$class)) rw$class[1] else NA,
+                                   nstep = rw$nstep[1], pattern = pat,
+                                   specificity = spec, n_found = n, example = ex,
+                                   stringsAsFactors = FALSE)
+                })
+                res <- do.call(rbind, summ)
+                res <- res[order(-res$n_found, res$specificity), ]
+                rownames(res) <- NULL
+                list$chainsearch <- res
+                list$chainmatches <- matches[!vapply(matches, is.null, logical(1))]
+                return(list)
+        }
+        if (is.null(pattern))
+                stop("getchainseq: supply either `pattern` or `db`.", call. = FALSE)
 
         # ---- Normalize pattern ----
         if (is.character(pattern) && length(pattern) == 1L) {

@@ -5,7 +5,7 @@ runPMD <- function() {
         stop("Package 'rmarkdown' is required. Install with install.packages('rmarkdown').",
              call. = FALSE)
     }
-    file <- system.file("shinyapp", "PMD.Rmd", package = "pmd")
+    file <- system.file("shinyapp", "pmd.Rmd", package = "pmd")
     if (file == "") {
         stop("Could not find directory. Try re-installing `pmd`.",
             call. = FALSE)
